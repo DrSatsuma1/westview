@@ -1,0 +1,28 @@
+{
+  "name": "westview-ucag-planner",
+  "version": "1.0.0",
+  "description": "UC/CSU A-G Course Planner for Westview High School - Poway Unified School District",
+  "private": true,
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "lucide-react": "^0.263.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.0.0",
+    "vite": "^4.3.9"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [
+    "education",
+    "college-planning",
+    "uc-csu",
+    "course-planner"
+  ],
+  "author": "Catherine",
+  "license": "MIT"
+}
