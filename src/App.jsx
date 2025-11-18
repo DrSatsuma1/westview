@@ -15,12 +15,12 @@ const schedulingEngine = new SchedulingEngine(courseCatalogData.courses);
 const WESTVIEW_REQUIREMENTS = {
   'English': { needed: 40, pathways: ['English'] },
   'Math': { needed: 30, pathways: ['Math'] },
-  'Science': { needed: 30, pathways: ['Science - Biological', 'Science - Physical'] },
-  'History': { needed: 30, pathways: ['History/Social Science'] },
-  'Foreign Language': { needed: 20, pathways: ['Foreign Language'] },
-  'Fine Arts': { needed: 10, pathways: ['Fine Arts'] },
-  'PE': { needed: 20, pathways: ['Physical Education'] },
-  'Electives': { needed: 50, pathways: ['Electives', 'CTE'] }
+  'Biological Science': { needed: 10, pathways: ['Science - Biological'] },
+  'Physical Science': { needed: 20, pathways: ['Science - Physical'] },
+  'History/Social Science': { needed: 30, pathways: ['History/Social Science'] },
+  'Fine Arts/Foreign Language/CTE': { needed: 10, pathways: ['Fine Arts', 'Foreign Language', 'CTE'] },
+  'ENS/PE': { needed: 20, pathways: ['Physical Education'] },
+  'Electives': { needed: 50, pathways: ['Electives'] }
 };
 
 const AG_REQUIREMENTS = {
@@ -46,11 +46,20 @@ function App() {
   const [newCourse, setNewCourse] = useState({ courseId: '' });
   const [error, setError] = useState(null);
   const [warning, setWarning] = useState(null);
+  const [earlyGradMode, setEarlyGradMode] = useState(() => {
+    const saved = localStorage.getItem('westview-early-grad-mode');
+    return saved ? JSON.parse(saved) : { enabled: false, targetYear: null }; // null, '3year', or '3.5year'
+  });
 
   // Save courses to localStorage whenever they change
   React.useEffect(() => {
     localStorage.setItem('westview-courses', JSON.stringify(courses));
   }, [courses]);
+
+  // Save early grad mode to localStorage
+  React.useEffect(() => {
+    localStorage.setItem('westview-early-grad-mode', JSON.stringify(earlyGradMode));
+  }, [earlyGradMode]);
 
   // Calculate Westview graduation progress
   const westviewProgress = useMemo(() => {
@@ -74,6 +83,46 @@ function App() {
 
   const totalCredits = Object.values(westviewProgress).reduce((sum, p) => sum + p.earned, 0);
   const westviewGraduationReady = totalCredits >= 230 && Object.values(westviewProgress).every(p => p.met);
+
+  // Calculate early graduation eligibility and requirements
+  const earlyGradEligibility = useMemo(() => {
+    const grade11Courses = courses.filter(c => c.year === '11');
+    const grade11Credits = grade11Courses.reduce((sum, c) => {
+      const info = COURSE_CATALOG[c.courseId];
+      return sum + (info ? info.credits : 0);
+    }, 0);
+
+    const creditsThrough11 = courses
+      .filter(c => ['9', '10', '11'].includes(c.year))
+      .reduce((sum, c) => {
+        const info = COURSE_CATALOG[c.courseId];
+        return sum + (info ? info.credits : 0);
+      }, 0);
+
+    const hasSeniorEnglish = grade11Courses.some(c => {
+      const info = COURSE_CATALOG[c.courseId];
+      if (!info || info.pathway !== 'English') return false;
+      const name = info.full_name.toUpperCase();
+      return name.includes('AMERICAN LIT') || name.includes('ETHNIC LIT') ||
+             name.includes('EXPOSITORY') || name.includes('WORLD LIT') ||
+             name.includes('AP ENGLISH');
+    });
+
+    const hasCivicsEcon = grade11Courses.some(c => {
+      const info = COURSE_CATALOG[c.courseId];
+      if (!info) return false;
+      const name = info.full_name.toUpperCase();
+      return name.includes('CIVICS') && name.includes('ECONOMICS');
+    });
+
+    return {
+      eligible3Year: creditsThrough11 >= 170 && hasSeniorEnglish && hasCivicsEcon,
+      eligible3_5Year: creditsThrough11 >= 170,
+      creditsThrough11,
+      hasSeniorEnglish,
+      hasCivicsEcon
+    };
+  }, [courses]);
 
   // Get courses for a specific semester (defined before useMemo that uses it)
   const getCoursesForSemester = (year, semester) => {
@@ -313,6 +362,42 @@ function App() {
     // Get semester courses early for validation checks
     const semesterCourses = getCoursesForSemester(year, semester);
 
+    // Early graduation mode validations
+    if (earlyGradMode.enabled) {
+      if (earlyGradMode.targetYear === '3year') {
+        // 3-year plan: Can only add courses to grades 9, 10, 11
+        if (year === '12') {
+          setError('Early Graduation (3 years): Cannot add courses to Grade 12');
+          return;
+        }
+
+        // In grade 11, must include Senior English and Civics/Economics
+        if (year === '11') {
+          const courseName = courseInfo.full_name.toUpperCase();
+          const isSeniorEnglish = courseInfo.pathway === 'English' && (
+            courseName.includes('AMERICAN LIT') || courseName.includes('ETHNIC LIT') ||
+            courseName.includes('EXPOSITORY') || courseName.includes('WORLD LIT') ||
+            courseName.includes('AP ENGLISH')
+          );
+          const isCivicsEcon = courseName.includes('CIVICS') && courseName.includes('ECONOMICS');
+
+          // Show warning if they haven't added these yet
+          if (!earlyGradEligibility.hasSeniorEnglish && !isSeniorEnglish && semester === 'Fall') {
+            setWarning('Early Graduation: Remember to add a Senior English course in Grade 11');
+          }
+          if (!earlyGradEligibility.hasCivicsEcon && !isCivicsEcon && semester === 'Fall') {
+            setWarning('Early Graduation: Remember to add Civics/Economics in Grade 11');
+          }
+        }
+      } else if (earlyGradMode.targetYear === '3.5year') {
+        // 3.5-year plan: Can add courses to grade 12 Fall only
+        if (year === '12' && semester === 'Spring') {
+          setError('Early Graduation (3.5 years): Cannot add courses to Grade 12 Spring');
+          return;
+        }
+      }
+    }
+
     // Check for AP Calculus AB/BC conflict (blocks adding)
     const courseName = courseInfo.full_name.toUpperCase();
     if (courseName.includes('AP CALCULUS')) {
@@ -417,6 +502,91 @@ function App() {
       return;
     }
 
+    // Check PE credit cap (max 40 credits toward graduation)
+    if (courseInfo.pathway === 'Physical Education') {
+      const totalPECredits = courses
+        .filter(c => {
+          const info = COURSE_CATALOG[c.courseId];
+          return info && info.pathway === 'Physical Education';
+        })
+        .reduce((sum, c) => sum + COURSE_CATALOG[c.courseId].credits, 0);
+
+      if (totalPECredits + courseInfo.credits > 40) {
+        setError('Maximum 40 credits of Physical Education may be applied toward graduation');
+        return;
+      }
+    }
+
+    // Check Academic Tutor / Library TA credit cap (max 10 credits)
+    const isAcademicTutorOrLibrary = courseName.includes('ACADEMIC TUTOR') ||
+                                      courseName.includes('LIBRARY') && courseName.includes('ASSISTANT');
+
+    if (isAcademicTutorOrLibrary) {
+      const totalTutorCredits = courses
+        .filter(c => {
+          const info = COURSE_CATALOG[c.courseId];
+          if (!info) return false;
+          const name = info.full_name.toUpperCase();
+          return name.includes('ACADEMIC TUTOR') || (name.includes('LIBRARY') && name.includes('ASSISTANT'));
+        })
+        .reduce((sum, c) => sum + COURSE_CATALOG[c.courseId].credits, 0);
+
+      if (totalTutorCredits + courseInfo.credits > 10) {
+        setError('Maximum 10 credits from Academic Tutor or Library & Information Science TA');
+        return;
+      }
+    }
+
+    // Check school service course limit (max 1 per semester)
+    const isSchoolService = courseName.includes('ACADEMIC TUTOR') ||
+                            (courseName.includes('LIBRARY') && courseName.includes('ASSISTANT')) ||
+                            courseName.includes('WORK EXPERIENCE') ||
+                            courseName.includes('TEACHER') && courseName.includes('ASSISTANT');
+
+    if (isSchoolService) {
+      const hasSchoolService = semesterCourses.some(c => {
+        const info = COURSE_CATALOG[c.courseId];
+        if (!info) return false;
+        const name = info.full_name.toUpperCase();
+        return name.includes('ACADEMIC TUTOR') ||
+               (name.includes('LIBRARY') && name.includes('ASSISTANT')) ||
+               name.includes('WORK EXPERIENCE') ||
+               (name.includes('TEACHER') && name.includes('ASSISTANT'));
+      });
+
+      if (hasSchoolService) {
+        setError('No more than one school service course per semester');
+        return;
+      }
+    }
+
+    // Check Work Experience restrictions
+    if (courseName.includes('WORK EXPERIENCE')) {
+      // Max 10 credits per term
+      if (courseInfo.credits > 10) {
+        setError('Maximum 10 credits in Work Experience may be earned in one term');
+        return;
+      }
+
+      // Cannot combine with other school service courses
+      const hasOtherSchoolService = semesterCourses.some(c => {
+        const info = COURSE_CATALOG[c.courseId];
+        if (!info) return false;
+        const name = info.full_name.toUpperCase();
+        // Check for other school service courses (not Work Experience)
+        return !name.includes('WORK EXPERIENCE') && (
+          name.includes('ACADEMIC TUTOR') ||
+          (name.includes('LIBRARY') && name.includes('ASSISTANT')) ||
+          (name.includes('TEACHER') && name.includes('ASSISTANT'))
+        );
+      });
+
+      if (hasOtherSchoolService) {
+        setError('Other school service classes may not be taken by students enrolled in Work Experience');
+        return;
+      }
+    }
+
     // Check for multiple courses of same foreign language in same semester
     if (courseInfo.pathway === 'Foreign Language') {
       const isLiteratureCourse = courseName.includes('LITERATURE') || courseName.includes('LIT');
@@ -514,8 +684,74 @@ function App() {
       {/* Clean Header */}
       <header className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-6 py-6">
-          <h1 className="text-3xl font-bold text-gray-900">Westview High School Course Planner</h1>
-          <p className="text-gray-600 mt-1">Plan your path through high school</p>
+          <div className="flex items-start justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Westview High School Course Planner</h1>
+              <p className="text-gray-600 mt-1">Plan your path through high school</p>
+            </div>
+
+            {/* Early Graduation Mode Toggle */}
+            <div className="bg-gray-50 border-2 border-gray-200 rounded-lg p-4">
+              <div className="flex items-center gap-3 mb-2">
+                <input
+                  type="checkbox"
+                  id="earlyGradMode"
+                  checked={earlyGradMode.enabled}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setEarlyGradMode({ enabled: true, targetYear: '3year' });
+                    } else {
+                      setEarlyGradMode({ enabled: false, targetYear: null });
+                    }
+                  }}
+                  className="w-5 h-5 text-blue-600"
+                />
+                <label htmlFor="earlyGradMode" className="text-sm font-bold text-gray-900 cursor-pointer">
+                  Early Graduation Mode
+                </label>
+              </div>
+
+              {earlyGradMode.enabled && (
+                <div className="ml-8 space-y-2">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="earlyGradTarget"
+                      checked={earlyGradMode.targetYear === '3year'}
+                      onChange={() => setEarlyGradMode({ enabled: true, targetYear: '3year' })}
+                      className="w-4 h-4 text-blue-600"
+                    />
+                    <span className="text-sm text-gray-700">3 years (end of 11th grade)</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="earlyGradTarget"
+                      checked={earlyGradMode.targetYear === '3.5year'}
+                      onChange={() => setEarlyGradMode({ enabled: true, targetYear: '3.5year' })}
+                      className="w-4 h-4 text-blue-600"
+                    />
+                    <span className="text-sm text-gray-700">3.5 years (mid 12th grade)</span>
+                  </label>
+                </div>
+              )}
+
+              {/* Eligibility indicator */}
+              {earlyGradEligibility.creditsThrough11 >= 170 && (
+                <div className="mt-3 pt-3 border-t border-gray-300">
+                  <div className="text-xs font-bold text-green-700">
+                    ✓ Eligible: {earlyGradEligibility.creditsThrough11} credits through Grade 11
+                  </div>
+                  {!earlyGradEligibility.hasSeniorEnglish && (
+                    <div className="text-xs text-orange-600 mt-1">⚠ Need Senior English in Grade 11</div>
+                  )}
+                  {!earlyGradEligibility.hasCivicsEcon && (
+                    <div className="text-xs text-orange-600 mt-1">⚠ Need Civics/Economics in Grade 11</div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </header>
 
@@ -1066,6 +1302,77 @@ function App() {
             </div>
           </div>
 
+        </div>
+
+        {/* Suggested Courses By Grade Level */}
+        <div className="max-w-[1800px] mx-auto px-6 py-8">
+          <div className="bg-white rounded-xl border-2 border-gray-200 overflow-hidden">
+            <div className="bg-gray-100 px-6 py-4 border-b-2 border-gray-200">
+              <h3 className="text-xl font-bold text-gray-900">Suggested Courses By Grade Level</h3>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-4 py-3 text-left text-sm font-bold text-gray-700 border-r border-gray-200 w-1/4">9th</th>
+                    <th className="px-4 py-3 text-left text-sm font-bold text-gray-700 border-r border-gray-200 w-1/4">10th</th>
+                    <th className="px-4 py-3 text-left text-sm font-bold text-gray-700 border-r border-gray-200 w-1/4">11th</th>
+                    <th className="px-4 py-3 text-left text-sm font-bold text-gray-700 w-1/4">12th</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-t border-gray-200">
+                    <td className="px-4 py-3 text-sm text-gray-800 border-r border-gray-200 align-top">English 1-2 or Honors English 1-2</td>
+                    <td className="px-4 py-3 text-sm text-gray-800 border-r border-gray-200 align-top">English 3-4 or Honors Humanities 1-2</td>
+                    <td className="px-4 py-3 text-sm text-gray-800 border-r border-gray-200 align-top">American Literature; Honors American Literature; or AP English Language</td>
+                    <td className="px-4 py-3 text-sm text-gray-800 align-top">Ethnic Literature; Expository Reading & Writing; World Literature; AP English Literature/British Literature; or AP English Language</td>
+                  </tr>
+                  <tr className="border-t border-gray-200 bg-gray-50">
+                    <td className="px-4 py-3 text-sm text-gray-800 border-r border-gray-200 align-top">Math*</td>
+                    <td className="px-4 py-3 text-sm text-gray-800 border-r border-gray-200 align-top">Math</td>
+                    <td className="px-4 py-3 text-sm text-gray-800 border-r border-gray-200 align-top">Math</td>
+                    <td className="px-4 py-3 text-sm text-gray-800 align-top">Math</td>
+                  </tr>
+                  <tr className="border-t border-gray-200">
+                    <td className="px-4 py-3 text-sm text-gray-800 border-r border-gray-200 align-top">Science (Biology)</td>
+                    <td className="px-4 py-3 text-sm text-gray-800 border-r border-gray-200 align-top">Science (Chemistry)</td>
+                    <td className="px-4 py-3 text-sm text-gray-800 border-r border-gray-200 align-top">Science (Physics)</td>
+                    <td className="px-4 py-3 text-sm text-gray-800 align-top">Science or Elective</td>
+                  </tr>
+                  <tr className="border-t border-gray-200 bg-gray-50">
+                    <td className="px-4 py-3 text-sm text-gray-800 border-r border-gray-200 align-top">ENS 1-2</td>
+                    <td className="px-4 py-3 text-sm text-gray-800 border-r border-gray-200 align-top">World History 1-2 or AP World History 1-2/Honors World History 1-2</td>
+                    <td className="px-4 py-3 text-sm text-gray-800 border-r border-gray-200 align-top">United States History 1-2 or AP US History 1-2</td>
+                    <td className="px-4 py-3 text-sm text-gray-800 align-top">Civics/Economics or AP US Government & Politics/Civics/Economics</td>
+                  </tr>
+                  <tr className="border-t border-gray-200">
+                    <td className="px-4 py-3 text-sm text-gray-800 border-r border-gray-200 align-top">ENS 3-4; JROTC; Marching</td>
+                    <td className="px-4 py-3 text-sm text-gray-800 border-r border-gray-200 align-top">PE</td>
+                    <td className="px-4 py-3 text-sm text-gray-800 border-r border-gray-200 align-top">Foreign Language 1-2**</td>
+                    <td className="px-4 py-3 text-sm text-gray-800 align-top">Foreign Language 5-6</td>
+                  </tr>
+                  <tr className="border-t border-gray-200 bg-gray-50">
+                    <td className="px-4 py-3 text-sm text-gray-800 border-r border-gray-200 align-top">Fine Art</td>
+                    <td className="px-4 py-3 text-sm text-gray-800 border-r border-gray-200 align-top">Foreign Language 3-4**</td>
+                    <td className="px-4 py-3 text-sm text-gray-800 border-r border-gray-200 align-top">Elective</td>
+                    <td className="px-4 py-3 text-sm text-gray-800 align-top">Elective</td>
+                  </tr>
+                  <tr className="border-t border-gray-200">
+                    <td className="px-4 py-3 text-sm text-gray-800 border-r border-gray-200 align-top">Elective or Off Roll^</td>
+                    <td className="px-4 py-3 text-sm text-gray-800 border-r border-gray-200 align-top">Elective or Off Roll^</td>
+                    <td className="px-4 py-3 text-sm text-gray-800 border-r border-gray-200 align-top">Elective or Off Roll^</td>
+                    <td className="px-4 py-3 text-sm text-gray-800 align-top">Elective or Off Roll^</td>
+                  </tr>
+                  <tr className="border-t border-gray-200 bg-gray-50">
+                    <td className="px-4 py-3 text-sm text-gray-800 border-r border-gray-200 align-top">Elective or Off Roll^</td>
+                    <td className="px-4 py-3 text-sm text-gray-800 border-r border-gray-200 align-top">Elective or Off Roll^</td>
+                    <td className="px-4 py-3 text-sm text-gray-800 border-r border-gray-200 align-top">Elective or Off Roll^</td>
+                    <td className="px-4 py-3 text-sm text-gray-800 align-top">Elective or Off Roll^</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>
