@@ -7,49 +7,51 @@ const COURSE_CATALOG = {
   'MATH-I': { name: 'Integrated Math I', credits: 10, ag: 'C', category: 'Math' },
   'MATH-II': { name: 'Integrated Math II', credits: 10, ag: 'C', category: 'Math' },
   'MATH-III': { name: 'Integrated Math III', credits: 10, ag: 'C', category: 'Math' },
-  'AP-PRECALC': { name: 'AP Pre-Calculus', credits: 10, ag: 'C', category: 'Math', ap: true },
-  'AP-CALC-AB': { name: 'AP Calculus AB', credits: 10, ag: 'C', category: 'Math', ap: true },
+  'AP-PRECALC': { name: 'AP Pre-Calculus', credits: 10, ag: 'C', category: 'Math', ap: true, yearLong: true },
+  'AP-CALC-AB': { name: 'AP Calculus AB', credits: 10, ag: 'C', category: 'Math', ap: true, yearLong: true },
   'AP-CALC-BC': { name: 'AP Calculus BC', credits: 10, ag: 'C', category: 'Math', ap: true },
-  'AP-STATS': { name: 'AP Statistics', credits: 10, ag: 'C', category: 'Math', ap: true },
-  
+  'AP-STATS': { name: 'AP Statistics', credits: 10, ag: 'C', category: 'Math', ap: true, yearLong: true },
+
   // English (A-G Category: B)
   'ENG-1-2': { name: 'English 1-2', credits: 10, ag: 'B', category: 'English' },
   'ENG-3-4': { name: 'English 3-4', credits: 10, ag: 'B', category: 'English' },
   'ENG-AM-LIT': { name: 'American Literature', credits: 10, ag: 'B', category: 'English' },
   'AP-ENG-LANG': { name: 'AP English Language', credits: 10, ag: 'B', category: 'English', ap: true },
-  'AP-ENG-LIT': { name: 'AP English Literature', credits: 10, ag: 'B', category: 'English', ap: true },
-  
+  'AP-ENG-LIT': { name: 'AP English Literature', credits: 10, ag: 'B', category: 'English', ap: true, yearLong: true },
+
   // Science (A-G Category: D)
   'BIO': { name: 'Biology', credits: 10, ag: 'D', category: 'Life Science' },
   'CHEM': { name: 'Chemistry', credits: 10, ag: 'D', category: 'Physical Science' },
   'PHYSICS': { name: 'Physics', credits: 10, ag: 'D', category: 'Physical Science' },
-  'AP-BIO': { name: 'AP Biology', credits: 10, ag: 'D', category: 'Life Science', ap: true },
-  'AP-CHEM': { name: 'AP Chemistry', credits: 10, ag: 'D', category: 'Physical Science', ap: true },
-  'AP-PHYSICS': { name: 'AP Physics', credits: 10, ag: 'D', category: 'Physical Science', ap: true },
-  
+  'AP-BIO': { name: 'AP Biology', credits: 10, ag: 'D', category: 'Life Science', ap: true, yearLong: true },
+  'AP-CHEM': { name: 'AP Chemistry', credits: 10, ag: 'D', category: 'Physical Science', ap: true, yearLong: true },
+  'AP-PHYSICS': { name: 'AP Physics', credits: 10, ag: 'D', category: 'Physical Science', ap: true, yearLong: true },
+
   // History/Social Science (A-G Category: A)
   'WORLD-HIST': { name: 'World History', credits: 10, ag: 'A', category: 'History' },
   'US-HIST': { name: 'US History', credits: 10, ag: 'A', category: 'History' },
-  'AP-WORLD': { name: 'AP World History', credits: 20, ag: 'A', category: 'History', ap: true },
-  'AP-US-HIST': { name: 'AP US History', credits: 20, ag: 'A', category: 'History', ap: true },
+  'AP-WORLD': { name: 'AP World History', credits: 10, ag: 'A', category: 'History', ap: true, yearLong: true },
+  'AP-US-HIST': { name: 'AP US History', credits: 10, ag: 'A', category: 'History', ap: true, yearLong: true },
   'CIVICS-ECON': { name: 'Civics/Economics', credits: 10, ag: 'A', category: 'Social Science' },
-  
+  'AP-GOV': { name: 'AP U.S. Government & Politics', credits: 10, ag: 'A', category: 'Social Science', ap: true, yearLong: true },
+
   // Foreign Language (A-G Category: E)
   'SPAN-1-2': { name: 'Spanish 1-2', credits: 10, ag: 'E', category: 'Foreign Language', years: 1 },
   'SPAN-3-4': { name: 'Spanish 3-4', credits: 10, ag: 'E', category: 'Foreign Language', years: 1 },
   'SPAN-5-6': { name: 'Spanish 5-6', credits: 10, ag: 'E', category: 'Foreign Language', years: 3 },
+  'AP-SPAN': { name: 'AP Spanish Language', credits: 10, ag: 'E', category: 'Foreign Language', ap: true, yearLong: true },
   'FRENCH-1-2': { name: 'French 1-2', credits: 10, ag: 'E', category: 'Foreign Language', years: 1 },
   'FRENCH-3-4': { name: 'French 3-4', credits: 10, ag: 'E', category: 'Foreign Language', years: 1 },
-  
+
   // Visual & Performing Arts (A-G Category: F)
   'CERAMICS': { name: 'Ceramics', credits: 10, ag: 'F', category: 'Visual Arts' },
   'DRAMA-1-2': { name: 'Drama 1-2', credits: 10, ag: 'F', category: 'Performing Arts' },
   'BAND': { name: 'Band', credits: 10, ag: 'F', category: 'Performing Arts' },
-  
+
   // College Prep Electives (A-G Category: G)
-  'AP-COMP-SCI': { name: 'AP Computer Science', credits: 10, ag: 'G', category: 'Elective', ap: true },
+  'AP-COMP-SCI': { name: 'AP Computer Science', credits: 10, ag: 'G', category: 'Elective', ap: true, yearLong: true },
   'PLTW-IED': { name: 'PLTW Engineering', credits: 10, ag: 'G', category: 'Elective' },
-  
+
   // Non-A-G Courses
   'ENS-1-2': { name: 'ENS 1-2 (PE/Health)', credits: 10, ag: null, category: 'PE' },
   'ENS-3-4': { name: 'ENS 3-4 (PE)', credits: 10, ag: null, category: 'PE' },
@@ -234,6 +236,14 @@ function App() {
       const courseInfo = COURSE_CATALOG[newCourse.courseId];
       setValidationError(null);
 
+      // Check if year-long course is being added in Spring semester
+      if (courseInfo.yearLong && newCourse.semester === 'Spring') {
+        setValidationError(
+          `Cannot add ${courseInfo.name} in Spring semester. Year-long courses must start in Fall semester and will automatically continue to Spring.`
+        );
+        return;
+      }
+
       // Get courses in the same semester
       const coursesInSameSemester = courses.filter(
         c => c.year === newCourse.year && c.semester === newCourse.semester
@@ -302,7 +312,15 @@ function App() {
       }
 
       // All validations passed, add the course
-      setCourses([...courses, { ...newCourse, id: Date.now() }]);
+      if (courseInfo.yearLong && newCourse.semester === 'Fall') {
+        // For year-long courses, add both Fall and Spring semesters
+        const fallCourse = { ...newCourse, id: Date.now() };
+        const springCourse = { ...newCourse, id: Date.now() + 1, semester: 'Spring' };
+        setCourses([...courses, fallCourse, springCourse]);
+      } else {
+        // For single-semester courses, add normally
+        setCourses([...courses, { ...newCourse, id: Date.now() }]);
+      }
       setNewCourse({ courseId: '', grade: 'A', year: '9', semester: 'Fall' });
       setIsAddingCourse(false);
     }
@@ -325,12 +343,13 @@ function App() {
 
         {/* Credit Limitations Info */}
         <div className="bg-blue-50 border border-blue-300 rounded-lg p-4 mb-6">
-          <h3 className="font-semibold text-blue-900 mb-2">Important Credit Limitations</h3>
+          <h3 className="font-semibold text-blue-900 mb-2">Important Credit Limitations & Rules</h3>
           <ul className="text-sm text-blue-800 space-y-1 list-disc list-inside">
             <li>Maximum 40 credits of Physical Education count toward graduation</li>
             <li>Maximum 10 credits total from Academic Tutor or Library & Information Science TA</li>
             <li>Only 1 school service course allowed per semester</li>
             <li>Work Experience: Maximum 10 credits per term; cannot take other school service courses in the same semester</li>
+            <li><strong>Year-Long Courses:</strong> Must start in Fall semester; automatically continues to Spring (total 20 credits)</li>
           </ul>
         </div>
 
@@ -439,7 +458,7 @@ function App() {
                   <option value="">Select a course...</option>
                   {Object.entries(COURSE_CATALOG).map(([id, course]) => (
                     <option key={id} value={id}>
-                      {course.name} {course.ag ? `(${course.ag})` : ''}
+                      {course.name} {course.ag ? `(${course.ag})` : ''}{course.yearLong ? ' [Year-Long]' : ''}
                     </option>
                   ))}
                 </select>
@@ -511,6 +530,9 @@ function App() {
                         <span className="font-semibold text-gray-900">{courseInfo.name}</span>
                         {courseInfo.ap && (
                           <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">AP</span>
+                        )}
+                        {courseInfo.yearLong && (
+                          <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Year-Long</span>
                         )}
                         {courseInfo.ag && (
                           <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
