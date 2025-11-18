@@ -87,6 +87,19 @@ def consolidate_pathways(courses):
                 fixes += 1
                 continue
 
+        # Fix Engineering & Architecture courses (PLTW) - should be Electives
+        if 'PLTW' in name_upper or \
+           ('ENGINEERING' in name_upper and 'DESIGN' in name_upper) or \
+           'CIVIL ENGINEERING' in name_upper or \
+           'COMPUTER INTEGRATED MANUFACTURING' in name_upper or \
+           ('COMPUTER SCIENCE' in name_upper and 'SOFTWARE ENGINEERING' in name_upper):
+            if current_pathway != 'Electives':
+                print(f'✓ Fixed Engineering/Architecture course: {course_name}')
+                print(f'  {current_pathway} → Electives')
+                course['pathway'] = 'Electives'
+                fixes += 1
+                continue
+
         # Fix Filipino courses - should be Foreign Language
         if 'FILIPINO' in course_name:
             if current_pathway != 'Foreign Language':

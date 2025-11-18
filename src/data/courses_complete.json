@@ -1326,7 +1326,7 @@
       "credits": 10.0,
       "credit_type": "standard",
       "uc_csu_category": null,
-      "pathway": "Science",
+      "pathway": "Electives",
       "term_length": "yearlong",
       "offered_terms": [
         "fall",
@@ -1364,7 +1364,7 @@
       "credits": 10.0,
       "credit_type": "standard",
       "uc_csu_category": null,
-      "pathway": "Science",
+      "pathway": "Electives",
       "term_length": "yearlong",
       "offered_terms": [
         "fall",
@@ -1402,7 +1402,7 @@
       "credits": 10.0,
       "credit_type": "standard",
       "uc_csu_category": null,
-      "pathway": "Science",
+      "pathway": "Electives",
       "term_length": "yearlong",
       "offered_terms": [
         "fall",
@@ -4958,7 +4958,7 @@
       "credits": 10.0,
       "credit_type": "standard",
       "uc_csu_category": null,
-      "pathway": "Math",
+      "pathway": "Electives",
       "term_length": "yearlong",
       "offered_terms": [
         "fall",
@@ -4996,7 +4996,7 @@
       "credits": 10.0,
       "credit_type": "standard",
       "uc_csu_category": null,
-      "pathway": "Math",
+      "pathway": "Electives",
       "term_length": "yearlong",
       "offered_terms": [
         "fall",
@@ -5033,7 +5033,7 @@
       "credits": 10.0,
       "credit_type": "standard",
       "uc_csu_category": null,
-      "pathway": "CTE",
+      "pathway": "Electives",
       "term_length": "yearlong",
       "offered_terms": [
         "fall",
@@ -5071,7 +5071,7 @@
       "credits": 10.0,
       "credit_type": "standard",
       "uc_csu_category": null,
-      "pathway": "Math",
+      "pathway": "Electives",
       "term_length": "yearlong",
       "offered_terms": [
         "fall",
@@ -5109,7 +5109,7 @@
       "credits": 10.0,
       "credit_type": "standard",
       "uc_csu_category": null,
-      "pathway": "Math",
+      "pathway": "Electives",
       "term_length": "yearlong",
       "offered_terms": [
         "fall",
@@ -5261,7 +5261,7 @@
       "credits": 10.0,
       "credit_type": "standard",
       "uc_csu_category": null,
-      "pathway": "Science",
+      "pathway": "Electives",
       "term_length": "yearlong",
       "offered_terms": [
         "fall",
