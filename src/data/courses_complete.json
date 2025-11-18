@@ -1062,7 +1062,7 @@
       "credit_type": "standard",
       "uc_csu_category": "C",
       "pathway": "Math",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -1100,7 +1100,7 @@
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Math",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -1138,7 +1138,7 @@
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Math",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -4093,7 +4093,7 @@
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Physical Education",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -4168,7 +4168,7 @@
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Physical Education",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -4420,7 +4420,7 @@
     },
     {
       "course_id": "NAVAL_SCIENCE_0016",
-      "full_name": "NAVAL SCIENCE 1A, B, C, D",
+      "full_name": "ROTC - Naval Science 1A, B, C, D",
       "course_numbers": [
         "001670",
         "001673"
@@ -4458,7 +4458,7 @@
     },
     {
       "course_id": "NAVAL_SCIENCE",
-      "full_name": "NAVAL SCIENCE 2A, B, C, D",
+      "full_name": "ROTC - Naval Science 2A, B, C, D",
       "course_numbers": [
         "001674",
         "001677"
@@ -4496,7 +4496,7 @@
     },
     {
       "course_id": "NAVAL_SCIENCE_0001",
-      "full_name": "NAVAL SCIENCE 3A, B, C, D",
+      "full_name": "ROTC - Naval Science 3A, B, C, D",
       "course_numbers": [
         "001678",
         "001681"
@@ -4534,7 +4534,7 @@
     },
     {
       "course_id": "NAVAL_SCIENCE_0002",
-      "full_name": "NAVAL SCIENCE 4A, B, C, D",
+      "full_name": "ROTC - Naval Science 4A, B, C, D",
       "course_numbers": [
         "001682",
         "001685"

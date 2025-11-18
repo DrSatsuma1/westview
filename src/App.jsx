@@ -36,12 +36,21 @@ const AG_REQUIREMENTS = {
 const GRADE_OPTIONS = ['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D+', 'D', 'D-', 'F'];
 
 function App() {
-  const [courses, setCourses] = useState([]);
+  // Load courses from localStorage on initial render
+  const [courses, setCourses] = useState(() => {
+    const saved = localStorage.getItem('westview-courses');
+    return saved ? JSON.parse(saved) : [];
+  });
   const [showAddCourse, setShowAddCourse] = useState(null); // null or { year, semester, slot }
   const [selectedCategory, setSelectedCategory] = useState(''); // Track selected category
   const [newCourse, setNewCourse] = useState({ courseId: '' });
   const [error, setError] = useState(null);
   const [warning, setWarning] = useState(null);
+
+  // Save courses to localStorage whenever they change
+  React.useEffect(() => {
+    localStorage.setItem('westview-courses', JSON.stringify(courses));
+  }, [courses]);
 
   // Calculate Westview graduation progress
   const westviewProgress = useMemo(() => {
@@ -301,6 +310,9 @@ function App() {
     setError(null);
     setWarning(null);
 
+    // Get semester courses early for validation checks
+    const semesterCourses = getCoursesForSemester(year, semester);
+
     // Check for AP Calculus AB/BC conflict (blocks adding)
     const courseName = courseInfo.full_name.toUpperCase();
     if (courseName.includes('AP CALCULUS')) {
@@ -372,27 +384,33 @@ function App() {
 
     // Check for Off-Roll restrictions
     if (courseInfo.pathway === 'Off-Roll') {
-      // Only allowed in Grade 12
-      if (year !== '12') {
-        setError('Off-Roll courses are only allowed in Grade 12');
+      // Off-Roll allowed in grades 9, 11, 12 (not 10)
+      if (year === '10') {
+        setError('Off-Roll courses are not allowed in Grade 10');
         return;
       }
 
-      // Count existing Off-Roll courses in Grade 12
-      const grade12Courses = courses.filter(c => c.year === '12');
-      const offRollCount = grade12Courses.filter(c => {
+      // Count existing Off-Roll courses in this semester
+      const semesterOffRollCount = semesterCourses.filter(c => {
         const info = COURSE_CATALOG[c.courseId];
         return info && info.pathway === 'Off-Roll';
       }).length;
 
-      if (offRollCount >= 2) {
-        setError('Maximum 2 Off-Roll courses allowed in Grade 12');
+      // Grade 12: Maximum 2 Off-Roll per semester
+      // Grades 9, 11: Maximum 1 Off-Roll per semester
+      const maxPerSemester = year === '12' ? 2 : 1;
+
+      if (semesterOffRollCount >= maxPerSemester) {
+        if (year === '12') {
+          setError('Maximum 2 Off-Roll courses allowed per semester in Grade 12');
+        } else {
+          setError(`Maximum 1 Off-Roll course allowed per semester in Grade ${year}`);
+        }
         return;
       }
     }
 
     // Check for duplicate course in same semester
-    const semesterCourses = getCoursesForSemester(year, semester);
     const alreadyHasCourse = semesterCourses.some(c => c.courseId === newCourse.courseId);
     if (alreadyHasCourse) {
       setError('This course is already in this semester');
@@ -501,6 +519,70 @@ function App() {
         </div>
       </header>
 
+      {/* Overall Progress Summary Bar */}
+      {courses.length > 0 && (
+        <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white sticky top-0 z-10 shadow-md">
+          <div className="max-w-7xl mx-auto px-6 py-3">
+            <div className="flex items-center justify-between gap-6">
+              <div className="flex items-center gap-2">
+                <GraduationCap size={24} />
+                <div>
+                  <div className="text-sm font-medium opacity-90">Total Credits</div>
+                  <div className="text-2xl font-bold">{totalCredits} / 230</div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-6">
+                <div className="text-center">
+                  <div className="text-sm font-medium opacity-90">Westview Graduation</div>
+                  <div className="flex items-center gap-2 mt-1">
+                    {westviewGraduationReady ? (
+                      <>
+                        <CheckCircle2 size={20} className="text-green-300" />
+                        <span className="font-semibold">Ready!</span>
+                      </>
+                    ) : (
+                      <>
+                        <Circle size={20} className="text-yellow-300" />
+                        <span className="font-semibold">{230 - totalCredits} credits needed</span>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                <div className="h-12 w-px bg-white opacity-30"></div>
+
+                <div className="text-center">
+                  <div className="text-sm font-medium opacity-90">UC/CSU A-G</div>
+                  <div className="flex items-center gap-2 mt-1">
+                    {ucsuEligible ? (
+                      <>
+                        <CheckCircle2 size={20} className="text-green-300" />
+                        <span className="font-semibold">Eligible!</span>
+                      </>
+                    ) : (
+                      <>
+                        <Circle size={20} className="text-yellow-300" />
+                        <span className="font-semibold">
+                          {Object.values(agProgress).filter(p => !p.met).length} requirements left
+                        </span>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                <div className="h-12 w-px bg-white opacity-30"></div>
+
+                <div className="text-center">
+                  <div className="text-sm font-medium opacity-90">Courses Planned</div>
+                  <div className="text-xl font-bold mt-1">{courses.length}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="max-w-[1800px] mx-auto px-6 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
 
@@ -512,7 +594,7 @@ function App() {
               <div className="flex flex-wrap gap-2 mb-4">
                 {/* Schedule Validation Errors */}
                 {scheduleValidation.errors.length > 0 && (
-                  <div className="bg-red-50 border border-red-400 rounded-lg px-3 py-2 flex items-center gap-2 flex-1 min-w-fit">
+                  <div className="bg-red-50 border border-red-400 rounded-lg px-3 py-2 flex items-center gap-2 min-w-fit max-w-[48%]">
                     <AlertCircle className="text-red-600 flex-shrink-0" size={16} />
                     <div className="text-sm text-red-800">
                       <span className="font-semibold">Schedule Issues:</span>{' '}
@@ -527,7 +609,7 @@ function App() {
 
                 {/* English Warning */}
                 {englishWarnings.length > 0 && (
-                  <div className="bg-yellow-50 border border-yellow-400 rounded-lg px-3 py-2 flex items-center gap-2 flex-1 min-w-fit">
+                  <div className="bg-yellow-50 border border-yellow-400 rounded-lg px-3 py-2 flex items-center gap-2 min-w-fit max-w-[48%]">
                     <AlertCircle className="text-yellow-600 flex-shrink-0" size={16} />
                     <div className="text-sm text-yellow-800">
                       <span className="font-semibold">Missing English:</span>{' '}
@@ -538,7 +620,7 @@ function App() {
 
                 {/* PE Warning */}
                 {peWarnings.length > 0 && (
-                  <div className="bg-yellow-50 border border-yellow-400 rounded-lg px-3 py-2 flex items-center gap-2 flex-1 min-w-fit">
+                  <div className="bg-yellow-50 border border-yellow-400 rounded-lg px-3 py-2 flex items-center gap-2 min-w-fit max-w-[48%]">
                     <AlertCircle className="text-yellow-600 flex-shrink-0" size={16} />
                     <div className="text-sm text-yellow-800">
                       <span className="font-semibold">Missing PE:</span>{' '}
@@ -549,7 +631,7 @@ function App() {
 
                 {/* Prerequisite Warnings */}
                 {prereqWarnings.length > 0 && (
-                  <div className="bg-orange-50 border border-orange-400 rounded-lg px-3 py-2 flex items-center gap-2 flex-1 min-w-fit">
+                  <div className="bg-orange-50 border border-orange-400 rounded-lg px-3 py-2 flex items-center gap-2 min-w-fit max-w-[48%]">
                     <AlertCircle className="text-orange-600 flex-shrink-0" size={16} />
                     <div className="text-sm text-orange-800">
                       <span className="font-semibold">Prerequisites:</span>{' '}
@@ -588,11 +670,22 @@ function App() {
                           return sum + (info ? info.credits : 0);
                         }, 0);
 
+                        // Check semester capacity
+                        const isOverloaded = semesterCourses.length >= 7;
+                        const isMaxCapacity = semesterCourses.length >= 8;
+
                         return (
                           <div key={semester} className="p-5">
-                            <h4 className="font-bold text-gray-700 mb-4 text-base">
-                              {semester} {displayYear}
-                            </h4>
+                            <div className="flex items-center justify-between mb-4">
+                              <h4 className="font-bold text-gray-700 text-base">
+                                {semester} {displayYear}
+                              </h4>
+                              {isOverloaded && (
+                                <div className={`text-xs font-semibold px-2 py-1 rounded ${isMaxCapacity ? 'bg-red-100 text-red-700' : 'bg-orange-100 text-orange-700'}`}>
+                                  {isMaxCapacity ? '⚠ Max Load' : '⚠ Heavy Load'}
+                                </div>
+                              )}
+                            </div>
 
                           {/* 6 Course Slots */}
                           <div className="space-y-2">
@@ -741,6 +834,47 @@ function App() {
                                                   grouped['Literature'].push(course);
                                                 } else {
                                                   grouped['English'].push(course);
+                                                }
+                                              });
+
+                                              return Object.entries(grouped)
+                                                .filter(([_, courses]) => courses.length > 0)
+                                                .map(([group, courses]) => (
+                                                  <optgroup key={group} label={group}>
+                                                    {courses.map(course => (
+                                                      <option key={course.id} value={course.id}>
+                                                        {course.full_name}
+                                                      </option>
+                                                    ))}
+                                                  </optgroup>
+                                                ));
+                                            })()
+                                          ) : selectedCategory === 'Electives' || selectedCategory === 'CTE' ? (
+                                            // Group Electives and CTE by subject
+                                            (() => {
+                                              const grouped = {
+                                                'Journalism': [],
+                                                'AVID': [],
+                                                'PLTW Engineering': [],
+                                                'PLTW Biomedical': [],
+                                                'Computer Science': [],
+                                                'Other': []
+                                              };
+
+                                              coursesInPathway.forEach(course => {
+                                                const name = course.full_name.toUpperCase();
+                                                if (name.includes('JOURNALISM') || name.includes('YEARBOOK')) {
+                                                  grouped['Journalism'].push(course);
+                                                } else if (name.includes('AVID')) {
+                                                  grouped['AVID'].push(course);
+                                                } else if (name.includes('PLTW') && (name.includes('ENGINEERING') || name.includes('ELECTRONICS') || name.includes('ARCHITECTURE') || name.includes('MANUFACTURING'))) {
+                                                  grouped['PLTW Engineering'].push(course);
+                                                } else if (name.includes('PLTW') || name.includes('BIOMEDICAL') || name.includes('BODY SYSTEMS') || name.includes('MEDICAL INTERVENTIONS')) {
+                                                  grouped['PLTW Biomedical'].push(course);
+                                                } else if (name.includes('COMPUTER') || name.includes('DATA STRUCTURES')) {
+                                                  grouped['Computer Science'].push(course);
+                                                } else {
+                                                  grouped['Other'].push(course);
                                                 }
                                               });
 
