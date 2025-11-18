@@ -370,6 +370,27 @@ function App() {
       );
     }
 
+    // Check for Off-Roll restrictions
+    if (courseInfo.pathway === 'Off-Roll') {
+      // Only allowed in Grade 12
+      if (year !== '12') {
+        setError('Off-Roll courses are only allowed in Grade 12');
+        return;
+      }
+
+      // Count existing Off-Roll courses in Grade 12
+      const grade12Courses = courses.filter(c => c.year === '12');
+      const offRollCount = grade12Courses.filter(c => {
+        const info = COURSE_CATALOG[c.courseId];
+        return info && info.pathway === 'Off-Roll';
+      }).length;
+
+      if (offRollCount >= 2) {
+        setError('Maximum 2 Off-Roll courses allowed in Grade 12');
+        return;
+      }
+    }
+
     // Check for duplicate course in same semester
     const semesterCourses = getCoursesForSemester(year, semester);
     const alreadyHasCourse = semesterCourses.some(c => c.courseId === newCourse.courseId);
