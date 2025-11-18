@@ -680,7 +680,7 @@
     },
     {
       "course_id": "ENG_1-2",
-      "full_name": "English 1-2 (High School)",
+      "full_name": "English 1-2",
       "course_numbers": ["000381","000382"],
       "grades_allowed": [9],
       "credits": 10,
@@ -695,13 +695,13 @@
       "replacement_equivalents": [],
       "is_ap_or_honors_pair": false,
       "pair_course_id": null,
-      "fall_to_spring_dependency": false,
+      "fall_to_spring_dependency": true,
       "linked_courses": ["ENG_3-4","ENG_HONORS_1-2"],
       "category_priority": 1,
       "is_graduation_requirement": true,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Standard English sequence; honors and AP options exist in later grades.",
+      "notes": "Standard English sequence; must take both Fall (English 1) and Spring (English 2) to complete.",
       "source": "English course sequence note."
     },
     {

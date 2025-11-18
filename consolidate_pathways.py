@@ -49,10 +49,9 @@ def consolidate_pathways(courses):
         'PHYSIOLOGY', 'MARINE', 'ENVIRONMENTAL SCIENCE', 'COMPUTER SCIENCE'
     ]
 
-    # Fine Arts course keywords
+    # Fine Arts course keywords (excluding JOURNALISM - that's Electives)
     fine_arts_keywords = [
-        'DRAMA', 'ORCHESTRA', 'JOURNALISM', 'YEARBOOK', 'BROADCAST',
-        'MUSIC', 'BAND', 'CHOIR', 'THEATER', 'THEATRE', 'DANCE',
+        'DRAMA', 'ORCHESTRA', 'MUSIC', 'BAND', 'CHOIR', 'THEATER', 'THEATRE', 'DANCE',
         'PHOTOGRAPHY', 'FILM', 'ANIMATION', 'CERAMICS', 'SCULPTURE',
         'DRAWING', 'PAINTING'
     ]
@@ -64,14 +63,27 @@ def consolidate_pathways(courses):
         'World Language': 'Foreign Language',
         'Career Technical Education': 'CTE',
         'Computer Science & Engineering': 'CTE',
-        'Science - Biological': 'Science',
-        'Science - General': 'Science',
+        'Science - General': 'Science - Physical',  # Naval Science etc
+        'Science': 'Science - Physical',  # Default Science to Physical
         'Elective': 'Electives',
         # Keep these as-is
         'English': 'English',
         'History/Social Science': 'History/Social Science',
-        'Physical Education': 'Physical Education'
+        'Physical Education': 'Physical Education',
+        'Science - Biological': 'Science - Biological',
+        'Science - Physical': 'Science - Physical'
     }
+
+    # Biology keywords for Science - Biological
+    biology_keywords = [
+        'BIOLOGY', 'BIOMEDICAL', 'ZOOLOGY', 'ANATOMY',
+        'PHYSIOLOGY', 'MEDICAL', 'HUMAN BODY', 'MARINE SCIENCE'
+    ]
+
+    # Physical science keywords for Science - Physical
+    physical_keywords = [
+        'CHEMISTRY', 'PHYSICS', 'ENVIRONMENTAL SCIENCE'
+    ]
 
     for course in courses:
         course_name = course['full_name']
@@ -109,6 +121,37 @@ def consolidate_pathways(courses):
                 fixes += 1
                 continue
 
+        # Fix AP CS A - should be Math
+        if 'AP COMPUTER SCIENCE A' in name_upper:
+            if current_pathway != 'Math':
+                print(f'✓ Fixed AP CS A: {course_name}')
+                print(f'  {current_pathway} → Math')
+                course['pathway'] = 'Math'
+                fixes += 1
+                continue
+
+        # Fix AP CS Principles - should be Science - Physical
+        if 'AP COMPUTER SCIENCE PRINCIPLES' in name_upper:
+            if current_pathway != 'Science - Physical':
+                print(f'✓ Fixed AP CS Principles: {course_name}')
+                print(f'  {current_pathway} → Science - Physical')
+                course['pathway'] = 'Science - Physical'
+                fixes += 1
+                continue
+
+        # Fix CIS, Data Structures, and all Journalism - should be Electives
+        if 'COMPUTER INFORMATION SYSTEMS' in name_upper or \
+           'DATA STRUCTURES' in name_upper or \
+           'JOURNALISM' in name_upper or \
+           'YEARBOOK' in name_upper or \
+           'BROADCAST' in name_upper:
+            if current_pathway != 'Electives':
+                print(f'✓ Fixed elective course: {course_name}')
+                print(f'  {current_pathway} → Electives')
+                course['pathway'] = 'Electives'
+                fixes += 1
+                continue
+
         # Fix Writing Seminar - should be English
         if 'WRITING SEMINAR' in name_upper:
             if current_pathway != 'English':
@@ -118,14 +161,24 @@ def consolidate_pathways(courses):
                 fixes += 1
                 continue
 
-        # Fix science courses incorrectly categorized as Math
-        if current_pathway == 'Mathematics' or current_pathway == 'Math':
-            if any(keyword in name_upper for keyword in science_keywords):
-                print(f'✓ Fixed science course: {course_name}')
-                print(f'  {current_pathway} → Science')
-                course['pathway'] = 'Science'
-                fixes += 1
-                continue
+        # Categorize Science courses into Biological or Physical
+        if current_pathway in ['Science', 'Science - General', 'Science - Biological', 'Science - Physical']:
+            # Check if it's biological
+            if any(keyword in name_upper for keyword in biology_keywords):
+                if current_pathway != 'Science - Biological':
+                    print(f'✓ Categorized as Biological Science: {course_name}')
+                    print(f'  {current_pathway} → Science - Biological')
+                    course['pathway'] = 'Science - Biological'
+                    fixes += 1
+                    continue
+            # Check if it's physical
+            elif any(keyword in name_upper for keyword in physical_keywords):
+                if current_pathway != 'Science - Physical':
+                    print(f'✓ Categorized as Physical Science: {course_name}')
+                    print(f'  {current_pathway} → Science - Physical')
+                    course['pathway'] = 'Science - Physical'
+                    fixes += 1
+                    continue
 
         # Fix Fine Arts courses incorrectly categorized as English
         if current_pathway == 'English':

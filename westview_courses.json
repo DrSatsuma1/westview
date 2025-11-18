@@ -1,0 +1,1800 @@
+{
+  "generated_for": "Westview HS Course Catalog 2025-2026",
+  "schema_version": "2025-11-17.v1",
+  "total_courses": 49,
+  "courses": [
+    {
+      "course_id": "CALCULUS_BC_0910",
+      "full_name": "CALCULUS BC REVIEW 4.5",
+      "course_numbers": [
+        "091062"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 5.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "Mathematics",
+      "term_length": "semester",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [
+        "AP Calculus AB and concurrent enrollment in AP Calculus BC",
+        "AP Calculus AB and concurrent enrollment in AP Calculus BC"
+      ],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: AP Calculus AB and concurrent enrollment in AP Calculus BC For students interested in: Deepening understanding of and background in calculus in preparation of the Advanced Placement exam This course is offered in the fall semester, outside of the regular 4 period day for 2.5 elective credits. It is designed to"
+    },
+    {
+      "course_id": "COLLEGE_ALGEBRA_0010",
+      "full_name": "COLLEGE ALGEBRA 1",
+      "course_numbers": [
+        "001054"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": "Pending",
+      "pathway": "Mathematics",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [
+        "Integrated Math III",
+        "Integrated Math III"
+      ],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": true,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Integrated Math III Length of Course: Year-Long, linked w/Statistics and AP Statistics 1-2 College Algebra is a college preparatory course which will focus on a variety of mathematical topics. These topics include, but are not limited to, advanced algebra, advanced geometry, trigonometry, and mathematical modeling. This"
+    },
+    {
+      "course_id": "PRINCIPLES_OF_0012",
+      "full_name": "PRINCIPLES OF BIOMEDICAL SCIENCE 1-2 (PLTW)",
+      "course_numbers": [
+        "001271",
+        "001272"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": "Pending",
+      "pathway": "World Language",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [
+        "None",
+        "None"
+      ],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": true,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: None This rigorous course serves to provide foundational knowledge and skills in fields such as biology, anatomy and physiology, genetics, microbiology, and epidemiology, as well as engage students in how they can apply this content to real-world situations, cases, and problems such as solving a medical mystery case, diagnosing, and treating a patient,"
+    },
+    {
+      "course_id": "COURT_SPORTS_0014",
+      "full_name": "COURT SPORTS 1-2",
+      "course_numbers": [
+        "001416",
+        "001417"
+      ],
+      "grades_allowed": [
+        10,
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "Visual & Performing Arts",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [
+        "ENS 3-4",
+        "ENS 3-4"
+      ],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: ENS 3-4 Students will understand, participate and teach the advanced principles of training and competition for Court Sports that include basketball, volleyball and badminton. Areas of study will include: understanding and execution of advanced offensive and defensive strategies, development of appropriate training practices, and application of"
+    },
+    {
+      "course_id": "ENS_1_2_0014",
+      "full_name": "ENS 1-2",
+      "course_numbers": [
+        "001404",
+        "001405"
+      ],
+      "grades_allowed": [
+        9
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "Science - General",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [
+        "None",
+        "None"
+      ],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: None For students interested in: Required Course ENS 1-2 provides students the opportunity to learn and apply core concepts of Health Science and Physical Education. ENS is designed to provide students with the knowledge and ability to attain and maintain an active, healthy lifestyle."
+    },
+    {
+      "course_id": "ENS_1_2_0914",
+      "full_name": "ENS 1-2 ONLINE",
+      "course_numbers": [
+        "091404",
+        "091405"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "Visual & Performing Arts",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [
+        "None",
+        "None"
+      ],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: None For students interested in: Students who have an impacted schedule, participate in athletics, or need flexibility in their schedule. This course is designed in coordination with the ENS 1/2 course. Students will receive the same credit and complete the same standards as the ENS 1/2 classes (5 PE credits and 5 Health credits). Please read the ENS 1-2 course"
+    },
+    {
+      "course_id": "ENS_3_4_0014",
+      "full_name": "ENS 3-4",
+      "course_numbers": [
+        "001406",
+        "001407"
+      ],
+      "grades_allowed": [
+        9
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "Science - General",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [
+        "None",
+        "None"
+      ],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: None For students interested in: Required Course ENS 3-4 is designed to provide students with the knowledge and ability necessary to attain and maintain a healthy lifestyle. The emphasis of this class revolves around five key curricular components: Exercise Science, Cardiovascular"
+    },
+    {
+      "course_id": "MARCHING_PE_0011",
+      "full_name": "MARCHING PE FLAGS/TALL FLAGS (DANCE PROP)",
+      "course_numbers": [
+        "001199",
+        "001193"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "Visual & Performing Arts",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [
+        "Audition. Students auditioning must demonstrate technical dance skills at a minimum",
+        "Audition. Students auditioning must demonstrate technical dance skills at a minimum"
+      ],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Audition. Students auditioning must demonstrate technical dance skills at a minimum of an intermediate dance level and an ability to choreograph and learn quickly For students interested in: Marching band and field performances/competition Length of Course: Year-Long, linked w/(Dance Prop)"
+    },
+    {
+      "course_id": "O_C_I_S__P_E__0014",
+      "full_name": "O.C.I.S./P.E.",
+      "course_numbers": [
+        "001498"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 5.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "Visual & Performing Arts",
+      "term_length": "semester",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [
+        "Application and administrative approval required: district established timelines",
+        "Application and administrative approval required: district established timelines"
+      ],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Application and administrative approval required: district established timelines enforced For students interested in: Fulfills P.E. requirement Off Campus Independent Study/Physical Education is available to students who are participating in an approved preparation program for national amateur competition in swimming, ice skating, gymnastics, tennis or dance."
+    },
+    {
+      "course_id": "RACQUET_SPORTS_0014",
+      "full_name": "RACQUET SPORTS 1-2",
+      "course_numbers": [
+        "001420",
+        "001421"
+      ],
+      "grades_allowed": [
+        10,
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "Visual & Performing Arts",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [
+        "ENS 3-4",
+        "ENS 3-4"
+      ],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: ENS 3-4 Students will understand, participate and teach the advanced principles of training and competition for Racquet Sports that include tennis, racquetball and badminton. Areas of study will include: understanding and execution of advanced offensive and defensive strategies, development of appropriate training practices, and application of"
+    },
+    {
+      "course_id": "TEAM_ATHLETICS_WEIGHTS_8914",
+      "full_name": "TEAM ATHLETICS/WEIGHTS",
+      "course_numbers": [
+        "891493",
+        "991493"
+      ],
+      "grades_allowed": [
+        10,
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "Physical Education",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [
+        "Teacher approval",
+        "Teacher approval"
+      ],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Teacher approval Athletic Weights is designed to help prepare students with sports specific strength and conditioning practices to help them succeed at a competitive level. Students will be involved in advanced isotonic weight lifting exercises, speed training drills, competitive exercises, and cardiovascular endurance training. Satisfies 10 credits of PUSD Physical"
+    },
+    {
+      "course_id": "UNIFIED_PE_0014",
+      "full_name": "UNIFIED PE 1-2",
+      "course_numbers": [
+        "001438",
+        "001439"
+      ],
+      "grades_allowed": [
+        10,
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "Visual & Performing Arts",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [
+        "None",
+        "None"
+      ],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: None This course combines both students with and without disabilities to participate in physical fitness activities and sports. Students will work together to increase competence and confidence in a variety of physical activities. Through ongoing leadership opportunities, members of this course will be empowered to help create a more inclusive and accepting"
+    },
+    {
+      "course_id": "WEIGHT_TRAINING_0014",
+      "full_name": "WEIGHT TRAINING",
+      "course_numbers": [
+        "001493",
+        "191493"
+      ],
+      "grades_allowed": [
+        10,
+        12
+      ],
+      "credits": 2.5,
+      "credit_type": "partial",
+      "uc_csu_category": null,
+      "pathway": "Science - General",
+      "term_length": "quarter",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [
+        "ENS 3-4",
+        "ENS 3-4"
+      ],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: ENS 3-4 For students interested in: Experiencing world of weight training while developing increased strength and muscle tone Weight Training is a course in which students are involved in the isotonic type of weight training, running, plyometrics, stretching and cross training. The isotonic weight lifting will be performed both on the universal weight machine and"
+    },
+    {
+      "course_id": "ACADEMIC_SUCCESS_0380",
+      "full_name": "ACADEMIC SUCCESS - MATH I SUPPORT",
+      "course_numbers": [
+        "038008",
+        "058008"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "Mathematics",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [
+        "None",
+        "None"
+      ],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": true,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "MATH II SUPPORT 225808 MATH III SUPPORT 225809 Recommended Prerequisites: None The mission of the class is to support study and organizational skills while students are concurrently enrolled in an in-person Integrated Ia-Ib, Integrated IIa-IIb or Integrated IIIa-IIIb class at Westview High School. Completing"
+    },
+    {
+      "course_id": "INTERNSHIP_0016",
+      "full_name": "INTERNSHIP",
+      "course_numbers": [
+        "001650"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 2.5,
+      "credit_type": "partial",
+      "uc_csu_category": null,
+      "pathway": "Mathematics",
+      "term_length": "quarter",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [],
+      "prerequisites_recommended": [
+        "Teacher recommendation required",
+        "Teacher recommendation required"
+      ],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Teacher recommendation required For students interested in: Exposure to and exploring the business world A structured off-campus learning experience that offers college-bound students an opportunity to work with professionals in various business, industry, and civic organizations. CE 110 college credit."
+    },
+    {
+      "course_id": "CIVIL_ENGINEERING_0009",
+      "full_name": "CIVIL ENGINEERING AND ARCHITECTURE 1-2 (PLTW)",
+      "course_numbers": [
+        "000937",
+        "000938"
+      ],
+      "grades_allowed": [
+        10,
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": "Pending",
+      "pathway": "Mathematics",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [
+        "Completion of Introduction to Engineering Design and/or Honors Principles of",
+        "Completion of Introduction to Engineering Design and/or Honors Principles of"
+      ],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": true,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Completion of Introduction to Engineering Design and/or Honors Principles of Engineering AND Completion of Integrated Math 1a-1b Civil Engineering and Architecture is a specialization course in the sequence of Project Lead the Way Engineering courses. This course provides an overview of the fields of Civil Engineering and Architecture, while emphasizing the"
+    },
+    {
+      "course_id": "COMPUTER_INFORMATION_0009",
+      "full_name": "COMPUTER INFORMATION SYSTEMS (CIS)/ADVANCED CIS",
+      "course_numbers": [
+        "000966",
+        "000960"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 5.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "Mathematics",
+      "term_length": "semester",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [
+        "None",
+        "None"
+      ],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: None For students interested in: Obtaining basic computer skills required by colleges and industry Computer Information Systems and Advanced CIS are designed to provide students with up-to-date computer skills required by colleges as well as business/industry in order to compete in today’s technological environment."
+    },
+    {
+      "course_id": "LIBRARY___0018",
+      "full_name": "LIBRARY & INFORMATION SCIENCE TEACHING ASSISTANT 1-2",
+      "course_numbers": [
+        "001842",
+        "001843"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "Science - General",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [
+        "Teacher approval",
+        "Teacher approval"
+      ],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Teacher approval This course is designed to create independent learners who can thrive in an information based society and who will enter adulthood with the abilities to fulfill their academic, personal and professional needs. Using both the standards for the American Association of School Librarians and the California Literacy Standards, our students will be prepared"
+    },
+    {
+      "course_id": "PEER_COUNSELING_0973",
+      "full_name": "PEER COUNSELING",
+      "course_numbers": [
+        "097333"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "Visual & Performing Arts",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [
+        "Teacher approval",
+        "Teacher approval"
+      ],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Teacher approval Peer Counselors are trained students who work with Counseling & Student Support Services to extend counseling services to the entire student body. Peer Counselors help peers in need of help and support. Duties include tutoring, mentoring, mediation, facilitating, providing awareness events, and informing Westview’s campus on important issues"
+    },
+    {
+      "course_id": "VOCATIONAL_LEARNING_0018",
+      "full_name": "VOCATIONAL LEARNING ASSISTANT",
+      "course_numbers": [
+        "001830"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 5.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "Science - General",
+      "term_length": "semester",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [
+        "Teacher approval",
+        "Teacher approval"
+      ],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Teacher approval Vocational Learning Assistant is a course that functions much like cross-age tutoring. It is a vocational course concerned with developing employable skills and concepts for students interested in working with handicapped and learning-disabled children, preschool through grade 12. Students select or are assigned a workstation such as LHM,"
+    },
+    {
+      "course_id": "ACADEMIC_LITERACY_0018",
+      "full_name": "ACADEMIC LITERACY 1-2",
+      "course_numbers": [
+        "001857",
+        "001858"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "English",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [
+        "Placement based on testing",
+        "Placement based on testing"
+      ],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Placement based on testing Through the use of consistent instructional routines, explicit academic vocabulary instruction, structured peer interactions, verbal and written models of academic English, and consistent feedback on language production, students will gain increased confidence and skill with the academic language needed to succeed in school and careers."
+    },
+    {
+      "course_id": "ELD_EXPLORATIONS_0003",
+      "full_name": "ELD EXPLORATIONS A/B & C/D 000335 - 000336 &",
+      "course_numbers": [
+        "000309",
+        "000309"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "English",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [
+        "Placement based on testing",
+        "Placement based on testing"
+      ],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Placement based on testing ELD Explorations A/B and C/D is a course designed to support English learner students at an Expanding to Bridging level of English fluency who are concurrently enrolled in ELD 3-4. The purpose of this course is to allow the students extra time each day to develop their proficiency in English and to practice the skills learned in ELD 3-4. The curriculum"
+    },
+    {
+      "course_id": "ELD_READING_WRITING_0003",
+      "full_name": "ELD READING/WRITING 3-4",
+      "course_numbers": [
+        "000337",
+        "000338"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "English",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [
+        "Placement based on testing",
+        "Placement based on testing"
+      ],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Placement based on testing ELD Reading/Writing 3-4 is an optional course designed for English learners who are almost proficient in English but who need an extra year of ELD support before taking the Sheltered High School English 1-2 class. The focus of the course is developing students’ competency in reading narrative, expository, and functional texts, as well as developing"
+    },
+    {
+      "course_id": "ELL_1_2_0003",
+      "full_name": "ELL 1-2",
+      "course_numbers": [
+        "000326",
+        "000327"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "English",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [
+        "Placement based on testing",
+        "Placement based on testing"
+      ],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Placement based on testing English Language Learner (ELL) 1-2 is a comprehensive course which takes students who are Emerging to Expanding English speakers and develops a foundation in basic English language skills needed to survive in the school community, both socially and academically. Based on language acquisition theory, instruction focuses initially on listening and"
+    },
+    {
+      "course_id": "ELL_READING_WRITING_0003",
+      "full_name": "ELL READING/WRITING 1-2",
+      "course_numbers": [
+        "000322",
+        "000323"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "English",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [
+        "Placement based on testing",
+        "Placement based on testing"
+      ],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Placement based on testing English Language Learner Reading/Writing 1-2 is a supplementary English course designed to provide Expanding to Bridging English language learners with additional support in English language development. Students who score in the Expanding to Bridging level as determined by the ELPAC test (English Language Proficiency Assessments for"
+    },
+    {
+      "course_id": "NEWCOMER_CLASS_0003",
+      "full_name": "NEWCOMER CLASS 1-2",
+      "course_numbers": [
+        "000333",
+        "000334"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "History/Social Science",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [
+        "Placement based on testing",
+        "Placement based on testing"
+      ],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Placement based on testing The Newcomer Class is designed to acquaint newly immigrated students to the culture of the United States and the Poway Unified School District. In addition, students are introduced to early American history, customs, holidays, as well as geography of the United States. The primary purpose of the class is to provide intensive practice in English and"
+    },
+    {
+      "course_id": "L_BASIC_MATH_0020",
+      "full_name": "L/BASIC MATH 1-8",
+      "course_numbers": [
+        "002080",
+        "002087"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "Mathematics",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [],
+      "prerequisites_recommended": [
+        "Enrollment in Critical Skills program; teacher recommendation",
+        "Enrollment in Critical Skills program; teacher recommendation"
+      ],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Enrollment in Critical Skills program; teacher recommendation L/Basic Math 1-8 is designed to introduce students enrolled in Special Education courses to basic math skills. The focus of the course will be to study operations with whole numbers, fractions, decimals, and percents. In addition,"
+    },
+    {
+      "course_id": "L_BIOLOGY_1_2_0020",
+      "full_name": "L/BIOLOGY 1-2",
+      "course_numbers": [
+        "002072",
+        "002073"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "Science - Biological",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [],
+      "prerequisites_recommended": [
+        "Enrollment in Critical Skills program; teacher recommendation",
+        "Enrollment in Critical Skills program; teacher recommendation"
+      ],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": true,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Enrollment in Critical Skills program; teacher recommendation L/Biology 1-2 is a one-year laboratory science course designed to meet the needs of those students who are unable to achieve success in a mainstream course. Enrollment is recommended for those reading and writing below grade level."
+    },
+    {
+      "course_id": "L_CIVICS_0020",
+      "full_name": "L/CIVICS",
+      "course_numbers": [
+        "002052"
+      ],
+      "grades_allowed": [
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "Science - General",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [],
+      "prerequisites_recommended": [
+        "Enrollment in special education; teacher recommendation",
+        "Enrollment in special education; teacher recommendation"
+      ],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Enrollment in special education; teacher recommendation L/Civics is designed to help individual students become more aware of the benefits of citizen involvement in American politics. This course includes the factors affecting political behavior; the philosophical basis of a democratic society; a"
+    },
+    {
+      "course_id": "L_COMMUNITY_DOMAIN_0019",
+      "full_name": "L/COMMUNITY DOMAIN SKILLS 1-8",
+      "course_numbers": [
+        "001926",
+        "001933"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "Physical Education",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [],
+      "prerequisites_recommended": [
+        "Enrollment in special education; teacher recommendation",
+        "Enrollment in special education; teacher recommendation"
+      ],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Enrollment in special education; teacher recommendation Community Domain Skills 1-8 is a course that will provide Special Education students training in money management and community/civic responsibilities. Familiarization with community resources will be emphasized. Exploration of"
+    },
+    {
+      "course_id": "L_DEV_READING_0020",
+      "full_name": "L/DEV READING 1-2",
+      "course_numbers": [
+        "002018"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "Visual & Performing Arts",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [],
+      "prerequisites_recommended": [
+        "Enrollment in Critical Skills program; teacher recommendation",
+        "Enrollment in Critical Skills program; teacher recommendation"
+      ],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Enrollment in Critical Skills program; teacher recommendation L/ Dev Reading 1-2 is a course designed for Special Education students with significant learning disabilities. It provides guidance in the development of very basic reading and language skills. The program begins at the student’s present"
+    },
+    {
+      "course_id": "L_DOMESTIC_DOMAIN_0019",
+      "full_name": "L/DOMESTIC DOMAIN SKILLS 1-8",
+      "course_numbers": [
+        "001918",
+        "001925"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "Visual & Performing Arts",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [],
+      "prerequisites_recommended": [
+        "Enrollment in Critical Skills program; teacher recommendation",
+        "Enrollment in Critical Skills program; teacher recommendation"
+      ],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Enrollment in Critical Skills program; teacher recommendation Domestic Domain Skills 1-8 will provide training in daily living skills for Special Education students in accordance with their Individualized Education Program (IEP). This course will offer critical independent living experiences in managing"
+    },
+    {
+      "course_id": "L_ECONOMICS_0020",
+      "full_name": "L/ECONOMICS",
+      "course_numbers": [
+        "002054"
+      ],
+      "grades_allowed": [
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "History/Social Science",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [],
+      "prerequisites_recommended": [
+        "Enrollment in special education; teacher recommendation",
+        "Enrollment in special education; teacher recommendation"
+      ],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Enrollment in special education; teacher recommendation L/Economics is designed for Special Education students with lower academic skills and who are in need of extensive work on both reading and writing skills. The course will deal with the major concepts of economics with emphasis on"
+    },
+    {
+      "course_id": "L_ENGLISH_1_2_0020",
+      "full_name": "L/ENGLISH 1-2",
+      "course_numbers": [
+        "002020",
+        "002021"
+      ],
+      "grades_allowed": [
+        9
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "English",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [],
+      "prerequisites_recommended": [
+        "Enrollment in special education; teacher recommendation",
+        "Enrollment in special education; teacher recommendation"
+      ],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Enrollment in special education; teacher recommendation L/English 1-2 is a one-year English class for Special Education students. Enrollment is recommended for those students reading and writing significantly below grade level and require small group instruction. The focus includes"
+    },
+    {
+      "course_id": "L_ENGLISH_3_4_0020",
+      "full_name": "L/ENGLISH 3-4",
+      "course_numbers": [
+        "002022",
+        "002023"
+      ],
+      "grades_allowed": [
+        10
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "English",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [],
+      "prerequisites_recommended": [
+        "Enrollment in special education; teacher recommendation",
+        "Enrollment in special education; teacher recommendation"
+      ],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Enrollment in special education; teacher recommendation L/English 3-4 is a one-year English class for Special Education students. Enrollment is recommended for those students reading and writing significantly below grade level and require small group instruction. The focus includes"
+    },
+    {
+      "course_id": "L_ENGLISH_5_6_0020",
+      "full_name": "L/ENGLISH 5-6",
+      "course_numbers": [
+        "002024",
+        "002025"
+      ],
+      "grades_allowed": [
+        11
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "English",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [],
+      "prerequisites_recommended": [
+        "Enrollment in special education; teacher recommendation",
+        "Enrollment in special education; teacher recommendation"
+      ],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Enrollment in special education; teacher recommendation L/English 5-6 is a one-year English class for Special Education students. Enrollment is recommended for those students reading and writing significantly below grade level and require small group instruction. The focus includes"
+    },
+    {
+      "course_id": "L_ENGLISH_7_8_0020",
+      "full_name": "L/ENGLISH 7-8",
+      "course_numbers": [
+        "002026",
+        "002027"
+      ],
+      "grades_allowed": [
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "English",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [],
+      "prerequisites_recommended": [
+        "Enrollment in special education; teacher recommendation",
+        "Enrollment in special education; teacher recommendation"
+      ],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Enrollment in special education; teacher recommendation L/English 7-8 is a one-year English class for Special Education students. Enrollment is recommended for those students reading and writing significantly below grade level and require small group instruction. The focus includes"
+    },
+    {
+      "course_id": "L_HEALTH_SKILLS_0020",
+      "full_name": "L/HEALTH SKILLS",
+      "course_numbers": [
+        "002058",
+        "072058"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 5.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "Physical Education",
+      "term_length": "semester",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [],
+      "prerequisites_recommended": [
+        "Enrollment in special education; teacher recommendation",
+        "Enrollment in special education; teacher recommendation"
+      ],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Enrollment in special education; teacher recommendation L/Health Skills presents a thorough study of contemporary health concerns and the means for their control and/or prevention. Topics include infectious and chronic diseases, CPR/first aid, sex education, nutrition/fitness, mental"
+    },
+    {
+      "course_id": "L_INTEGRATED_MATHEMATICS_0020",
+      "full_name": "L/INTEGRATED MATHEMATICS IA- IB",
+      "course_numbers": [
+        "002034",
+        "002035"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "Mathematics",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [],
+      "prerequisites_recommended": [
+        "Enrollment in special education; teacher recommendation",
+        "Enrollment in special education; teacher recommendation"
+      ],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": true,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Enrollment in special education; teacher recommendation Integrated Mathematics 1 uses properties and theorems involving congruent figures to deepen and extend understanding of geometric knowledge from prior grades. The critical areas organized into units deepen and extend understanding of linear relationships. The Mathematical Practice Standards together with the content standards"
+    },
+    {
+      "course_id": "L_INTEGRATED_MATHEMATICS_0020",
+      "full_name": "L/INTEGRATED MATHEMATICS IIA- IIB",
+      "course_numbers": [
+        "002040",
+        "002041"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "Mathematics",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [],
+      "prerequisites_recommended": [
+        "Enrollment in special education; teacher recommendation",
+        "Enrollment in special education; teacher recommendation"
+      ],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": true,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Enrollment in special education; teacher recommendation The focus of Integrated Mathematics 2 is on quadratic expressions, equations, and functions. The link between probability and data is explored through conditional probability and counting methods, including their use in making"
+    },
+    {
+      "course_id": "L_JOB_SKILLS_0020",
+      "full_name": "L/JOB SKILLS",
+      "course_numbers": [
+        "002064"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "Visual & Performing Arts",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [],
+      "prerequisites_recommended": [
+        "Enrollment in special education; teacher recommendation",
+        "Enrollment in special education; teacher recommendation"
+      ],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Enrollment in special education; teacher recommendation Job Skills is a course of study covering 13 core competencies needed to successfully search, obtain, and retain a job after graduation in an area of career interest. As a participant in the Transition Partnership Program the student will be"
+    },
+    {
+      "course_id": "L_LEARNING_STRATEGIES_0020",
+      "full_name": "L/LEARNING STRATEGIES 1-2",
+      "course_numbers": [
+        "002062",
+        "002063"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "Physical Education",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [
+        "Must be an identified special education student who is concurrently enrolled in at least",
+        "Must be an identified special education student who is concurrently enrolled in at least"
+      ],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Must be an identified special education student who is concurrently enrolled in at least one regular content class. Learning Strategies supports Special Education students in their general education classes by combining strategies interventions, daily independent reading and tutorial assistance. Learning Strategies includes reading textbooks,"
+    },
+    {
+      "course_id": "L_MARINE_SCIENCE_0020",
+      "full_name": "L/MARINE SCIENCE 1-2",
+      "course_numbers": [
+        "002068",
+        "002069"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "Science - Biological",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [],
+      "prerequisites_recommended": [
+        "Enrollment in special education; teacher recommendation",
+        "Enrollment in special education; teacher recommendation"
+      ],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Enrollment in special education; teacher recommendation This course is a special education course designed to follow the basic principles behind the current general education Marine Science class at Westview. The course will cover the basic physical, geological and chemical aspects of marine"
+    },
+    {
+      "course_id": "L_MATH_ACCELERATION_0010",
+      "full_name": "L/MATH ACCELERATION",
+      "course_numbers": [
+        "001026",
+        "001027"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "Mathematics",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [],
+      "prerequisites_recommended": [
+        "Enrollment in special education; teacher recommendation",
+        "Enrollment in special education; teacher recommendation"
+      ],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Enrollment in special education; teacher recommendation The intent of this course is to help build confidence in mathematics skills. Math Accel is taught in collaboration with Integrated. Math 1 & 2. Teachers provide support in building skills and moving from a ‘fixed mindset’ about their math"
+    },
+    {
+      "course_id": "L_RECREATION_LEISURE_DOMAIN_0019",
+      "full_name": "L/RECREATION/LEISURE DOMAIN SKILLS 1-6",
+      "course_numbers": [
+        "001934",
+        "001939"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "Visual & Performing Arts",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [],
+      "prerequisites_recommended": [
+        "Enrollment in special education; teacher recommendation",
+        "Enrollment in special education; teacher recommendation"
+      ],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Enrollment in special education; teacher recommendation It is recognized that handicapped adults may have more recreation/leisure time available than nonhandicapped adults due to limited employment options. Training and instruction in this domain are necessary as in other domains for full"
+    },
+    {
+      "course_id": "L_U_S__HISTORY_0020",
+      "full_name": "L/U.S. HISTORY 1-2",
+      "course_numbers": [
+        "002050",
+        "002051"
+      ],
+      "grades_allowed": [
+        11
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "History/Social Science",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [],
+      "prerequisites_recommended": [
+        "Enrollment in special education; teacher recommendation",
+        "Enrollment in special education; teacher recommendation"
+      ],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Enrollment in special education; teacher recommendation In this course students examine major turning points in American History in the twentieth century. This course is for students who are reading below grade level and are currently enrolled in special education. This course does not meet"
+    },
+    {
+      "course_id": "L_VOCATIONAL_DOMAIN_0019",
+      "full_name": "L/VOCATIONAL DOMAIN SKILLS 1-11",
+      "course_numbers": [
+        "001910",
+        "001944"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "Physical Education",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [],
+      "prerequisites_recommended": [
+        "Enrollment in special education; teacher recommendation",
+        "Enrollment in special education; teacher recommendation"
+      ],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Enrollment in special education; teacher recommendation Vocational Domain Skills 1-2 will enable Special Education students to become more aware of themselves and their relationship to the world of work. Students will gain insights into the effect of their behavior on interpersonal"
+    },
+    {
+      "course_id": "L_WORLD_HISTORY_0020",
+      "full_name": "L/WORLD HISTORY 1-2",
+      "course_numbers": [
+        "002048",
+        "002049"
+      ],
+      "grades_allowed": [
+        10
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "History/Social Science",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [],
+      "prerequisites_recommended": [
+        "Enrollment in special education; teacher recommendation",
+        "Enrollment in special education; teacher recommendation"
+      ],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": true,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Enrollment in special education; teacher recommendation L/World History 1-2 is a chronological survey of the modern world from the late 18th century to the present. This course is for special education students who are reading below grade level and who will benefit from extensive work"
+    },
+    {
+      "course_id": "L_WRITING_SKILLS_0020",
+      "full_name": "L/WRITING SKILLS 1-2",
+      "course_numbers": [
+        "002010",
+        "002011"
+      ],
+      "grades_allowed": [
+        9,
+        12
+      ],
+      "credits": 10.0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "Physical Education",
+      "term_length": "yearlong",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [],
+      "prerequisites_recommended": [
+        "Enrollment in special education; teacher recommendation",
+        "Enrollment in special education; teacher recommendation"
+      ],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Recommended Prerequisites: Enrollment in special education; teacher recommendation L/Writing Skills is a course designed for Special Education students with disabilities in sentence writing, spelling, punctuation, grammar, and usage. Included in the course are the writing of paragraphs, business letters, personal"
+    }
+  ]
+}

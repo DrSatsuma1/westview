@@ -15,7 +15,7 @@ const schedulingEngine = new SchedulingEngine(courseCatalogData.courses);
 const WESTVIEW_REQUIREMENTS = {
   'English': { needed: 40, pathways: ['English'] },
   'Math': { needed: 30, pathways: ['Math'] },
-  'Science': { needed: 30, pathways: ['Science'] },
+  'Science': { needed: 30, pathways: ['Science - Biological', 'Science - Physical'] },
   'History': { needed: 30, pathways: ['History/Social Science'] },
   'Foreign Language': { needed: 20, pathways: ['Foreign Language'] },
   'Fine Arts': { needed: 10, pathways: ['Fine Arts'] },
