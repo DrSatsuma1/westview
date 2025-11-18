@@ -15,7 +15,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "A",
       "pathway": "History/Social Science",
       "term_length": "yearlong",
       "offered_terms": [
@@ -52,7 +52,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "A",
       "pathway": "History/Social Science",
       "term_length": "yearlong",
       "offered_terms": [
@@ -89,7 +89,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "A",
       "pathway": "History/Social Science",
       "term_length": "yearlong",
       "offered_terms": [
@@ -126,7 +126,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "A",
       "pathway": "History/Social Science",
       "term_length": "semester",
       "offered_terms": [
@@ -163,7 +163,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "A",
       "pathway": "History/Social Science",
       "term_length": "yearlong",
       "offered_terms": [
@@ -198,11 +198,11 @@
       "grades_allowed": [
         11
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "A",
       "pathway": "History/Social Science",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -235,11 +235,11 @@
       "grades_allowed": [
         10
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "A",
       "pathway": "History/Social Science",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -272,11 +272,11 @@
       "grades_allowed": [
         11
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "B",
       "pathway": "History/Social Science",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -312,7 +312,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "B",
       "pathway": "History/Social Science",
       "term_length": "yearlong",
       "offered_terms": [
@@ -349,7 +349,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "B",
       "pathway": "English",
       "term_length": "semester",
       "offered_terms": [
@@ -386,7 +386,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "B",
       "pathway": "English",
       "term_length": "semester",
       "offered_terms": [
@@ -421,11 +421,11 @@
       "grades_allowed": [
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "B",
       "pathway": "History/Social Science",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -460,7 +460,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "B",
       "pathway": "English",
       "term_length": "semester",
       "offered_terms": [
@@ -497,7 +497,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "B",
       "pathway": "English",
       "term_length": "semester",
       "offered_terms": [
@@ -534,7 +534,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "B",
       "pathway": "English",
       "term_length": "semester",
       "offered_terms": [
@@ -571,7 +571,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "B",
       "pathway": "History/Social Science",
       "term_length": "yearlong",
       "offered_terms": [
@@ -608,7 +608,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "B",
       "pathway": "English",
       "term_length": "semester",
       "offered_terms": [
@@ -645,7 +645,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "B",
       "pathway": "History/Social Science",
       "term_length": "yearlong",
       "offered_terms": [
@@ -682,7 +682,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "B",
       "pathway": "English",
       "term_length": "semester",
       "offered_terms": [
@@ -720,7 +720,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "G",
       "pathway": "English",
       "term_length": "semester",
       "offered_terms": [
@@ -756,11 +756,11 @@
         9,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Math",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -796,7 +796,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "C",
       "pathway": "Math",
       "term_length": "yearlong",
       "offered_terms": [
@@ -834,7 +834,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "C",
       "pathway": "Math",
       "term_length": "yearlong",
       "offered_terms": [
@@ -872,7 +872,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "C",
       "pathway": "Math",
       "term_length": "yearlong",
       "offered_terms": [
@@ -910,7 +910,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "C",
       "pathway": "Math",
       "term_length": "yearlong",
       "offered_terms": [
@@ -984,7 +984,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "C",
       "pathway": "Math",
       "term_length": "yearlong",
       "offered_terms": [
@@ -1020,11 +1020,11 @@
         9,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "C",
       "pathway": "Math",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -1098,7 +1098,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "C",
       "pathway": "Math",
       "term_length": "semester",
       "offered_terms": [
@@ -1136,7 +1136,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "C",
       "pathway": "Math",
       "term_length": "semester",
       "offered_terms": [
@@ -1173,7 +1173,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "C",
       "pathway": "Math",
       "term_length": "yearlong",
       "offered_terms": [
@@ -1211,7 +1211,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "D",
       "pathway": "Science - Biological",
       "term_length": "yearlong",
       "offered_terms": [
@@ -1247,11 +1247,11 @@
         9,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "D",
       "pathway": "Science - Biological",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -1287,7 +1287,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "D",
       "pathway": "Science - Biological",
       "term_length": "yearlong",
       "offered_terms": [
@@ -1439,7 +1439,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "D",
       "pathway": "Science - Biological",
       "term_length": "semester",
       "offered_terms": [
@@ -1477,7 +1477,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "D",
       "pathway": "Science - Physical",
       "term_length": "yearlong",
       "offered_terms": [
@@ -1515,7 +1515,7 @@
       ],
       "credits": 2.5,
       "credit_type": "partial",
-      "uc_csu_category": null,
+      "uc_csu_category": "D",
       "pathway": "Science - Physical",
       "term_length": "quarter",
       "offered_terms": [
@@ -1553,7 +1553,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "D",
       "pathway": "Science - Physical",
       "term_length": "yearlong",
       "offered_terms": [
@@ -1591,7 +1591,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "D",
       "pathway": "Science - Physical",
       "term_length": "yearlong",
       "offered_terms": [
@@ -1629,7 +1629,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "D",
       "pathway": "Science - Physical",
       "term_length": "yearlong",
       "offered_terms": [
@@ -1665,11 +1665,11 @@
         9,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "D",
       "pathway": "Science - Physical",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -1705,7 +1705,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "D",
       "pathway": "Science - Physical",
       "term_length": "yearlong",
       "offered_terms": [
@@ -1741,11 +1741,11 @@
         9,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "D",
       "pathway": "Science - Biological",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -1779,11 +1779,11 @@
         9,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "D",
       "pathway": "Science - Physical",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -1819,7 +1819,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "E",
       "pathway": "Foreign Language",
       "term_length": "semester",
       "offered_terms": [
@@ -1857,7 +1857,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "E",
       "pathway": "Foreign Language",
       "term_length": "semester",
       "offered_terms": [
@@ -1895,7 +1895,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "E",
       "pathway": "Foreign Language",
       "term_length": "semester",
       "offered_terms": [
@@ -1933,7 +1933,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "E",
       "pathway": "Foreign Language",
       "term_length": "semester",
       "offered_terms": [
@@ -1971,7 +1971,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "E",
       "pathway": "Foreign Language",
       "term_length": "semester",
       "offered_terms": [
@@ -2009,7 +2009,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "E",
       "pathway": "Foreign Language",
       "term_length": "semester",
       "offered_terms": [
@@ -2047,7 +2047,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "E",
       "pathway": "Foreign Language",
       "term_length": "semester",
       "offered_terms": [
@@ -2085,7 +2085,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "E",
       "pathway": "Foreign Language",
       "term_length": "semester",
       "offered_terms": [
@@ -2123,7 +2123,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "E",
       "pathway": "Foreign Language",
       "term_length": "semester",
       "offered_terms": [
@@ -2161,7 +2161,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "E",
       "pathway": "Foreign Language",
       "term_length": "semester",
       "offered_terms": [
@@ -2199,7 +2199,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "E",
       "pathway": "Foreign Language",
       "term_length": "semester",
       "offered_terms": [
@@ -2237,7 +2237,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "E",
       "pathway": "Foreign Language",
       "term_length": "semester",
       "offered_terms": [
@@ -2275,7 +2275,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "E",
       "pathway": "Foreign Language",
       "term_length": "semester",
       "offered_terms": [
@@ -2313,7 +2313,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "E",
       "pathway": "Foreign Language",
       "term_length": "semester",
       "offered_terms": [
@@ -2351,7 +2351,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "E",
       "pathway": "Foreign Language",
       "term_length": "semester",
       "offered_terms": [
@@ -2389,7 +2389,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "E",
       "pathway": "Foreign Language",
       "term_length": "semester",
       "offered_terms": [
@@ -2427,7 +2427,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "E",
       "pathway": "Foreign Language",
       "term_length": "semester",
       "offered_terms": [
@@ -2465,7 +2465,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "E",
       "pathway": "Foreign Language",
       "term_length": "semester",
       "offered_terms": [
@@ -2503,7 +2503,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "E",
       "pathway": "Foreign Language",
       "term_length": "semester",
       "offered_terms": [
@@ -2541,7 +2541,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "E",
       "pathway": "Foreign Language",
       "term_length": "semester",
       "offered_terms": [
@@ -2579,7 +2579,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "E",
       "pathway": "Foreign Language",
       "term_length": "semester",
       "offered_terms": [
@@ -2617,7 +2617,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "E",
       "pathway": "Foreign Language",
       "term_length": "semester",
       "offered_terms": [
@@ -2655,7 +2655,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Fine Arts",
       "term_length": "yearlong",
       "offered_terms": [
@@ -2693,7 +2693,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Fine Arts",
       "term_length": "yearlong",
       "offered_terms": [
@@ -2731,7 +2731,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Fine Arts",
       "term_length": "yearlong",
       "offered_terms": [
@@ -2769,7 +2769,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Fine Arts",
       "term_length": "yearlong",
       "offered_terms": [
@@ -2805,11 +2805,11 @@
         9,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Fine Arts",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -2845,7 +2845,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "History/Social Science",
       "term_length": "yearlong",
       "offered_terms": [
@@ -2883,7 +2883,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Fine Arts",
       "term_length": "yearlong",
       "offered_terms": [
@@ -2919,11 +2919,11 @@
         9,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Fine Arts",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -2957,11 +2957,11 @@
         9,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Fine Arts",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -2997,7 +2997,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Fine Arts",
       "term_length": "yearlong",
       "offered_terms": [
@@ -3035,7 +3035,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Fine Arts",
       "term_length": "yearlong",
       "offered_terms": [
@@ -3071,11 +3071,11 @@
         9,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Fine Arts",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -3111,7 +3111,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "History/Social Science",
       "term_length": "yearlong",
       "offered_terms": [
@@ -3148,7 +3148,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Fine Arts",
       "term_length": "yearlong",
       "offered_terms": [
@@ -3186,7 +3186,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Fine Arts",
       "term_length": "yearlong",
       "offered_terms": [
@@ -3224,7 +3224,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Fine Arts",
       "term_length": "yearlong",
       "offered_terms": [
@@ -3298,11 +3298,11 @@
         11,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "G",
       "pathway": "Electives",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -3336,11 +3336,11 @@
         9,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Fine Arts",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -3376,7 +3376,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Fine Arts",
       "term_length": "yearlong",
       "offered_terms": [
@@ -3414,7 +3414,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Fine Arts",
       "term_length": "yearlong",
       "offered_terms": [
@@ -3452,7 +3452,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Fine Arts",
       "term_length": "yearlong",
       "offered_terms": [
@@ -3488,11 +3488,11 @@
         9,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Fine Arts",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -3528,7 +3528,7 @@
       ],
       "credits": 2.5,
       "credit_type": "partial",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Fine Arts",
       "term_length": "quarter",
       "offered_terms": [
@@ -3565,7 +3565,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Fine Arts",
       "term_length": "yearlong",
       "offered_terms": [
@@ -3601,11 +3601,11 @@
         9,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Fine Arts",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -3641,7 +3641,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Fine Arts",
       "term_length": "yearlong",
       "offered_terms": [
@@ -3677,11 +3677,11 @@
         9,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Fine Arts",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -3717,7 +3717,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Fine Arts",
       "term_length": "yearlong",
       "offered_terms": [
@@ -3753,11 +3753,11 @@
         9,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Fine Arts",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -3793,7 +3793,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Fine Arts",
       "term_length": "yearlong",
       "offered_terms": [
@@ -3831,7 +3831,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Fine Arts",
       "term_length": "yearlong",
       "offered_terms": [
@@ -3868,7 +3868,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Fine Arts",
       "term_length": "yearlong",
       "offered_terms": [
@@ -3905,7 +3905,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Fine Arts",
       "term_length": "yearlong",
       "offered_terms": [
@@ -3942,7 +3942,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Fine Arts",
       "term_length": "yearlong",
       "offered_terms": [
@@ -3979,7 +3979,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Fine Arts",
       "term_length": "yearlong",
       "offered_terms": [
@@ -4052,11 +4052,11 @@
         10,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Physical Education",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -4204,7 +4204,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "Physical Education",
       "term_length": "yearlong",
       "offered_terms": [
@@ -4277,11 +4277,11 @@
         10,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Physical Education",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -4353,11 +4353,11 @@
         10,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Physical Education",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -4431,7 +4431,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "G",
       "pathway": "Science - Physical",
       "term_length": "yearlong",
       "offered_terms": [
@@ -4469,7 +4469,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "G",
       "pathway": "Science - Physical",
       "term_length": "yearlong",
       "offered_terms": [
@@ -4507,7 +4507,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "G",
       "pathway": "Science - Physical",
       "term_length": "yearlong",
       "offered_terms": [
@@ -4545,7 +4545,7 @@
       ],
       "credits": 2.5,
       "credit_type": "partial",
-      "uc_csu_category": null,
+      "uc_csu_category": "G",
       "pathway": "Science - Physical",
       "term_length": "quarter",
       "offered_terms": [
@@ -4656,11 +4656,11 @@
       "grades_allowed": [
         9
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Electives",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -4805,11 +4805,11 @@
         9,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "G",
       "pathway": "CTE",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -4844,7 +4844,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "G",
       "pathway": "CTE",
       "term_length": "yearlong",
       "offered_terms": [
@@ -4879,11 +4879,11 @@
         9,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "G",
       "pathway": "Math",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -4917,11 +4917,11 @@
         9,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "G",
       "pathway": "Fine Arts",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -5146,7 +5146,7 @@
       ],
       "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "C",
       "pathway": "Math",
       "term_length": "semester",
       "offered_terms": [
@@ -5184,7 +5184,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "D",
       "pathway": "Science - Physical",
       "term_length": "yearlong",
       "offered_terms": [
@@ -5298,7 +5298,7 @@
       ],
       "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "G",
       "pathway": "Electives",
       "term_length": "semester",
       "offered_terms": [
@@ -5333,11 +5333,11 @@
         11,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "C",
       "pathway": "Science - Physical",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -5371,11 +5371,11 @@
         9,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "F",
       "pathway": "History/Social Science",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -5409,11 +5409,11 @@
         9,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Electives",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -5486,7 +5486,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "G",
       "pathway": "Electives",
       "term_length": "yearlong",
       "offered_terms": [
@@ -5596,11 +5596,11 @@
         9,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "G",
       "pathway": "History/Social Science",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -5633,11 +5633,11 @@
         9,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Science - Physical",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -5747,7 +5747,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "A",
       "pathway": "Science - Physical",
       "term_length": "yearlong",
       "offered_terms": [
@@ -5785,7 +5785,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "G",
       "pathway": "Science - Physical",
       "term_length": "yearlong",
       "offered_terms": [
@@ -5821,11 +5821,11 @@
         9,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "G",
       "pathway": "History/Social Science",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -5859,11 +5859,11 @@
         10,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "G",
       "pathway": "History/Social Science",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -5897,11 +5897,11 @@
         9,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "G",
       "pathway": "Physical Education",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -5937,7 +5937,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "G",
       "pathway": "History/Social Science",
       "term_length": "yearlong",
       "offered_terms": [
@@ -6013,7 +6013,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "B",
       "pathway": "English",
       "term_length": "semester",
       "offered_terms": [
@@ -6239,11 +6239,11 @@
         9,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "History/Social Science",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -6314,11 +6314,11 @@
         9,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Science - Biological",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -6351,7 +6351,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "A",
       "pathway": "Science - Physical",
       "term_length": "yearlong",
       "offered_terms": [
@@ -6422,11 +6422,11 @@
         9,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -6496,7 +6496,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "G",
       "pathway": "History/Social Science",
       "term_length": "yearlong",
       "offered_terms": [
@@ -6714,7 +6714,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "C",
       "pathway": "Math",
       "term_length": "yearlong",
       "offered_terms": [
@@ -6751,7 +6751,7 @@
       ],
       "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "C",
       "pathway": "Math",
       "term_length": "yearlong",
       "offered_terms": [
@@ -6860,11 +6860,11 @@
         9,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "D",
       "pathway": "Science - Biological",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -6970,11 +6970,11 @@
       "grades_allowed": [
         11
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "A",
       "pathway": "History/Social Science",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -7043,11 +7043,11 @@
       "grades_allowed": [
         10
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "A",
       "pathway": "History/Social Science",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"

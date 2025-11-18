@@ -35,6 +35,105 @@ const AG_REQUIREMENTS = {
 
 const GRADE_OPTIONS = ['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D+', 'D', 'D-', 'F'];
 
+// CTE Pathway Requirements
+const CTE_PATHWAYS = {
+  business: {
+    name: 'Business & Finance',
+    courses: [
+      { name: 'BUSINESS PRINCIPLES', level: 'Capstone', grades: [9, 10] },
+      { name: 'INTRO TO FINANCE', level: 'Concentrator', grades: [9, 10] },
+      { name: 'MARKETING ECONOMICS', level: 'Capstone', grades: [10, 11] },
+      { name: 'ECONOMICS OF BUSINESS OWNERSHIP', level: 'Capstone', grades: [10, 11] },
+      { name: 'INTERNSHIP', level: 'Capstone', grades: [11, 12] }
+    ]
+  },
+  biotech: {
+    name: 'Biotechnology',
+    courses: [
+      { name: 'PRINCIPLES OF BIOMEDICAL SCIENCE', level: 'Concentrator', grades: [9, 10] },
+      { name: 'HUMAN BODY SYSTEMS', level: 'Concentrator', grades: [9, 10] },
+      { name: 'MEDICAL INTERVENTIONS', level: 'Capstone', grades: [10, 11, 12] }
+    ]
+  },
+  design: {
+    name: 'Design, Visual, and Media Arts',
+    courses: [
+      { name: '3D COMPUTER ANIMATION', level: 'Concentrator', grades: [9, 10, 11, 12] },
+      { name: 'DIGITAL PHOTOGRAPHY', level: 'Concentrator/Capstone', grades: [9, 10, 11, 12] },
+      { name: 'GRAPHIC DESIGN', level: 'Concentrator/Capstone', grades: [9, 10, 11, 12] },
+      { name: 'STUDIO ART', level: 'Capstone', grades: [9, 10, 11, 12] }
+    ]
+  },
+  engineering: {
+    name: 'Engineering & Architecture',
+    courses: [
+      { name: 'INTRODUCTION TO ENGINEERING DESIGN', level: 'Concentrator', grades: [9, 10] },
+      { name: 'PRINCIPLES OF ENGINEERING', level: 'Capstone', grades: [9, 10] },
+      { name: 'CIVIL ENGINEERING AND ARCHITECTURE', level: 'Capstone', grades: [10, 11] },
+      { name: 'COMPUTER INTEGRATED MANUFACTURING', level: 'Capstone', grades: [10, 11] },
+      { name: 'DIGITAL ELECTRONICS', level: 'Capstone', grades: [11, 12] }
+    ]
+  },
+  ict: {
+    name: 'Information & Communication Technology',
+    courses: [
+      { name: 'COMPUTER INFORMATION SYSTEMS', level: 'Concentrator', grades: [9, 10, 11, 12] },
+      { name: 'WEB DESIGN', level: 'Capstone', grades: [9, 10, 11, 12] },
+      { name: 'AP COMPUTER SCIENCE PRINCIPLES', level: 'Capstone', grades: [10, 11] },
+      { name: 'AP COMPUTER SCIENCE A', level: 'Capstone', grades: [10, 11] },
+      { name: 'MOBILE APP DEVELOPMENT', level: 'Capstone', grades: [11, 12] }
+    ]
+  },
+  performingArts: {
+    name: 'Performing Arts',
+    courses: [
+      { name: 'DRAMA 1-2', level: 'Concentrator', grades: [9, 10, 11, 12] },
+      { name: 'DRAMA 3-4', level: 'Capstone', grades: [9, 10, 11, 12] },
+      { name: 'DRAMA 5-6', level: 'Capstone', grades: [9, 10, 11, 12] },
+      { name: 'THEATER ARTS STUDY', level: 'Capstone', grades: [9, 10, 11, 12] }
+    ]
+  },
+  productionArts: {
+    name: 'Production & Managerial Arts',
+    courses: [
+      { name: 'DIGITAL MEDIA PRODUCTION 1-2', level: 'Concentrator', grades: [9, 10] },
+      { name: 'DIGITAL MEDIA PRODUCTION', level: 'Capstone', grades: [9, 10, 11, 12] },
+      { name: 'BROADCAST JOURNALISM', level: 'Capstone', grades: [10, 11, 12] },
+      { name: 'TECHNICAL PRODUCTION FOR THEATER', level: 'Concentrator', grades: [9, 10, 11, 12] }
+    ]
+  }
+};
+
+// Recommended Electives for 9th Grade
+const RECOMMENDED_9TH_GRADE = {
+  'World Language': [
+    'CHINESE 1-2', 'CHINESE 3-4', 'CHINESE 5-6',
+    'FILIPINO 1-2', 'FILIPINO 3-4', 'FILIPINO 5-6',
+    'FRENCH 1-2', 'FRENCH 3-4', 'FRENCH 5-6',
+    'SPANISH 1-2', 'SPANISH 3-4', 'SPANISH 5-6'
+  ],
+  'Business': ['BUSINESS PRINCIPLES'],
+  'Computer Science': ['COMPUTER INFORMATION SYSTEMS', 'WEB DESIGN 1-2'],
+  'Engineering': ['INTRODUCTION TO ENGINEERING DESIGN', 'HONORS PLTW PRINCIPLES OF ENGINEERING'],
+  'Fine Arts': [
+    '3D COMPUTER ANIMATION 1-2',
+    'BAND WITH COMPETITIVE MARCHING',
+    'BAND WITH NON-COMPETITIVE MARCHING',
+    'CERAMICS 1-2',
+    'DESIGN AND MIXED MEDIA 1-2',
+    'DIGITAL MEDIA PRODUCTION 1-2',
+    'DIGITAL PHOTOGRAPHY 1-2',
+    'DRAMA 1-2',
+    'DRAWING AND PAINTING 1-2',
+    'DRAWING & PAINTING 1-2',
+    'GRAPHIC DESIGN 1-2',
+    'ORCHESTRA 1-2',
+    'ORCHESTRA/STRING ENSEMBLE 1-2',
+    'TECHNICAL PRODUCTION FOR THEATER 1-',
+    'DANCE PROP'
+  ]
+};
+
 function App() {
   // Load courses from localStorage on initial render
   const [courses, setCourses] = useState(() => {
@@ -50,6 +149,20 @@ function App() {
     const saved = localStorage.getItem('westview-early-grad-mode');
     return saved ? JSON.parse(saved) : { enabled: false, targetYear: null }; // null, '3year', or '3.5year'
   });
+  const [ctePathwayMode, setCtePathwayMode] = useState(() => {
+    const saved = localStorage.getItem('westview-cte-pathway');
+    return saved ? JSON.parse(saved) : { enabled: false, pathway: null }; // null, 'business', 'biotech', 'design', 'engineering'
+  });
+  const [concurrentCourses, setConcurrentCourses] = useState(() => {
+    const saved = localStorage.getItem('westview-concurrent-courses');
+    return saved ? JSON.parse(saved) : []; // Array of {id, name, collegeUnits, credits} for custom concurrent enrollment courses
+  });
+  const [showConcurrentForm, setShowConcurrentForm] = useState(false);
+  const [newConcurrentCourse, setNewConcurrentCourse] = useState({ name: '', collegeUnits: 3 });
+
+  // Drag and drop state
+  const [draggedCourse, setDraggedCourse] = useState(null);
+  const [dragOverSlot, setDragOverSlot] = useState(null);
 
   // Save courses to localStorage whenever they change
   React.useEffect(() => {
@@ -60,6 +173,16 @@ function App() {
   React.useEffect(() => {
     localStorage.setItem('westview-early-grad-mode', JSON.stringify(earlyGradMode));
   }, [earlyGradMode]);
+
+  // Save CTE pathway mode to localStorage
+  React.useEffect(() => {
+    localStorage.setItem('westview-cte-pathway', JSON.stringify(ctePathwayMode));
+  }, [ctePathwayMode]);
+
+  // Save concurrent courses to localStorage
+  React.useEffect(() => {
+    localStorage.setItem('westview-concurrent-courses', JSON.stringify(concurrentCourses));
+  }, [concurrentCourses]);
 
   // Calculate Westview graduation progress
   const westviewProgress = useMemo(() => {
@@ -123,6 +246,95 @@ function App() {
       hasCivicsEcon
     };
   }, [courses]);
+
+  // Calculate CTE Pathway Progress
+  // CTE Pathway Completion Requirements:
+  // - (Concentrator + Capstone) OR (2 Capstones)
+  const ctePathwayProgress = useMemo(() => {
+    if (!ctePathwayMode.enabled || !ctePathwayMode.pathway) {
+      return {
+        completed: [],
+        missing: [],
+        totalRequired: 0,
+        totalCompleted: 0,
+        hasConcentrator: false,
+        capstoneCount: 0,
+        isPathwayCompleter: false,
+        completionStatus: ''
+      };
+    }
+
+    const pathway = CTE_PATHWAYS[ctePathwayMode.pathway];
+    if (!pathway) {
+      return {
+        completed: [],
+        missing: [],
+        totalRequired: 0,
+        totalCompleted: 0,
+        hasConcentrator: false,
+        capstoneCount: 0,
+        isPathwayCompleter: false,
+        completionStatus: ''
+      };
+    }
+
+    const completed = [];
+    const missing = [];
+    let hasConcentrator = false;
+    let capstoneCount = 0;
+
+    pathway.courses.forEach(requiredCourse => {
+      const hasCourse = courses.some(c => {
+        const info = COURSE_CATALOG[c.courseId];
+        if (!info) return false;
+        const courseName = info.full_name.toUpperCase();
+        return courseName.includes(requiredCourse.name);
+      });
+
+      if (hasCourse) {
+        completed.push(requiredCourse);
+
+        // Track level completion
+        if (requiredCourse.level.includes('Concentrator')) {
+          hasConcentrator = true;
+        }
+        if (requiredCourse.level.includes('Capstone')) {
+          capstoneCount++;
+        }
+      } else {
+        missing.push(requiredCourse);
+      }
+    });
+
+    // Determine pathway completion status
+    // Complete if: (has Concentrator AND has Capstone) OR (has 2+ Capstones)
+    const isPathwayCompleter = (hasConcentrator && capstoneCount >= 1) || (capstoneCount >= 2);
+
+    let completionStatus = '';
+    if (isPathwayCompleter) {
+      completionStatus = 'Pathway Completer! Certificate, transcript notation, and diploma seal earned.';
+    } else if (hasConcentrator && capstoneCount === 0) {
+      completionStatus = 'Need 1 Capstone course to complete pathway';
+    } else if (capstoneCount === 1 && !hasConcentrator) {
+      completionStatus = 'Need 1 more Capstone OR 1 Concentrator to complete pathway';
+    } else if (hasConcentrator || capstoneCount > 0) {
+      completionStatus = `Progress: ${hasConcentrator ? 'Concentrator ✓' : ''} ${capstoneCount > 0 ? `${capstoneCount} Capstone${capstoneCount > 1 ? 's' : ''} ✓` : ''}`;
+    } else {
+      completionStatus = 'Need Concentrator + Capstone OR 2 Capstones';
+    }
+
+    return {
+      completed,
+      missing,
+      totalRequired: pathway.courses.length,
+      totalCompleted: completed.length,
+      pathwayName: pathway.name,
+      hasConcentrator,
+      capstoneCount,
+      isPathwayCompleter,
+      completionStatus
+    };
+  }, [courses, ctePathwayMode]);
 
   // Get courses for a specific semester (defined before useMemo that uses it)
   const getCoursesForSemester = (year, semester) => {
@@ -350,10 +562,121 @@ function App() {
     return null;
   };
 
+  // Convert college units to high school credits
+  const convertCollegeUnitsToHSCredits = (collegeUnits) => {
+    if (collegeUnits === 2) return 2.5;
+    if (collegeUnits === 3) return 5;
+    if (collegeUnits === 4) return 5;
+    if (collegeUnits === 5) return 10;
+    // For other values, use a proportional conversion (2.5 credits per unit)
+    return collegeUnits * 2.5;
+  };
+
+  // Helper function to check if a course is recommended for 9th grade
+  const isRecommended9thGrade = (courseName) => {
+    const upperName = courseName.toUpperCase();
+    return Object.values(RECOMMENDED_9TH_GRADE).flat().some(recommended =>
+      upperName.includes(recommended.toUpperCase()) || recommended.toUpperCase().includes(upperName)
+    );
+  };
+
+  // Helper function to get course info (handles both catalog and concurrent courses)
+  const getCourseInfo = (courseId) => {
+    if (courseId.startsWith('CONCURRENT_')) {
+      const concurrentCourse = concurrentCourses.find(c => c.id === courseId);
+      if (!concurrentCourse) return null;
+
+      return {
+        course_id: concurrentCourse.id,
+        full_name: concurrentCourse.name,
+        credits: concurrentCourse.credits,
+        pathway: 'Electives',
+        term_length: 'semester',
+        offered_terms: ['fall', 'spring'],
+        uc_csu_category: null
+      };
+    }
+    return COURSE_CATALOG[courseId] || null;
+  };
+
+  // Drag-and-drop handlers
+  const handleDragStart = (e, course, year, semester) => {
+    setDraggedCourse({ course, year, semester });
+    e.dataTransfer.effectAllowed = 'move';
+    // Add semi-transparent effect
+    e.currentTarget.style.opacity = '0.5';
+  };
+
+  const handleDragEnd = (e) => {
+    setDraggedCourse(null);
+    setDragOverSlot(null);
+    e.currentTarget.style.opacity = '1';
+  };
+
+  const handleDragOver = (e, targetYear, targetSemester, slotIndex) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    setDragOverSlot({ year: targetYear, semester: targetSemester, slot: slotIndex });
+  };
+
+  const handleDragLeave = () => {
+    setDragOverSlot(null);
+  };
+
+  const handleDrop = (e, targetYear, targetSemester, slotIndex) => {
+    e.preventDefault();
+
+    if (!draggedCourse) return;
+
+    const { course, year: sourceYear, semester: sourceSemester } = draggedCourse;
+    const courseInfo = getCourseInfo(course.courseId);
+
+    // Don't do anything if dropping in the same location
+    if (sourceYear === targetYear && sourceSemester === targetSemester) {
+      setDraggedCourse(null);
+      setDragOverSlot(null);
+      return;
+    }
+
+    // Check if course is yearlong
+    if (courseInfo.term_length === 'yearlong') {
+      // For yearlong courses, we need to move both semesters
+      // Find the course in both fall and spring
+      const oppositeSemester = sourceSemester === 'Fall' ? 'Spring' : 'Fall';
+      const oppositeTargetSemester = targetSemester === 'Fall' ? 'Spring' : 'Fall';
+
+      // Update courses by removing from both source semesters and adding to both target semesters
+      setCourses(prev => {
+        // Remove from both source semesters
+        const withoutSource = prev.filter(c =>
+          !(c.courseId === course.courseId && c.year === sourceYear)
+        );
+
+        // Add to both target semesters
+        return [
+          ...withoutSource,
+          { ...course, year: targetYear, semester: targetSemester, id: `${course.courseId}-${targetYear}-${targetSemester}` },
+          { ...course, year: targetYear, semester: oppositeTargetSemester, id: `${course.courseId}-${targetYear}-${oppositeTargetSemester}` }
+        ];
+      });
+    } else {
+      // For semester courses, just move to the target semester
+      setCourses(prev => prev.map(c => {
+        if (c.id === course.id) {
+          return { ...c, year: targetYear, semester: targetSemester, id: `${c.courseId}-${targetYear}-${targetSemester}` };
+        }
+        return c;
+      }));
+    }
+
+    setDraggedCourse(null);
+    setDragOverSlot(null);
+  };
+
   const addCourse = (year, semester) => {
     if (!newCourse.courseId) return;
 
-    const courseInfo = COURSE_CATALOG[newCourse.courseId];
+    const courseInfo = getCourseInfo(newCourse.courseId);
     if (!courseInfo) return;
 
     setError(null);
@@ -394,6 +717,39 @@ function App() {
         if (year === '12' && semester === 'Spring') {
           setError('Early Graduation (3.5 years): Cannot add courses to Grade 12 Spring');
           return;
+        }
+      }
+    }
+
+    // CTE Pathway mode validations and guidance
+    if (ctePathwayMode.enabled && ctePathwayMode.pathway) {
+      const pathway = CTE_PATHWAYS[ctePathwayMode.pathway];
+      const courseName = courseInfo.full_name.toUpperCase();
+
+      // Check if this course is part of the selected pathway
+      const isPathwayCourse = pathway.courses.some(pathwayCourse =>
+        courseName.includes(pathwayCourse.name)
+      );
+
+      // Check if this course is from the pathway and meets grade requirements
+      if (isPathwayCourse) {
+        const pathwayCourse = pathway.courses.find(pc => courseName.includes(pc.name));
+        const currentGrade = parseInt(year);
+
+        if (pathwayCourse && !pathwayCourse.grades.includes(currentGrade)) {
+          setWarning(`CTE Pathway: ${pathwayCourse.name} is recommended for grades ${pathwayCourse.grades.join(', ')}`);
+        }
+      }
+
+      // Provide helpful guidance on pathway progress
+      if (ctePathwayProgress.totalCompleted < ctePathwayProgress.totalRequired) {
+        const nextMissing = ctePathwayProgress.missing[0];
+        if (nextMissing && !courseName.includes(nextMissing.name)) {
+          // Only show this as a gentle reminder, not a blocker
+          const currentGrade = parseInt(year);
+          if (nextMissing.grades.includes(currentGrade)) {
+            setWarning(`CTE Pathway: Consider adding ${nextMissing.name} (${nextMissing.level})`);
+          }
         }
       }
     }
@@ -668,6 +1024,8 @@ function App() {
   // Get unique pathways for course selection
   const pathways = useMemo(() => {
     const uniquePathways = [...new Set(Object.values(COURSE_CATALOG).map(c => c.pathway))];
+    // Add Concurrent Enrollment as a special category
+    uniquePathways.push('Concurrent Enrollment');
     return uniquePathways.sort();
   }, []);
 
@@ -684,72 +1042,188 @@ function App() {
       {/* Clean Header */}
       <header className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-6 py-6">
-          <div className="flex items-start justify-between">
+          <div className="flex items-start justify-between gap-6">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Westview High School Course Planner</h1>
               <p className="text-gray-600 mt-1">Plan your path through high school</p>
             </div>
 
-            {/* Early Graduation Mode Toggle */}
-            <div className="bg-gray-50 border-2 border-gray-200 rounded-lg p-4">
-              <div className="flex items-center gap-3 mb-2">
-                <input
-                  type="checkbox"
-                  id="earlyGradMode"
-                  checked={earlyGradMode.enabled}
-                  onChange={(e) => {
-                    if (e.target.checked) {
-                      setEarlyGradMode({ enabled: true, targetYear: '3year' });
-                    } else {
-                      setEarlyGradMode({ enabled: false, targetYear: null });
-                    }
-                  }}
-                  className="w-5 h-5 text-blue-600"
-                />
-                <label htmlFor="earlyGradMode" className="text-sm font-bold text-gray-900 cursor-pointer">
-                  Early Graduation Mode
-                </label>
+            <div className="flex gap-4">
+              {/* Early Graduation Mode Toggle */}
+              <div className="bg-gray-50 border-2 border-gray-200 rounded-lg p-4 min-w-[280px]">
+                <div className="flex items-center gap-3 mb-2">
+                  <input
+                    type="checkbox"
+                    id="earlyGradMode"
+                    checked={earlyGradMode.enabled}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setEarlyGradMode({ enabled: true, targetYear: '3year' });
+                      } else {
+                        setEarlyGradMode({ enabled: false, targetYear: null });
+                      }
+                    }}
+                    className="w-5 h-5 text-blue-600"
+                  />
+                  <label htmlFor="earlyGradMode" className="text-sm font-bold text-gray-900 cursor-pointer">
+                    Early Graduation Mode
+                  </label>
+                </div>
+
+                {earlyGradMode.enabled && (
+                  <div className="ml-8 space-y-2">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="earlyGradTarget"
+                        checked={earlyGradMode.targetYear === '3year'}
+                        onChange={() => setEarlyGradMode({ enabled: true, targetYear: '3year' })}
+                        className="w-4 h-4 text-blue-600"
+                      />
+                      <span className="text-sm text-gray-700">3 years (end of 11th grade)</span>
+                    </label>
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="earlyGradTarget"
+                        checked={earlyGradMode.targetYear === '3.5year'}
+                        onChange={() => setEarlyGradMode({ enabled: true, targetYear: '3.5year' })}
+                        className="w-4 h-4 text-blue-600"
+                      />
+                      <span className="text-sm text-gray-700">3.5 years (mid 12th grade)</span>
+                    </label>
+                  </div>
+                )}
+
+                {/* Eligibility indicator */}
+                {earlyGradEligibility.creditsThrough11 >= 170 && (
+                  <div className="mt-3 pt-3 border-t border-gray-300">
+                    <div className="text-xs font-bold text-green-700">
+                      ✓ Eligible: {earlyGradEligibility.creditsThrough11} credits through Grade 11
+                    </div>
+                    {!earlyGradEligibility.hasSeniorEnglish && (
+                      <div className="text-xs text-orange-600 mt-1">⚠ Need Senior English in Grade 11</div>
+                    )}
+                    {!earlyGradEligibility.hasCivicsEcon && (
+                      <div className="text-xs text-orange-600 mt-1">⚠ Need Civics/Economics in Grade 11</div>
+                    )}
+                  </div>
+                )}
               </div>
 
-              {earlyGradMode.enabled && (
-                <div className="ml-8 space-y-2">
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="radio"
-                      name="earlyGradTarget"
-                      checked={earlyGradMode.targetYear === '3year'}
-                      onChange={() => setEarlyGradMode({ enabled: true, targetYear: '3year' })}
-                      className="w-4 h-4 text-blue-600"
-                    />
-                    <span className="text-sm text-gray-700">3 years (end of 11th grade)</span>
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="radio"
-                      name="earlyGradTarget"
-                      checked={earlyGradMode.targetYear === '3.5year'}
-                      onChange={() => setEarlyGradMode({ enabled: true, targetYear: '3.5year' })}
-                      className="w-4 h-4 text-blue-600"
-                    />
-                    <span className="text-sm text-gray-700">3.5 years (mid 12th grade)</span>
-                  </label>
+              {/* CTE Pathway Selection */}
+              <div className="bg-gray-50 border-2 border-gray-200 rounded-lg p-4">
+                <p className="text-sm font-bold text-gray-900 mb-3">CTE Pathways</p>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    onClick={() => setCtePathwayMode(prev =>
+                      prev.pathway === 'business' ? { enabled: false, pathway: null } : { enabled: true, pathway: 'business' }
+                    )}
+                    className={`px-3 py-2 rounded text-xs font-medium transition-colors ${
+                      ctePathwayMode.pathway === 'business'
+                        ? 'bg-purple-600 text-white'
+                        : 'bg-white text-gray-700 hover:bg-purple-50 border border-gray-300'
+                    }`}
+                  >
+                    Business & Finance
+                  </button>
+                  <button
+                    onClick={() => setCtePathwayMode(prev =>
+                      prev.pathway === 'biotech' ? { enabled: false, pathway: null } : { enabled: true, pathway: 'biotech' }
+                    )}
+                    className={`px-3 py-2 rounded text-xs font-medium transition-colors ${
+                      ctePathwayMode.pathway === 'biotech'
+                        ? 'bg-purple-600 text-white'
+                        : 'bg-white text-gray-700 hover:bg-purple-50 border border-gray-300'
+                    }`}
+                  >
+                    Biotechnology
+                  </button>
+                  <button
+                    onClick={() => setCtePathwayMode(prev =>
+                      prev.pathway === 'design' ? { enabled: false, pathway: null } : { enabled: true, pathway: 'design' }
+                    )}
+                    className={`px-3 py-2 rounded text-xs font-medium transition-colors ${
+                      ctePathwayMode.pathway === 'design'
+                        ? 'bg-purple-600 text-white'
+                        : 'bg-white text-gray-700 hover:bg-purple-50 border border-gray-300'
+                    }`}
+                  >
+                    Design & Media
+                  </button>
+                  <button
+                    onClick={() => setCtePathwayMode(prev =>
+                      prev.pathway === 'engineering' ? { enabled: false, pathway: null } : { enabled: true, pathway: 'engineering' }
+                    )}
+                    className={`px-3 py-2 rounded text-xs font-medium transition-colors ${
+                      ctePathwayMode.pathway === 'engineering'
+                        ? 'bg-purple-600 text-white'
+                        : 'bg-white text-gray-700 hover:bg-purple-50 border border-gray-300'
+                    }`}
+                  >
+                    Engineering
+                  </button>
+                  <button
+                    onClick={() => setCtePathwayMode(prev =>
+                      prev.pathway === 'ict' ? { enabled: false, pathway: null } : { enabled: true, pathway: 'ict' }
+                    )}
+                    className={`px-3 py-2 rounded text-xs font-medium transition-colors ${
+                      ctePathwayMode.pathway === 'ict'
+                        ? 'bg-purple-600 text-white'
+                        : 'bg-white text-gray-700 hover:bg-purple-50 border border-gray-300'
+                    }`}
+                  >
+                    Info & Comm Tech
+                  </button>
+                  <button
+                    onClick={() => setCtePathwayMode(prev =>
+                      prev.pathway === 'performingArts' ? { enabled: false, pathway: null } : { enabled: true, pathway: 'performingArts' }
+                    )}
+                    className={`px-3 py-2 rounded text-xs font-medium transition-colors ${
+                      ctePathwayMode.pathway === 'performingArts'
+                        ? 'bg-purple-600 text-white'
+                        : 'bg-white text-gray-700 hover:bg-purple-50 border border-gray-300'
+                    }`}
+                  >
+                    Performing Arts
+                  </button>
+                  <button
+                    onClick={() => setCtePathwayMode(prev =>
+                      prev.pathway === 'productionArts' ? { enabled: false, pathway: null } : { enabled: true, pathway: 'productionArts' }
+                    )}
+                    className={`px-3 py-2 rounded text-xs font-medium transition-colors ${
+                      ctePathwayMode.pathway === 'productionArts'
+                        ? 'bg-purple-600 text-white'
+                        : 'bg-white text-gray-700 hover:bg-purple-50 border border-gray-300'
+                    }`}
+                  >
+                    Production Arts
+                  </button>
                 </div>
-              )}
 
-              {/* Eligibility indicator */}
-              {earlyGradEligibility.creditsThrough11 >= 170 && (
-                <div className="mt-3 pt-3 border-t border-gray-300">
-                  <div className="text-xs font-bold text-green-700">
-                    ✓ Eligible: {earlyGradEligibility.creditsThrough11} credits through Grade 11
+                {/* Pathway progress indicator */}
+                {ctePathwayMode.enabled && ctePathwayProgress.totalRequired > 0 && (
+                  <div className="mt-3 pt-3 border-t border-gray-300">
+                    <div className="text-xs font-bold text-purple-700 mb-2">
+                      {ctePathwayProgress.pathwayName}
+                    </div>
+                    <div className="text-xs text-gray-700 mb-1">
+                      Courses: {ctePathwayProgress.totalCompleted}/{ctePathwayProgress.totalRequired}
+                      {ctePathwayProgress.hasConcentrator && <span className="ml-2">• Concentrator ✓</span>}
+                      {ctePathwayProgress.capstoneCount > 0 && <span className="ml-2">• {ctePathwayProgress.capstoneCount} Capstone{ctePathwayProgress.capstoneCount > 1 ? 's' : ''} ✓</span>}
+                    </div>
+                    {ctePathwayProgress.isPathwayCompleter ? (
+                      <div className="text-xs font-bold text-green-700 mt-2 p-2 bg-green-50 rounded border border-green-200">
+                        🎓 {ctePathwayProgress.completionStatus}
+                      </div>
+                    ) : (
+                      <div className="text-xs text-orange-600 mt-1">
+                        {ctePathwayProgress.completionStatus}
+                      </div>
+                    )}
                   </div>
-                  {!earlyGradEligibility.hasSeniorEnglish && (
-                    <div className="text-xs text-orange-600 mt-1">⚠ Need Senior English in Grade 11</div>
-                  )}
-                  {!earlyGradEligibility.hasCivicsEcon && (
-                    <div className="text-xs text-orange-600 mt-1">⚠ Need Civics/Economics in Grade 11</div>
-                  )}
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -932,8 +1406,24 @@ function App() {
                                 // Filled slot with course
                                 const info = COURSE_CATALOG[course.courseId];
                                 const isYearLong = info.term_length === 'yearlong';
+                                const isDragging = draggedCourse?.course?.id === course.id;
+                                const isDropTarget = dragOverSlot?.year === year && dragOverSlot?.semester === semester && dragOverSlot?.slot === slotIndex;
+
                                 return (
-                                  <div key={course.id} className="bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-colors border border-gray-200">
+                                  <div
+                                    key={course.id}
+                                    draggable={true}
+                                    onDragStart={(e) => handleDragStart(e, course, year, semester)}
+                                    onDragEnd={handleDragEnd}
+                                    onDragOver={(e) => handleDragOver(e, year, semester, slotIndex)}
+                                    onDragLeave={handleDragLeave}
+                                    onDrop={(e) => handleDrop(e, year, semester, slotIndex)}
+                                    className={`bg-gray-50 rounded-lg p-3 transition-all border border-gray-200 cursor-move ${
+                                      isDragging ? 'opacity-50 border-blue-400' : 'hover:bg-gray-100'
+                                    } ${
+                                      isDropTarget ? 'ring-2 ring-blue-400 bg-blue-50' : ''
+                                    }`}
+                                  >
                                     <div className="flex items-start justify-between gap-2">
                                       <div className="flex-1 min-w-0">
                                         <div className="flex items-center gap-1.5">
@@ -1011,14 +1501,119 @@ function App() {
                                             ← Change Subject
                                           </button>
                                         </div>
-                                        <select
-                                          value={newCourse.courseId}
-                                          onChange={(e) => setNewCourse({ courseId: e.target.value })}
-                                          className="w-full border border-gray-300 rounded px-3 py-2 text-sm mb-2"
-                                          autoFocus
-                                        >
-                                          <option value="">Select course...</option>
-                                          {selectedCategory === 'Foreign Language' ? (
+                                        {selectedCategory === 'Concurrent Enrollment' ? (
+                                          // Special UI for Concurrent Enrollment
+                                          <div className="space-y-3">
+                                            {!showConcurrentForm ? (
+                                              <>
+                                                {concurrentCourses.length > 0 && (
+                                                  <div>
+                                                    <p className="text-xs text-gray-600 mb-2 font-medium">Previously entered courses:</p>
+                                                    <select
+                                                      value={newCourse.courseId}
+                                                      onChange={(e) => setNewCourse({ courseId: e.target.value })}
+                                                      className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+                                                    >
+                                                      <option value="">Select a previous course...</option>
+                                                      {concurrentCourses.map(course => (
+                                                        <option key={course.id} value={course.id}>
+                                                          {course.name} ({course.collegeUnits} college units = {course.credits} HS credits)
+                                                        </option>
+                                                      ))}
+                                                    </select>
+                                                  </div>
+                                                )}
+                                                <button
+                                                  onClick={() => {
+                                                    setShowConcurrentForm(true);
+                                                    setNewConcurrentCourse({ name: '', collegeUnits: 3 });
+                                                  }}
+                                                  className="w-full bg-purple-600 text-white px-3 py-2 rounded hover:bg-purple-700 text-sm font-medium"
+                                                >
+                                                  + Enter New College Course
+                                                </button>
+                                              </>
+                                            ) : (
+                                              <div className="space-y-2">
+                                                <p className="text-xs text-gray-600 font-medium">Enter college course details:</p>
+                                                <input
+                                                  type="text"
+                                                  placeholder="Course name (e.g., BIO 101)"
+                                                  value={newConcurrentCourse.name}
+                                                  onChange={(e) => setNewConcurrentCourse({ ...newConcurrentCourse, name: e.target.value })}
+                                                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+                                                  autoFocus
+                                                />
+                                                <div>
+                                                  <label className="block text-xs text-gray-600 mb-1">College Semester Units</label>
+                                                  <input
+                                                    type="number"
+                                                    placeholder="Units (e.g., 3)"
+                                                    value={newConcurrentCourse.collegeUnits}
+                                                    onChange={(e) => setNewConcurrentCourse({ ...newConcurrentCourse, collegeUnits: parseFloat(e.target.value) || 0 })}
+                                                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+                                                    min="0"
+                                                    max="10"
+                                                    step="0.5"
+                                                  />
+                                                  {newConcurrentCourse.collegeUnits > 0 && (
+                                                    <p className="text-xs text-gray-500 mt-1">
+                                                      = {convertCollegeUnitsToHSCredits(newConcurrentCourse.collegeUnits)} high school credits
+                                                    </p>
+                                                  )}
+                                                </div>
+                                                <div className="flex gap-2">
+                                                  <button
+                                                    onClick={() => {
+                                                      if (newConcurrentCourse.name && newConcurrentCourse.collegeUnits > 0) {
+                                                        // Create unique ID for this concurrent course
+                                                        const courseId = `CONCURRENT_${Date.now()}`;
+                                                        const hsCredits = convertCollegeUnitsToHSCredits(newConcurrentCourse.collegeUnits);
+
+                                                        // Add to concurrent courses list if not already there
+                                                        const exists = concurrentCourses.find(c => c.name === newConcurrentCourse.name);
+                                                        if (!exists) {
+                                                          setConcurrentCourses([...concurrentCourses, {
+                                                            id: courseId,
+                                                            name: newConcurrentCourse.name,
+                                                            collegeUnits: newConcurrentCourse.collegeUnits,
+                                                            credits: hsCredits
+                                                          }]);
+                                                        }
+
+                                                        // Set it as the selected course
+                                                        setNewCourse({ courseId: exists ? exists.id : courseId });
+                                                        setShowConcurrentForm(false);
+
+                                                        // Add the course
+                                                        setTimeout(() => addCourse(year, semester), 0);
+                                                      }
+                                                    }}
+                                                    disabled={!newConcurrentCourse.name || newConcurrentCourse.collegeUnits <= 0}
+                                                    className="flex-1 bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 text-sm font-medium disabled:bg-gray-300"
+                                                  >
+                                                    Add Course
+                                                  </button>
+                                                  <button
+                                                    onClick={() => setShowConcurrentForm(false)}
+                                                    className="px-3 py-2 border border-gray-300 rounded hover:bg-gray-50 text-sm font-medium"
+                                                  >
+                                                    Cancel
+                                                  </button>
+                                                </div>
+                                              </div>
+                                            )}
+                                          </div>
+                                        ) : (
+                                          <>
+                                            <select
+                                              value={newCourse.courseId}
+                                              onChange={(e) => setNewCourse({ courseId: e.target.value })}
+                                              className="w-full border border-gray-300 rounded px-3 py-2 text-sm mb-2"
+                                              autoFocus
+                                            >
+                                            <option value="">Select course...</option>
+                                            {selectedCategory === 'Foreign Language' ? (
                                             // Group foreign language courses by language
                                             (() => {
                                               const grouped = {};
@@ -1041,7 +1636,7 @@ function App() {
                                                 <optgroup key={lang} label={lang}>
                                                   {grouped[lang].map(course => (
                                                     <option key={course.id} value={course.id}>
-                                                      {course.full_name}
+                                                      {course.full_name}{year === 9 && isRecommended9thGrade(course.full_name) ? ' ⭐ Recommended' : ''}
                                                     </option>
                                                   ))}
                                                 </optgroup>
@@ -1079,7 +1674,7 @@ function App() {
                                                   <optgroup key={group} label={group}>
                                                     {courses.map(course => (
                                                       <option key={course.id} value={course.id}>
-                                                        {course.full_name}
+                                                        {course.full_name}{year === 9 && isRecommended9thGrade(course.full_name) ? ' ⭐ Recommended' : ''}
                                                       </option>
                                                     ))}
                                                   </optgroup>
@@ -1120,7 +1715,7 @@ function App() {
                                                   <optgroup key={group} label={group}>
                                                     {courses.map(course => (
                                                       <option key={course.id} value={course.id}>
-                                                        {course.full_name}
+                                                        {course.full_name}{year === 9 && isRecommended9thGrade(course.full_name) ? ' ⭐ Recommended' : ''}
                                                       </option>
                                                     ))}
                                                   </optgroup>
@@ -1130,40 +1725,44 @@ function App() {
                                             // Regular list for other pathways
                                             coursesInPathway.map(course => (
                                               <option key={course.id} value={course.id}>
-                                                {course.full_name}
+                                                {course.full_name}{year === 9 && isRecommended9thGrade(course.full_name) ? ' ⭐ Recommended' : ''}
                                               </option>
                                             ))
                                           )}
                                         </select>
-                                        <div className="flex gap-2">
-                                          <button
-                                            onClick={() => addCourse(year, semester)}
-                                            disabled={!newCourse.courseId}
-                                            className="flex-1 bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 text-sm font-medium disabled:bg-gray-300"
-                                          >
-                                            Add
-                                          </button>
-                                          <button
-                                            onClick={() => {
-                                              setShowAddCourse(null);
-                                              setSelectedCategory('');
-                                              setNewCourse({ courseId: '' });
-                                              setError(null);
-                                              setWarning(null);
-                                            }}
-                                            className="flex-1 bg-gray-200 text-gray-700 px-3 py-2 rounded hover:bg-gray-300 text-sm font-medium"
-                                          >
-                                            Cancel
-                                          </button>
-                                        </div>
+                                          <div className="flex gap-2">
+                                            <button
+                                              onClick={() => addCourse(year, semester)}
+                                              disabled={!newCourse.courseId}
+                                              className="flex-1 bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 text-sm font-medium disabled:bg-gray-300"
+                                            >
+                                              Add
+                                            </button>
+                                            <button
+                                              onClick={() => {
+                                                setShowAddCourse(null);
+                                                setSelectedCategory('');
+                                                setNewCourse({ courseId: '' });
+                                                setError(null);
+                                                setWarning(null);
+                                              }}
+                                              className="flex-1 bg-gray-200 text-gray-700 px-3 py-2 rounded hover:bg-gray-300 text-sm font-medium"
+                                            >
+                                              Cancel
+                                            </button>
+                                          </div>
+                                          </>
+                                        )}
                                       </>
                                     )}
                                   </div>
                                 );
                               } else {
                                 // Empty slot
+                                const isDropTarget = dragOverSlot?.year === year && dragOverSlot?.semester === semester && dragOverSlot?.slot === slotIndex;
+
                                 return (
-                                  <button
+                                  <div
                                     key={`slot-${slotIndex}`}
                                     onClick={() => {
                                       setShowAddCourse({ year, semester, slot: slotIndex });
@@ -1172,11 +1771,18 @@ function App() {
                                       setError(null);
                                       setWarning(null);
                                     }}
-                                    className="w-full bg-white rounded-lg p-3 border-2 border-dashed border-gray-300 hover:border-blue-400 hover:bg-blue-50 transition-colors text-gray-400 hover:text-blue-600 text-sm font-medium flex items-center justify-center min-h-[56px]"
+                                    onDragOver={(e) => handleDragOver(e, year, semester, slotIndex)}
+                                    onDragLeave={handleDragLeave}
+                                    onDrop={(e) => handleDrop(e, year, semester, slotIndex)}
+                                    className={`w-full bg-white rounded-lg p-3 border-2 border-dashed transition-all text-sm font-medium flex items-center justify-center min-h-[56px] cursor-pointer ${
+                                      isDropTarget
+                                        ? 'border-blue-400 bg-blue-50 text-blue-600 ring-2 ring-blue-400'
+                                        : 'border-gray-300 hover:border-blue-400 hover:bg-blue-50 text-gray-400 hover:text-blue-600'
+                                    }`}
                                   >
                                     <Plus size={18} className="mr-1" />
                                     Add Course
-                                  </button>
+                                  </div>
                                 );
                               }
                             })}
