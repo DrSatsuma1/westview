@@ -164,10 +164,22 @@ function App() {
   const [draggedCourse, setDraggedCourse] = useState(null);
   const [dragOverSlot, setDragOverSlot] = useState(null);
 
+  // Semester completion tracking
+  const [completedSemesters, setCompletedSemesters] = useState(() => {
+    const saved = localStorage.getItem('westview-completed-semesters');
+    return saved ? JSON.parse(saved) : {};
+  });
+  const [semesterValidation, setSemesterValidation] = useState(null);
+
   // Save courses to localStorage whenever they change
   React.useEffect(() => {
     localStorage.setItem('westview-courses', JSON.stringify(courses));
   }, [courses]);
+
+  // Save completed semesters to localStorage
+  React.useEffect(() => {
+    localStorage.setItem('westview-completed-semesters', JSON.stringify(completedSemesters));
+  }, [completedSemesters]);
 
   // Save early grad mode to localStorage
   React.useEffect(() => {
@@ -671,6 +683,190 @@ function App() {
 
     setDraggedCourse(null);
     setDragOverSlot(null);
+  };
+
+  // Validate semester completion
+  const validateSemesterCompletion = (year, semester) => {
+    const semesterCourses = getCoursesForSemester(year, semester);
+    const issues = [];
+    const warnings = [];
+    const info = [];
+
+    // Check minimum course load (typically 6-7 courses)
+    if (semesterCourses.length === 0) {
+      issues.push('No courses scheduled for this semester');
+      return { valid: false, issues, warnings, info };
+    }
+
+    if (semesterCourses.length < 5) {
+      warnings.push(`Light course load (${semesterCourses.length} courses). Most students take 6-7 courses per semester.`);
+    }
+
+    // Check for required courses based on grade
+    const yearInt = parseInt(year);
+
+    // Check for English (required all 4 years)
+    const hasEnglish = semesterCourses.some(c => {
+      const info = getCourseInfo(c.courseId);
+      return info?.pathway === 'English';
+    });
+
+    if (!hasEnglish) {
+      // Check if English is in the opposite semester (year-long)
+      const oppositeSemester = semester === 'Fall' ? 'Spring' : 'Fall';
+      const oppositeCourses = getCoursesForSemester(year, oppositeSemester);
+      const hasEnglishOpposite = oppositeCourses.some(c => {
+        const info = getCourseInfo(c.courseId);
+        return info?.pathway === 'English' && info?.term_length === 'yearlong';
+      });
+
+      if (!hasEnglishOpposite) {
+        issues.push('Missing English course - required all 4 years');
+      }
+    }
+
+    // Check for PE (required grades 9-10)
+    if (yearInt === 9 || yearInt === 10) {
+      const hasPE = semesterCourses.some(c => {
+        const info = getCourseInfo(c.courseId);
+        return info?.pathway === 'Physical Education';
+      });
+
+      if (!hasPE) {
+        const oppositeSemester = semester === 'Fall' ? 'Spring' : 'Fall';
+        const oppositeCourses = getCoursesForSemester(year, oppositeSemester);
+        const hasPEOpposite = oppositeCourses.some(c => {
+          const info = getCourseInfo(c.courseId);
+          return info?.pathway === 'Physical Education' && info?.term_length === 'yearlong';
+        });
+
+        if (!hasPEOpposite) {
+          issues.push(`PE required for Grade ${year}`);
+        }
+      }
+    }
+
+    // Check for yearlong courses that should be in both semesters
+    semesterCourses.forEach(course => {
+      const courseInfo = getCourseInfo(course.courseId);
+      if (courseInfo?.term_length === 'yearlong') {
+        const oppositeSemester = semester === 'Fall' ? 'Spring' : 'Fall';
+        const oppositeCourses = getCoursesForSemester(year, oppositeSemester);
+        const hasOpposite = oppositeCourses.some(c => c.courseId === course.courseId);
+
+        if (!hasOpposite) {
+          issues.push(`Year-long course "${courseInfo.full_name}" must be in both Fall and Spring`);
+        }
+      }
+    });
+
+    // Check semester capacity (max 8 courses)
+    if (semesterCourses.length > 8) {
+      issues.push(`Overloaded schedule (${semesterCourses.length} courses). Maximum is 8 courses per semester.`);
+    } else if (semesterCourses.length >= 7) {
+      warnings.push(`Heavy course load (${semesterCourses.length} courses). Consider your workload carefully.`);
+    }
+
+    // Calculate credits for the semester
+    const semesterCredits = semesterCourses.reduce((sum, c) => {
+      const info = getCourseInfo(c.courseId);
+      return sum + (info ? info.credits : 0);
+    }, 0);
+
+    info.push(`${semesterCourses.length} courses scheduled`);
+    info.push(`${semesterCredits} credits for this semester`);
+
+    // Check UC A-G progress for juniors and seniors
+    if (yearInt >= 11) {
+      // Count total UC A-G courses completed up to this point
+      const yearsToCheck = yearInt === 11 ? ['9', '10', '11'] : ['9', '10', '11', '12'];
+      let agCoursesCompleted = 0;
+
+      yearsToCheck.forEach(checkYear => {
+        ['Fall', 'Spring'].forEach(checkSemester => {
+          // Only count if we're checking up to the current semester
+          if (parseInt(checkYear) < yearInt ||
+              (parseInt(checkYear) === yearInt && (checkSemester === 'Fall' || (checkSemester === 'Spring' && semester === 'Spring')))) {
+
+            const semCourses = getCoursesForSemester(checkYear, checkSemester);
+            semCourses.forEach(c => {
+              const info = getCourseInfo(c.courseId);
+              if (info?.uc_csu_category) {
+                agCoursesCompleted++;
+              }
+            });
+          }
+        });
+      });
+
+      // Remove duplicates (yearlong courses counted twice)
+      const uniqueAGCourses = new Set();
+      yearsToCheck.forEach(checkYear => {
+        ['Fall', 'Spring'].forEach(checkSemester => {
+          if (parseInt(checkYear) < yearInt ||
+              (parseInt(checkYear) === yearInt && (checkSemester === 'Fall' || (checkSemester === 'Spring' && semester === 'Spring')))) {
+
+            const semCourses = getCoursesForSemester(checkYear, checkSemester);
+            semCourses.forEach(c => {
+              const info = getCourseInfo(c.courseId);
+              if (info?.uc_csu_category) {
+                uniqueAGCourses.add(c.courseId);
+              }
+            });
+          }
+        });
+      });
+
+      const uniqueCount = uniqueAGCourses.size;
+
+      // UC requirement: 11 A-G courses by end of junior year
+      if (yearInt === 11 && semester === 'Spring') {
+        if (uniqueCount < 11) {
+          issues.push(`UC requirement: Need 11 A-G courses by end of junior year. Currently have ${uniqueCount}.`);
+        } else {
+          info.push(`✓ UC requirement met: ${uniqueCount} A-G courses by end of junior year`);
+        }
+      }
+
+      // Total requirement: 15 A-G courses by graduation
+      if (yearInt === 12 && semester === 'Spring') {
+        if (uniqueCount < 15) {
+          issues.push(`UC requirement: Need 15 A-G courses total for graduation. Currently have ${uniqueCount}.`);
+        } else {
+          info.push(`✓ UC requirement met: ${uniqueCount} A-G courses completed`);
+        }
+      }
+    }
+
+    return {
+      valid: issues.length === 0,
+      issues,
+      warnings,
+      info
+    };
+  };
+
+  // Handle marking semester as complete
+  const markSemesterComplete = (year, semester) => {
+    const validation = validateSemesterCompletion(year, semester);
+    setSemesterValidation({ year, semester, ...validation });
+
+    if (validation.valid) {
+      setCompletedSemesters(prev => ({
+        ...prev,
+        [`${year}-${semester}`]: true
+      }));
+    }
+  };
+
+  // Handle unmarking semester
+  const unmarkSemesterComplete = (year, semester) => {
+    setCompletedSemesters(prev => {
+      const newCompleted = { ...prev };
+      delete newCompleted[`${year}-${semester}`];
+      return newCompleted;
+    });
+    setSemesterValidation(null);
   };
 
   const addCourse = (year, semester) => {
@@ -1299,6 +1495,78 @@ function App() {
           {/* Main Content - 4-Year Grid */}
           <div className="lg:col-span-3">
 
+            {/* Semester Validation Modal */}
+            {semesterValidation && (
+              <div className="mb-4 bg-white border-2 border-gray-300 rounded-lg p-4 shadow-lg">
+                <div className="flex items-start justify-between mb-3">
+                  <h3 className="font-bold text-lg text-gray-900">
+                    {semesterValidation.semester} Semester - Grade {semesterValidation.year} Validation
+                  </h3>
+                  <button
+                    onClick={() => setSemesterValidation(null)}
+                    className="text-gray-400 hover:text-gray-600 text-xl font-bold"
+                  >
+                    ×
+                  </button>
+                </div>
+
+                {/* Issues (blocking) */}
+                {semesterValidation.issues.length > 0 && (
+                  <div className="mb-3 bg-red-50 border border-red-300 rounded-lg p-3">
+                    <div className="font-semibold text-red-800 mb-2 flex items-center gap-2">
+                      <AlertCircle size={18} className="text-red-600" />
+                      Issues Found
+                    </div>
+                    <ul className="list-disc list-inside space-y-1">
+                      {semesterValidation.issues.map((issue, idx) => (
+                        <li key={idx} className="text-sm text-red-800">{issue}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Warnings */}
+                {semesterValidation.warnings.length > 0 && (
+                  <div className="mb-3 bg-yellow-50 border border-yellow-300 rounded-lg p-3">
+                    <div className="font-semibold text-yellow-800 mb-2 flex items-center gap-2">
+                      <AlertCircle size={18} className="text-yellow-600" />
+                      Warnings
+                    </div>
+                    <ul className="list-disc list-inside space-y-1">
+                      {semesterValidation.warnings.map((warning, idx) => (
+                        <li key={idx} className="text-sm text-yellow-800">{warning}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Info */}
+                {semesterValidation.info.length > 0 && (
+                  <div className="mb-3 bg-blue-50 border border-blue-300 rounded-lg p-3">
+                    <div className="font-semibold text-blue-800 mb-2">Summary</div>
+                    <ul className="list-disc list-inside space-y-1">
+                      {semesterValidation.info.map((info, idx) => (
+                        <li key={idx} className="text-sm text-blue-800">{info}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Overall Status */}
+                {semesterValidation.valid ? (
+                  <div className="bg-green-50 border border-green-300 rounded-lg p-3 text-center">
+                    <div className="text-green-800 font-bold text-lg">✓ Semester Looks Good!</div>
+                    <div className="text-sm text-green-700 mt-1">No blocking issues found. You can proceed to the next semester.</div>
+                  </div>
+                ) : (
+                  <div className="bg-red-50 border border-red-300 rounded-lg p-3 text-center">
+                    <div className="text-red-800 font-bold text-lg">⚠ Issues Need Attention</div>
+                    <div className="text-sm text-red-700 mt-1">Please resolve the issues above before marking this semester as complete.</div>
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* Compact Warnings Row */}
             {(scheduleValidation.errors.length > 0 || englishWarnings.length > 0 || peWarnings.length > 0 || prereqWarnings.length > 0) && (
               <div className="flex flex-wrap gap-2 mb-4">
@@ -1384,17 +1652,38 @@ function App() {
                         const isOverloaded = semesterCourses.length >= 7;
                         const isMaxCapacity = semesterCourses.length >= 8;
 
+                        const isCompleted = completedSemesters[`${year}-${semester}`];
+
                         return (
                           <div key={semester} className="p-5">
                             <div className="flex items-center justify-between mb-4">
                               <h4 className="font-bold text-gray-700 text-base">
                                 {semester} {displayYear}
                               </h4>
-                              {isOverloaded && (
-                                <div className={`text-xs font-semibold px-2 py-1 rounded ${isMaxCapacity ? 'bg-red-100 text-red-700' : 'bg-orange-100 text-orange-700'}`}>
-                                  {isMaxCapacity ? '⚠ Max Load' : '⚠ Heavy Load'}
-                                </div>
-                              )}
+                              <div className="flex items-center gap-2">
+                                {isOverloaded && (
+                                  <div className={`text-xs font-semibold px-2 py-1 rounded ${isMaxCapacity ? 'bg-red-100 text-red-700' : 'bg-orange-100 text-orange-700'}`}>
+                                    {isMaxCapacity ? '⚠ Max Load' : '⚠ Heavy Load'}
+                                  </div>
+                                )}
+                                {semesterCourses.length > 0 && (
+                                  isCompleted ? (
+                                    <button
+                                      onClick={() => unmarkSemesterComplete(year, semester)}
+                                      className="text-xs font-semibold px-3 py-1 rounded bg-green-100 text-green-700 hover:bg-green-200 border border-green-300"
+                                    >
+                                      ✓ Done
+                                    </button>
+                                  ) : (
+                                    <button
+                                      onClick={() => markSemesterComplete(year, semester)}
+                                      className="text-xs font-semibold px-3 py-1 rounded bg-blue-100 text-blue-700 hover:bg-blue-200 border border-blue-300"
+                                    >
+                                      Mark Done
+                                    </button>
+                                  )
+                                )}
+                              </div>
                             </div>
 
                           {/* 6 Course Slots */}
