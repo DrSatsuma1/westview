@@ -14,12 +14,13 @@ const schedulingEngine = new SchedulingEngine(courseCatalogData.courses);
 
 const WESTVIEW_REQUIREMENTS = {
   'English': { needed: 40, pathways: ['English'] },
-  'Math': { needed: 30, pathways: ['Mathematics'] },
-  'Science': { needed: 30, pathways: ['Science - Biological', 'Science - Physical'] },
+  'Math': { needed: 30, pathways: ['Math'] },
+  'Science': { needed: 30, pathways: ['Science'] },
   'History': { needed: 30, pathways: ['History/Social Science'] },
-  'World Language': { needed: 20, pathways: ['World Language'] },
-  'Arts': { needed: 10, pathways: ['Visual & Performing Arts'] },
-  'Electives': { needed: 50, pathways: ['Elective'] }
+  'Foreign Language': { needed: 20, pathways: ['Foreign Language'] },
+  'Fine Arts': { needed: 10, pathways: ['Fine Arts'] },
+  'PE': { needed: 20, pathways: ['Physical Education'] },
+  'Electives': { needed: 50, pathways: ['Electives', 'CTE'] }
 };
 
 const AG_REQUIREMENTS = {
