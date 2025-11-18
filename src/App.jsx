@@ -52,7 +52,12 @@ const COURSE_CATALOG = {
   
   // Non-A-G Courses
   'ENS-1-2': { name: 'ENS 1-2 (PE/Health)', credits: 10, ag: null, category: 'PE' },
-  'ENS-3-4': { name: 'ENS 3-4 (PE)', credits: 10, ag: null, category: 'PE' }
+  'ENS-3-4': { name: 'ENS 3-4 (PE)', credits: 10, ag: null, category: 'PE' },
+
+  // School Service Courses
+  'ACAD-TUTOR': { name: 'Academic Tutor', credits: 5, ag: null, category: 'Elective', schoolService: true },
+  'LIB-TA': { name: 'Library & Information Science TA', credits: 5, ag: null, category: 'Elective', schoolService: true },
+  'WORK-EXP': { name: 'Work Experience', credits: 10, ag: null, category: 'Elective', schoolService: true, workExperience: true }
 };
 
 const GRADE_OPTIONS = ['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D+', 'D', 'D-', 'F'];
@@ -86,7 +91,8 @@ const HS_REQUIREMENTS = {
 function App() {
   const [courses, setCourses] = useState([]);
   const [isAddingCourse, setIsAddingCourse] = useState(false);
-  const [newCourse, setNewCourse] = useState({ courseId: '', grade: 'A' });
+  const [newCourse, setNewCourse] = useState({ courseId: '', grade: 'A', year: '9', semester: 'Fall' });
+  const [validationError, setValidationError] = useState(null);
 
   // Calculate UC/CSU A-G progress
   const agProgress = useMemo(() => {
@@ -120,17 +126,45 @@ function App() {
   // Calculate HS graduation progress
   const hsProgress = useMemo(() => {
     const progress = {};
+
+    // Calculate Academic Tutor/Library TA credits (max 10 combined)
+    const tutorTACourses = courses.filter(c => {
+      const courseInfo = COURSE_CATALOG[c.courseId];
+      return (c.courseId === 'ACAD-TUTOR' || c.courseId === 'LIB-TA') && c.grade !== 'F';
+    });
+    const tutorTACredits = tutorTACourses.reduce((sum, c) => {
+      const courseInfo = COURSE_CATALOG[c.courseId];
+      return sum + courseInfo.credits;
+    }, 0);
+    const cappedTutorTACredits = Math.min(tutorTACredits, 10);
+
     Object.keys(HS_REQUIREMENTS).forEach(category => {
       const relevantCourses = courses.filter(c => {
         const courseInfo = COURSE_CATALOG[c.courseId];
         return courseInfo.category === category && c.grade !== 'F'; // D or better
       });
-      
-      const earned = relevantCourses.reduce((sum, c) => {
+
+      let earned = relevantCourses.reduce((sum, c) => {
         const courseInfo = COURSE_CATALOG[c.courseId];
+        // For Elective category, apply the Academic Tutor/Library TA cap
+        if (category === 'Elective' && (c.courseId === 'ACAD-TUTOR' || c.courseId === 'LIB-TA')) {
+          // Don't add these yet, we'll add the capped total
+          return sum;
+        }
         return sum + courseInfo.credits;
       }, 0);
-      
+
+      // Add capped Academic Tutor/Library TA credits to Elective
+      if (category === 'Elective') {
+        earned += cappedTutorTACredits;
+      }
+
+      // Apply credit caps
+      // No more than 40 credits of PE may be applied toward graduation
+      if (category === 'PE') {
+        earned = Math.min(earned, 40);
+      }
+
       progress[category] = {
         earned,
         needed: HS_REQUIREMENTS[category].needed,
@@ -166,10 +200,110 @@ function App() {
       }));
   }, [agProgress]);
 
+  // Calculate credit cap warnings
+  const creditCapWarnings = useMemo(() => {
+    const warnings = [];
+
+    // Check PE credits
+    const peCredits = courses
+      .filter(c => COURSE_CATALOG[c.courseId].category === 'PE' && c.grade !== 'F')
+      .reduce((sum, c) => sum + COURSE_CATALOG[c.courseId].credits, 0);
+    if (peCredits > 40) {
+      warnings.push({
+        type: 'PE',
+        message: `You have ${peCredits} PE credits, but only 40 can count toward graduation. ${peCredits - 40} credits will not count.`
+      });
+    }
+
+    // Check Academic Tutor/Library TA credits
+    const tutorTACredits = courses
+      .filter(c => (c.courseId === 'ACAD-TUTOR' || c.courseId === 'LIB-TA') && c.grade !== 'F')
+      .reduce((sum, c) => sum + COURSE_CATALOG[c.courseId].credits, 0);
+    if (tutorTACredits > 10) {
+      warnings.push({
+        type: 'TUTOR_TA',
+        message: `You have ${tutorTACredits} credits from Academic Tutor/Library TA, but only 10 can count toward graduation. ${tutorTACredits - 10} credits will not count.`
+      });
+    }
+
+    return warnings;
+  }, [courses]);
+
   const addCourse = () => {
     if (newCourse.courseId) {
+      const courseInfo = COURSE_CATALOG[newCourse.courseId];
+      setValidationError(null);
+
+      // Get courses in the same semester
+      const coursesInSameSemester = courses.filter(
+        c => c.year === newCourse.year && c.semester === newCourse.semester
+      );
+
+      // Check for school service course restrictions
+      if (courseInfo.schoolService) {
+        // Rule: No more than one school service course per semester
+        const schoolServiceInSemester = coursesInSameSemester.filter(c => {
+          const info = COURSE_CATALOG[c.courseId];
+          return info.schoolService;
+        });
+
+        if (schoolServiceInSemester.length > 0) {
+          setValidationError(
+            `Cannot add ${courseInfo.name}. Only one school service course is allowed per semester. ` +
+            `You already have ${COURSE_CATALOG[schoolServiceInSemester[0].courseId].name} in ` +
+            `Grade ${newCourse.year} ${newCourse.semester}.`
+          );
+          return;
+        }
+
+        // Rule: Work Experience max 10 credits per term
+        if (courseInfo.workExperience) {
+          const workExpInSemester = coursesInSameSemester.filter(c => c.courseId === 'WORK-EXP');
+          const workExpCredits = workExpInSemester.reduce((sum, c) => {
+            return sum + COURSE_CATALOG[c.courseId].credits;
+          }, 0);
+
+          if (workExpCredits + courseInfo.credits > 10) {
+            setValidationError(
+              `Cannot add ${courseInfo.name}. Maximum of 10 credits in Work Experience may be earned in one term. ` +
+              `You already have ${workExpCredits} credits in Grade ${newCourse.year} ${newCourse.semester}.`
+            );
+            return;
+          }
+        }
+      }
+
+      // Rule: Cannot take other school service classes while enrolled in Work Experience
+      const hasWorkExpInSemester = coursesInSameSemester.some(c =>
+        COURSE_CATALOG[c.courseId].workExperience
+      );
+
+      if (hasWorkExpInSemester && courseInfo.schoolService && !courseInfo.workExperience) {
+        setValidationError(
+          `Cannot add ${courseInfo.name}. Other school service classes may not be taken by students enrolled in Work Experience ` +
+          `in Grade ${newCourse.year} ${newCourse.semester}.`
+        );
+        return;
+      }
+
+      if (!hasWorkExpInSemester && courseInfo.workExperience) {
+        const otherSchoolServiceInSemester = coursesInSameSemester.filter(c => {
+          const info = COURSE_CATALOG[c.courseId];
+          return info.schoolService && !info.workExperience;
+        });
+
+        if (otherSchoolServiceInSemester.length > 0) {
+          setValidationError(
+            `Cannot add ${courseInfo.name}. Other school service classes may not be taken while enrolled in Work Experience. ` +
+            `Remove ${COURSE_CATALOG[otherSchoolServiceInSemester[0].courseId].name} first.`
+          );
+          return;
+        }
+      }
+
+      // All validations passed, add the course
       setCourses([...courses, { ...newCourse, id: Date.now() }]);
-      setNewCourse({ courseId: '', grade: 'A' });
+      setNewCourse({ courseId: '', grade: 'A', year: '9', semester: 'Fall' });
       setIsAddingCourse(false);
     }
   };
@@ -187,6 +321,17 @@ function App() {
             UC/CSU A-G Course Planner
           </h1>
           <p className="text-gray-600">Westview High School • Poway Unified School District</p>
+        </div>
+
+        {/* Credit Limitations Info */}
+        <div className="bg-blue-50 border border-blue-300 rounded-lg p-4 mb-6">
+          <h3 className="font-semibold text-blue-900 mb-2">Important Credit Limitations</h3>
+          <ul className="text-sm text-blue-800 space-y-1 list-disc list-inside">
+            <li>Maximum 40 credits of Physical Education count toward graduation</li>
+            <li>Maximum 10 credits total from Academic Tutor or Library & Information Science TA</li>
+            <li>Only 1 school service course allowed per semester</li>
+            <li>Work Experience: Maximum 10 credits per term; cannot take other school service courses in the same semester</li>
+          </ul>
         </div>
 
         {/* PRIORITY 1: UC/CSU DEFICIENCIES - Show problems first and largest */}
@@ -236,6 +381,31 @@ function App() {
           </div>
         )}
 
+        {/* CREDIT CAP WARNINGS */}
+        {creditCapWarnings.length > 0 && (
+          <div className="bg-orange-50 border-2 border-orange-400 rounded-lg p-6 mb-6">
+            <div className="flex items-start gap-3 mb-3">
+              <AlertCircle className="text-orange-600 flex-shrink-0 mt-1" size={28} />
+              <div>
+                <h2 className="text-xl font-bold text-orange-900 mb-1">
+                  Credit Limit Warnings
+                </h2>
+                <p className="text-orange-700">
+                  Some credits may not count toward graduation due to credit limits:
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-2 ml-11">
+              {creditCapWarnings.map((warning, idx) => (
+                <div key={idx} className="bg-white rounded-md p-3 border border-orange-200">
+                  <p className="text-gray-900">{warning.message}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Course List */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
           <div className="flex justify-between items-center mb-4">
@@ -252,6 +422,14 @@ function App() {
           {isAddingCourse && (
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
               <h3 className="font-semibold text-gray-900 mb-3">Add New Course</h3>
+
+              {validationError && (
+                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                  <strong className="font-bold">Error: </strong>
+                  <span>{validationError}</span>
+                </div>
+              )}
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <select
                   value={newCourse.courseId}
@@ -265,7 +443,7 @@ function App() {
                     </option>
                   ))}
                 </select>
-                
+
                 <select
                   value={newCourse.grade}
                   onChange={(e) => setNewCourse({ ...newCourse, grade: e.target.value })}
@@ -274,6 +452,26 @@ function App() {
                   {GRADE_OPTIONS.map(grade => (
                     <option key={grade} value={grade}>{grade}</option>
                   ))}
+                </select>
+
+                <select
+                  value={newCourse.year}
+                  onChange={(e) => setNewCourse({ ...newCourse, year: e.target.value })}
+                  className="border border-gray-300 rounded-md p-2"
+                >
+                  <option value="9">Grade 9</option>
+                  <option value="10">Grade 10</option>
+                  <option value="11">Grade 11</option>
+                  <option value="12">Grade 12</option>
+                </select>
+
+                <select
+                  value={newCourse.semester}
+                  onChange={(e) => setNewCourse({ ...newCourse, semester: e.target.value })}
+                  className="border border-gray-300 rounded-md p-2"
+                >
+                  <option value="Fall">Fall Semester</option>
+                  <option value="Spring">Spring Semester</option>
                 </select>
               </div>
               
@@ -323,6 +521,7 @@ function App() {
                       <div className="flex items-center gap-4 mt-1 text-sm">
                         <span className="text-gray-600">Grade: <strong>{course.grade}</strong></span>
                         <span className="text-gray-600">{courseInfo.credits} credits</span>
+                        <span className="text-gray-600">Grade {course.year} - {course.semester}</span>
                         {courseInfo.ag && (
                           <span className={`font-semibold ${passesUC ? 'text-green-600' : 'text-red-600'}`}>
                             {passesUC ? '✓ Counts for UC/CSU' : '✗ Too low for UC/CSU (need C)'}
