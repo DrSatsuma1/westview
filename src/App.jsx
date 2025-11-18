@@ -1239,78 +1239,14 @@ function App() {
       <header className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-start justify-between gap-6">
-            <div>
+            <div className="flex-1">
               <h1 className="text-3xl font-bold text-gray-900">Westview High School Course Planner</h1>
-              <p className="text-gray-600 mt-1">Plan your path through high school</p>
-            </div>
-
-            <div className="flex gap-4">
-              {/* Early Graduation Mode Toggle */}
-              <div className="bg-gray-50 border-2 border-gray-200 rounded-lg p-4 min-w-[280px]">
-                <div className="flex items-center gap-3 mb-2">
-                  <input
-                    type="checkbox"
-                    id="earlyGradMode"
-                    checked={earlyGradMode.enabled}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setEarlyGradMode({ enabled: true, targetYear: '3year' });
-                      } else {
-                        setEarlyGradMode({ enabled: false, targetYear: null });
-                      }
-                    }}
-                    className="w-5 h-5 text-blue-600"
-                  />
-                  <label htmlFor="earlyGradMode" className="text-sm font-bold text-gray-900 cursor-pointer">
-                    Early Graduation Mode
-                  </label>
-                </div>
-
-                {earlyGradMode.enabled && (
-                  <div className="ml-8 space-y-2">
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="earlyGradTarget"
-                        checked={earlyGradMode.targetYear === '3year'}
-                        onChange={() => setEarlyGradMode({ enabled: true, targetYear: '3year' })}
-                        className="w-4 h-4 text-blue-600"
-                      />
-                      <span className="text-sm text-gray-700">3 years (end of 11th grade)</span>
-                    </label>
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="earlyGradTarget"
-                        checked={earlyGradMode.targetYear === '3.5year'}
-                        onChange={() => setEarlyGradMode({ enabled: true, targetYear: '3.5year' })}
-                        className="w-4 h-4 text-blue-600"
-                      />
-                      <span className="text-sm text-gray-700">3.5 years (mid 12th grade)</span>
-                    </label>
-                  </div>
-                )}
-
-                {/* Eligibility indicator */}
-                {earlyGradEligibility.creditsThrough11 >= 170 && (
-                  <div className="mt-3 pt-3 border-t border-gray-300">
-                    <div className="text-xs font-bold text-green-700">
-                      ✓ Eligible: {earlyGradEligibility.creditsThrough11} credits through Grade 11
-                    </div>
-                    {!earlyGradEligibility.hasSeniorEnglish && (
-                      <div className="text-xs text-orange-600 mt-1">⚠ Need Senior English in Grade 11</div>
-                    )}
-                    {!earlyGradEligibility.hasCivicsEcon && (
-                      <div className="text-xs text-orange-600 mt-1">⚠ Need Civics/Economics in Grade 11</div>
-                    )}
-                  </div>
-                )}
-              </div>
+              <p className="text-gray-600 mt-1 mb-3">Plan your path through high school</p>
 
               {/* CTE Pathway Selection */}
-              <div className="bg-gray-50 border-2 border-gray-200 rounded-lg p-4">
+              <div className="bg-gray-50 border-2 border-gray-200 rounded-lg p-4 inline-block">
                 <p className="text-sm font-bold text-gray-900 mb-3">CTE Pathways</p>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-4 gap-2">
                   <button
                     onClick={() => setCtePathwayMode(prev =>
                       prev.pathway === 'business' ? { enabled: false, pathway: null } : { enabled: true, pathway: 'business' }
@@ -1396,32 +1332,98 @@ function App() {
                     Production Arts
                   </button>
                 </div>
+              </div>
+            </div>
 
-                {/* Pathway progress indicator */}
-                {ctePathwayMode.enabled && ctePathwayProgress.totalRequired > 0 && (
+            <div className="flex gap-4">
+              {/* Early Graduation Mode Toggle */}
+              <div className="bg-gray-50 border-2 border-gray-200 rounded-lg p-4 min-w-[280px]">
+                <div className="flex items-center gap-3 mb-2">
+                  <input
+                    type="checkbox"
+                    id="earlyGradMode"
+                    checked={earlyGradMode.enabled}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setEarlyGradMode({ enabled: true, targetYear: '3year' });
+                      } else {
+                        setEarlyGradMode({ enabled: false, targetYear: null });
+                      }
+                    }}
+                    className="w-5 h-5 text-blue-600"
+                  />
+                  <label htmlFor="earlyGradMode" className="text-sm font-bold text-gray-900 cursor-pointer">
+                    Early Graduation Mode
+                  </label>
+                </div>
+
+                {earlyGradMode.enabled && (
+                  <div className="ml-8 space-y-2">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="earlyGradTarget"
+                        checked={earlyGradMode.targetYear === '3year'}
+                        onChange={() => setEarlyGradMode({ enabled: true, targetYear: '3year' })}
+                        className="w-4 h-4 text-blue-600"
+                      />
+                      <span className="text-sm text-gray-700">3 years (end of 11th grade)</span>
+                    </label>
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="earlyGradTarget"
+                        checked={earlyGradMode.targetYear === '3.5year'}
+                        onChange={() => setEarlyGradMode({ enabled: true, targetYear: '3.5year' })}
+                        className="w-4 h-4 text-blue-600"
+                      />
+                      <span className="text-sm text-gray-700">3.5 years (mid 12th grade)</span>
+                    </label>
+                  </div>
+                )}
+
+                {/* Eligibility indicator */}
+                {earlyGradEligibility.creditsThrough11 >= 170 && (
                   <div className="mt-3 pt-3 border-t border-gray-300">
-                    <div className="text-xs font-bold text-purple-700 mb-2">
-                      {ctePathwayProgress.pathwayName}
+                    <div className="text-xs font-bold text-green-700">
+                      ✓ Eligible: {earlyGradEligibility.creditsThrough11} credits through Grade 11
                     </div>
-                    <div className="text-xs text-gray-700 mb-1">
-                      Courses: {ctePathwayProgress.totalCompleted}/{ctePathwayProgress.totalRequired}
-                      {ctePathwayProgress.hasConcentrator && <span className="ml-2">• Concentrator ✓</span>}
-                      {ctePathwayProgress.capstoneCount > 0 && <span className="ml-2">• {ctePathwayProgress.capstoneCount} Capstone{ctePathwayProgress.capstoneCount > 1 ? 's' : ''} ✓</span>}
-                    </div>
-                    {ctePathwayProgress.isPathwayCompleter ? (
-                      <div className="text-xs font-bold text-green-700 mt-2 p-2 bg-green-50 rounded border border-green-200">
-                        🎓 {ctePathwayProgress.completionStatus}
-                      </div>
-                    ) : (
-                      <div className="text-xs text-orange-600 mt-1">
-                        {ctePathwayProgress.completionStatus}
-                      </div>
+                    {!earlyGradEligibility.hasSeniorEnglish && (
+                      <div className="text-xs text-orange-600 mt-1">⚠ Need Senior English in Grade 11</div>
+                    )}
+                    {!earlyGradEligibility.hasCivicsEcon && (
+                      <div className="text-xs text-orange-600 mt-1">⚠ Need Civics/Economics in Grade 11</div>
                     )}
                   </div>
                 )}
               </div>
             </div>
           </div>
+
+          {/* Pathway progress indicator */}
+          {ctePathwayMode.enabled && ctePathwayProgress.totalRequired > 0 && (
+            <div className="mt-4">
+              <div className="bg-purple-50 border-2 border-purple-200 rounded-lg p-4">
+                <div className="text-sm font-bold text-purple-900 mb-2">
+                  {ctePathwayProgress.pathwayName}
+                </div>
+                <div className="text-xs text-gray-700 mb-1">
+                  Courses: {ctePathwayProgress.totalCompleted}/{ctePathwayProgress.totalRequired}
+                  {ctePathwayProgress.hasConcentrator && <span className="ml-2">• Concentrator ✓</span>}
+                  {ctePathwayProgress.capstoneCount > 0 && <span className="ml-2">• {ctePathwayProgress.capstoneCount} Capstone{ctePathwayProgress.capstoneCount > 1 ? 's' : ''} ✓</span>}
+                </div>
+                {ctePathwayProgress.isPathwayCompleter ? (
+                  <div className="text-xs font-bold text-green-700 mt-2 p-2 bg-green-50 rounded border border-green-200">
+                    🎓 {ctePathwayProgress.completionStatus}
+                  </div>
+                ) : (
+                  <div className="text-xs text-orange-600 mt-1">
+                    {ctePathwayProgress.completionStatus}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </header>
 
