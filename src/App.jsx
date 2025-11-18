@@ -1,58 +1,25 @@
 import React, { useState, useMemo } from 'react';
 import { Plus, CheckCircle2, AlertCircle, Circle, GraduationCap, Award } from 'lucide-react';
+import courseCatalogData from './data/courses_complete.json';
+import { SchedulingEngine } from './scheduling/SchedulingEngine.js';
 
-// Course catalog - same data, new design
-const COURSE_CATALOG = {
-  'MATH-I': { name: 'Integrated Math I', credits: 10, ag: 'C', category: 'Math' },
-  'MATH-II': { name: 'Integrated Math II', credits: 10, ag: 'C', category: 'Math' },
-  'MATH-III': { name: 'Integrated Math III', credits: 10, ag: 'C', category: 'Math' },
-  'AP-PRECALC': { name: 'AP Pre-Calculus', credits: 10, ag: 'C', category: 'Math', ap: true, yearLong: true },
-  'AP-CALC-AB': { name: 'AP Calculus AB', credits: 10, ag: 'C', category: 'Math', ap: true, yearLong: true },
-  'AP-CALC-BC': { name: 'AP Calculus BC', credits: 10, ag: 'C', category: 'Math', ap: true },
-  'AP-STATS': { name: 'AP Statistics', credits: 10, ag: 'C', category: 'Math', ap: true, yearLong: true },
-  'ENG-1-2': { name: 'English 1-2', credits: 10, ag: 'B', category: 'English' },
-  'ENG-3-4': { name: 'English 3-4', credits: 10, ag: 'B', category: 'English' },
-  'ENG-AM-LIT': { name: 'American Literature', credits: 10, ag: 'B', category: 'English' },
-  'AP-ENG-LANG': { name: 'AP English Language', credits: 10, ag: 'B', category: 'English', ap: true },
-  'AP-ENG-LIT': { name: 'AP English Literature', credits: 10, ag: 'B', category: 'English', ap: true, yearLong: true },
-  'BIO': { name: 'Biology', credits: 10, ag: 'D', category: 'Life Science' },
-  'CHEM': { name: 'Chemistry', credits: 10, ag: 'D', category: 'Physical Science' },
-  'PHYSICS': { name: 'Physics', credits: 10, ag: 'D', category: 'Physical Science' },
-  'AP-BIO': { name: 'AP Biology', credits: 10, ag: 'D', category: 'Life Science', ap: true, yearLong: true },
-  'AP-CHEM': { name: 'AP Chemistry', credits: 10, ag: 'D', category: 'Physical Science', ap: true, yearLong: true },
-  'AP-PHYSICS': { name: 'AP Physics', credits: 10, ag: 'D', category: 'Physical Science', ap: true, yearLong: true },
-  'WORLD-HIST': { name: 'World History', credits: 10, ag: 'A', category: 'History' },
-  'US-HIST': { name: 'US History', credits: 10, ag: 'A', category: 'History' },
-  'AP-WORLD': { name: 'AP World History', credits: 10, ag: 'A', category: 'History', ap: true, yearLong: true },
-  'AP-US-HIST': { name: 'AP US History', credits: 10, ag: 'A', category: 'History', ap: true, yearLong: true },
-  'CIVICS-ECON': { name: 'Civics/Economics', credits: 10, ag: 'A', category: 'Social Science' },
-  'AP-GOV': { name: 'AP U.S. Government', credits: 10, ag: 'A', category: 'Social Science', ap: true, yearLong: true },
-  'SPAN-1-2': { name: 'Spanish 1-2', credits: 10, ag: 'E', category: 'Foreign Language', years: 1 },
-  'SPAN-3-4': { name: 'Spanish 3-4', credits: 10, ag: 'E', category: 'Foreign Language', years: 1 },
-  'SPAN-5-6': { name: 'Spanish 5-6', credits: 10, ag: 'E', category: 'Foreign Language', years: 3 },
-  'AP-SPAN': { name: 'AP Spanish Language', credits: 10, ag: 'E', category: 'Foreign Language', ap: true, yearLong: true },
-  'FRENCH-1-2': { name: 'French 1-2', credits: 10, ag: 'E', category: 'Foreign Language', years: 1 },
-  'FRENCH-3-4': { name: 'French 3-4', credits: 10, ag: 'E', category: 'Foreign Language', years: 1 },
-  'CERAMICS': { name: 'Ceramics', credits: 10, ag: 'F', category: 'Visual Arts' },
-  'DRAMA-1-2': { name: 'Drama 1-2', credits: 10, ag: 'F', category: 'Performing Arts' },
-  'BAND': { name: 'Band', credits: 10, ag: 'F', category: 'Performing Arts' },
-  'AP-COMP-SCI': { name: 'AP Computer Science', credits: 10, ag: 'G', category: 'Elective', ap: true, yearLong: true },
-  'PLTW-IED': { name: 'PLTW Engineering', credits: 10, ag: 'G', category: 'Elective' },
-  'ENS-1-2': { name: 'PE/Health', credits: 10, ag: null, category: 'PE' },
-  'ENS-3-4': { name: 'PE', credits: 10, ag: null, category: 'PE' },
-  'ACAD-TUTOR': { name: 'Academic Tutor', credits: 5, ag: null, category: 'Elective', schoolService: true },
-  'LIB-TA': { name: 'Library TA', credits: 5, ag: null, category: 'Elective', schoolService: true },
-  'WORK-EXP': { name: 'Work Experience', credits: 10, ag: null, category: 'Elective', schoolService: true, workExperience: true }
-};
+// Load course catalog from JSON
+const COURSE_CATALOG = courseCatalogData.courses.reduce((acc, course) => {
+  acc[course.course_id] = course;
+  return acc;
+}, {});
+
+// Initialize scheduling engine
+const schedulingEngine = new SchedulingEngine(courseCatalogData.courses);
 
 const WESTVIEW_REQUIREMENTS = {
-  'English': { needed: 40, categories: ['English'] },
-  'Math': { needed: 30, categories: ['Math'] },
-  'Science': { needed: 30, categories: ['Life Science', 'Physical Science'] },
-  'History': { needed: 30, categories: ['History', 'Social Science'] },
-  'PE': { needed: 20, categories: ['PE'] },
-  'Arts': { needed: 10, categories: ['Visual Arts', 'Performing Arts'] },
-  'Electives': { needed: 70, categories: ['Elective'] }
+  'English': { needed: 40, pathways: ['English'] },
+  'Math': { needed: 30, pathways: ['Mathematics'] },
+  'Science': { needed: 30, pathways: ['Science - Biological', 'Science - Physical'] },
+  'History': { needed: 30, pathways: ['History/Social Science'] },
+  'World Language': { needed: 20, pathways: ['World Language'] },
+  'Arts': { needed: 10, pathways: ['Visual & Performing Arts'] },
+  'Electives': { needed: 50, pathways: ['Elective'] }
 };
 
 const AG_REQUIREMENTS = {
@@ -69,7 +36,8 @@ const GRADE_OPTIONS = ['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D+', 
 
 function App() {
   const [courses, setCourses] = useState([]);
-  const [showAddCourse, setShowAddCourse] = useState(null); // null or { year, semester }
+  const [showAddCourse, setShowAddCourse] = useState(null); // null or { year, semester, slot }
+  const [selectedCategory, setSelectedCategory] = useState(''); // Track selected category
   const [newCourse, setNewCourse] = useState({ courseId: '' });
   const [error, setError] = useState(null);
 
@@ -79,7 +47,7 @@ function App() {
     Object.entries(WESTVIEW_REQUIREMENTS).forEach(([name, req]) => {
       const relevantCourses = courses.filter(c => {
         const info = COURSE_CATALOG[c.courseId];
-        return req.categories.includes(info.category);
+        return info && req.pathways.includes(info.pathway);
       });
 
       const credits = relevantCourses.reduce((sum, c) => sum + COURSE_CATALOG[c.courseId].credits, 0);
@@ -96,30 +64,10 @@ function App() {
   const totalCredits = Object.values(westviewProgress).reduce((sum, p) => sum + p.earned, 0);
   const westviewGraduationReady = totalCredits >= 230 && Object.values(westviewProgress).every(p => p.met);
 
-  // Check for missing English in completed years
-  const englishWarnings = useMemo(() => {
-    const warnings = [];
-    ['9', '10', '11', '12'].forEach(year => {
-      const fallCourses = getCoursesForSemester(year, 'Fall');
-      const springCourses = getCoursesForSemester(year, 'Spring');
-
-      // Consider a year "completed" if it has courses in both Fall and Spring
-      const hasCoursesInBothSemesters = fallCourses.length > 0 && springCourses.length > 0;
-
-      if (hasCoursesInBothSemesters) {
-        const allYearCourses = [...fallCourses, ...springCourses];
-        const hasEnglish = allYearCourses.some(c => {
-          const info = COURSE_CATALOG[c.courseId];
-          return info.category === 'English';
-        });
-
-        if (!hasEnglish) {
-          warnings.push(year);
-        }
-      }
-    });
-    return warnings;
-  }, [courses]);
+  // Get courses for a specific semester (defined before useMemo that uses it)
+  const getCoursesForSemester = (year, semester) => {
+    return courses.filter(c => c.year === year && c.semester === semester);
+  };
 
   // Calculate UC/CSU progress
   const agProgress = useMemo(() => {
@@ -127,11 +75,12 @@ function App() {
     Object.keys(AG_REQUIREMENTS).forEach(cat => {
       const relevantCourses = courses.filter(c => {
         const info = COURSE_CATALOG[c.courseId];
-        return info.ag === cat;
+        return info && info.uc_csu_category === cat;
       });
 
+      // For language courses, count years based on term_length
       let years = cat === 'E'
-        ? relevantCourses.reduce((sum, c) => sum + (COURSE_CATALOG[c.courseId].years || 1), 0)
+        ? relevantCourses.length  // Each yearlong course = 1 year
         : relevantCourses.length;
 
       progress[cat] = {
@@ -145,15 +94,59 @@ function App() {
 
   const ucsuEligible = Object.values(agProgress).every(p => p.met);
 
-  // Get courses for a specific semester
-  const getCoursesForSemester = (year, semester) => {
-    return courses.filter(c => c.year === year && c.semester === semester);
-  };
+  // Validate schedule using SchedulingEngine
+  const scheduleValidation = useMemo(() => {
+    const validation = { errors: [], warnings: [] };
+
+    ['9', '10', '11', '12'].forEach(year => {
+      const fallCourses = getCoursesForSemester(year, 'Fall');
+      const springCourses = getCoursesForSemester(year, 'Spring');
+
+      const schedule = {
+        fall: fallCourses.map(c => c.courseId),
+        spring: springCourses.map(c => c.courseId)
+      };
+
+      // Use scheduling engine to validate
+      const result = schedulingEngine.validateSchedule(schedule);
+      if (!result.valid) {
+        result.errors.forEach(err => {
+          validation.errors.push({ ...err, year });
+        });
+      }
+
+      // Check for missing English in completed years
+      const hasCoursesInBothSemesters = fallCourses.length > 0 && springCourses.length > 0;
+      if (hasCoursesInBothSemesters) {
+        const allYearCourses = [...fallCourses, ...springCourses];
+        const hasEnglish = allYearCourses.some(c => {
+          const info = COURSE_CATALOG[c.courseId];
+          return info && info.pathway === 'English';
+        });
+
+        if (!hasEnglish) {
+          validation.warnings.push({
+            type: 'missing_english',
+            year,
+            message: `Missing English in Grade ${year}`
+          });
+        }
+      }
+    });
+
+    return validation;
+  }, [courses]);
+
+  const englishWarnings = scheduleValidation.warnings
+    .filter(w => w.type === 'missing_english')
+    .map(w => w.year);
 
   const addCourse = (year, semester) => {
     if (!newCourse.courseId) return;
 
     const courseInfo = COURSE_CATALOG[newCourse.courseId];
+    if (!courseInfo) return;
+
     setError(null);
 
     // Check for duplicate course in same semester
@@ -164,14 +157,17 @@ function App() {
       return;
     }
 
+    // Use scheduling engine to get term requirements
+    const termReqs = schedulingEngine.getTermRequirements(newCourse.courseId);
+
     // Year-long validation
-    if (courseInfo.yearLong && semester === 'Spring') {
+    if (termReqs.requiresBothSemesters && semester === 'Spring') {
       setError('Year-long courses must start in Fall');
       return;
     }
 
     // Check if year-long course would duplicate in Spring semester
-    if (courseInfo.yearLong && semester === 'Fall') {
+    if (termReqs.requiresBothSemesters && semester === 'Fall') {
       const springSemesterCourses = getCoursesForSemester(year, 'Spring');
       const alreadyInSpring = springSemesterCourses.some(c => c.courseId === newCourse.courseId);
       if (alreadyInSpring) {
@@ -180,17 +176,15 @@ function App() {
       }
     }
 
-    // School service validation
-    if (courseInfo.schoolService) {
-      const schoolServiceInSem = semesterCourses.filter(c => COURSE_CATALOG[c.courseId].schoolService);
-      if (schoolServiceInSem.length > 0) {
-        setError('Only 1 school service course per semester');
-        return;
-      }
+    // Check if course can be scheduled in this semester
+    const semesterName = semester.toLowerCase();
+    if (!schedulingEngine.canScheduleInSemester(newCourse.courseId, semesterName)) {
+      setError(`This course is not offered in ${semester}`);
+      return;
     }
 
-    // Add course(s)
-    if (courseInfo.yearLong && semester === 'Fall') {
+    // Add course(s) - yearlong courses automatically add to both semesters
+    if (termReqs.requiresBothSemesters && semester === 'Fall') {
       const fall = { ...newCourse, id: Date.now(), year, semester: 'Fall' };
       const spring = { ...newCourse, id: Date.now() + 1, year, semester: 'Spring' };
       setCourses([...courses, fall, spring]);
@@ -199,12 +193,27 @@ function App() {
     }
 
     setNewCourse({ courseId: '' });
+    setSelectedCategory('');
     setShowAddCourse(null);
   };
 
   const removeCourse = (id) => {
     setCourses(courses.filter(c => c.id !== id));
   };
+
+  // Get unique pathways for course selection
+  const pathways = useMemo(() => {
+    const uniquePathways = [...new Set(Object.values(COURSE_CATALOG).map(c => c.pathway))];
+    return uniquePathways.sort();
+  }, []);
+
+  // Get courses for selected pathway
+  const coursesInPathway = useMemo(() => {
+    if (!selectedCategory) return [];
+    return Object.entries(COURSE_CATALOG)
+      .filter(([_, course]) => course.pathway === selectedCategory)
+      .map(([id, course]) => ({ id, ...course }));
+  }, [selectedCategory]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -221,6 +230,25 @@ function App() {
 
           {/* Main Content - 4-Year Grid */}
           <div className="lg:col-span-3">
+
+            {/* Schedule Validation Errors */}
+            {scheduleValidation.errors.length > 0 && (
+              <div className="bg-red-50 border-2 border-red-400 rounded-xl p-4 mb-6">
+                <div className="flex items-start gap-3">
+                  <AlertCircle className="text-red-600 flex-shrink-0 mt-0.5" size={24} />
+                  <div>
+                    <h3 className="font-bold text-red-900 text-lg">Schedule Issues Detected</h3>
+                    <div className="mt-2 space-y-1">
+                      {scheduleValidation.errors.map((err, idx) => (
+                        <p key={idx} className="text-red-800">
+                          Grade {err.year}: {err.message}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* English Warning */}
             {englishWarnings.length > 0 && (
@@ -239,19 +267,27 @@ function App() {
 
             {/* 4-Year Course Grid */}
             <div className="space-y-6">
-              {['9', '10', '11', '12'].map(year => (
-                <div key={year} className="bg-white rounded-xl border-2 border-gray-200 overflow-hidden">
-                  <div className="bg-gray-100 px-6 py-4 border-b-2 border-gray-200">
-                    <h3 className="text-xl font-bold text-gray-900">Grade {year}</h3>
-                  </div>
-                  <div className="grid grid-cols-2 divide-x divide-gray-200">
-                    {['Fall', 'Spring'].map(semester => {
-                      const semesterCourses = getCoursesForSemester(year, semester);
-                      const slots = Array.from({ length: 6 }, (_, i) => semesterCourses[i] || null);
+              {['9', '10', '11', '12'].map((year, yearIndex) => {
+                const baseYear = 2025 + yearIndex;
+                const fallYear = baseYear;
+                const springYear = baseYear + 1;
 
-                      return (
-                        <div key={semester} className="p-5">
-                          <h4 className="font-bold text-gray-700 mb-4 text-base">{semester}</h4>
+                return (
+                  <div key={year} className="bg-white rounded-xl border-2 border-gray-200 overflow-hidden">
+                    <div className="bg-gray-100 px-6 py-4 border-b-2 border-gray-200">
+                      <h3 className="text-xl font-bold text-gray-900">Grade {year}</h3>
+                    </div>
+                    <div className="grid grid-cols-2 divide-x divide-gray-200">
+                      {['Fall', 'Spring'].map(semester => {
+                        const semesterCourses = getCoursesForSemester(year, semester);
+                        const slots = Array.from({ length: 6 }, (_, i) => semesterCourses[i] || null);
+                        const displayYear = semester === 'Fall' ? fallYear : springYear;
+
+                        return (
+                          <div key={semester} className="p-5">
+                            <h4 className="font-bold text-gray-700 mb-4 text-base">
+                              {semester} {displayYear}
+                            </h4>
 
                           {/* 6 Course Slots */}
                           <div className="space-y-2">
@@ -261,21 +297,24 @@ function App() {
                               if (course) {
                                 // Filled slot with course
                                 const info = COURSE_CATALOG[course.courseId];
+                                const isYearLong = info.term_length === 'yearlong';
                                 return (
                                   <div key={course.id} className="bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition-colors border border-gray-200">
                                     <div className="flex items-start justify-between gap-2">
                                       <div className="flex-1 min-w-0">
                                         <div className="flex items-center gap-1.5">
-                                          {info.ap && <Award className="text-purple-600 flex-shrink-0" size={16} />}
-                                          <div className="font-medium text-base text-gray-900 truncate">{info.name}</div>
+                                          {info.is_ap_or_honors_pair && <Award className="text-purple-600 flex-shrink-0" size={16} />}
+                                          <div className="font-medium text-base text-gray-900 truncate">{info.full_name}</div>
                                         </div>
                                         <div className="text-sm text-gray-600 mt-1">
-                                          {info.ag && (
+                                          {info.uc_csu_category && (
                                             <span className="text-blue-600 font-medium">
-                                              {AG_REQUIREMENTS[info.ag].short}
+                                              {AG_REQUIREMENTS[info.uc_csu_category]?.short || info.uc_csu_category}
                                             </span>
                                           )}
-                                          {info.ag && ' • '}{info.credits} cr
+                                          {info.uc_csu_category && ' • '}
+                                          {info.credits} cr
+                                          {isYearLong && ' • Year-long'}
                                         </div>
                                       </div>
                                       <button
@@ -296,34 +335,69 @@ function App() {
                                         {error}
                                       </div>
                                     )}
-                                    <select
-                                      value={newCourse.courseId}
-                                      onChange={(e) => setNewCourse({ courseId: e.target.value })}
-                                      className="w-full border border-gray-300 rounded px-3 py-2 text-sm mb-2"
-                                      autoFocus
-                                    >
-                                      <option value="">Select course...</option>
-                                      {Object.entries(COURSE_CATALOG).map(([id, course]) => (
-                                        <option key={id} value={id}>
-                                          {course.name} {course.ag ? `(${course.ag})` : ''}
-                                        </option>
-                                      ))}
-                                    </select>
-                                    <div className="flex gap-2">
-                                      <button
-                                        onClick={() => addCourse(year, semester)}
-                                        disabled={!newCourse.courseId}
-                                        className="flex-1 bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 text-sm font-medium disabled:bg-gray-300"
-                                      >
-                                        Add
-                                      </button>
-                                      <button
-                                        onClick={() => setShowAddCourse(null)}
-                                        className="flex-1 bg-gray-200 text-gray-700 px-3 py-2 rounded hover:bg-gray-300 text-sm font-medium"
-                                      >
-                                        Cancel
-                                      </button>
-                                    </div>
+
+                                    {/* Step 1: Select Pathway */}
+                                    {!selectedCategory ? (
+                                      <>
+                                        <p className="text-xs text-gray-600 mb-2 font-medium">Select a subject:</p>
+                                        <div className="grid grid-cols-2 gap-2 mb-2">
+                                          {pathways.map(pathway => (
+                                            <button
+                                              key={pathway}
+                                              onClick={() => setSelectedCategory(pathway)}
+                                              className="bg-white border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 rounded px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-700 transition-colors"
+                                            >
+                                              {pathway}
+                                            </button>
+                                          ))}
+                                        </div>
+                                      </>
+                                    ) : (
+                                      <>
+                                        {/* Step 2: Select Course */}
+                                        <div className="flex items-center justify-between mb-2">
+                                          <p className="text-xs text-gray-600 font-medium">{selectedCategory}</p>
+                                          <button
+                                            onClick={() => setSelectedCategory('')}
+                                            className="text-xs text-blue-600 hover:text-blue-700 font-medium"
+                                          >
+                                            ← Change Subject
+                                          </button>
+                                        </div>
+                                        <select
+                                          value={newCourse.courseId}
+                                          onChange={(e) => setNewCourse({ courseId: e.target.value })}
+                                          className="w-full border border-gray-300 rounded px-3 py-2 text-sm mb-2"
+                                          autoFocus
+                                        >
+                                          <option value="">Select course...</option>
+                                          {coursesInPathway.map(course => (
+                                            <option key={course.id} value={course.id}>
+                                              {course.full_name}
+                                            </option>
+                                          ))}
+                                        </select>
+                                        <div className="flex gap-2">
+                                          <button
+                                            onClick={() => addCourse(year, semester)}
+                                            disabled={!newCourse.courseId}
+                                            className="flex-1 bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 text-sm font-medium disabled:bg-gray-300"
+                                          >
+                                            Add
+                                          </button>
+                                          <button
+                                            onClick={() => {
+                                              setShowAddCourse(null);
+                                              setSelectedCategory('');
+                                              setNewCourse({ courseId: '' });
+                                            }}
+                                            className="flex-1 bg-gray-200 text-gray-700 px-3 py-2 rounded hover:bg-gray-300 text-sm font-medium"
+                                          >
+                                            Cancel
+                                          </button>
+                                        </div>
+                                      </>
+                                    )}
                                   </div>
                                 );
                               } else {
@@ -331,7 +405,11 @@ function App() {
                                 return (
                                   <button
                                     key={`slot-${slotIndex}`}
-                                    onClick={() => setShowAddCourse({ year, semester, slot: slotIndex })}
+                                    onClick={() => {
+                                      setShowAddCourse({ year, semester, slot: slotIndex });
+                                      setSelectedCategory('');
+                                      setNewCourse({ courseId: '' });
+                                    }}
                                     className="w-full bg-white rounded-lg p-3 border-2 border-dashed border-gray-300 hover:border-blue-400 hover:bg-blue-50 transition-colors text-gray-400 hover:text-blue-600 text-sm font-medium flex items-center justify-center min-h-[56px]"
                                   >
                                     <Plus size={18} className="mr-1" />
@@ -342,23 +420,25 @@ function App() {
                             })}
                           </div>
                         </div>
-                      );
-                    })}
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
           {/* Sidebar - Requirements */}
           <div className="space-y-6">
             {/* Westview Graduation Requirements */}
-            <div className="bg-white rounded-xl border border-gray-200 p-6 sticky top-6">
+            <div className="bg-white rounded-xl border border-gray-200 p-6">
               <h3 className="text-lg font-bold text-gray-900 mb-2">Westview Graduation</h3>
               <p className="text-sm text-gray-600 mb-4">230 credits required</p>
               <div className="space-y-4">
                 {Object.entries(WESTVIEW_REQUIREMENTS).map(([name, req]) => {
                   const prog = westviewProgress[name];
+                  if (!prog) return null;
                   const pct = Math.min((prog.earned / prog.needed) * 100, 100);
                   return (
                     <div key={name}>
