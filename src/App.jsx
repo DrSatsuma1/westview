@@ -41,6 +41,7 @@ function App() {
   const [selectedCategory, setSelectedCategory] = useState(''); // Track selected category
   const [newCourse, setNewCourse] = useState({ courseId: '' });
   const [error, setError] = useState(null);
+  const [warning, setWarning] = useState(null);
 
   // Calculate Westview graduation progress
   const westviewProgress = useMemo(() => {
@@ -116,10 +117,12 @@ function App() {
         });
       }
 
-      // Check for missing English in completed years
+      // Check for missing mandatory courses in years with courses
       const hasCoursesInBothSemesters = fallCourses.length > 0 && springCourses.length > 0;
       if (hasCoursesInBothSemesters) {
         const allYearCourses = [...fallCourses, ...springCourses];
+
+        // Check for English (required all 4 years)
         const hasEnglish = allYearCourses.some(c => {
           const info = COURSE_CATALOG[c.courseId];
           return info && info.pathway === 'English';
@@ -132,6 +135,79 @@ function App() {
             message: `Missing English in Grade ${year}`
           });
         }
+
+        // Check for PE (required at least 2 years, typically 9 and 10)
+        const hasPE = allYearCourses.some(c => {
+          const info = COURSE_CATALOG[c.courseId];
+          return info && info.pathway === 'Physical Education';
+        });
+
+        if (!hasPE && (year === '9' || year === '10')) {
+          validation.warnings.push({
+            type: 'missing_pe',
+            year,
+            message: `Missing PE in Grade ${year}`
+          });
+        }
+      }
+    });
+
+    // Check for foreign language prerequisite gaps across all courses
+    courses.forEach(course => {
+      const courseInfo = COURSE_CATALOG[course.courseId];
+      if (!courseInfo || courseInfo.pathway !== 'Foreign Language') return;
+
+      const courseName = courseInfo.full_name.toUpperCase();
+      let language = null;
+      let level = null;
+
+      // Detect language
+      if (courseName.includes('SPANISH')) language = 'Spanish';
+      else if (courseName.includes('CHINESE')) language = 'Chinese';
+      else if (courseName.includes('FRENCH')) language = 'French';
+      else if (courseName.includes('FILIPINO')) language = 'Filipino';
+      else if (courseName.includes('GERMAN')) language = 'German';
+      else if (courseName.includes('JAPANESE')) language = 'Japanese';
+      else if (courseName.includes('LATIN')) language = 'Latin';
+
+      if (!language) return;
+
+      // Detect level
+      const levelPatterns = ['1-2', '3-4', '5-6', '7-8', '9-10'];
+      for (const pattern of levelPatterns) {
+        if (courseName.includes(pattern)) {
+          level = pattern;
+          break;
+        }
+      }
+
+      if (!level || level === '1-2') return;
+
+      // Check for previous levels
+      const previousLevels = {
+        '3-4': ['1-2'],
+        '5-6': ['1-2', '3-4'],
+        '7-8': ['1-2', '3-4', '5-6'],
+        '9-10': ['1-2', '3-4', '5-6', '7-8']
+      };
+
+      const requiredLevels = previousLevels[level] || [];
+      const allCourseNames = courses.map(c => COURSE_CATALOG[c.courseId]?.full_name?.toUpperCase() || '');
+
+      const missingLevels = requiredLevels.filter(reqLevel => {
+        const hasLevel = allCourseNames.some(name =>
+          name.includes(language.toUpperCase()) && name.includes(reqLevel)
+        );
+        return !hasLevel;
+      });
+
+      if (missingLevels.length > 0) {
+        const missingWithLanguage = missingLevels.map(lvl => `${language} ${lvl}`);
+        validation.warnings.push({
+          type: 'missing_prerequisites',
+          year: course.year,
+          message: `${language} ${level} missing prerequisites: ${missingWithLanguage.join(', ')}`
+        });
       }
     });
 
@@ -142,6 +218,80 @@ function App() {
     .filter(w => w.type === 'missing_english')
     .map(w => w.year);
 
+  const peWarnings = scheduleValidation.warnings
+    .filter(w => w.type === 'missing_pe')
+    .map(w => w.year);
+
+  const prereqWarnings = scheduleValidation.warnings
+    .filter(w => w.type === 'missing_prerequisites');
+
+  // Helper function to check for missing foreign language prerequisites
+  const checkForeignLanguagePrereqs = (courseId) => {
+    const courseInfo = COURSE_CATALOG[courseId];
+    if (!courseInfo || courseInfo.pathway !== 'Foreign Language') {
+      return null;
+    }
+
+    const courseName = courseInfo.full_name.toUpperCase();
+
+    // Extract language and level
+    let language = null;
+    let level = null;
+
+    // Detect language
+    if (courseName.includes('SPANISH')) language = 'SPANISH';
+    else if (courseName.includes('CHINESE')) language = 'CHINESE';
+    else if (courseName.includes('FRENCH')) language = 'FRENCH';
+    else if (courseName.includes('FILIPINO')) language = 'FILIPINO';
+    else if (courseName.includes('GERMAN')) language = 'GERMAN';
+    else if (courseName.includes('JAPANESE')) language = 'JAPANESE';
+    else if (courseName.includes('LATIN')) language = 'LATIN';
+
+    if (!language) return null;
+
+    // Detect level
+    const levelPatterns = ['1-2', '3-4', '5-6', '7-8', '9-10'];
+    for (const pattern of levelPatterns) {
+      if (courseName.includes(pattern)) {
+        level = pattern;
+        break;
+      }
+    }
+
+    if (!level) return null;
+
+    // If level is 1-2, no prerequisites needed
+    if (level === '1-2') return null;
+
+    // Check for previous levels in schedule
+    const previousLevels = {
+      '3-4': ['1-2'],
+      '5-6': ['1-2', '3-4'],
+      '7-8': ['1-2', '3-4', '5-6'],
+      '9-10': ['1-2', '3-4', '5-6', '7-8']
+    };
+
+    const requiredLevels = previousLevels[level] || [];
+    const scheduledCourses = courses.map(c => COURSE_CATALOG[c.courseId]?.full_name?.toUpperCase() || '');
+
+    const missingLevels = requiredLevels.filter(reqLevel => {
+      const hasLevel = scheduledCourses.some(name =>
+        name.includes(language) && name.includes(reqLevel)
+      );
+      return !hasLevel;
+    });
+
+    if (missingLevels.length > 0) {
+      return {
+        language: language.charAt(0) + language.slice(1).toLowerCase(),
+        currentLevel: level,
+        missingLevels: missingLevels
+      };
+    }
+
+    return null;
+  };
+
   const addCourse = (year, semester) => {
     if (!newCourse.courseId) return;
 
@@ -149,6 +299,76 @@ function App() {
     if (!courseInfo) return;
 
     setError(null);
+    setWarning(null);
+
+    // Check for AP Calculus AB/BC conflict (blocks adding)
+    const courseName = courseInfo.full_name.toUpperCase();
+    if (courseName.includes('AP CALCULUS')) {
+      const allCourses = courses.map(c => ({
+        info: COURSE_CATALOG[c.courseId],
+        year: c.year
+      }));
+
+      // Check if trying to add AP Calc AB when they have BC (or vice versa)
+      if (courseName.includes('CALCULUS AB')) {
+        const hasBC = allCourses.some(c =>
+          c.info && c.info.full_name.toUpperCase().includes('AP CALCULUS BC')
+        );
+        if (hasBC) {
+          setError('Cannot take AP Calculus AB and BC - choose one');
+          return;
+        }
+      } else if (courseName.includes('CALCULUS BC')) {
+        const hasAB = allCourses.some(c =>
+          c.info && c.info.full_name.toUpperCase().includes('AP CALCULUS AB')
+        );
+        if (hasAB) {
+          setError('Cannot take AP Calculus AB and BC - choose one');
+          return;
+        }
+      }
+    }
+
+    // Check for English course sequence violations (blocks adding)
+    if (courseInfo.pathway === 'English') {
+      const allCourses = courses.map(c => COURSE_CATALOG[c.courseId]);
+
+      // Check if trying to add English 1-2 when they already have 3-4
+      if (courseName.includes('ENGLISH 1-2') || courseName.includes('ENGLISH IA-IB')) {
+        const hasHigherEnglish = allCourses.some(c =>
+          c && c.pathway === 'English' &&
+          (c.full_name.toUpperCase().includes('ENGLISH 3-4') ||
+           c.full_name.toUpperCase().includes('ENGLISH IIA-IIB') ||
+           c.full_name.toUpperCase().includes('ENGLISH 5-6') ||
+           c.full_name.toUpperCase().includes('ENGLISH 7-8'))
+        );
+        if (hasHigherEnglish) {
+          setError('Cannot add English 1-2 after completing higher-level English courses');
+          return;
+        }
+      }
+
+      // Check if trying to add English 3-4 when they already have 5-6 or higher
+      if (courseName.includes('ENGLISH 3-4') || courseName.includes('ENGLISH IIA-IIB')) {
+        const hasHigherEnglish = allCourses.some(c =>
+          c && c.pathway === 'English' &&
+          (c.full_name.toUpperCase().includes('ENGLISH 5-6') ||
+           c.full_name.toUpperCase().includes('ENGLISH 7-8'))
+        );
+        if (hasHigherEnglish) {
+          setError('Cannot add English 3-4 after completing higher-level English courses');
+          return;
+        }
+      }
+    }
+
+    // Check for foreign language prerequisites (warning only, doesn't block)
+    const prereqCheck = checkForeignLanguagePrereqs(newCourse.courseId);
+    if (prereqCheck) {
+      setWarning(
+        `You're adding ${prereqCheck.language} ${prereqCheck.currentLevel} without completing: ${prereqCheck.missingLevels.join(', ')}. Have you met the prerequisites?`
+      );
+    }
 
     // Check for duplicate course in same semester
     const semesterCourses = getCoursesForSemester(year, semester);
@@ -156,6 +376,39 @@ function App() {
     if (alreadyHasCourse) {
       setError('This course is already in this semester');
       return;
+    }
+
+    // Check for multiple courses of same foreign language in same semester
+    if (courseInfo.pathway === 'Foreign Language') {
+      const isLiteratureCourse = courseName.includes('LITERATURE') || courseName.includes('LIT');
+
+      if (!isLiteratureCourse) {
+        // Detect which language
+        let language = null;
+        if (courseName.includes('SPANISH')) language = 'Spanish';
+        else if (courseName.includes('CHINESE')) language = 'Chinese';
+        else if (courseName.includes('FRENCH')) language = 'French';
+        else if (courseName.includes('FILIPINO')) language = 'Filipino';
+        else if (courseName.includes('GERMAN')) language = 'German';
+        else if (courseName.includes('JAPANESE')) language = 'Japanese';
+        else if (courseName.includes('LATIN')) language = 'Latin';
+
+        if (language) {
+          const hasSameLanguage = semesterCourses.some(c => {
+            const cInfo = COURSE_CATALOG[c.courseId];
+            if (!cInfo || cInfo.pathway !== 'Foreign Language') return false;
+            const cName = cInfo.full_name.toUpperCase();
+            const isLit = cName.includes('LITERATURE') || cName.includes('LIT');
+            // Check if same language and not literature
+            return !isLit && cName.includes(language.toUpperCase());
+          });
+
+          if (hasSameLanguage) {
+            setError(`Cannot take two ${language} courses in the same semester`);
+            return;
+          }
+        }
+      }
     }
 
     // Use scheduling engine to get term requirements
@@ -196,6 +449,7 @@ function App() {
     setNewCourse({ courseId: '' });
     setSelectedCategory('');
     setShowAddCourse(null);
+    // Don't clear warning here - let it persist so user sees the prerequisite warning
   };
 
   const removeCourse = (id) => {
@@ -233,7 +487,7 @@ function App() {
           <div className="lg:col-span-3">
 
             {/* Compact Warnings Row */}
-            {(scheduleValidation.errors.length > 0 || englishWarnings.length > 0) && (
+            {(scheduleValidation.errors.length > 0 || englishWarnings.length > 0 || peWarnings.length > 0 || prereqWarnings.length > 0) && (
               <div className="flex flex-wrap gap-2 mb-4">
                 {/* Schedule Validation Errors */}
                 {scheduleValidation.errors.length > 0 && (
@@ -260,6 +514,32 @@ function App() {
                     </div>
                   </div>
                 )}
+
+                {/* PE Warning */}
+                {peWarnings.length > 0 && (
+                  <div className="bg-yellow-50 border border-yellow-400 rounded-lg px-3 py-2 flex items-center gap-2 flex-1 min-w-fit">
+                    <AlertCircle className="text-yellow-600 flex-shrink-0" size={16} />
+                    <div className="text-sm text-yellow-800">
+                      <span className="font-semibold">Missing PE:</span>{' '}
+                      Grade{peWarnings.length > 1 ? 's' : ''} {peWarnings.join(', ')}
+                    </div>
+                  </div>
+                )}
+
+                {/* Prerequisite Warnings */}
+                {prereqWarnings.length > 0 && (
+                  <div className="bg-orange-50 border border-orange-400 rounded-lg px-3 py-2 flex items-center gap-2 flex-1 min-w-fit">
+                    <AlertCircle className="text-orange-600 flex-shrink-0" size={16} />
+                    <div className="text-sm text-orange-800">
+                      <span className="font-semibold">Prerequisites:</span>{' '}
+                      {prereqWarnings.map((w, idx) => (
+                        <span key={idx}>
+                          {idx > 0 && ' • '}{w.message}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
@@ -280,6 +560,12 @@ function App() {
                         const semesterCourses = getCoursesForSemester(year, semester);
                         const slots = Array.from({ length: 6 }, (_, i) => semesterCourses[i] || null);
                         const displayYear = semester === 'Fall' ? fallYear : springYear;
+
+                        // Calculate semester credits
+                        const semesterCredits = semesterCourses.reduce((sum, c) => {
+                          const info = COURSE_CATALOG[c.courseId];
+                          return sum + (info ? info.credits : 0);
+                        }, 0);
 
                         return (
                           <div key={semester} className="p-5">
@@ -333,6 +619,11 @@ function App() {
                                         {error}
                                       </div>
                                     )}
+                                    {warning && (
+                                      <div className="bg-yellow-100 border border-yellow-400 text-yellow-900 px-3 py-2 rounded text-sm mb-2">
+                                        {warning}
+                                      </div>
+                                    )}
 
                                     {/* Step 1: Select Pathway */}
                                     {!selectedCategory ? (
@@ -342,7 +633,15 @@ function App() {
                                           {pathways.map(pathway => (
                                             <button
                                               key={pathway}
-                                              onClick={() => setSelectedCategory(pathway)}
+                                              onClick={() => {
+                                                if (pathway === 'Off-Roll') {
+                                                  // Auto-add Off-Roll course without showing dropdown
+                                                  setNewCourse({ courseId: 'OFF_ROLL_PLACEHOLDER' });
+                                                  setTimeout(() => addCourse(year, semester), 0);
+                                                } else {
+                                                  setSelectedCategory(pathway);
+                                                }
+                                              }}
                                               className="bg-white border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 rounded px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-700 transition-colors"
                                             >
                                               {pathway}
@@ -458,6 +757,8 @@ function App() {
                                               setShowAddCourse(null);
                                               setSelectedCategory('');
                                               setNewCourse({ courseId: '' });
+                                              setError(null);
+                                              setWarning(null);
                                             }}
                                             className="flex-1 bg-gray-200 text-gray-700 px-3 py-2 rounded hover:bg-gray-300 text-sm font-medium"
                                           >
@@ -477,6 +778,8 @@ function App() {
                                       setShowAddCourse({ year, semester, slot: slotIndex });
                                       setSelectedCategory('');
                                       setNewCourse({ courseId: '' });
+                                      setError(null);
+                                      setWarning(null);
                                     }}
                                     className="w-full bg-white rounded-lg p-3 border-2 border-dashed border-gray-300 hover:border-blue-400 hover:bg-blue-50 transition-colors text-gray-400 hover:text-blue-600 text-sm font-medium flex items-center justify-center min-h-[56px]"
                                   >
@@ -487,10 +790,39 @@ function App() {
                               }
                             })}
                           </div>
+
+                          {/* Semester Credit Total */}
+                          {semesterCourses.length > 0 && (
+                            <div className="mt-3 pt-3 border-t border-gray-300">
+                              <div className="text-sm font-semibold text-gray-700">
+                                Semester Total: {semesterCredits} credits
+                              </div>
+                            </div>
+                          )}
                         </div>
                         );
                       })}
                     </div>
+
+                    {/* Year Total */}
+                    {(() => {
+                      const fallCourses = getCoursesForSemester(year, 'Fall');
+                      const springCourses = getCoursesForSemester(year, 'Spring');
+                      const yearCredits = [...fallCourses, ...springCourses].reduce((sum, c) => {
+                        const info = COURSE_CATALOG[c.courseId];
+                        return sum + (info ? info.credits : 0);
+                      }, 0);
+
+                      if (fallCourses.length > 0 || springCourses.length > 0) {
+                        return (
+                          <div className="bg-gray-50 px-6 py-3 border-t-2 border-gray-200">
+                            <div className="text-base font-bold text-gray-900">
+                              Year Total: {yearCredits} credits
+                            </div>
+                          </div>
+                        );
+                      }
+                    })()}
                   </div>
                 );
               })}

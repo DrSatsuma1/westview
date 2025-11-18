@@ -13,7 +13,7 @@
       "grades_allowed": [
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "History/Social Science",
@@ -41,7 +41,7 @@
       "notes": "Recommended Prerequisites: U.S. History or AP United States History (APUSH) For students interested in: College level in depth exploration of U.S. Government and its practices Length of Course: Year-Long, linked w/Civics & Economics U.S. Government & Politics (Advanced Placement) is designed to give students a critical perspective on government, politics and economics in the United States. The class involves both the study of general concepts used to interpret American governmental, political an"
     },
     {
-      "course_id": "AP_UNITED_0013",
+      "course_id": "AP_UNITED",
       "full_name": "AP UNITED STATES HISTORY 1-2",
       "course_numbers": [
         "001382",
@@ -50,7 +50,7 @@
       "grades_allowed": [
         11
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "History/Social Science",
@@ -87,7 +87,7 @@
       "grades_allowed": [
         10
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "History/Social Science",
@@ -124,7 +124,7 @@
       "grades_allowed": [
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "History/Social Science",
@@ -149,7 +149,7 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: U.S. History or AP United States History (APUSH) Alternate Course ID Numbers: Civics/Economics (yearlong with AP US Government) 091393-091398, or Civics/Economics (Hybrid - Online & In Person) 811393-811398 Civics surveys the origins of our federal, state and local governments and studies their structure, function, theory and process. It promotes citizenship skill building by serving the community in an \u201coutside project\u201d and prepares students for the political and soci"
+      "notes": "Recommended Prerequisites: U.S. History or AP United States History (APUSH) Alternate Course ID Numbers: Civics/Economics (yearlong with AP US Government) 091393-091398, or Civics/Economics (Hybrid - Online & In Person) 811393-811398 Civics surveys the origins of our federal, state and local governments and studies their structure, function, theory and process. It promotes citizenship skill building by serving the community in an “outside project” and prepares students for the political and soci"
     },
     {
       "course_id": "HON_WORLD_0013",
@@ -161,7 +161,7 @@
       "grades_allowed": [
         10
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "History/Social Science",
@@ -198,7 +198,7 @@
       "grades_allowed": [
         11
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "History/Social Science",
@@ -235,7 +235,7 @@
       "grades_allowed": [
         10
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "History/Social Science",
@@ -272,7 +272,7 @@
       "grades_allowed": [
         11
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "History/Social Science",
@@ -310,7 +310,7 @@
         11,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "History/Social Science",
@@ -338,7 +338,7 @@
       "notes": "Recommended Prerequisites: Honors Humanities 1-2 or High School English 3-4 For students interested in: Advanced reading and composition In this class students will read, discuss, and write about non-fiction texts, focusing on text analysis, rhetorical strategies, and vocabulary development to prepare them for the AP Language Exam. As an advanced reading and composition course, students should be interested in advancing their skills in writing and rhetoric. Students will study the techniques tha"
     },
     {
-      "course_id": "AP_ENGLISH_0003",
+      "course_id": "AP_ENGLISH",
       "full_name": "AP ENGLISH LITERATURE 1-2",
       "course_numbers": [
         "000370",
@@ -347,11 +347,11 @@
       "grades_allowed": [
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "English",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -384,11 +384,11 @@
       "grades_allowed": [
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "English",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -409,7 +409,7 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: American Literature, Honors American Literature For students interested in: Seek exposure to British Literature Length of Course: Year-Long, linked w/AP English Literature 1-2 British Literature 1-2 is a course that acquaints students with various genres and themes of literature produced by Irish, English, and Scottish writers. The course will develop students\u2019 techniques in reading, writing, speaking, and presenting. While individual courses may vary, students will ge"
+      "notes": "Recommended Prerequisites: American Literature, Honors American Literature For students interested in: Seek exposure to British Literature Length of Course: Year-Long, linked w/AP English Literature 1-2 British Literature 1-2 is a course that acquaints students with various genres and themes of literature produced by Irish, English, and Scottish writers. The course will develop students’ techniques in reading, writing, speaking, and presenting. While individual courses may vary, students will ge"
     },
     {
       "course_id": "ETHNIC_LITERATURE_0003",
@@ -421,7 +421,7 @@
       "grades_allowed": [
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "History/Social Science",
@@ -458,11 +458,11 @@
       "grades_allowed": [
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "English",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -495,11 +495,11 @@
       "grades_allowed": [
         9
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "English",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -523,7 +523,7 @@
       "notes": "Recommended Prerequisites: None For students interested in: Traditional 9th grade English course Alternate Course ID Numbers: High School English 1-2 (with AVID 1-2) 099301-099302 HS English 1-2 builds on knowledge and skills developed in middle school. Students will continue to develop their thinking-in-writing by practicing a variety of writing modes including description, narration, and literary analysis. Students will learn the basics of the academic essay, developing their understanding of "
     },
     {
-      "course_id": "HIGH_SCHOOL_0003",
+      "course_id": "HIGH_SCHOOL",
       "full_name": "HIGH SCHOOL ENGLISH 3-4",
       "course_numbers": [
         "000310",
@@ -532,11 +532,11 @@
       "grades_allowed": [
         10
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "English",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -569,7 +569,7 @@
       "grades_allowed": [
         11
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "History/Social Science",
@@ -606,11 +606,11 @@
       "grades_allowed": [
         9
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "English",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -631,7 +631,7 @@
       "is_graduation_requirement": true,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: None For students interested in: Students who enjoy and are successful in Language Arts. Students will read novels, short stories, drama, poetry, and an array of short non-fiction texts. They will write argument, narrative, and informative/explanatory essays. In addition to analyzing literature, they will also apply critical thinking to study art and the media. This course may be used to meet the UC/CSU \u201cB\u201d requirement."
+      "notes": "Recommended Prerequisites: None For students interested in: Students who enjoy and are successful in Language Arts. Students will read novels, short stories, drama, poetry, and an array of short non-fiction texts. They will write argument, narrative, and informative/explanatory essays. In addition to analyzing literature, they will also apply critical thinking to study art and the media. This course may be used to meet the UC/CSU “B” requirement."
     },
     {
       "course_id": "HON_HUMANITIES_0003",
@@ -643,7 +643,7 @@
       "grades_allowed": [
         10
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "History/Social Science",
@@ -668,7 +668,7 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: High School English 1-2 or Honors High School English 1-2 For students interested in: Preparing for more rigorous Language Arts Honors Humanities is an academically challenging and rigorous study of the arts and literature throughout history. The course studies man\u2019s relationship with society, nature and himself. Students write in a variety of essay modes including: informative/explanatory, argumentative, narrative, and research. The course involves library research, o"
+      "notes": "Recommended Prerequisites: High School English 1-2 or Honors High School English 1-2 For students interested in: Preparing for more rigorous Language Arts Honors Humanities is an academically challenging and rigorous study of the arts and literature throughout history. The course studies man’s relationship with society, nature and himself. Students write in a variety of essay modes including: informative/explanatory, argumentative, narrative, and research. The course involves library research, o"
     },
     {
       "course_id": "WORLD_LITERATURE_0003",
@@ -680,11 +680,11 @@
       "grades_allowed": [
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "English",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -718,11 +718,11 @@
         11,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "English",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -756,7 +756,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Math",
@@ -794,7 +794,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Math",
@@ -822,7 +822,7 @@
       "notes": "Recommended Prerequisites: Advanced Functions Analysis or Integrated Math III For students interested in: Pursue a rigorous exploration of math applications in science and business Length of Course: Year-Long, linked w/AP Pre-Calculus 1-2 This course is a college-level class for students who have completed the equivalent of four years of college preparatory mathematics. Topics include derivatives, differentials, integrations, and applications. Many problems are atypical and require students to s"
     },
     {
-      "course_id": "AP_CALCULUS_0010",
+      "course_id": "AP_CALCULUS",
       "full_name": "AP CALCULUS BC 1-2",
       "course_numbers": [
         "001062",
@@ -832,7 +832,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Math",
@@ -857,7 +857,7 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: AP Calculus AB For students interested in: Pursue a rigorous exploration of math theory and applications This course is for students who have completed four years of college preparatory math including Calculus AB. Students will receive little or no review of Calculus AB material. Students are strongly encouraged to take \u201cCalculus BC Review 4.5\u201d for review of Calculus AB content. New topics covered include parametric equations, vector functions, indeterminate forms of l"
+      "notes": "Recommended Prerequisites: AP Calculus AB For students interested in: Pursue a rigorous exploration of math theory and applications This course is for students who have completed four years of college preparatory math including Calculus AB. Students will receive little or no review of Calculus AB material. Students are strongly encouraged to take “Calculus BC Review 4.5” for review of Calculus AB content. New topics covered include parametric equations, vector functions, indeterminate forms of l"
     },
     {
       "course_id": "AP_PRECALCULUS_0010",
@@ -870,7 +870,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Math",
@@ -908,7 +908,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Math",
@@ -982,7 +982,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Math",
@@ -1020,7 +1020,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Math",
@@ -1058,9 +1058,9 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
-      "uc_csu_category": null,
+      "uc_csu_category": "C",
       "pathway": "Math",
       "term_length": "yearlong",
       "offered_terms": [
@@ -1086,7 +1086,7 @@
       "notes": "Recommended Prerequisites: None Alternate Course ID Numbers: Integrated Math Ia-Ib (with Academic Success) 801012-801013 The fundamental purpose of Integrated Mathematics I is to formalize and extend the mathematics that students learned in the middle grades. The critical areas, organized into units, deepen and extend understanding of linear relationships, in part by contrasting them with exponential phenomena, and in part by applying linear models to data that exhibit a linear trend. Integrated"
     },
     {
-      "course_id": "INTEGRATED_MATHEMATICS_0010",
+      "course_id": "INTEGRATED_MATHEMATICS",
       "full_name": "INTEGRATED MATHEMATICS IIa-IIb",
       "course_numbers": [
         "001016",
@@ -1096,7 +1096,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Math",
@@ -1124,7 +1124,7 @@
       "notes": "Recommended Prerequisites: Integrated Mathematics Ia-Ib Alternate Course ID Numbers: Integrated Math IIa-IIb (with Academic Success) 051016-051017 The focus of Integrated Mathematics II is on quadratic expressions, equations, and functions; comparing their characteristics and behavior to those of linear and exponential relationships from Integrated Mathematics I as organized into 6 critical areas, or units. The need for extending the set of rational numbers arises and real and complex numbers ar"
     },
     {
-      "course_id": "INTEGRATED_MATHEMATICS_0010",
+      "course_id": "INTEGRATED_MATHEMATICS_0001",
       "full_name": "INTEGRATED MATHEMATICS IIIa-IIIb",
       "course_numbers": [
         "001018",
@@ -1134,7 +1134,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Math",
@@ -1171,7 +1171,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Math",
@@ -1209,7 +1209,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Science - Biological",
@@ -1247,7 +1247,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Science - Biological",
@@ -1285,7 +1285,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Science - Biological",
@@ -1323,7 +1323,7 @@
         10,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Electives",
@@ -1361,7 +1361,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Electives",
@@ -1399,7 +1399,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Electives",
@@ -1437,11 +1437,11 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Science - Biological",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -1462,7 +1462,7 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: Concurrent enrollment in Integrated Math I Zoology 1-2 is a more in-depth study of the animal kingdom than is possible in Biology 1-2. Major animal groups will be studied emphasizing many aspects of their anatomy/physiology, evolution, distribution, animal diversity, and ecology. The course includes facilitated discussions, weekly laboratory activities, field studies, projects, field trips, and guest speakers. This course may be used to meet the UC/CSU \u201cD\u201d requirement."
+      "notes": "Recommended Prerequisites: Concurrent enrollment in Integrated Math I Zoology 1-2 is a more in-depth study of the animal kingdom than is possible in Biology 1-2. Major animal groups will be studied emphasizing many aspects of their anatomy/physiology, evolution, distribution, animal diversity, and ecology. The course includes facilitated discussions, weekly laboratory activities, field studies, projects, field trips, and guest speakers. This course may be used to meet the UC/CSU “D” requirement."
     },
     {
       "course_id": "AP_CHEMISTRY_0012",
@@ -1475,7 +1475,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Science - Physical",
@@ -1551,7 +1551,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Science - Physical",
@@ -1579,7 +1579,7 @@
       "notes": "Recommended Prerequisites: Concurrent enrollment in Honors Pre-Calculus or Advanced Functions Analysis For students interested in: Further study of physics Length of Course: Year-Long, linked w/Physics of the Universe 1-2 AP Physics 1 is an algebra-based, introductory college-level physics course. Students cultivate their understanding of Physics through inquiry-based investigations as they explore topics such as Newtonian mechanics (including rotational motion); work, energy, and power; mechani"
     },
     {
-      "course_id": "AP_PHYSICS_0012",
+      "course_id": "AP_PHYSICS",
       "full_name": "AP PHYSICS C: ELECTRICITY & MAGNETISM 1-2",
       "course_numbers": [
         "001264",
@@ -1589,7 +1589,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Science - Physical",
@@ -1617,7 +1617,7 @@
       "notes": "Recommended Prerequisites: Completion of AP Physics C: Mechanics For students interested in: A rigorous calculus based course that studies the laws of electricity and magnetism Length of Course: Year-Long, linked w/AP Physics C: Mechanics The Advanced Placement Physics C 2A-2B course forms the second part of the college sequence that serves as the foundation in physics for college physics students. The topics of electricity and magnetism will be the emphasis of the course; however, other related"
     },
     {
-      "course_id": "AP_PHYSICS_0012",
+      "course_id": "AP_PHYSICS_0001",
       "full_name": "AP PHYSICS C: MECHANICS 1-2",
       "course_numbers": [
         "001262",
@@ -1627,7 +1627,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Science - Physical",
@@ -1665,7 +1665,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Science - Physical",
@@ -1703,7 +1703,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Science - Physical",
@@ -1741,7 +1741,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Science - Biological",
@@ -1779,7 +1779,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Science - Physical",
@@ -1817,7 +1817,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Foreign Language",
@@ -1842,7 +1842,7 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: Chinese 7-8 For students interested in: Rigorous college level Chinese course that serves to prepare for the AP test Advanced Placement (AP) Chinese Language 1-2 refines the skills required for advanced work equivalent to a third year, college level course and for the AP Language examination. Extensive reading, writing, and speaking practice will increase a student\u2019s competency level to that required on the AP examination. Selected literary works will be analyzed. This"
+      "notes": "Recommended Prerequisites: Chinese 7-8 For students interested in: Rigorous college level Chinese course that serves to prepare for the AP test Advanced Placement (AP) Chinese Language 1-2 refines the skills required for advanced work equivalent to a third year, college level course and for the AP Language examination. Extensive reading, writing, and speaking practice will increase a student’s competency level to that required on the AP examination. Selected literary works will be analyzed. This"
     },
     {
       "course_id": "AP_FRENCH_0004",
@@ -1855,7 +1855,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Foreign Language",
@@ -1880,7 +1880,7 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: Honors French 7-8 For students interested in: Continuing development and mastery of French language and culture AP French Language is a course in which the skills developed in French 1-8 are refined through extensive reading, writing, and speaking. The goal should be to prepare to take the AP French Language Examination. This course may be used to meet the UC/CSU \u201cE\u201d requirement. UC approved for extra honors credit (A=5, B=4, C=3)."
+      "notes": "Recommended Prerequisites: Honors French 7-8 For students interested in: Continuing development and mastery of French language and culture AP French Language is a course in which the skills developed in French 1-8 are refined through extensive reading, writing, and speaking. The goal should be to prepare to take the AP French Language Examination. This course may be used to meet the UC/CSU “E” requirement. UC approved for extra honors credit (A=5, B=4, C=3)."
     },
     {
       "course_id": "AP_SPANISH_0004",
@@ -1893,7 +1893,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Foreign Language",
@@ -1931,7 +1931,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Foreign Language",
@@ -1969,7 +1969,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Foreign Language",
@@ -2007,7 +2007,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Foreign Language",
@@ -2032,7 +2032,7 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: Chinese 3-4 For students interested in: Continuing development and mastery of Chinese language and culture This course is designed to further enhance world language skills acquired in Chinese 3-4 and to prepare students for living in a global society. Classroom instruction will promote students\u2019 ability to communicate in Mandarin Chinese by involving them in increasingly complex communicative tasks. The instruction will include listening, speaking, reading, writing, an"
+      "notes": "Recommended Prerequisites: Chinese 3-4 For students interested in: Continuing development and mastery of Chinese language and culture This course is designed to further enhance world language skills acquired in Chinese 3-4 and to prepare students for living in a global society. Classroom instruction will promote students’ ability to communicate in Mandarin Chinese by involving them in increasingly complex communicative tasks. The instruction will include listening, speaking, reading, writing, an"
     },
     {
       "course_id": "CHINESE_78_0004",
@@ -2045,7 +2045,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Foreign Language",
@@ -2070,7 +2070,7 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: Chinese 5-6 For students interested in: Continuing development and mastery of Chinese language and culture This course is designed to further develop and refine knowledge, skills, and attitudes related to specific themes, including, but not limited to travelers\u2019 survival, Chinese in America, and history-geography. Within this context, appropriate emphasis will be placed on students\u2019 competency in the areas of listening, speaking, reading, and writing. This course may b"
+      "notes": "Recommended Prerequisites: Chinese 5-6 For students interested in: Continuing development and mastery of Chinese language and culture This course is designed to further develop and refine knowledge, skills, and attitudes related to specific themes, including, but not limited to travelers’ survival, Chinese in America, and history-geography. Within this context, appropriate emphasis will be placed on students’ competency in the areas of listening, speaking, reading, and writing. This course may b"
     },
     {
       "course_id": "FILIPINO_12_0004",
@@ -2083,7 +2083,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Foreign Language",
@@ -2121,7 +2121,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Foreign Language",
@@ -2159,7 +2159,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Foreign Language",
@@ -2197,7 +2197,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Foreign Language",
@@ -2235,7 +2235,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Foreign Language",
@@ -2273,7 +2273,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Foreign Language",
@@ -2298,7 +2298,7 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: French 1-2 For students interested in: The deeper exploration into the French language, culture, and rich heritage. Applies toward fulfilling the UC requirement in foreign language. French 3-4 is an intermediate course designed to further develop the four communication skills of listening, speaking, reading and writing with an increased vocabulary, more complicated grammatical structures and idiomatic expressions. This course may be used to meet the UC/CSU \u201cE\u201d requirem"
+      "notes": "Recommended Prerequisites: French 1-2 For students interested in: The deeper exploration into the French language, culture, and rich heritage. Applies toward fulfilling the UC requirement in foreign language. French 3-4 is an intermediate course designed to further develop the four communication skills of listening, speaking, reading and writing with an increased vocabulary, more complicated grammatical structures and idiomatic expressions. This course may be used to meet the UC/CSU “E” requirem"
     },
     {
       "course_id": "FRENCH_56_0004",
@@ -2311,7 +2311,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Foreign Language",
@@ -2336,7 +2336,7 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: French 3-4 For students interested in: Continuing development and mastery of French language and culture French 5-6 prepares the student for the more advanced structures and communication activities required at the college level. Reading and writing practice is more extensive. The creative ability to use the language orally and in writing is stressed. This course may be used to meet the UC/CSU \u201cE\u201d requirement."
+      "notes": "Recommended Prerequisites: French 3-4 For students interested in: Continuing development and mastery of French language and culture French 5-6 prepares the student for the more advanced structures and communication activities required at the college level. Reading and writing practice is more extensive. The creative ability to use the language orally and in writing is stressed. This course may be used to meet the UC/CSU “E” requirement."
     },
     {
       "course_id": "HON_FILIPINO_0004",
@@ -2349,7 +2349,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Foreign Language",
@@ -2387,7 +2387,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Foreign Language",
@@ -2425,7 +2425,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Foreign Language",
@@ -2463,7 +2463,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Foreign Language",
@@ -2501,7 +2501,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Foreign Language",
@@ -2539,7 +2539,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Foreign Language",
@@ -2577,7 +2577,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Foreign Language",
@@ -2615,7 +2615,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Foreign Language",
@@ -2653,7 +2653,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -2691,7 +2691,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -2729,7 +2729,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -2767,7 +2767,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -2805,7 +2805,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -2843,7 +2843,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "History/Social Science",
@@ -2868,7 +2868,7 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: Drama 1-2 For students interested in: Deepening understanding of and background to acting styles as well as technical aspects of production. This course includes a study of the history of acting styles. Students are expected to perform scenes or plays from classical literature. Students will study the technical side of theater including costume and set design, makeup, directing and production. This course may be used to meet the UC/CSU \u201cF\u201d requirement and PUSD Fine Art"
+      "notes": "Recommended Prerequisites: Drama 1-2 For students interested in: Deepening understanding of and background to acting styles as well as technical aspects of production. This course includes a study of the history of acting styles. Students are expected to perform scenes or plays from classical literature. Students will study the technical side of theater including costume and set design, makeup, directing and production. This course may be used to meet the UC/CSU “F” requirement and PUSD Fine Art"
     },
     {
       "course_id": "DRAMA_56_0003",
@@ -2881,7 +2881,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -2919,7 +2919,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -2957,7 +2957,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -2985,7 +2985,7 @@
       "notes": "Recommended Prerequisites: None For students interested in: Exploring and participating in all the technical areas involved in putting on a full play production. Technical Production for Theater 1-2 is a course which covers the basics of set design and construction, lighting, costuming, sound, makeup and stage management. Specifically, students will be expected to design, construct, and paint flats, to plan and draw a lighting plot for a play, to operate a lighting board and to choose costume de"
     },
     {
-      "course_id": "TECHNICAL_PRODUCTION_0003",
+      "course_id": "TECHNICAL_PRODUCTION",
       "full_name": "TECHNICAL PRODUCTION FOR THEATER 3-4",
       "course_numbers": [
         "000342",
@@ -2995,7 +2995,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -3033,7 +3033,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -3071,7 +3071,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -3109,7 +3109,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "History/Social Science",
@@ -3146,7 +3146,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -3174,7 +3174,7 @@
       "notes": "Recommended Prerequisites: Studio Art For students interested in: An assembly of art projects completed previously into a portfolio and submission for evaluation on rigorous standards Length of Course: Year-Long, linked w/Studio Art Advanced Placement Studio Art: 2D Design provides instruction for the highly skilled exceptional students in two-dimensional design. The course assists these students in the preparation of a 2D Portfolio. It is designed to address a very broad interpretation of two-d"
     },
     {
-      "course_id": "AP_STUDIO_0001",
+      "course_id": "AP_STUDIO",
       "full_name": "AP STUDIO ART 1-2: 3D DESIGN (Ceramics)",
       "course_numbers": [
         "000159",
@@ -3184,7 +3184,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -3212,7 +3212,7 @@
       "notes": "Recommended Prerequisites: Studio Art For students interested in: Assembly of art projects completed previously into a portfolio and submission for evaluation on rigorous standards Length of Course: Year-Long, linked w/Studio Art Advanced Placement Studio Art: 3D Design provides instruction for the highly skilled exceptional students in 3D Design. The course assists these students in the preparation of a Three-Dimensional Design Portfolio. It is designed to address a very broad interpretation of"
     },
     {
-      "course_id": "AP_STUDIO_0001",
+      "course_id": "AP_STUDIO_0002",
       "full_name": "AP STUDIO ART 1-2: DRAWING & PAINTING",
       "course_numbers": [
         "000151",
@@ -3222,7 +3222,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -3260,7 +3260,7 @@
         10,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Electives",
@@ -3270,10 +3270,10 @@
         "spring"
       ],
       "prerequisites_required": [
-        "Broadcast Journalism/TV Production 1-2 Broadcast Journalism 3-4 follows Broadcast Journalism & Television 1-2 in the sequence of courses in the Poway Unified School District\u2019s Digital Media Production"
+        "Broadcast Journalism/TV Production 1-2 Broadcast Journalism 3-4 follows Broadcast Journalism & Television 1-2 in the sequence of courses in the Poway Unified School District’s Digital Media Production"
       ],
       "prerequisites_recommended": [
-        "Broadcast Journalism/TV Production 1-2 Broadcast Journalism 3-4 follows Broadcast Journalism & Television 1-2 in the sequence of courses in the Poway Unified School District\u2019s Digital Media Production"
+        "Broadcast Journalism/TV Production 1-2 Broadcast Journalism 3-4 follows Broadcast Journalism & Television 1-2 in the sequence of courses in the Poway Unified School District’s Digital Media Production"
       ],
       "is_replacement_course": false,
       "replacement_equivalents": [],
@@ -3285,7 +3285,7 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: Broadcast Journalism/TV Production 1-2 Broadcast Journalism 3-4 follows Broadcast Journalism & Television 1-2 in the sequence of courses in the Poway Unified School District\u2019s Digital Media Production program. Broadcast Journalism 3-4 builds on all of the techniques, artistic skills, journalistic skills, and academic understanding learned in Broadcast Journalism & Television Production 1-2 to create complex and meaningful works of art and journalism. Students will cont"
+      "notes": "Recommended Prerequisites: Broadcast Journalism/TV Production 1-2 Broadcast Journalism 3-4 follows Broadcast Journalism & Television 1-2 in the sequence of courses in the Poway Unified School District’s Digital Media Production program. Broadcast Journalism 3-4 builds on all of the techniques, artistic skills, journalistic skills, and academic understanding learned in Broadcast Journalism & Television Production 1-2 to create complex and meaningful works of art and journalism. Students will cont"
     },
     {
       "course_id": "BROADCAST_JOURNALISM_0010",
@@ -3298,7 +3298,7 @@
         11,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Electives",
@@ -3336,7 +3336,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -3374,7 +3374,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -3399,7 +3399,7 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: Ceramics 1-2 For students interested in: Deepening understanding of and background ceramic techniques. Ceramics 3-4 is designed for students who have mastered basic hand building and decorative techniques. This course will stress design, craftsmanship, and evaluation of ceramic art at an increased level of difficulty. Studio projects will involve construction in hand-built and wheel-thrown methods. This course may be used to meet the UC/CSU \u201cF\u201d requirement and the PUSD"
+      "notes": "Recommended Prerequisites: Ceramics 1-2 For students interested in: Deepening understanding of and background ceramic techniques. Ceramics 3-4 is designed for students who have mastered basic hand building and decorative techniques. This course will stress design, craftsmanship, and evaluation of ceramic art at an increased level of difficulty. Studio projects will involve construction in hand-built and wheel-thrown methods. This course may be used to meet the UC/CSU “F” requirement and the PUSD"
     },
     {
       "course_id": "DESIGN_AND_0001",
@@ -3412,7 +3412,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -3440,7 +3440,7 @@
       "notes": "Recommended Prerequisites: None Students enrolled in Design and Mixed Media 1-2 (Sculpture & Design) will be introduced to the elements of art and principles of design through exploration in various 2-Dimensional and 3-Dimensional art materials, including sculpture, printmaking, drawing, painting, and mixed media. This course will provide opportunities for the student through art production, discussion, and explorations that emphasize art criticism, art history and art philosophy. This course ma"
     },
     {
-      "course_id": "DESIGN_AND_0001",
+      "course_id": "DESIGN_AND",
       "full_name": "DESIGN AND MIXED MEDIA 3-4 (Sculpture & Design)",
       "course_numbers": [
         "000127",
@@ -3450,7 +3450,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -3488,7 +3488,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -3516,7 +3516,7 @@
       "notes": "Recommended Prerequisites: None For students interested in: Introduction to video editing and learning the basics of iMovie and Final CutPro The course concentrates on developing competency across the breadth of film and video production positions, from script creation to presentation of the finished product. Students will focus on: writing, directing, acting, producing, storyboarding, scheduling, cinematography, audio engineering, and editing. Students will be challenged with group assignments "
     },
     {
-      "course_id": "DIGITAL_MEDIA_0009",
+      "course_id": "DIGITAL_MEDIA",
       "full_name": "DIGITAL MEDIA PRODUCTION 3-4",
       "course_numbers": [
         "000996",
@@ -3563,7 +3563,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -3588,7 +3588,7 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: Digital Media Production 3-4 For students interested in: Develop advanced skills in pre and post production This course concentrates on developing competencies across the breadth of film and video production, from script creation to presentation of the finished product. The course, a continuation from Digital Media Production 3-4, will continue to develop students\u2019 skills in writing, directing, acting, producing, storyboarding, scheduling, cinematography, lighting desi"
+      "notes": "Recommended Prerequisites: Digital Media Production 3-4 For students interested in: Develop advanced skills in pre and post production This course concentrates on developing competencies across the breadth of film and video production, from script creation to presentation of the finished product. The course, a continuation from Digital Media Production 3-4, will continue to develop students’ skills in writing, directing, acting, producing, storyboarding, scheduling, cinematography, lighting desi"
     },
     {
       "course_id": "DIGITAL_PHOTOGRAPHY_0010",
@@ -3601,7 +3601,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -3629,7 +3629,7 @@
       "notes": "Recommended Prerequisites: None For students interested in: Understanding of and background to photography Digital Photography 1-2 is a course that focuses on understanding the basic operations and functions of a digital camera and the use of its settings to achieve a specific result. Students will learn about photographic elements of art and principles of design, composition, and lighting. They will explore the history of photography, artistic movements, important innovators in the field, and r"
     },
     {
-      "course_id": "DIGITAL_PHOTOGRAPHY_0010",
+      "course_id": "DIGITAL_PHOTOGRAPHY",
       "full_name": "DIGITAL PHOTOGRAPHY 3-4",
       "course_numbers": [
         "001092",
@@ -3639,7 +3639,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -3677,7 +3677,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -3705,7 +3705,7 @@
       "notes": "Recommended Prerequisites: None For students interested in: An introduction to drawing and painting which can lead to 2-D, 3-D and electronic visual This course is designed for students to develop their drawing and painting skills. Students will have an opportunity to create and evaluate a wide variety of artworks in drawing and painting media. The class will explore design elements including line, color, form, space, and texture. Composition and technical skills will also be covered. This cours"
     },
     {
-      "course_id": "DRAWING__0001",
+      "course_id": "DRAWING_PAINTING",
       "full_name": "DRAWING & PAINTING 3-4",
       "course_numbers": [
         "000132",
@@ -3715,7 +3715,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -3753,7 +3753,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -3781,7 +3781,7 @@
       "notes": "Recommended Prerequisites: None For students interested in: Introduction to Graphic Design and learning the basics of Adobe Illustrator and Photoshop Graphic Design 1-2 equips students of all skill levels with essential graphic design proficiency for diverse professional opportunities. Through hands-on experience with industry-standard software, students tackle print media projects like personal logos, packaging, typography, and posters. Both individual and collaborative projects refine skills a"
     },
     {
-      "course_id": "GRAPHIC_DESIGN_0001",
+      "course_id": "GRAPHIC_DESIGN",
       "full_name": "GRAPHIC DESIGN 3-4",
       "course_numbers": [
         "000121",
@@ -3791,7 +3791,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -3819,7 +3819,7 @@
       "notes": "Recommended Prerequisites: Graphic Design 1-2 For students interested in: Advanced skills in Graphic Design and knowledge of Adobe Illustrator, Photoshop, and learning Adobe InDesign. Graphic Design 3-4 immerses students in an enriching journey toward mastering graphic design concepts. Cultivating a culture of limitless creativity, students are encouraged to express ideas with originality and flair. Projects range from skateboard graphics, a concert poster, mini button series, to digital magazin"
     },
     {
-      "course_id": "GRAPHIC_DESIGN_0001",
+      "course_id": "GRAPHIC_DESIGN_0002",
       "full_name": "GRAPHIC DESIGN 5-6",
       "course_numbers": [
         "000123",
@@ -3829,7 +3829,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -3866,7 +3866,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -3894,7 +3894,7 @@
       "notes": "Recommended Prerequisites: Ceramics 3-4 For students interested in: An assembly of art projects completed previously into a portfolio. Length of Course: Year-Long, linked w/AP Studio Art Alternate Course ID Numbers: Studio Art 1-2: Ceramics 190150-190151 Studio Art is for those students who have advanced skills. The course is for students who have completed all other courses in one of the following areas or wish to pursue further study in that area: Drawing and Painting, Design and Mixed Media, "
     },
     {
-      "course_id": "STUDIO_ART_0001",
+      "course_id": "STUDIO_ART",
       "full_name": "STUDIO ART 1-2: DIGITAL PHOTOGRAPHY",
       "course_numbers": [
         "000150"
@@ -3903,7 +3903,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -3931,7 +3931,7 @@
       "notes": "Recommended Prerequisites: Digital Photography 3-4 For students interested in: An assembly of art projects completed previously into a portfolio. Length of Course: Year-Long, linked w/AP Studio Art Alternate Course ID Numbers: Studio Art 1-2: Digital Photography 390150-390151 Studio Art is for those students who have advanced skills. The course is for students who have completed all other courses in one of the following areas or wish to pursue further study in that area: Drawing and Painting, De"
     },
     {
-      "course_id": "STUDIO_ART_0001",
+      "course_id": "STUDIO_ART_0002",
       "full_name": "STUDIO ART 1-2: DRAWING & PAINTING",
       "course_numbers": [
         "000150"
@@ -3940,7 +3940,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -3968,7 +3968,7 @@
       "notes": "Recommended Prerequisites: Drawing & Painting 3-4 For students interested in: An assembly of art projects completed previously into a portfolio. Length of Course: Year-Long, linked w/AP Studio Art Alternate Course ID Numbers: Studio Art 1-2: Drawing & Painting 090150-090151 Studio Art is for those students who have advanced skills. The course is for students who have completed all other courses in one of the following areas or wish to pursue further study in that area: Drawing and Painting, Desi"
     },
     {
-      "course_id": "STUDIO_ART_0001",
+      "course_id": "STUDIO_ART_0003",
       "full_name": "STUDIO ART 1-2: GRAPHIC DESIGN",
       "course_numbers": [
         "000150"
@@ -3977,7 +3977,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -4014,7 +4014,7 @@
         10,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Physical Education",
@@ -4052,7 +4052,7 @@
         10,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Physical Education",
@@ -4089,7 +4089,7 @@
       "grades_allowed": [
         9
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Physical Education",
@@ -4127,7 +4127,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Physical Education",
@@ -4164,7 +4164,7 @@
       "grades_allowed": [
         9
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Physical Education",
@@ -4202,7 +4202,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Physical Education",
@@ -4239,7 +4239,7 @@
         9,
         12
       ],
-      "credits": 5.0,
+      "credits": 5,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -4277,7 +4277,7 @@
         10,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Physical Education",
@@ -4315,7 +4315,7 @@
         10,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Physical Education",
@@ -4353,7 +4353,7 @@
         10,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Physical Education",
@@ -4391,7 +4391,7 @@
         10,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -4429,7 +4429,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Science - Physical",
@@ -4457,7 +4457,7 @@
       "notes": "Recommended Prerequisites: None The NJROTC curriculum emphasizes teamwork, leadership development, citizenship, self-discipline and a sense of belonging to a unit/team. Academics consist of a basic introduction to the Navy - its customs, traditions and way of life. This is augmented throughout the year by community service activities, military drill competitions, physical fitness training, academic competitions, marksmanship and visits to military installations. These elements are pursued at a f"
     },
     {
-      "course_id": "NAVAL_SCIENCE_0016",
+      "course_id": "NAVAL_SCIENCE",
       "full_name": "NAVAL SCIENCE 2A, B, C, D",
       "course_numbers": [
         "001674",
@@ -4467,7 +4467,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Science - Physical",
@@ -4495,7 +4495,7 @@
       "notes": "Recommended Prerequisites: Naval Science 1A-D This course builds on the general introduction provided in Naval Science 1 and further develops the traits of citizenship and leadership/followership in cadets. Academics include the role of the US Navy from the Revolutionary War to present day. Other topics include maritime geography, meteorology, astronomy and physical sciences. Classroom instruction is augmented throughout the year by community service activities, military drill competitions, phys"
     },
     {
-      "course_id": "NAVAL_SCIENCE_0016",
+      "course_id": "NAVAL_SCIENCE_0001",
       "full_name": "NAVAL SCIENCE 3A, B, C, D",
       "course_numbers": [
         "001678",
@@ -4505,7 +4505,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Science - Physical",
@@ -4533,7 +4533,7 @@
       "notes": "Recommended Prerequisites: Naval Science 2A-D This course broadens the understanding of cadets in the operative principles of everyday leadership, the concept and significance of teamwork, the intrinsic value of good order and discipline in the accomplishment of objectives, the fundamentals of American democracy and expands their understanding of naval academic subjects. Cadets are expected to fulfill leadership roles as Platoon Commanders, Platoon Chief Petty Officers and/or Drill Team Captains"
     },
     {
-      "course_id": "NAVAL_SCIENCE_0016",
+      "course_id": "NAVAL_SCIENCE_0002",
       "full_name": "NAVAL SCIENCE 4A, B, C, D",
       "course_numbers": [
         "001682",
@@ -4581,7 +4581,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Physical Education",
@@ -4619,7 +4619,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Math",
@@ -4656,7 +4656,7 @@
       "grades_allowed": [
         9
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Electives",
@@ -4681,7 +4681,7 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: Pass interview process Length of Course: Year-Long, linked w/High School English 1-2 AVID is a program designed to aid students who have college potential and strong work ethic by providing additional support. Students commit to completing the University of California \u201cA\u201d-\u201cG\u201d requirements, repeating in summer school any class in which they earn a \u201cD\u201d or an \u201cF\u201d, and taking an AVID class each term in combination with a core class. The elective class has college tutors wh"
+      "notes": "Recommended Prerequisites: Pass interview process Length of Course: Year-Long, linked w/High School English 1-2 AVID is a program designed to aid students who have college potential and strong work ethic by providing additional support. Students commit to completing the University of California “A”-“G” requirements, repeating in summer school any class in which they earn a “D” or an “F”, and taking an AVID class each term in combination with a core class. The elective class has college tutors wh"
     },
     {
       "course_id": "AVID_34_0015",
@@ -4693,7 +4693,7 @@
       "grades_allowed": [
         10
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Electives",
@@ -4718,7 +4718,7 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: AVID 1-2 Length of Course: Year-Long, linked w/High School English 3-4 AVID 3-4 is a continuation of the AVID program for promotion of students with college potential. This course may be used to meet the UC/CSU \u201cG\u201d requirement."
+      "notes": "Recommended Prerequisites: AVID 1-2 Length of Course: Year-Long, linked w/High School English 3-4 AVID 3-4 is a continuation of the AVID program for promotion of students with college potential. This course may be used to meet the UC/CSU “G” requirement."
     },
     {
       "course_id": "AVID_56_0015",
@@ -4730,7 +4730,7 @@
       "grades_allowed": [
         11
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Electives",
@@ -4767,7 +4767,7 @@
       "grades_allowed": [
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Electives",
@@ -4805,7 +4805,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "CTE",
@@ -4842,7 +4842,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "CTE",
@@ -4866,7 +4866,7 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: Teacher recommendation required For students interested in: Exposure to and exploring the business world A structured off-campus learning experience that offers college-bound students an opportunity to work with professionals in various business, industry, and civic organizations. CE 110 college credit. \u25cf Students may receive up to 2-3 college credits This course is offered through the Poway Virtual School."
+      "notes": "Recommended Prerequisites: Teacher recommendation required For students interested in: Exposure to and exploring the business world A structured off-campus learning experience that offers college-bound students an opportunity to work with professionals in various business, industry, and civic organizations. CE 110 college credit. ● Students may receive up to 2-3 college credits This course is offered through the Poway Virtual School."
     },
     {
       "course_id": "INTRODUCTION_TO_0002",
@@ -4879,7 +4879,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Math",
@@ -4917,7 +4917,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -4955,7 +4955,7 @@
         10,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Electives",
@@ -4993,7 +4993,7 @@
         10,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Electives",
@@ -5030,7 +5030,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Electives",
@@ -5068,7 +5068,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Electives",
@@ -5106,7 +5106,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Electives",
@@ -5144,7 +5144,7 @@
         9,
         12
       ],
-      "credits": 5.0,
+      "credits": 5,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Math",
@@ -5154,10 +5154,10 @@
         "spring"
       ],
       "prerequisites_required": [
-        "Completion of Integrated Math I or II with \u201cC\u201d or better; concurrently enrolled in or completed Integrated III For students interested in: Computer technology and software Length of Course: Year-Long,"
+        "Completion of Integrated Math I or II with “C” or better; concurrently enrolled in or completed Integrated III For students interested in: Computer technology and software Length of Course: Year-Long,"
       ],
       "prerequisites_recommended": [
-        "Completion of Integrated Math I or II with \u201cC\u201d or better; concurrently enrolled in or completed Integrated III For students interested in: Computer technology and software Length of Course: Year-Long,"
+        "Completion of Integrated Math I or II with “C” or better; concurrently enrolled in or completed Integrated III For students interested in: Computer technology and software Length of Course: Year-Long,"
       ],
       "is_replacement_course": false,
       "replacement_equivalents": [],
@@ -5169,7 +5169,7 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: Completion of Integrated Math I or II with \u201cC\u201d or better; concurrently enrolled in or completed Integrated III For students interested in: Computer technology and software Length of Course: Year-Long, linked w/ Computer Science & Software Engineering 1-2 or Data Structures 1-2 This course is designed to build upon the fundamentals of computer programming. The emphasis is on object-oriented programming methodology, problem solving and algorithm development, and is equiv"
+      "notes": "Recommended Prerequisites: Completion of Integrated Math I or II with “C” or better; concurrently enrolled in or completed Integrated III For students interested in: Computer technology and software Length of Course: Year-Long, linked w/ Computer Science & Software Engineering 1-2 or Data Structures 1-2 This course is designed to build upon the fundamentals of computer programming. The emphasis is on object-oriented programming methodology, problem solving and algorithm development, and is equiv"
     },
     {
       "course_id": "AP_COMPUTER_0012",
@@ -5182,7 +5182,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Science - Physical",
@@ -5220,7 +5220,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Electives",
@@ -5245,7 +5245,7 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: None For students interested in: Obtaining basic computer skills required by colleges and industry Computer Information Systems and Advanced CIS are designed to provide students with up-to-date computer skills required by colleges as well as business/industry in order to compete in today\u2019s technological environment. Instruction implements exploration of software and programs to incorporate curriculum that supports a high level of technical competency and program litera"
+      "notes": "Recommended Prerequisites: None For students interested in: Obtaining basic computer skills required by colleges and industry Computer Information Systems and Advanced CIS are designed to provide students with up-to-date computer skills required by colleges as well as business/industry in order to compete in today’s technological environment. Instruction implements exploration of software and programs to incorporate curriculum that supports a high level of technical competency and program litera"
     },
     {
       "course_id": "COMPUTER_SCIENCE_0009",
@@ -5258,7 +5258,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Electives",
@@ -5283,7 +5283,7 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: None For students interested in: Computer science Length of Course: Year-Long, linked w/AP Computer Science A 1-2 Computer Science & Software Engineering 1-2 aims to develop computational thinking, to introduce computational tools that foster creativity, and to gain exposure to program code and design. Additionally, the course aims to build students\u2019 awareness of the tremendous workplace demand for computer specialists and for professionals in all fields who have compu"
+      "notes": "Recommended Prerequisites: None For students interested in: Computer science Length of Course: Year-Long, linked w/AP Computer Science A 1-2 Computer Science & Software Engineering 1-2 aims to develop computational thinking, to introduce computational tools that foster creativity, and to gain exposure to program code and design. Additionally, the course aims to build students’ awareness of the tremendous workplace demand for computer specialists and for professionals in all fields who have compu"
     },
     {
       "course_id": "DATA_STRUCTURES_0010",
@@ -5296,7 +5296,7 @@
         9,
         12
       ],
-      "credits": 5.0,
+      "credits": 5,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Electives",
@@ -5333,7 +5333,7 @@
         11,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Science - Physical",
@@ -5371,7 +5371,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "History/Social Science",
@@ -5409,7 +5409,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Electives",
@@ -5446,7 +5446,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Electives",
@@ -5484,7 +5484,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Electives",
@@ -5521,7 +5521,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Electives",
@@ -5546,10 +5546,10 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: Teacher approval This course will provide students with improved communication and organizational skills in addition to increased mastery of academic content area skills. Under the supervision of a classroom teacher, tutors will provide individual or small group facilitation designed to increase students\u2019 ability to think, read, write and communicate critically. The design of the course provides tutors with necessary tools and processes to work most effectively with st"
+      "notes": "Recommended Prerequisites: Teacher approval This course will provide students with improved communication and organizational skills in addition to increased mastery of academic content area skills. Under the supervision of a classroom teacher, tutors will provide individual or small group facilitation designed to increase students’ ability to think, read, write and communicate critically. The design of the course provides tutors with necessary tools and processes to work most effectively with st"
     },
     {
-      "course_id": "ACADEMIC_TUTOR_0018",
+      "course_id": "ACADEMIC_TUTOR",
       "full_name": "ACADEMIC TUTOR (Science)",
       "course_numbers": [
         "001859"
@@ -5558,7 +5558,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Science - Physical",
@@ -5596,7 +5596,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "History/Social Science",
@@ -5633,7 +5633,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Science - Physical",
@@ -5670,7 +5670,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -5695,7 +5695,7 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: Teacher approval Peer Counselors are trained students who work with Counseling & Student Support Services to extend counseling services to the entire student body. Peer Counselors help peers in need of help and support. Duties include tutoring, mentoring, mediation, facilitating, providing awareness events, and informing Westview\u2019s campus on important issues that affect students. Peer Counselors must attend weekly meetings, actively take part in peer counseling events "
+      "notes": "Recommended Prerequisites: Teacher approval Peer Counselors are trained students who work with Counseling & Student Support Services to extend counseling services to the entire student body. Peer Counselors help peers in need of help and support. Duties include tutoring, mentoring, mediation, facilitating, providing awareness events, and informing Westview’s campus on important issues that affect students. Peer Counselors must attend weekly meetings, actively take part in peer counseling events "
     },
     {
       "course_id": "VOCATIONAL_LEARNING_0018",
@@ -5707,7 +5707,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Science - Physical",
@@ -5745,7 +5745,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Science - Physical",
@@ -5770,7 +5770,7 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: None For students interested in: College level in depth exploration of European Civilization Length of Course: One Term This course is designed to be a one term course that will be completed in 18 weeks. The AP Human Geography course introduces students to the systematic study of patterns and processes that have shaped human understanding, use, and alteration of the Earth\u2019s surface. Students learn to employ spatial concepts and landscape analysis to examine human socio"
+      "notes": "Recommended Prerequisites: None For students interested in: College level in depth exploration of European Civilization Length of Course: One Term This course is designed to be a one term course that will be completed in 18 weeks. The AP Human Geography course introduces students to the systematic study of patterns and processes that have shaped human understanding, use, and alteration of the Earth’s surface. Students learn to employ spatial concepts and landscape analysis to examine human socio"
     },
     {
       "course_id": "AP_PSYCHOLOGY_0013",
@@ -5783,7 +5783,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Science - Physical",
@@ -5821,7 +5821,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "History/Social Science",
@@ -5859,7 +5859,7 @@
         10,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "History/Social Science",
@@ -5869,10 +5869,10 @@
         "spring"
       ],
       "prerequisites_required": [
-        "Successful completion of High School English 1-2 and 3-4 Film Studies is designed to provide students with a foundation of knowledge and understanding of film, and an appreciation for film\u2014its history"
+        "Successful completion of High School English 1-2 and 3-4 Film Studies is designed to provide students with a foundation of knowledge and understanding of film, and an appreciation for film—its history"
       ],
       "prerequisites_recommended": [
-        "Successful completion of High School English 1-2 and 3-4 Film Studies is designed to provide students with a foundation of knowledge and understanding of film, and an appreciation for film\u2014its history"
+        "Successful completion of High School English 1-2 and 3-4 Film Studies is designed to provide students with a foundation of knowledge and understanding of film, and an appreciation for film—its history"
       ],
       "is_replacement_course": false,
       "replacement_equivalents": [],
@@ -5884,7 +5884,7 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: Successful completion of High School English 1-2 and 3-4 Film Studies is designed to provide students with a foundation of knowledge and understanding of film, and an appreciation for film\u2014its history, composition, structure, and relationship to literature. This course will emphasize the film experience as a critical discipline that promotes serious reflection on movies and the role of film in culture, as students explore their physical, emotional, and intellectual res"
+      "notes": "Recommended Prerequisites: Successful completion of High School English 1-2 and 3-4 Film Studies is designed to provide students with a foundation of knowledge and understanding of film, and an appreciation for film—its history, composition, structure, and relationship to literature. This course will emphasize the film experience as a critical discipline that promotes serious reflection on movies and the role of film in culture, as students explore their physical, emotional, and intellectual res"
     },
     {
       "course_id": "PSYCHOLOGY_12_0013",
@@ -5897,7 +5897,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Physical Education",
@@ -5935,7 +5935,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "History/Social Science",
@@ -5960,7 +5960,7 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: None For students interested in: Study of human relationships, structures, dynamics and functions of groups. The practical application of law as it relates to survival in our society. This course is a student centered interactive class involving resource persons from the community. Lawyers, judges, consumer advocates, law students, police officers and detectives, and government officials will be guests to enrich the student\u2019s experience. Curriculum will include the stu"
+      "notes": "Recommended Prerequisites: None For students interested in: Study of human relationships, structures, dynamics and functions of groups. The practical application of law as it relates to survival in our society. This course is a student centered interactive class involving resource persons from the community. Lawyers, judges, consumer advocates, law students, police officers and detectives, and government officials will be guests to enrich the student’s experience. Curriculum will include the stu"
     },
     {
       "course_id": "ACADEMIC_LITERACY_0018",
@@ -5973,11 +5973,11 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "English",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -5998,10 +5998,10 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: Placement based on testing Through the use of consistent instructional routines, explicit academic vocabulary instruction, structured peer interactions, verbal and written models of academic English, and consistent feedback on language production, students will gain increased confidence and skill with the academic language needed to succeed in school and careers. The curriculum uses nonfiction articles on high interest topics to help improve students\u2019 comprehension of "
+      "notes": "Recommended Prerequisites: Placement based on testing Through the use of consistent instructional routines, explicit academic vocabulary instruction, structured peer interactions, verbal and written models of academic English, and consistent feedback on language production, students will gain increased confidence and skill with the academic language needed to succeed in school and careers. The curriculum uses nonfiction articles on high interest topics to help improve students’ comprehension of "
     },
     {
-      "course_id": "ACADEMIC_LITERACY_0018",
+      "course_id": "ACADEMIC_LITERACY",
       "full_name": "ACADEMIC LITERACY 3-4",
       "course_numbers": [
         "001866",
@@ -6011,20 +6011,20 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "English",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
       ],
       "prerequisites_required": [
-        "Placement based on testing Academic Literacy 3-4 strengthens high school English learners\u2019 ability to read deeply and analytically, write lengthy, well-supported arguments, and deliver substantial ora"
+        "Placement based on testing Academic Literacy 3-4 strengthens high school English learners’ ability to read deeply and analytically, write lengthy, well-supported arguments, and deliver substantial ora"
       ],
       "prerequisites_recommended": [
-        "Placement based on testing Academic Literacy 3-4 strengthens high school English learners\u2019 ability to read deeply and analytically, write lengthy, well-supported arguments, and deliver substantial ora"
+        "Placement based on testing Academic Literacy 3-4 strengthens high school English learners’ ability to read deeply and analytically, write lengthy, well-supported arguments, and deliver substantial ora"
       ],
       "is_replacement_course": false,
       "replacement_equivalents": [],
@@ -6036,11 +6036,11 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: Placement based on testing Academic Literacy 3-4 strengthens high school English learners\u2019 ability to read deeply and analytically, write lengthy, well-supported arguments, and deliver substantial oral arguments that are driven by research in order to prepare students for advanced high school work and higher education. Because this course is designed to advance students\u2019 academic literacy, a heavy emphasis is placed on verbal communication as it relates to academic dis"
+      "notes": "Recommended Prerequisites: Placement based on testing Academic Literacy 3-4 strengthens high school English learners’ ability to read deeply and analytically, write lengthy, well-supported arguments, and deliver substantial oral arguments that are driven by research in order to prepare students for advanced high school work and higher education. Because this course is designed to advance students’ academic literacy, a heavy emphasis is placed on verbal communication as it relates to academic dis"
     },
     {
       "course_id": "ELD_EXPLORATIONS_0003",
-      "full_name": "ELD EXPLORATIONS A/B & C/D 000335 - 000336 &",
+      "full_name": "English Language Development (ELD) EXPLORATIONS A/B & C/D 000335 - 000336 &",
       "course_numbers": [
         "000309",
         "000309"
@@ -6049,7 +6049,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "English",
@@ -6074,11 +6074,11 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: Placement based on testing ELD Explorations A/B and C/D is a course designed to support English learner students at an Expanding to Bridging level of English fluency who are concurrently enrolled in ELD 3-4. The purpose of this course is to allow the students extra time each day to develop their proficiency in English and to practice the skills learned in ELD 3-4. The curriculum is based on the ELD standards and focuses on developing students\u2019 listening, speaking, read"
+      "notes": "Recommended Prerequisites: Placement based on testing ELD Explorations A/B and C/D is a course designed to support English learner students at an Expanding to Bridging level of English fluency who are concurrently enrolled in ELD 3-4. The purpose of this course is to allow the students extra time each day to develop their proficiency in English and to practice the skills learned in ELD 3-4. The curriculum is based on the ELD standards and focuses on developing students’ listening, speaking, read"
     },
     {
       "course_id": "ELD_READINGWRITING_0003",
-      "full_name": "ELD READING/WRITING 3-4",
+      "full_name": "English Language Development (ELD) READING/WRITING 3-4",
       "course_numbers": [
         "000337",
         "000338"
@@ -6087,11 +6087,11 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "English",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -6112,7 +6112,7 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: Placement based on testing ELD Reading/Writing 3-4 is an optional course designed for English learners who are almost proficient in English but who need an extra year of ELD support before taking the Sheltered High School English 1-2 class. The focus of the course is developing students\u2019 competency in reading narrative, expository, and functional texts, as well as developing their writing skills in the various CAHSEE genres. The course is taken for English credit."
+      "notes": "Recommended Prerequisites: Placement based on testing ELD Reading/Writing 3-4 is an optional course designed for English learners who are almost proficient in English but who need an extra year of ELD support before taking the Sheltered High School English 1-2 class. The focus of the course is developing students’ competency in reading narrative, expository, and functional texts, as well as developing their writing skills in the various CAHSEE genres. The course is taken for English credit."
     },
     {
       "course_id": "ELL_12_0003",
@@ -6125,11 +6125,11 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "English",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -6163,11 +6163,11 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "English",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -6201,11 +6201,11 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "English",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -6239,7 +6239,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "History/Social Science",
@@ -6277,7 +6277,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Math",
@@ -6314,7 +6314,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Science - Biological",
@@ -6349,7 +6349,7 @@
       "grades_allowed": [
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Science - Physical",
@@ -6386,7 +6386,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Electives",
@@ -6422,7 +6422,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -6446,7 +6446,7 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: Enrollment in Critical Skills program; teacher recommendation L/ Dev Reading 1-2 is a course designed for Special Education students with significant learning disabilities. It provides guidance in the development of very basic reading and language skills. The program begins at the student\u2019s present reading level and works towards language growth in word attack, vocabulary, and comprehension skills. This course also focuses on functional reading skills. This course is d"
+      "notes": "Recommended Prerequisites: Enrollment in Critical Skills program; teacher recommendation L/ Dev Reading 1-2 is a course designed for Special Education students with significant learning disabilities. It provides guidance in the development of very basic reading and language skills. The program begins at the student’s present reading level and works towards language growth in word attack, vocabulary, and comprehension skills. This course also focuses on functional reading skills. This course is d"
     },
     {
       "course_id": "LDOMESTIC_DOMAIN_0019",
@@ -6459,7 +6459,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -6494,7 +6494,7 @@
       "grades_allowed": [
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "History/Social Science",
@@ -6530,11 +6530,11 @@
       "grades_allowed": [
         9
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "English",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -6566,11 +6566,11 @@
       "grades_allowed": [
         10
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "English",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -6602,11 +6602,11 @@
       "grades_allowed": [
         11
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "English",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -6638,11 +6638,11 @@
       "grades_allowed": [
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "English",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -6675,7 +6675,7 @@
         9,
         12
       ],
-      "credits": 5.0,
+      "credits": 5,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Physical Education",
@@ -6712,7 +6712,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Math",
@@ -6739,7 +6739,7 @@
       "notes": "Recommended Prerequisites: Enrollment in special education; teacher recommendation Integrated Mathematics 1 uses properties and theorems involving congruent figures to deepen and extend understanding of geometric knowledge from prior grades. The critical areas organized into units deepen and extend understanding of linear relationships. The Mathematical Practice Standards together with the content standards prescribe that students experience mathematics as a coherent, useful, and logical subject"
     },
     {
-      "course_id": "LINTEGRATED_MATHEMATICS_0020",
+      "course_id": "SPECIAL_ED",
       "full_name": "Special Ed INTEGRATED MATHEMATICS IIA- IIB",
       "course_numbers": [
         "002040",
@@ -6749,7 +6749,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Math",
@@ -6785,7 +6785,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -6822,11 +6822,11 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "English",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -6860,7 +6860,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Science - Biological",
@@ -6897,7 +6897,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Math",
@@ -6921,7 +6921,7 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: Enrollment in special education; teacher recommendation The intent of this course is to help build confidence in mathematics skills. Math Accel is taught in collaboration with Integrated. Math 1 & 2. Teachers provide support in building skills and moving from a \u2018fixed mindset\u2019 about their math ability to a \u2018growth mindset\u2019 wherein they believe that they can improve."
+      "notes": "Recommended Prerequisites: Enrollment in special education; teacher recommendation The intent of this course is to help build confidence in mathematics skills. Math Accel is taught in collaboration with Integrated. Math 1 & 2. Teachers provide support in building skills and moving from a ‘fixed mindset’ about their math ability to a ‘growth mindset’ wherein they believe that they can improve."
     },
     {
       "course_id": "LRECREATIONLEISURE_DOMAIN_0019",
@@ -6934,7 +6934,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -6970,7 +6970,7 @@
       "grades_allowed": [
         11
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "History/Social Science",
@@ -7007,7 +7007,7 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "English",
@@ -7043,7 +7043,7 @@
       "grades_allowed": [
         10
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "History/Social Science",
@@ -7080,11 +7080,11 @@
         9,
         12
       ],
-      "credits": 10.0,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "English",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -7105,6 +7105,39 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Enrollment in special education; teacher recommendation L/Writing Skills is a course designed for Special Education students with disabilities in sentence writing, spelling, punctuation, grammar, and usage. Included in the course are the writing of paragraphs, business letters, personal letters, and the completion of job application forms. The use of legible handwriting is emphasized."
+    },
+    {
+      "course_id": "OFF_ROLL_PLACEHOLDER",
+      "full_name": "Off-Roll (Not Attending Westview)",
+      "course_numbers": [],
+      "grades_allowed": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "credits": 0,
+      "credit_type": "standard",
+      "uc_csu_category": null,
+      "pathway": "Off-Roll",
+      "term_length": "semester",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "prerequisites_required": [],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "linked_courses": [],
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "notes": "Select this option when the student is not taking courses at Westview during this semester (e.g., attending another school, independent study, etc.)"
     }
   ]
 }
