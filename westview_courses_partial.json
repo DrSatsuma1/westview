@@ -1,9 +1,0 @@
-{
-  "note": "Partial extraction only. Full extraction requires multi\u2011step parsing of the entire catalog. This file contains the sequences provided so far. Additional courses can be appended in the same schema.",
-  "schema_version": "2025-11-17.v1",
-  "courses": [
-    {
-      "info": "Full JSON content previously displayed in chat. Ready for extension."
-    }
-  ]
-}
