@@ -232,37 +232,34 @@ function App() {
           {/* Main Content - 4-Year Grid */}
           <div className="lg:col-span-3">
 
-            {/* Schedule Validation Errors */}
-            {scheduleValidation.errors.length > 0 && (
-              <div className="bg-red-50 border-2 border-red-400 rounded-xl p-4 mb-6">
-                <div className="flex items-start gap-3">
-                  <AlertCircle className="text-red-600 flex-shrink-0 mt-0.5" size={24} />
-                  <div>
-                    <h3 className="font-bold text-red-900 text-lg">Schedule Issues Detected</h3>
-                    <div className="mt-2 space-y-1">
+            {/* Compact Warnings Row */}
+            {(scheduleValidation.errors.length > 0 || englishWarnings.length > 0) && (
+              <div className="flex flex-wrap gap-2 mb-4">
+                {/* Schedule Validation Errors */}
+                {scheduleValidation.errors.length > 0 && (
+                  <div className="bg-red-50 border border-red-400 rounded-lg px-3 py-2 flex items-center gap-2 flex-1 min-w-fit">
+                    <AlertCircle className="text-red-600 flex-shrink-0" size={16} />
+                    <div className="text-sm text-red-800">
+                      <span className="font-semibold">Schedule Issues:</span>{' '}
                       {scheduleValidation.errors.map((err, idx) => (
-                        <p key={idx} className="text-red-800">
-                          Grade {err.year}: {err.message}
-                        </p>
+                        <span key={idx}>
+                          {idx > 0 && ', '}Grade {err.year}
+                        </span>
                       ))}
                     </div>
                   </div>
-                </div>
-              </div>
-            )}
+                )}
 
-            {/* English Warning */}
-            {englishWarnings.length > 0 && (
-              <div className="bg-yellow-50 border-2 border-yellow-400 rounded-xl p-4 mb-6">
-                <div className="flex items-start gap-3">
-                  <AlertCircle className="text-yellow-600 flex-shrink-0 mt-0.5" size={24} />
-                  <div>
-                    <h3 className="font-bold text-yellow-900 text-lg">English Required Every Year</h3>
-                    <p className="text-yellow-800 mt-1">
-                      Missing English in Grade{englishWarnings.length > 1 ? 's' : ''}: {englishWarnings.join(', ')}
-                    </p>
+                {/* English Warning */}
+                {englishWarnings.length > 0 && (
+                  <div className="bg-yellow-50 border border-yellow-400 rounded-lg px-3 py-2 flex items-center gap-2 flex-1 min-w-fit">
+                    <AlertCircle className="text-yellow-600 flex-shrink-0" size={16} />
+                    <div className="text-sm text-yellow-800">
+                      <span className="font-semibold">Missing English:</span>{' '}
+                      Grade{englishWarnings.length > 1 ? 's' : ''} {englishWarnings.join(', ')}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             )}
 
