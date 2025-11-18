@@ -37,6 +37,14 @@ def consolidate_pathways(courses):
         'PHYSIOLOGY', 'MARINE', 'ENVIRONMENTAL SCIENCE', 'COMPUTER SCIENCE'
     ]
 
+    # Fine Arts course keywords
+    fine_arts_keywords = [
+        'DRAMA', 'ORCHESTRA', 'JOURNALISM', 'YEARBOOK', 'BROADCAST',
+        'MUSIC', 'BAND', 'CHOIR', 'THEATER', 'THEATRE', 'DANCE',
+        'PHOTOGRAPHY', 'FILM', 'ANIMATION', 'CERAMICS', 'SCULPTURE',
+        'DRAWING', 'PAINTING'
+    ]
+
     # Pathway consolidation mapping
     pathway_mapping = {
         'Mathematics': 'Math',
@@ -73,6 +81,15 @@ def consolidate_pathways(courses):
                 print(f'✓ Fixed science course: {course_name}')
                 print(f'  {current_pathway} → Science')
                 course['pathway'] = 'Science'
+                fixes += 1
+                continue
+
+        # Fix Fine Arts courses incorrectly categorized as English
+        if current_pathway == 'English':
+            if any(keyword in name_upper for keyword in fine_arts_keywords):
+                print(f'✓ Fixed fine arts course: {course_name}')
+                print(f'  {current_pathway} → Fine Arts')
+                course['pathway'] = 'Fine Arts'
                 fixes += 1
                 continue
 
