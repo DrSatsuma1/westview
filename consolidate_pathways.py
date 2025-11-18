@@ -84,6 +84,15 @@ def consolidate_pathways(courses):
                 fixes += 1
                 continue
 
+        # Fix Writing Seminar - should be English
+        if 'WRITING SEMINAR' in name_upper:
+            if current_pathway != 'English':
+                print(f'✓ Fixed Writing Seminar: {course_name}')
+                print(f'  {current_pathway} → English')
+                course['pathway'] = 'English'
+                fixes += 1
+                continue
+
         # Fix science courses incorrectly categorized as Math
         if current_pathway == 'Mathematics' or current_pathway == 'Math':
             if any(keyword in name_upper for keyword in science_keywords):
