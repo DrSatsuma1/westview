@@ -401,6 +401,44 @@ function App() {
                                                 </optgroup>
                                               ));
                                             })()
+                                          ) : selectedCategory === 'English' ? (
+                                            // Group English courses by type
+                                            (() => {
+                                              const grouped = {
+                                                'English': [],
+                                                'Writing': [],
+                                                'Literature': [],
+                                                'English Language Learner (ELL)': [],
+                                                'Special Education': []
+                                              };
+
+                                              coursesInPathway.forEach(course => {
+                                                const name = course.full_name.toUpperCase();
+                                                if (name.includes('SPECIAL ED')) {
+                                                  grouped['Special Education'].push(course);
+                                                } else if (name.includes('ELL') || name.includes('ENGLISH LANGUAGE LEARNER')) {
+                                                  grouped['English Language Learner (ELL)'].push(course);
+                                                } else if (name.includes('WRITING')) {
+                                                  grouped['Writing'].push(course);
+                                                } else if (name.includes('LITERATURE')) {
+                                                  grouped['Literature'].push(course);
+                                                } else {
+                                                  grouped['English'].push(course);
+                                                }
+                                              });
+
+                                              return Object.entries(grouped)
+                                                .filter(([_, courses]) => courses.length > 0)
+                                                .map(([group, courses]) => (
+                                                  <optgroup key={group} label={group}>
+                                                    {courses.map(course => (
+                                                      <option key={course.id} value={course.id}>
+                                                        {course.full_name}
+                                                      </option>
+                                                    ))}
+                                                  </optgroup>
+                                                ));
+                                            })()
                                           ) : (
                                             // Regular list for other pathways
                                             coursesInPathway.map(course => (
