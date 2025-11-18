@@ -66,6 +66,15 @@ def consolidate_pathways(courses):
         current_pathway = course['pathway']
         name_upper = course_name.upper()
 
+        # Fix AVID courses - should be Electives
+        if 'AVID' in name_upper:
+            if current_pathway != 'Electives':
+                print(f'✓ Fixed AVID course: {course_name}')
+                print(f'  {current_pathway} → Electives')
+                course['pathway'] = 'Electives'
+                fixes += 1
+                continue
+
         # Fix Filipino courses - should be Foreign Language
         if 'FILIPINO' in course_name:
             if current_pathway != 'Foreign Language':
