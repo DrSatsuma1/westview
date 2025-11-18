@@ -372,11 +372,43 @@ function App() {
                                           autoFocus
                                         >
                                           <option value="">Select course...</option>
-                                          {coursesInPathway.map(course => (
-                                            <option key={course.id} value={course.id}>
-                                              {course.full_name}
-                                            </option>
-                                          ))}
+                                          {selectedCategory === 'Foreign Language' ? (
+                                            // Group foreign language courses by language
+                                            (() => {
+                                              const grouped = {};
+                                              coursesInPathway.forEach(course => {
+                                                const name = course.full_name.toUpperCase();
+                                                let lang = 'Other';
+                                                if (name.includes('SPANISH')) lang = 'Spanish';
+                                                else if (name.includes('CHINESE')) lang = 'Chinese';
+                                                else if (name.includes('FRENCH')) lang = 'French';
+                                                else if (name.includes('FILIPINO')) lang = 'Filipino';
+                                                else if (name.includes('GERMAN')) lang = 'German';
+                                                else if (name.includes('JAPANESE')) lang = 'Japanese';
+                                                else if (name.includes('LATIN')) lang = 'Latin';
+
+                                                if (!grouped[lang]) grouped[lang] = [];
+                                                grouped[lang].push(course);
+                                              });
+
+                                              return Object.keys(grouped).sort().map(lang => (
+                                                <optgroup key={lang} label={lang}>
+                                                  {grouped[lang].map(course => (
+                                                    <option key={course.id} value={course.id}>
+                                                      {course.full_name}
+                                                    </option>
+                                                  ))}
+                                                </optgroup>
+                                              ));
+                                            })()
+                                          ) : (
+                                            // Regular list for other pathways
+                                            coursesInPathway.map(course => (
+                                              <option key={course.id} value={course.id}>
+                                                {course.full_name}
+                                              </option>
+                                            ))
+                                          )}
                                         </select>
                                         <div className="flex gap-2">
                                           <button
