@@ -93,6 +93,18 @@ def consolidate_pathways(courses):
                 fixes += 1
                 continue
 
+        # Fix PE/Sports courses incorrectly categorized as Fine Arts
+        if current_pathway == 'Fine Arts':
+            # Specific PE courses
+            if ('SPORTS' in name_upper and 'E-SPORTS' not in name_upper) or \
+               'UNIFIED PE' in name_upper or \
+               name_upper.startswith('MARCHING PE'):
+                print(f'✓ Fixed PE course: {course_name}')
+                print(f'  {current_pathway} → Physical Education')
+                course['pathway'] = 'Physical Education'
+                fixes += 1
+                continue
+
         # Apply pathway consolidation
         if current_pathway in pathway_mapping:
             new_pathway = pathway_mapping[current_pathway]
