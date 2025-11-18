@@ -16,15 +16,27 @@ import json
 import re
 
 def fix_course_names(courses):
-    """Replace L/ prefix with Special Ed"""
+    """Replace L/ prefix with Special Ed and expand ELL"""
     fixes = 0
     for course in courses:
-        if course['full_name'].startswith('L/'):
-            old_name = course['full_name']
-            new_name = 'Special Ed ' + old_name[2:]  # Replace "L/" with "Special Ed "
+        old_name = course['full_name']
+        changed = False
+
+        # Fix L/ prefix
+        if old_name.startswith('L/'):
+            new_name = 'Special Ed ' + old_name[2:]
             course['full_name'] = new_name
             print(f'✓ Fixed Special Ed course: {old_name} → {new_name}')
             fixes += 1
+            changed = True
+
+        # Expand ELL to English Language Learner (ELL)
+        if not changed and old_name.startswith('ELL '):
+            new_name = 'English Language Learner (ELL) ' + old_name[4:]
+            course['full_name'] = new_name
+            print(f'✓ Expanded ELL course: {old_name} → {new_name}')
+            fixes += 1
+
     return fixes
 
 def consolidate_pathways(courses):
