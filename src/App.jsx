@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from 'react';
-import { Plus, CheckCircle2, AlertCircle, Circle, GraduationCap, Award } from 'lucide-react';
+import React, { useState, useMemo, useRef } from 'react';
+import { Plus, CheckCircle2, AlertCircle, Circle, GraduationCap, Award, Briefcase, Beaker, Palette, Wrench, Laptop, Music, Video } from 'lucide-react';
 import courseCatalogData from './data/courses_complete.json';
 import { SchedulingEngine } from './scheduling/SchedulingEngine.js';
 
@@ -25,16 +25,84 @@ const WESTVIEW_REQUIREMENTS = {
 };
 
 const AG_REQUIREMENTS = {
-  'A': { name: 'History/Social Science', needed: 2, short: 'History' },
-  'B': { name: 'English', needed: 4, short: 'English' },
-  'C': { name: 'Mathematics', needed: 3, short: 'Math' },
-  'D': { name: 'Laboratory Science', needed: 2, short: 'Science' },
-  'E': { name: 'Language Other Than English', needed: 2, short: 'Language' },
-  'F': { name: 'Visual & Performing Arts', needed: 1, short: 'Arts' },
-  'G': { name: 'College Prep Elective', needed: 1, short: 'College Prep Elective' }
+  'A': { name: 'History/Social Science', needed: 2, short: 'History', recommended: 2 },
+  'B': { name: 'English', needed: 4, short: 'English', recommended: 4 },
+  'C': { name: 'Mathematics (including Geometry)', needed: 3, short: 'Math (including Geometry)', recommended: 4 },
+  'D': { name: 'Laboratory Science', needed: 2, short: 'Science', recommended: 3 },
+  'E': { name: 'Language Other Than English', needed: 2, short: 'Language', recommended: 3 },
+  'F': { name: 'Visual & Performing Arts', needed: 1, short: 'Arts', recommended: 1 },
+  'G': { name: 'College Prep Elective', needed: 1, short: 'College Prep Elective', recommended: 1 }
 };
 
 const GRADE_OPTIONS = ['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D+', 'D', 'D-', 'F'];
+
+// Pathway Color Mapping (for left border stripe on course cards)
+const PATHWAY_COLORS = {
+  'English': 'border-l-blue-500',
+  'Math': 'border-l-green-500',
+  'Physical Education': 'border-l-orange-500',
+  'History/Social Science': 'border-l-red-500',
+  'Science - Biological': 'border-l-purple-500',
+  'Science - Physical': 'border-l-indigo-500',
+  'Foreign Language': 'border-l-pink-500',
+  'Fine Arts': 'border-l-amber-500',
+  'CTE': 'border-l-teal-500',
+  'Electives': 'border-l-gray-500',
+  'Off-Roll': 'border-l-slate-500',
+  'Clubs/Athletics': 'border-l-cyan-500'
+};
+
+// CTE Pathway Icon Mapping (for course cards)
+const CTE_PATHWAY_ICONS = {
+  'business': { icon: Briefcase, color: 'text-blue-600' },
+  'biotech': { icon: Beaker, color: 'text-purple-600' },
+  'design': { icon: Palette, color: 'text-pink-600' },
+  'engineering': { icon: Wrench, color: 'text-orange-600' },
+  'ict': { icon: Laptop, color: 'text-green-600' },
+  'performingArts': { icon: Music, color: 'text-red-600' },
+  'productionArts': { icon: Video, color: 'text-indigo-600' }
+};
+
+// Test Subjects by Type
+const TEST_SUBJECTS = {
+  'AP': [
+    'AP Biology', 'AP Calculus AB', 'AP Calculus BC', 'AP Chemistry', 'AP Physics 1',
+    'AP Physics 2', 'AP Physics C: Mechanics', 'AP Physics C: Electricity and Magnetism',
+    'AP English Language and Composition', 'AP English Literature and Composition',
+    'AP United States History', 'AP World History', 'AP European History',
+    'AP United States Government & Politics', 'AP Comparative Government & Politics',
+    'AP Human Geography', 'AP Psychology', 'AP Economics (Macro)', 'AP Economics (Micro)',
+    'AP Statistics', 'AP Computer Science A', 'AP Computer Science Principles',
+    'AP Environmental Science', 'AP Spanish Language', 'AP Spanish Literature',
+    'AP French Language', 'AP German Language', 'AP Chinese Language', 'AP Japanese Language',
+    'AP Latin', 'AP Art History', 'AP Music Theory', 'AP Studio Art'
+  ],
+  'IB': [
+    'IB Biology HL', 'IB Chemistry HL', 'IB Physics HL', 'IB Mathematics HL',
+    'IB English A: Literature HL', 'IB English A: Language and Literature HL',
+    'IB History HL', 'IB Geography HL', 'IB Economics HL', 'IB Psychology HL',
+    'IB Spanish HL', 'IB French HL', 'IB German HL', 'IB Chinese HL',
+    'IB Theatre HL', 'IB Visual Arts HL', 'IB Music HL'
+  ],
+  'CLEP': [
+    'CLEP Biology', 'CLEP Chemistry', 'CLEP Calculus', 'CLEP College Algebra',
+    'CLEP Precalculus', 'CLEP College Mathematics', 'CLEP American Literature',
+    'CLEP English Literature', 'CLEP College Composition', 'CLEP Humanities',
+    'CLEP United States History I', 'CLEP United States History II', 'CLEP Western Civilization I',
+    'CLEP Western Civilization II', 'CLEP American Government', 'CLEP Psychology',
+    'CLEP Sociology', 'CLEP Economics (Macro)', 'CLEP Economics (Micro)',
+    'CLEP Spanish Language (Level 1)', 'CLEP Spanish Language (Level 2)',
+    'CLEP French Language (Level 1)', 'CLEP French Language (Level 2)',
+    'CLEP German Language (Level 1)', 'CLEP German Language (Level 2)'
+  ],
+  'A-Level': [
+    'A-Level Biology', 'A-Level Chemistry', 'A-Level Physics', 'A-Level Mathematics',
+    'A-Level Further Mathematics', 'A-Level English Literature', 'A-Level History',
+    'A-Level Geography', 'A-Level Economics', 'A-Level Psychology', 'A-Level Sociology',
+    'A-Level French', 'A-Level Spanish', 'A-Level German', 'A-Level Chinese',
+    'A-Level Computer Science', 'A-Level Art and Design', 'A-Level Music'
+  ]
+};
 
 // CTE Pathway Requirements
 const CTE_PATHWAYS = {
@@ -187,10 +255,23 @@ function App() {
     const saved = localStorage.getItem('westview-grad-only');
     return saved ? JSON.parse(saved) : false;
   });
+  const [gpaMode, setGpaMode] = useState(() => {
+    const saved = localStorage.getItem('westview-gpa-mode');
+    return saved ? JSON.parse(saved) : false;
+  });
+  const [showTestScores, setShowTestScores] = useState(false);
+  const [testScores, setTestScores] = useState(() => {
+    const saved = localStorage.getItem('westview-test-scores');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [selectedTestType, setSelectedTestType] = useState('');
 
   // Drag and drop state
   const [draggedCourse, setDraggedCourse] = useState(null);
   const [dragOverSlot, setDragOverSlot] = useState(null);
+
+  // Ref for scrolling to test scores section
+  const testScoresRef = useRef(null);
 
   // Semester completion tracking
   const [completedSemesters, setCompletedSemesters] = useState(() => {
@@ -241,6 +322,16 @@ function App() {
   React.useEffect(() => {
     localStorage.setItem('westview-hide-special-ed-classes', JSON.stringify(hideSpecialEdClasses));
   }, [hideSpecialEdClasses]);
+
+  // Save GPA mode preference to localStorage
+  React.useEffect(() => {
+    localStorage.setItem('westview-gpa-mode', JSON.stringify(gpaMode));
+  }, [gpaMode]);
+
+  // Save test scores to localStorage
+  React.useEffect(() => {
+    localStorage.setItem('westview-test-scores', JSON.stringify(testScores));
+  }, [testScores]);
 
   // Calculate Westview graduation progress
   const westviewProgress = useMemo(() => {
@@ -525,7 +616,9 @@ function App() {
   // Calculate UC/CSU progress
   const agProgress = useMemo(() => {
     const progress = {};
-    Object.keys(AG_REQUIREMENTS).forEach(cat => {
+
+    // First, calculate A-F categories
+    ['A', 'B', 'C', 'D', 'E', 'F'].forEach(cat => {
       const relevantCourses = courses.filter(c => {
         const info = COURSE_CATALOG[c.courseId];
         return info && info.uc_csu_category === cat;
@@ -539,13 +632,326 @@ function App() {
       progress[cat] = {
         earned: years,
         needed: AG_REQUIREMENTS[cat].needed,
-        met: years >= AG_REQUIREMENTS[cat].needed
+        recommended: AG_REQUIREMENTS[cat].recommended,
+        met: years >= AG_REQUIREMENTS[cat].needed,
+        meetsRecommended: years >= AG_REQUIREMENTS[cat].recommended
       };
     });
+
+    // Calculate G: courses marked as 'G' + extra courses from A-F beyond minimums
+    const gCourses = courses.filter(c => {
+      const info = COURSE_CATALOG[c.courseId];
+      return info && info.uc_csu_category === 'G';
+    });
+
+    // Count extra courses from A-F that exceed requirements
+    let extraAFCourses = 0;
+    ['A', 'B', 'C', 'D', 'E', 'F'].forEach(cat => {
+      const extra = progress[cat].earned - progress[cat].needed;
+      if (extra > 0) {
+        extraAFCourses += extra;
+      }
+    });
+
+    const gYears = gCourses.length + extraAFCourses;
+    progress['G'] = {
+      earned: gYears,
+      needed: AG_REQUIREMENTS['G'].needed,
+      recommended: AG_REQUIREMENTS['G'].recommended,
+      met: gYears >= AG_REQUIREMENTS['G'].needed,
+      meetsRecommended: gYears >= AG_REQUIREMENTS['G'].recommended
+    };
+
     return progress;
   }, [courses]);
 
   const ucsuEligible = Object.values(agProgress).every(p => p.met);
+
+  // Calculate UC GPA (grades 10-11, A-G courses only)
+  const ucGPA = useMemo(() => {
+    if (!gpaMode) return null;
+
+    // Filter for A-G courses from grades 10-11 with grades
+    const agCourses = courses.filter(c => {
+      const info = COURSE_CATALOG[c.courseId];
+      return info &&
+             info.uc_csu_category &&
+             (c.year === '10' || c.year === '11') &&
+             c.grade &&
+             c.grade !== '';
+    });
+
+    if (agCourses.length === 0) return null;
+
+    // Helper to convert letter grade to base points (no +/-)
+    const getBasePoints = (grade) => {
+      const letter = grade.replace('+', '').replace('-', '');
+      const points = { 'A': 4, 'B': 3, 'C': 2, 'D': 1, 'F': 0 };
+      return points[letter] || 0;
+    };
+
+    // Calculate total grade points
+    let totalGradePoints = 0;
+    let totalGrades = 0;
+
+    agCourses.forEach(c => {
+      totalGradePoints += getBasePoints(c.grade);
+      totalGrades++;
+    });
+
+    const unweightedGPA = totalGrades > 0 ? totalGradePoints / totalGrades : 0;
+
+    // Calculate honors points (AP and IB courses with grades C or better)
+    let grade10HonorsCount = 0;
+    let grade11HonorsCount = 0;
+
+    agCourses.forEach(c => {
+      const info = COURSE_CATALOG[c.courseId];
+      const basePoints = getBasePoints(c.grade);
+
+      // Only give honors points for C or better grades
+      if (basePoints >= 2 && info.is_ap_or_honors_pair) {
+        if (c.year === '10') grade10HonorsCount++;
+        if (c.year === '11') grade11HonorsCount++;
+      }
+    });
+
+    // Capped: max 4 semesters from grade 10, max 4 from grade 11, total max 8
+    const cappedGrade10Honors = Math.min(grade10HonorsCount, 4);
+    const cappedGrade11Honors = Math.min(grade11HonorsCount, 4);
+    const totalCappedHonors = Math.min(cappedGrade10Honors + cappedGrade11Honors, 8);
+
+    const weightedCappedGPA = totalGrades > 0 ? (totalGradePoints + totalCappedHonors) / totalGrades : 0;
+
+    // Fully weighted: all honors points
+    const totalFullyWeightedHonors = grade10HonorsCount + grade11HonorsCount;
+    const fullyWeightedGPA = totalGrades > 0 ? (totalGradePoints + totalFullyWeightedHonors) / totalGrades : 0;
+
+    return {
+      unweighted: Math.floor(unweightedGPA * 100) / 100,
+      weightedCapped: Math.floor(weightedCappedGPA * 100) / 100,
+      fullyWeighted: Math.floor(fullyWeightedGPA * 100) / 100,
+      totalGrades,
+      grade10Honors: grade10HonorsCount,
+      grade11Honors: grade11HonorsCount,
+      cappedHonorsUsed: totalCappedHonors
+    };
+  }, [courses, gpaMode]);
+
+  // Calculate State Seal of Biliteracy eligibility
+  const biliteracySealEligibility = useMemo(() => {
+    // Check English requirement: 4 years of English with 3.0 GPA (if in GPA mode)
+    const englishCourses = courses.filter(c => {
+      const info = COURSE_CATALOG[c.courseId];
+      return info && info.pathway === 'English';
+    });
+
+    // Group by year to check 4-year requirement
+    const englishYears = new Set(englishCourses.map(c => c.year));
+    const has4YearsEnglish = englishYears.size >= 4;
+
+    let englishGPAMet = true; // Assume met if not in GPA mode
+    if (gpaMode) {
+      const englishWithGrades = englishCourses.filter(c => c.grade && c.grade !== '');
+      if (englishWithGrades.length > 0) {
+        const getBasePoints = (grade) => {
+          const letter = grade.replace('+', '').replace('-', '');
+          const points = { 'A': 4, 'B': 3, 'C': 2, 'D': 1, 'F': 0 };
+          return points[letter] || 0;
+        };
+        const totalPoints = englishWithGrades.reduce((sum, c) => sum + getBasePoints(c.grade), 0);
+        const englishGPA = totalPoints / englishWithGrades.length;
+        englishGPAMet = englishGPA >= 3.0;
+      } else {
+        englishGPAMet = false; // No grades entered yet
+      }
+    }
+
+    // Check world language requirement: 4 years with 3.0 GPA (if in GPA mode)
+    const worldLangCourses = courses.filter(c => {
+      const info = COURSE_CATALOG[c.courseId];
+      return info && info.pathway === 'Foreign Language';
+    });
+
+    // Find the language with the most years
+    const languageYears = {};
+    worldLangCourses.forEach(c => {
+      const info = COURSE_CATALOG[c.courseId];
+      const name = info.full_name.toUpperCase();
+      let lang = 'Other';
+      if (name.includes('SPANISH')) lang = 'Spanish';
+      else if (name.includes('CHINESE')) lang = 'Chinese';
+      else if (name.includes('FRENCH')) lang = 'French';
+      else if (name.includes('JAPANESE')) lang = 'Japanese';
+      else if (name.includes('GERMAN')) lang = 'German';
+      else if (name.includes('ASL') || name.includes('SIGN LANGUAGE')) lang = 'ASL';
+
+      if (!languageYears[lang]) {
+        languageYears[lang] = new Set();
+      }
+      languageYears[lang].add(c.year);
+    });
+
+    let primaryLanguage = null;
+    let maxYears = 0;
+    Object.entries(languageYears).forEach(([lang, years]) => {
+      if (years.size > maxYears) {
+        maxYears = years.size;
+        primaryLanguage = lang;
+      }
+    });
+
+    const has4YearsLanguage = maxYears >= 4;
+
+    let languageGPAMet = true; // Assume met if not in GPA mode
+    if (gpaMode && primaryLanguage) {
+      const langCoursesWithGrades = worldLangCourses.filter(c => {
+        const info = COURSE_CATALOG[c.courseId];
+        const name = info.full_name.toUpperCase();
+        let lang = 'Other';
+        if (name.includes('SPANISH')) lang = 'Spanish';
+        else if (name.includes('CHINESE')) lang = 'Chinese';
+        else if (name.includes('FRENCH')) lang = 'French';
+        else if (name.includes('JAPANESE')) lang = 'Japanese';
+        else if (name.includes('GERMAN')) lang = 'German';
+        else if (name.includes('ASL') || name.includes('SIGN LANGUAGE')) lang = 'ASL';
+
+        return lang === primaryLanguage && c.grade && c.grade !== '';
+      });
+
+      if (langCoursesWithGrades.length > 0) {
+        const getBasePoints = (grade) => {
+          const letter = grade.replace('+', '').replace('-', '');
+          const points = { 'A': 4, 'B': 3, 'C': 2, 'D': 1, 'F': 0 };
+          return points[letter] || 0;
+        };
+        const totalPoints = langCoursesWithGrades.reduce((sum, c) => sum + getBasePoints(c.grade), 0);
+        const langGPA = totalPoints / langCoursesWithGrades.length;
+        languageGPAMet = langGPA >= 3.0;
+      } else {
+        languageGPAMet = false; // No grades entered yet
+      }
+    }
+
+    const isEligible = has4YearsEnglish && englishGPAMet && has4YearsLanguage && languageGPAMet;
+
+    return {
+      eligible: isEligible,
+      has4YearsEnglish,
+      englishGPAMet,
+      has4YearsLanguage,
+      languageGPAMet,
+      primaryLanguage,
+      languageYears: maxYears,
+      englishYears: englishYears.size
+    };
+  }, [courses, gpaMode]);
+
+  // Calculate College Credits from test scores
+  const collegeCredits = useMemo(() => {
+    if (testScores.length === 0) return { csu: 0, uc: 0, details: [] };
+
+    let csuTotal = 0;
+    let ucTotal = 0;
+    const details = [];
+
+    testScores.forEach(test => {
+      let csuCredits = 0;
+      let ucCredits = 0;
+      const subject = test.subject.toUpperCase();
+      const score = parseInt(test.score);
+
+      if (test.type === 'AP' && score >= 3) {
+        // CSU AP Credits (all are semester units)
+        if (subject.includes('CALCULUS BC')) {
+          csuCredits = 6;
+          ucCredits = 5.3; // UC uses semester for Berkeley/Merced, but we'll use semester for consistency
+        } else if (subject.includes('CALCULUS AB') || subject.includes('CALCULUS')) {
+          csuCredits = 3;
+          ucCredits = 2.6;
+        } else if (subject.includes('BIOLOGY') || subject.includes('CHEMISTRY')) {
+          csuCredits = 6;
+          ucCredits = 5.3;
+        } else if (subject.includes('PHYSICS')) {
+          csuCredits = 4;
+          ucCredits = 5.3;
+        } else if (subject.includes('ENGLISH') || subject.includes('LITERATURE')) {
+          csuCredits = 6;
+          ucCredits = 5.3;
+        } else if (subject.includes('HISTORY') || subject.includes('GOVERNMENT')) {
+          csuCredits = subject.includes('US HISTORY') || subject.includes('WORLD') || subject.includes('EUROPEAN') ? 6 : 3;
+          ucCredits = subject.includes('US HISTORY') || subject.includes('WORLD') || subject.includes('EUROPEAN') ? 5.3 : 2.6;
+        } else if (subject.includes('LANGUAGE') || subject.includes('SPANISH') || subject.includes('FRENCH') || subject.includes('CHINESE') || subject.includes('GERMAN') || subject.includes('JAPANESE') || subject.includes('LATIN')) {
+          csuCredits = 6;
+          ucCredits = 5.3;
+        } else if (subject.includes('PSYCHOLOGY') || subject.includes('ECONOMICS') || subject.includes('STATISTICS') || subject.includes('HUMAN GEOGRAPHY')) {
+          csuCredits = 3;
+          ucCredits = 2.6;
+        } else if (subject.includes('COMPUTER SCIENCE')) {
+          csuCredits = score >= 3 ? 6 : 3;
+          ucCredits = 5.3;
+        } else if (subject.includes('ENVIRONMENTAL')) {
+          csuCredits = 4;
+          ucCredits = 2.6;
+        } else if (subject.includes('ART')) {
+          csuCredits = subject.includes('HISTORY') ? 6 : 3;
+          ucCredits = subject.includes('HISTORY') ? 5.3 : 5.3;
+        } else {
+          csuCredits = 3; // Default
+          ucCredits = 2.6;
+        }
+      } else if (test.type === 'IB' && score >= 4) {
+        // IB HL exams (score 4+): 6 credits CSU, 8 quarter units UC (5.3 semester)
+        if ((score >= 5 && (subject.includes('BIOLOGY') || subject.includes('CHEMISTRY') || subject.includes('PHYSICS') ||
+             subject.includes('ECONOMICS') || subject.includes('GEOGRAPHY') || subject.includes('HISTORY') ||
+             subject.includes('PSYCHOLOGY'))) ||
+            (score >= 4 && (subject.includes('LANGUAGE') || subject.includes('LITERATURE') || subject.includes('MATHEMATICS') ||
+             subject.includes('THEATRE')))) {
+          csuCredits = 6;
+          ucCredits = 5.3; // 8 quarter = 5.3 semester
+        }
+      } else if (test.type === 'CLEP' && score >= 50) {
+        // CLEP: mostly 3 credits CSU
+        if (subject.includes('CALCULUS') || subject.includes('CHEMISTRY') || subject.includes('BIOLOGY') ||
+            subject.includes('COLLEGE ALGEBRA') || subject.includes('PRE-CALCULUS')) {
+          csuCredits = 3;
+        } else if (subject.includes('HISTORY') || subject.includes('GOVERNMENT') || subject.includes('ECONOMICS') ||
+                   subject.includes('PSYCHOLOGY') || subject.includes('SOCIOLOGY')) {
+          csuCredits = 3;
+        } else if (subject.includes('HUMANITIES') || subject.includes('LITERATURE')) {
+          csuCredits = 3;
+        } else if (subject.includes('SPANISH') || subject.includes('FRENCH') || subject.includes('GERMAN')) {
+          if (score >= 63) {
+            csuCredits = 9; // Level II
+          } else if (score >= 50) {
+            csuCredits = 6; // Level I
+          }
+        }
+        // UC doesn't typically grant credit for CLEP
+      } else if (test.type === 'A-Level' && ['A', 'B', 'C'].includes(test.score)) {
+        // A-Level: UC grants up to 12 quarter (8 semester) units
+        ucCredits = 5.3; // 8 semester units
+        // CSU doesn't have standardized A-Level credit
+      }
+
+      if (csuCredits > 0 || ucCredits > 0) {
+        csuTotal += csuCredits;
+        ucTotal += ucCredits;
+        details.push({
+          exam: `${test.type} ${test.subject}`,
+          score: test.score,
+          csu: csuCredits,
+          uc: ucCredits
+        });
+      }
+    });
+
+    return {
+      csu: Math.round(csuTotal * 10) / 10,
+      uc: Math.round(ucTotal * 10) / 10,
+      details
+    };
+  }, [testScores]);
 
   // Validate schedule using SchedulingEngine
   const scheduleValidation = useMemo(() => {
@@ -788,7 +1194,7 @@ function App() {
 
   // Drag-and-drop handlers
   const handleDragStart = (e, course, year, quarter) => {
-    setDraggedCourse({ course, year, semester });
+    setDraggedCourse({ course, year, quarter });
     e.dataTransfer.effectAllowed = 'move';
     // Add semi-transparent effect
     e.currentTarget.style.opacity = '0.5';
@@ -825,9 +1231,9 @@ function App() {
       return;
     }
 
-    // Check if course is yearlong
-    if (courseInfo.term_length === 'yearlong') {
-      // For yearlong courses, we need to move both quarters of the term
+    // Check if course is yearlong or semester (both span 2 quarters of a term)
+    if (courseInfo.term_length === 'yearlong' || courseInfo.term_length === 'semester') {
+      // For yearlong/semester courses, we need to move both quarters of the term
       // Determine quarter pairs
       const getQuarterPair = (q) => {
         if (q === 'Q1' || q === 'Q2') return ['Q1', 'Q2'];
@@ -995,18 +1401,7 @@ function App() {
       issues.push(`Overloaded schedule (${quarterCourses.length} courses). Maximum is 8 courses per quarter.`);
     } else if (quarterCourses.length >= 5) {
       warnings.push(`Above standard load (${quarterCourses.length} courses). Standard is 3 courses per quarter. Consider your workload carefully.`);
-    } else if (quarterCourses.length === 4) {
-      info.push(`Moderate load (${quarterCourses.length} courses). Standard is 3 courses per quarter.`);
     }
-
-    // Calculate credits for the semester
-    const quarterCredits = quarterCourses.reduce((sum, c) => {
-      const info = getCourseInfo(c.courseId);
-      return sum + (info ? info.credits : 0);
-    }, 0);
-
-    info.push(`${quarterCourses.length} courses scheduled`);
-    info.push(`${quarterCredits} credits for this semester`);
 
     // Check UC A-G progress for juniors and seniors
     if (yearInt >= 11) {
@@ -1564,7 +1959,8 @@ function App() {
   };
 
   // Generate course suggestions based on missing requirements
-  const generateCourseSuggestions = () => {
+  // term parameter: 'fall' or 'spring' - to check requirements per term, not per year
+  const generateCourseSuggestions = (term = null) => {
     const suggestions = [];
 
     // Determine which years to check based on early graduation mode
@@ -1572,10 +1968,17 @@ function App() {
       ? (earlyGradMode.targetYear === '3year' ? ['9', '10', '11'] : ['9', '10', '11', '12'])
       : ['9', '10', '11', '12'];
 
+    // Determine which quarters belong to this term
+    const termQuarters = term === 'fall' ? ['Q1', 'Q2'] : (term === 'spring' ? ['Q3', 'Q4'] : null);
+
     // Check for missing English courses (required all years)
     yearsToCheck.forEach(year => {
       const yearCourses = courses.filter(c => c.year === year);
-      const hasEnglish = yearCourses.some(c => {
+      // If checking for a specific term, only check courses in that term
+      const coursesToCheck = termQuarters
+        ? yearCourses.filter(c => termQuarters.includes(c.quarter))
+        : yearCourses;
+      const hasEnglish = coursesToCheck.some(c => {
         const info = COURSE_CATALOG[c.courseId];
         return info && info.pathway === 'English';
       });
@@ -1602,7 +2005,7 @@ function App() {
           suggestions.push({
             courseId: suggestedEnglish.id,
             year,
-            quarter: 'Q1',
+            quarter: null, // Flexible - can be scheduled in either term
             reason: `Grade ${year} requires an English course`,
             courseName: suggestedEnglish.full_name
           });
@@ -1686,7 +2089,7 @@ function App() {
             suggestions.push({
               courseId: peCourses[0].id,
               year,
-              quarter: 'Q1',
+              quarter: null, // Flexible - can be scheduled in either term
               reason: `PE required for Grade ${year}`,
               courseName: peCourses[0].full_name
             });
@@ -1698,7 +2101,10 @@ function App() {
     // Check for missing Math courses
     yearsToCheck.forEach(year => {
       const yearCourses = courses.filter(c => c.year === year);
-      const hasMath = yearCourses.some(c => {
+      const coursesToCheck = termQuarters
+        ? yearCourses.filter(c => termQuarters.includes(c.quarter))
+        : yearCourses;
+      const hasMath = coursesToCheck.some(c => {
         const info = COURSE_CATALOG[c.courseId];
         return info && info.pathway === 'Math';
       });
@@ -1721,7 +2127,7 @@ function App() {
           suggestions.push({
             courseId: suggestedMath.id,
             year,
-            quarter: 'Q1',
+            quarter: null, // Flexible - can be scheduled in either term
             reason: `Math course required for Grade ${year}`,
             courseName: suggestedMath.full_name
           });
@@ -1732,7 +2138,10 @@ function App() {
     // Check for missing Science courses (need both biological and physical)
     yearsToCheck.forEach(year => {
       const yearCourses = courses.filter(c => c.year === year);
-      const hasScience = yearCourses.some(c => {
+      const coursesToCheck = termQuarters
+        ? yearCourses.filter(c => termQuarters.includes(c.quarter))
+        : yearCourses;
+      const hasScience = coursesToCheck.some(c => {
         const info = COURSE_CATALOG[c.courseId];
         return info && (info.pathway === 'Science - Biological' || info.pathway === 'Science - Physical');
       });
@@ -1751,7 +2160,7 @@ function App() {
           suggestions.push({
             courseId: biologyCourses[0].id,
             year: '9',
-            quarter: 'Q1',
+            quarter: null, // Flexible - can be scheduled in either term
             reason: 'Biological science required',
             courseName: biologyCourses[0].full_name
           });
@@ -1770,7 +2179,7 @@ function App() {
           suggestions.push({
             courseId: chemistryCourses[0].id,
             year: '10',
-            quarter: 'Q1',
+            quarter: null, // Flexible - can be scheduled in either term
             reason: 'Physical science required',
             courseName: chemistryCourses[0].full_name
           });
@@ -1781,7 +2190,10 @@ function App() {
     // Check for missing History/Social Science
     yearsToCheck.forEach(year => {
       const yearCourses = courses.filter(c => c.year === year);
-      const hasHistory = yearCourses.some(c => {
+      const coursesToCheck = termQuarters
+        ? yearCourses.filter(c => termQuarters.includes(c.quarter))
+        : yearCourses;
+      const hasHistory = coursesToCheck.some(c => {
         const info = COURSE_CATALOG[c.courseId];
         return info && info.pathway === 'History/Social Science';
       });
@@ -1810,7 +2222,7 @@ function App() {
           suggestions.push({
             courseId: suggestedCourse.id,
             year,
-            quarter: 'Q1',
+            quarter: null, // Flexible - can be scheduled in either term
             reason: `History/Social Science required for Grade ${year}`,
             courseName: suggestedCourse.full_name
           });
@@ -1847,7 +2259,7 @@ function App() {
             suggestions.push({
               courseId,
               year: suggestedYear,
-              quarter: 'Q1',
+              quarter: null, // Flexible - can be scheduled in either term
               reason: `CTE ${pathway.name} - Concentrator course required`,
               courseName: courseInfo.full_name
             });
@@ -1879,7 +2291,7 @@ function App() {
             suggestions.push({
               courseId,
               year: suggestedYear,
-              quarter: 'Q1',
+              quarter: null, // Flexible - can be scheduled in either term
               reason: `CTE ${pathway.name} - Capstone course required`,
               courseName: courseInfo.full_name
             });
@@ -1894,8 +2306,8 @@ function App() {
 
   // Generate and add suggestions for a specific term (Fall or Spring)
   const suggestCoursesForTerm = (year, term) => {
-    // Generate all suggestions and get them directly
-    const allSuggestions = generateCourseSuggestions();
+    // Generate all suggestions and get them directly, passing term to check requirements per term
+    const allSuggestions = generateCourseSuggestions(term);
 
     // Filter suggestions for this specific year and term
     // Fall term = Q1, Q2; Spring term = Q3, Q4
@@ -1906,6 +2318,9 @@ function App() {
     // If not, add it to the target quarter for this term
     const termSuggestions = allSuggestions
       .filter(s => s.year === year)
+      // FIRST: Filter to only include suggestions that are for THIS term
+      // null quarter means flexible - can be scheduled in any term
+      .filter(s => s.quarter === null || termQuarters.includes(s.quarter))
       .map(s => {
         // Check if this course (or its pathway) already exists in this term
         const yearCourses = courses.filter(c => c.year === year);
@@ -2040,12 +2455,12 @@ function App() {
               {/* CTE Pathway Selection */}
               <div className="bg-gray-50 border-2 border-gray-200 rounded-lg p-4">
                 <p className="text-sm font-bold text-gray-900 mb-3">CTE Pathways</p>
-                <div className="grid grid-cols-4 gap-2">
+                <div className="grid grid-cols-7 gap-2 mb-4">
                   <button
                     onClick={() => setCtePathwayMode(prev =>
                       prev.pathway === 'business' ? { enabled: false, pathway: null } : { enabled: true, pathway: 'business' }
                     )}
-                    className={`px-3 py-2 rounded text-xs font-medium transition-colors ${
+                    className={`px-2 py-2 rounded text-xs font-medium transition-colors whitespace-normal ${
                       ctePathwayMode.pathway === 'business'
                         ? 'bg-purple-600 text-white'
                         : 'bg-white text-gray-700 hover:bg-purple-50 border border-gray-300'
@@ -2057,7 +2472,7 @@ function App() {
                     onClick={() => setCtePathwayMode(prev =>
                       prev.pathway === 'biotech' ? { enabled: false, pathway: null } : { enabled: true, pathway: 'biotech' }
                     )}
-                    className={`px-3 py-2 rounded text-xs font-medium transition-colors ${
+                    className={`px-2 py-2 rounded text-xs font-medium transition-colors whitespace-normal ${
                       ctePathwayMode.pathway === 'biotech'
                         ? 'bg-purple-600 text-white'
                         : 'bg-white text-gray-700 hover:bg-purple-50 border border-gray-300'
@@ -2069,7 +2484,7 @@ function App() {
                     onClick={() => setCtePathwayMode(prev =>
                       prev.pathway === 'design' ? { enabled: false, pathway: null } : { enabled: true, pathway: 'design' }
                     )}
-                    className={`px-3 py-2 rounded text-xs font-medium transition-colors ${
+                    className={`px-2 py-2 rounded text-xs font-medium transition-colors whitespace-normal ${
                       ctePathwayMode.pathway === 'design'
                         ? 'bg-purple-600 text-white'
                         : 'bg-white text-gray-700 hover:bg-purple-50 border border-gray-300'
@@ -2081,7 +2496,7 @@ function App() {
                     onClick={() => setCtePathwayMode(prev =>
                       prev.pathway === 'engineering' ? { enabled: false, pathway: null } : { enabled: true, pathway: 'engineering' }
                     )}
-                    className={`px-3 py-2 rounded text-xs font-medium transition-colors ${
+                    className={`px-2 py-2 rounded text-xs font-medium transition-colors whitespace-normal ${
                       ctePathwayMode.pathway === 'engineering'
                         ? 'bg-purple-600 text-white'
                         : 'bg-white text-gray-700 hover:bg-purple-50 border border-gray-300'
@@ -2093,19 +2508,19 @@ function App() {
                     onClick={() => setCtePathwayMode(prev =>
                       prev.pathway === 'ict' ? { enabled: false, pathway: null } : { enabled: true, pathway: 'ict' }
                     )}
-                    className={`px-3 py-2 rounded text-xs font-medium transition-colors ${
+                    className={`px-2 py-2 rounded text-xs font-medium transition-colors whitespace-normal ${
                       ctePathwayMode.pathway === 'ict'
                         ? 'bg-purple-600 text-white'
                         : 'bg-white text-gray-700 hover:bg-purple-50 border border-gray-300'
                     }`}
                   >
-                    Info & Comm Tech
+                    Information & Communication Technology
                   </button>
                   <button
                     onClick={() => setCtePathwayMode(prev =>
                       prev.pathway === 'performingArts' ? { enabled: false, pathway: null } : { enabled: true, pathway: 'performingArts' }
                     )}
-                    className={`px-3 py-2 rounded text-xs font-medium transition-colors ${
+                    className={`px-2 py-2 rounded text-xs font-medium transition-colors whitespace-normal ${
                       ctePathwayMode.pathway === 'performingArts'
                         ? 'bg-purple-600 text-white'
                         : 'bg-white text-gray-700 hover:bg-purple-50 border border-gray-300'
@@ -2117,7 +2532,7 @@ function App() {
                     onClick={() => setCtePathwayMode(prev =>
                       prev.pathway === 'productionArts' ? { enabled: false, pathway: null } : { enabled: true, pathway: 'productionArts' }
                     )}
-                    className={`px-3 py-2 rounded text-xs font-medium transition-colors ${
+                    className={`px-2 py-2 rounded text-xs font-medium transition-colors whitespace-normal ${
                       ctePathwayMode.pathway === 'productionArts'
                         ? 'bg-purple-600 text-white'
                         : 'bg-white text-gray-700 hover:bg-purple-50 border border-gray-300'
@@ -2126,111 +2541,153 @@ function App() {
                     Production Arts
                   </button>
                 </div>
+
+                {/* Toggle Buttons */}
+                <div className="grid grid-cols-3 gap-2">
+                  {/* Hide AP Classes Toggle */}
+                  <button
+                    onClick={() => setHideAPClasses(!hideAPClasses)}
+                    className={`border-2 rounded-lg p-3 transition-colors ${
+                      hideAPClasses
+                        ? 'bg-blue-100 border-blue-400'
+                        : 'bg-white border-gray-300 hover:bg-gray-100'
+                    }`}
+                  >
+                    <div className="text-xs font-bold text-gray-900">
+                      Hide AP Classes
+                    </div>
+                  </button>
+
+                  {/* Hide Special Ed Classes Toggle */}
+                  <button
+                    onClick={() => setHideSpecialEdClasses(!hideSpecialEdClasses)}
+                    className={`border-2 rounded-lg p-3 transition-colors ${
+                      hideSpecialEdClasses
+                        ? 'bg-blue-100 border-blue-400'
+                        : 'bg-white border-gray-300 hover:bg-gray-100'
+                    }`}
+                  >
+                    <div className="text-xs font-bold text-gray-900">
+                      Hide Special Ed Classes
+                    </div>
+                  </button>
+
+                  {/* Ignore UC/CSU Requirements Toggle */}
+                  <button
+                    onClick={() => setWestviewGradOnly(!westviewGradOnly)}
+                    className={`border-2 rounded-lg p-3 transition-colors ${
+                      westviewGradOnly
+                        ? 'bg-blue-100 border-blue-400'
+                        : 'bg-white border-gray-300 hover:bg-gray-100'
+                    }`}
+                  >
+                    <div className="text-xs font-bold text-gray-900">
+                      Ignore UC/CSU Requirements
+                    </div>
+                  </button>
+
+                  {/* GPA Mode Toggle */}
+                  <button
+                    onClick={() => setGpaMode(!gpaMode)}
+                    className={`border-2 rounded-lg p-3 transition-colors ${
+                      gpaMode
+                        ? 'bg-blue-100 border-blue-400'
+                        : 'bg-white border-gray-300 hover:bg-gray-100'
+                    }`}
+                  >
+                    <div className="text-xs font-bold text-gray-900">
+                      GPA Mode
+                    </div>
+                  </button>
+
+                  {/* Early Graduation Mode Toggle */}
+                  <div className={`border-2 rounded-lg p-3 transition-colors ${
+                    earlyGradMode.enabled
+                      ? 'bg-blue-100 border-blue-400'
+                      : 'bg-white border-gray-300'
+                  }`}>
+                    <button
+                      onClick={() => {
+                        if (earlyGradMode.enabled) {
+                          setEarlyGradMode({ enabled: false, targetYear: null });
+                        } else {
+                          setEarlyGradMode({ enabled: true, targetYear: '3year' });
+                        }
+                      }}
+                      className="text-xs font-bold text-gray-900 w-full text-center mb-2"
+                    >
+                      Early Graduation
+                    </button>
+
+                    {earlyGradMode.enabled && (
+                      <div className="ml-4 space-y-1">
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="earlyGradTarget"
+                            checked={earlyGradMode.targetYear === '3year'}
+                            onChange={() => setEarlyGradMode({ enabled: true, targetYear: '3year' })}
+                            className="w-3 h-3 text-blue-600"
+                          />
+                          <span className="text-xs text-gray-700">3 years (end of 11th)</span>
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="earlyGradTarget"
+                            checked={earlyGradMode.targetYear === '3.5year'}
+                            onChange={() => setEarlyGradMode({ enabled: true, targetYear: '3.5year' })}
+                            className="w-3 h-3 text-blue-600"
+                          />
+                          <span className="text-xs text-gray-700">3.5 years (mid 12th)</span>
+                        </label>
+                      </div>
+                    )}
+
+                    {/* Eligibility indicator */}
+                    {earlyGradEligibility.creditsThrough11 >= 170 && (
+                      <div className="mt-2 pt-2 border-t border-gray-300">
+                        <div className="text-xs font-bold text-green-700">
+                          ✓ Eligible: {earlyGradEligibility.creditsThrough11} credits through Grade 11
+                        </div>
+                        {!earlyGradEligibility.hasSeniorEnglish && (
+                          <div className="text-xs text-orange-600 mt-1">⚠ Need Senior English in Grade 11</div>
+                        )}
+                        {!earlyGradEligibility.hasCivicsEcon && (
+                          <div className="text-xs text-orange-600 mt-1">⚠ Need Civics/Economics in Grade 11</div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* AP/IB/CLEP/A-Level Test Scores Toggle */}
+                  <button
+                    onClick={() => {
+                      if (!showTestScores) {
+                        setShowTestScores(true);
+                        // Scroll to test scores section after a short delay to ensure it's rendered
+                        setTimeout(() => {
+                          testScoresRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 100);
+                      } else {
+                        setShowTestScores(false);
+                      }
+                    }}
+                    className={`border-2 rounded-lg p-3 transition-colors col-span-2 ${
+                      showTestScores
+                        ? 'bg-blue-100 border-blue-400'
+                        : 'bg-white border-gray-300 hover:bg-gray-100'
+                    }`}
+                  >
+                    <div className="text-xs font-bold text-gray-900">
+                      AP/IB/CLEP/A-Level Scores
+                    </div>
+                  </button>
+                </div>
               </div>
             </div>
 
             <div className="flex gap-4">
-              {/* Hide AP Classes Toggle */}
-              <button
-                onClick={() => setHideAPClasses(!hideAPClasses)}
-                className={`border-2 rounded-lg p-4 transition-colors ${
-                  hideAPClasses
-                    ? 'bg-blue-100 border-blue-400'
-                    : 'bg-gray-50 border-gray-200 hover:bg-gray-100'
-                }`}
-              >
-                <div className="text-sm font-bold text-gray-900">
-                  Hide AP Classes
-                </div>
-              </button>
-
-              {/* Hide Special Ed Classes Toggle */}
-              <button
-                onClick={() => setHideSpecialEdClasses(!hideSpecialEdClasses)}
-                className={`border-2 rounded-lg p-4 transition-colors ${
-                  hideSpecialEdClasses
-                    ? 'bg-blue-100 border-blue-400'
-                    : 'bg-gray-50 border-gray-200 hover:bg-gray-100'
-                }`}
-              >
-                <div className="text-sm font-bold text-gray-900">
-                  Hide Special Ed Classes
-                </div>
-              </button>
-
-              {/* Westview Graduation Only Toggle */}
-              <button
-                onClick={() => setWestviewGradOnly(!westviewGradOnly)}
-                className={`border-2 rounded-lg p-4 transition-colors ${
-                  westviewGradOnly
-                    ? 'bg-blue-100 border-blue-400'
-                    : 'bg-gray-50 border-gray-200 hover:bg-gray-100'
-                }`}
-              >
-                <div className="text-sm font-bold text-gray-900">
-                  Westview Graduation Only
-                </div>
-              </button>
-
-              {/* Early Graduation Mode Toggle */}
-              <div className={`border-2 rounded-lg p-4 min-w-[280px] transition-colors ${
-                earlyGradMode.enabled
-                  ? 'bg-blue-100 border-blue-400'
-                  : 'bg-gray-50 border-gray-200'
-              }`}>
-                <button
-                  onClick={() => {
-                    if (earlyGradMode.enabled) {
-                      setEarlyGradMode({ enabled: false, targetYear: null });
-                    } else {
-                      setEarlyGradMode({ enabled: true, targetYear: '3year' });
-                    }
-                  }}
-                  className="text-sm font-bold text-gray-900 w-full text-left mb-2"
-                >
-                  Early Graduation
-                </button>
-
-                {earlyGradMode.enabled && (
-                  <div className="ml-8 space-y-2">
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="earlyGradTarget"
-                        checked={earlyGradMode.targetYear === '3year'}
-                        onChange={() => setEarlyGradMode({ enabled: true, targetYear: '3year' })}
-                        className="w-4 h-4 text-blue-600"
-                      />
-                      <span className="text-sm text-gray-700">3 years (end of 11th grade)</span>
-                    </label>
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="earlyGradTarget"
-                        checked={earlyGradMode.targetYear === '3.5year'}
-                        onChange={() => setEarlyGradMode({ enabled: true, targetYear: '3.5year' })}
-                        className="w-4 h-4 text-blue-600"
-                      />
-                      <span className="text-sm text-gray-700">3.5 years (mid 12th grade)</span>
-                    </label>
-                  </div>
-                )}
-
-                {/* Eligibility indicator */}
-                {earlyGradEligibility.creditsThrough11 >= 170 && (
-                  <div className="mt-3 pt-3 border-t border-gray-300">
-                    <div className="text-xs font-bold text-green-700">
-                      ✓ Eligible: {earlyGradEligibility.creditsThrough11} credits through Grade 11
-                    </div>
-                    {!earlyGradEligibility.hasSeniorEnglish && (
-                      <div className="text-xs text-orange-600 mt-1">⚠ Need Senior English in Grade 11</div>
-                    )}
-                    {!earlyGradEligibility.hasCivicsEcon && (
-                      <div className="text-xs text-orange-600 mt-1">⚠ Need Civics/Economics in Grade 11</div>
-                    )}
-                  </div>
-                )}
-              </div>
 
               {/* Clear All Button */}
               <button
@@ -2273,12 +2730,121 @@ function App() {
               </div>
             </div>
           )}
+
+          {/* AP/IB/CLEP/A-Level Test Scores Section */}
+          {showTestScores && (
+            <div ref={testScoresRef} className="mt-4">
+              <div className="bg-white border-2 border-gray-200 rounded-lg p-4">
+                <div className="text-sm font-bold text-gray-900 mb-3">AP/IB/CLEP/A-Level Test Scores</div>
+
+                {/* Test Scores List */}
+                <div className="space-y-2 mb-3">
+                  {testScores.map((test, idx) => (
+                    <div key={idx} className="flex items-center justify-between bg-gray-50 rounded-lg p-2 border border-gray-200">
+                      <div className="text-sm">
+                        <span className="font-medium">{test.type} {test.subject}</span>
+                        <span className="text-gray-600 ml-2">Score: {test.score}</span>
+                        {test.agCategory && (
+                          <span className="ml-2 text-xs px-2 py-0.5 rounded bg-blue-100 text-blue-700">
+                            A-G: {test.agCategory}
+                          </span>
+                        )}
+                      </div>
+                      <button
+                        onClick={() => {
+                          const updated = testScores.filter((_, i) => i !== idx);
+                          setTestScores(updated);
+                        }}
+                        className="text-red-600 hover:text-red-700 text-lg font-bold"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Add New Test */}
+                <div className="grid grid-cols-4 gap-2 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                  <select
+                    id="test-type"
+                    value={selectedTestType}
+                    onChange={(e) => setSelectedTestType(e.target.value)}
+                    className="text-xs border border-gray-300 rounded px-2 py-1.5"
+                  >
+                    <option value="">Type</option>
+                    <option value="AP">AP</option>
+                    <option value="IB">IB</option>
+                    <option value="CLEP">CLEP</option>
+                    <option value="A-Level">A-Level</option>
+                  </select>
+
+                  <select
+                    id="test-subject"
+                    className="text-xs border border-gray-300 rounded px-2 py-1.5"
+                    disabled={!selectedTestType}
+                  >
+                    <option value="">Subject</option>
+                    {selectedTestType && TEST_SUBJECTS[selectedTestType]?.map(subject => (
+                      <option key={subject} value={subject}>{subject}</option>
+                    ))}
+                  </select>
+
+                  <input
+                    type="number"
+                    id="test-score"
+                    placeholder="Score"
+                    min="1"
+                    max="7"
+                    className="text-xs border border-gray-300 rounded px-2 py-1.5"
+                  />
+
+                  <button
+                    onClick={() => {
+                      const type = document.getElementById('test-type').value;
+                      const subject = document.getElementById('test-subject').value;
+                      const score = document.getElementById('test-score').value;
+
+                      if (type && subject && score) {
+                        // Determine A-G category based on subject
+                        let agCategory = null;
+                        const subjectUpper = subject.toUpperCase();
+
+                        if (subjectUpper.includes('HISTORY') || subjectUpper.includes('GOVERNMENT') || subjectUpper.includes('GEOGRAPHY')) {
+                          agCategory = 'A';
+                        } else if (subjectUpper.includes('ENGLISH') || subjectUpper.includes('LITERATURE')) {
+                          agCategory = 'B';
+                        } else if (subjectUpper.includes('CALCULUS') || subjectUpper.includes('STATISTICS') || subjectUpper.includes('PRECALC')) {
+                          agCategory = 'C';
+                        } else if (subjectUpper.includes('BIOLOGY') || subjectUpper.includes('CHEMISTRY') || subjectUpper.includes('PHYSICS') || subjectUpper.includes('ENVIRONMENTAL')) {
+                          agCategory = 'D';
+                        } else if (subjectUpper.includes('SPANISH') || subjectUpper.includes('FRENCH') || subjectUpper.includes('CHINESE') || subjectUpper.includes('JAPANESE') || subjectUpper.includes('GERMAN') || subjectUpper.includes('LATIN')) {
+                          agCategory = 'E';
+                        } else if (subjectUpper.includes('ART') || subjectUpper.includes('MUSIC') || subjectUpper.includes('THEATER') || subjectUpper.includes('DANCE')) {
+                          agCategory = 'F';
+                        } else if (subjectUpper.includes('COMPUTER SCIENCE') || subjectUpper.includes('ECONOMICS') || subjectUpper.includes('PSYCHOLOGY')) {
+                          agCategory = 'G';
+                        }
+
+                        setTestScores([...testScores, { type, subject, score: parseInt(score), agCategory }]);
+
+                        // Clear inputs and reset state
+                        setSelectedTestType('');
+                        document.getElementById('test-score').value = '';
+                      }
+                    }}
+                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded px-2 py-1.5"
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </header>
 
       {/* Overall Progress Summary Bar */}
-      {courses.length > 0 && (
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white sticky top-0 z-10 shadow-md">
+      <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white sticky top-0 z-10 shadow-md">
           <div className="max-w-7xl mx-auto px-6 py-3">
             <div className="flex items-center justify-between gap-6">
               <div className="flex items-center gap-2">
@@ -2301,7 +2867,7 @@ function App() {
                     ) : (
                       <>
                         <Circle size={20} className="text-yellow-300" />
-                        <span className="font-semibold">{230 - totalCredits} credits needed</span>
+                        <span className="font-semibold">In Progress</span>
                       </>
                     )}
                   </div>
@@ -2334,6 +2900,18 @@ function App() {
                   </>
                 )}
 
+                {gpaMode && ucGPA && (
+                  <>
+                    <div className="text-center">
+                      <div className="text-sm font-medium opacity-90">UC GPA</div>
+                      <div className="text-xl font-bold mt-1">{ucGPA.weightedCapped}</div>
+                      <div className="text-xs opacity-75 mt-0.5">Weighted & Capped</div>
+                    </div>
+
+                    <div className="h-12 w-px bg-white opacity-30"></div>
+                  </>
+                )}
+
                 <div className="text-center">
                   <div className="text-sm font-medium opacity-90">Courses Planned</div>
                   <div className="text-xl font-bold mt-1">{courses.length}</div>
@@ -2342,7 +2920,6 @@ function App() {
             </div>
           </div>
         </div>
-      )}
 
       <div className="max-w-[1800px] mx-auto px-6 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
@@ -2455,11 +3032,6 @@ function App() {
                           return sum + (info ? info.credits : 0);
                         }, 0);
 
-                        // Check quarter capacity
-                        // Standard load is 4 courses per quarter
-                        const isOverloaded = quarterCourses.length >= 5;
-                        const isMaxCapacity = quarterCourses.length >= 6;
-
                         const isCompleted = completedSemesters[`${year}-${quarter}`];
 
                         return (
@@ -2469,11 +3041,6 @@ function App() {
                                 {quarter} {displayYear}
                               </h4>
                               <div className="flex items-center gap-2">
-                                {isOverloaded && (
-                                  <div className={`text-xs font-semibold px-2 py-1 rounded ${isMaxCapacity ? 'bg-red-100 text-red-700' : 'bg-orange-100 text-orange-700'}`}>
-                                    {isMaxCapacity ? '⚠ Max Load' : '⚠ Heavy Load'}
-                                  </div>
-                                )}
                                 {quarterCourses.length > 0 && (
                                   isCompleted ? (
                                     <button
@@ -2506,6 +3073,19 @@ function App() {
                                 const isYearLong = info.term_length === 'yearlong';
                                 const isDragging = draggedCourse?.course?.id === course.id;
                                 const isDropTarget = dragOverSlot?.year === year && dragOverSlot?.quarter === quarter && dragOverSlot?.slot === slotIndex;
+                                const pathwayColor = PATHWAY_COLORS[info.pathway] || 'bg-gray-400';
+                                const courseNumber = info.course_numbers && info.course_numbers.length > 0 ? info.course_numbers[0] : '';
+
+                                // Determine CTE pathway for this course
+                                let ctePathway = null;
+                                if (info.pathway === 'CTE' || info.pathway === 'Fine Arts') {
+                                  for (const [pathwayKey, pathwayData] of Object.entries(CTE_PATHWAYS)) {
+                                    if (pathwayData.courses.some(c => info.full_name.toUpperCase().includes(c.name.toUpperCase()))) {
+                                      ctePathway = pathwayKey;
+                                      break;
+                                    }
+                                  }
+                                }
 
                                 return (
                                   <div
@@ -2516,37 +3096,75 @@ function App() {
                                     onDragOver={(e) => handleDragOver(e, year, quarter, slotIndex)}
                                     onDragLeave={handleDragLeave}
                                     onDrop={(e) => handleDrop(e, year, quarter, slotIndex)}
-                                    className={`rounded-lg p-3 transition-all border cursor-move ${
-                                      isOptionalSlot ? 'bg-gray-100 border-gray-300' : 'bg-gray-50 border-gray-200'
+                                    className={`rounded-lg p-3 transition-all border-l-4 border-r border-t border-b bg-white shadow-sm cursor-move ${pathwayColor} ${
+                                      isOptionalSlot ? 'border-gray-300' : 'border-gray-200'
                                     } ${
-                                      isDragging ? 'opacity-50 border-blue-400' : (isOptionalSlot ? '' : 'hover:bg-gray-100')
+                                      isDragging ? 'opacity-50 border-blue-400' : 'hover:shadow-md'
                                     } ${
                                       isDropTarget ? 'ring-2 ring-blue-400 bg-blue-50' : ''
                                     }`}
                                   >
                                     <div className="flex items-start justify-between gap-2">
                                       <div className="flex-1 min-w-0">
-                                        <div className="flex items-center gap-1.5">
+                                        <div className="flex items-center gap-1.5 mb-1">
                                           {info.is_ap_or_honors_pair && <Award className="text-purple-600 flex-shrink-0" size={16} />}
-                                          <div className="font-medium text-base text-gray-900 truncate">{info.full_name}</div>
+                                          <div className="font-bold text-sm text-gray-900 truncate">{info.full_name}</div>
                                         </div>
-                                        <div className="text-sm text-gray-600 mt-1">
+                                        <div className="text-xs text-gray-500">
+                                          {courseNumber && <span>{courseNumber} | </span>}
+                                          <span>{info.pathway}</span>
+                                        </div>
+                                        <div className="text-xs text-gray-400 mt-0.5">
+                                          {isYearLong && 'Year-long'}
+                                          {isYearLong && info.uc_csu_category && ' • '}
                                           {info.uc_csu_category && (
-                                            <span className="text-blue-600 font-medium">
+                                            <span>
                                               {AG_REQUIREMENTS[info.uc_csu_category]?.short || info.uc_csu_category}
                                             </span>
                                           )}
-                                          {info.uc_csu_category && ' • '}
-                                          {info.credits} cr
-                                          {isYearLong && ' • Year-long'}
+                                        </div>
+                                        {gpaMode && info.uc_csu_category && (
+                                          <div className="mt-2">
+                                            <select
+                                              value={course.grade || ''}
+                                              onChange={(e) => {
+                                                const updatedCourses = courses.map(c =>
+                                                  c.id === course.id ? { ...c, grade: e.target.value } : c
+                                                );
+                                                setCourses(updatedCourses);
+                                              }}
+                                              onClick={(e) => e.stopPropagation()}
+                                              className="text-xs border border-gray-300 rounded px-2 py-1 bg-white"
+                                            >
+                                              <option value="">Select Grade</option>
+                                              {GRADE_OPTIONS.map(grade => (
+                                                <option key={grade} value={grade}>{grade}</option>
+                                              ))}
+                                            </select>
+                                          </div>
+                                        )}
+                                      </div>
+                                      <div className="flex flex-col items-end gap-2 flex-shrink-0">
+                                        <div className="text-xs text-gray-400">
+                                          {info.credits} cr.
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                          {ctePathway && CTE_PATHWAY_ICONS[ctePathway] && (
+                                            <div className="flex items-center">
+                                              {React.createElement(CTE_PATHWAY_ICONS[ctePathway].icon, {
+                                                className: `${CTE_PATHWAY_ICONS[ctePathway].color} flex-shrink-0`,
+                                                size: 20
+                                              })}
+                                            </div>
+                                          )}
+                                          <button
+                                            onClick={() => removeCourse(course.id)}
+                                            className="text-red-600 hover:text-red-700 text-xl font-bold flex-shrink-0"
+                                          >
+                                            ×
+                                          </button>
                                         </div>
                                       </div>
-                                      <button
-                                        onClick={() => removeCourse(course.id)}
-                                        className="text-red-600 hover:text-red-700 text-xl font-bold flex-shrink-0"
-                                      >
-                                        ×
-                                      </button>
                                     </div>
                                   </div>
                                 );
@@ -2962,7 +3580,7 @@ function App() {
                                 );
                               } else {
                                 // Empty slot
-                                const isDropTarget = dragOverSlot?.year === year && dragOverSlot?.quarter === semester && dragOverSlot?.slot === slotIndex;
+                                const isDropTarget = dragOverSlot?.year === year && dragOverSlot?.quarter === quarter && dragOverSlot?.slot === slotIndex;
 
                                 return (
                                   <div
@@ -2993,13 +3611,25 @@ function App() {
                             })}
                           </div>
 
-                          {/* Semester Credit Total */}
-                          {quarterCourses.length > 0 && (
-                            <div className="mt-3 pt-3 border-t border-gray-300">
-                              <div className="text-sm font-semibold text-gray-700">
-                                Semester Total: {quarterCredits} credits
-                              </div>
-                            </div>
+                          {/* Semester Credit Total - only show on Q2 and Q4 */}
+                          {(quarter === 'Q2' || quarter === 'Q4') && (
+                            (() => {
+                              // Calculate semester total (Q1+Q2 for Fall, Q3+Q4 for Spring)
+                              const semesterQuarters = quarter === 'Q2' ? ['Q1', 'Q2'] : ['Q3', 'Q4'];
+                              const semesterCourses = semesterQuarters.flatMap(q => getCoursesForQuarter(year, q));
+                              const semesterTotal = semesterCourses.reduce((sum, c) => {
+                                const info = COURSE_CATALOG[c.courseId];
+                                return sum + (info ? info.credits : 0);
+                              }, 0);
+
+                              return semesterCourses.length > 0 ? (
+                                <div className="mt-3 pt-3 border-t border-gray-300">
+                                  <div className="text-sm font-semibold text-gray-700">
+                                    Semester Total: {semesterTotal} credits
+                                  </div>
+                                </div>
+                              ) : null;
+                            })()
                           )}
                         </div>
                         );
@@ -3179,6 +3809,12 @@ function App() {
                             style={{ width: `${pct}%` }}
                           />
                         </div>
+                        {prog.met && !prog.meetsRecommended && prog.recommended > prog.needed && (
+                          <div className="mt-1 text-xs text-orange-600 flex items-center gap-1">
+                            <AlertCircle size={12} />
+                            <span>Recommended: {prog.recommended} years for competitive admissions</span>
+                          </div>
+                        )}
                       </div>
                     );
                   })}
@@ -3186,11 +3822,184 @@ function App() {
                 <p className="text-xs text-gray-600 text-center mt-4 pt-4 border-t border-gray-200">
                   Grade of C or better required
                 </p>
+
+                {/* UC GPA Details */}
+                {gpaMode && ucGPA && (
+                  <div className="mt-6 pt-6 border-t border-gray-200">
+                    <h4 className="text-md font-bold text-gray-900 mb-3">UC GPA Calculation</h4>
+                    <div className="space-y-3">
+                      <div className="bg-blue-50 rounded-lg p-3">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm font-medium text-gray-700">Weighted & Capped</span>
+                          <span className="text-lg font-bold text-blue-700">{ucGPA.weightedCapped}</span>
+                        </div>
+                        <div className="text-xs text-gray-600 mt-1">
+                          {ucGPA.totalGrades} A-G courses (grades 10-11)
+                        </div>
+                        <div className="text-xs text-gray-600">
+                          {ucGPA.cappedHonorsUsed} honors points used (max 8)
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className="bg-gray-50 rounded-lg p-2">
+                          <div className="text-xs text-gray-600">Unweighted</div>
+                          <div className="text-md font-bold text-gray-900">{ucGPA.unweighted}</div>
+                        </div>
+                        <div className="bg-gray-50 rounded-lg p-2">
+                          <div className="text-xs text-gray-600">Fully Weighted</div>
+                          <div className="text-md font-bold text-gray-900">{ucGPA.fullyWeighted}</div>
+                        </div>
+                      </div>
+
+                      <div className="text-xs text-gray-600 pt-2 border-t border-gray-200">
+                        <div>Grade 10: {ucGPA.grade10Honors} honors courses</div>
+                        <div>Grade 11: {ucGPA.grade11Honors} honors courses</div>
+                      </div>
+                    </div>
+
+                    {ucGPA.weightedCapped >= 3.4 ? (
+                      <div className="mt-3 bg-green-50 border border-green-200 rounded-lg p-2 flex items-center gap-2">
+                        <CheckCircle2 className="text-green-600" size={16} />
+                        <span className="text-xs font-medium text-green-800">Meets 3.4 minimum GPA</span>
+                      </div>
+                    ) : ucGPA.totalGrades > 0 ? (
+                      <div className="mt-3 bg-orange-50 border border-orange-200 rounded-lg p-2 flex items-center gap-2">
+                        <AlertCircle className="text-orange-600" size={16} />
+                        <span className="text-xs font-medium text-orange-800">Below 3.4 minimum GPA</span>
+                      </div>
+                    ) : null}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* State Seal of Biliteracy */}
+            {!westviewGradOnly && (
+              <div className="bg-white rounded-xl border border-gray-200 p-6">
+                <h3 className="text-lg font-bold text-gray-900 mb-2">State Seal of Biliteracy</h3>
+                <p className="text-sm text-gray-600 mb-4">California Recognition</p>
+
+                {biliteracySealEligibility.eligible ? (
+                  <div className="bg-gradient-to-r from-yellow-50 to-amber-50 border-2 border-yellow-400 rounded-lg p-4">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="text-4xl">🏅</div>
+                      <div>
+                        <div className="font-bold text-amber-900">On Track to Earn!</div>
+                        <div className="text-xs text-amber-700">{biliteracySealEligibility.primaryLanguage || 'World Language'}</div>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    <div className={`flex items-center justify-between p-3 rounded-lg ${
+                      biliteracySealEligibility.has4YearsEnglish && biliteracySealEligibility.englishGPAMet
+                        ? 'bg-green-50 border border-green-200'
+                        : 'bg-gray-50 border border-gray-200'
+                    }`}>
+                      <div>
+                        <div className="text-sm font-medium text-gray-700">English Requirement</div>
+                        <div className="text-xs text-gray-600 mt-1">
+                          {biliteracySealEligibility.englishYears}/4 years
+                          {gpaMode && biliteracySealEligibility.has4YearsEnglish && (
+                            <span> • {biliteracySealEligibility.englishGPAMet ? '≥3.0 GPA ✓' : '<3.0 GPA'}</span>
+                          )}
+                        </div>
+                      </div>
+                      {biliteracySealEligibility.has4YearsEnglish && biliteracySealEligibility.englishGPAMet ? (
+                        <CheckCircle2 className="text-green-600" size={20} />
+                      ) : (
+                        <Circle className="text-gray-400" size={20} />
+                      )}
+                    </div>
+
+                    <div className={`flex items-center justify-between p-3 rounded-lg ${
+                      biliteracySealEligibility.has4YearsLanguage && biliteracySealEligibility.languageGPAMet
+                        ? 'bg-green-50 border border-green-200'
+                        : 'bg-gray-50 border border-gray-200'
+                    }`}>
+                      <div>
+                        <div className="text-sm font-medium text-gray-700">World Language</div>
+                        <div className="text-xs text-gray-600 mt-1">
+                          {biliteracySealEligibility.languageYears}/4 years
+                          {biliteracySealEligibility.primaryLanguage && (
+                            <span> • {biliteracySealEligibility.primaryLanguage}</span>
+                          )}
+                          {gpaMode && biliteracySealEligibility.has4YearsLanguage && (
+                            <span> • {biliteracySealEligibility.languageGPAMet ? '≥3.0 GPA ✓' : '<3.0 GPA'}</span>
+                          )}
+                        </div>
+                      </div>
+                      {biliteracySealEligibility.has4YearsLanguage && biliteracySealEligibility.languageGPAMet ? (
+                        <CheckCircle2 className="text-green-600" size={20} />
+                      ) : (
+                        <Circle className="text-gray-400" size={20} />
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                <div className="mt-4 pt-4 border-t border-gray-200">
+                  <p className="text-xs text-gray-600">
+                    {gpaMode
+                      ? 'Requirements: 4 years English (≥3.0 GPA) + 4 years same world language (≥3.0 GPA)'
+                      : 'Requirements: 4 years English + 4 years same world language. Enable GPA Mode to track GPA requirements.'}
+                  </p>
+                </div>
               </div>
             )}
           </div>
 
         </div>
+
+        {/* College Credits from Test Scores - Bottom Section */}
+        {testScores.length > 0 && (
+          <div className="max-w-[1800px] mx-auto px-6 pb-8 mt-6">
+            <div className="bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl shadow-lg p-6">
+              <h3 className="text-2xl font-bold mb-4">College Credits from Test Scores</h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                {/* CSU Credits */}
+                <div className="bg-white/10 backdrop-blur rounded-lg p-4">
+                  <div className="text-sm font-medium opacity-90 mb-2">CSU System</div>
+                  <div className="text-4xl font-bold">{collegeCredits.csu}</div>
+                  <div className="text-sm opacity-75 mt-1">Semester Units</div>
+                </div>
+
+                {/* UC Credits */}
+                <div className="bg-white/10 backdrop-blur rounded-lg p-4">
+                  <div className="text-sm font-medium opacity-90 mb-2">UC System</div>
+                  <div className="text-4xl font-bold">{collegeCredits.uc}</div>
+                  <div className="text-sm opacity-75 mt-1">Semester Units (Berkeley/Merced)</div>
+                </div>
+              </div>
+
+              {/* Detailed Breakdown */}
+              {collegeCredits.details.length > 0 && (
+                <div className="bg-white/10 backdrop-blur rounded-lg p-4">
+                  <div className="text-sm font-bold mb-3">Credit Breakdown by Exam</div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                    {collegeCredits.details.map((detail, idx) => (
+                      <div key={idx} className="bg-white/10 rounded px-3 py-2 text-sm">
+                        <div className="font-medium">{detail.exam}</div>
+                        <div className="text-xs opacity-90 mt-1">
+                          Score: {detail.score} • CSU: {detail.csu} • UC: {detail.uc}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="mt-4 pt-4 border-t border-white/20">
+                <p className="text-xs opacity-75">
+                  Note: Credit values are estimates based on typical CSU and UC policies. Actual credit awarded may vary by campus.
+                  UC credits shown are semester units for Berkeley/Merced (multiply by 1.5 for quarter units at other UCs).
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
