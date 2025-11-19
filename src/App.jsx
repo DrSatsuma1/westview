@@ -179,6 +179,10 @@ function App() {
     const saved = localStorage.getItem('westview-hide-ap-classes');
     return saved ? JSON.parse(saved) : false;
   });
+  const [hideSpecialEdClasses, setHideSpecialEdClasses] = useState(() => {
+    const saved = localStorage.getItem('westview-hide-special-ed-classes');
+    return saved ? JSON.parse(saved) : false;
+  });
   const [westviewGradOnly, setWestviewGradOnly] = useState(() => {
     const saved = localStorage.getItem('westview-grad-only');
     return saved ? JSON.parse(saved) : false;
@@ -232,6 +236,11 @@ function App() {
   React.useEffect(() => {
     localStorage.setItem('westview-hide-ap-classes', JSON.stringify(hideAPClasses));
   }, [hideAPClasses]);
+
+  // Save hide Special Ed classes preference to localStorage
+  React.useEffect(() => {
+    localStorage.setItem('westview-hide-special-ed-classes', JSON.stringify(hideSpecialEdClasses));
+  }, [hideSpecialEdClasses]);
 
   // Calculate Westview graduation progress
   const westviewProgress = useMemo(() => {
@@ -2120,6 +2129,20 @@ function App() {
                 </div>
               </button>
 
+              {/* Hide Special Ed Classes Toggle */}
+              <button
+                onClick={() => setHideSpecialEdClasses(!hideSpecialEdClasses)}
+                className={`border-2 rounded-lg p-4 transition-colors ${
+                  hideSpecialEdClasses
+                    ? 'bg-blue-100 border-blue-400'
+                    : 'bg-gray-50 border-gray-200 hover:bg-gray-100'
+                }`}
+              >
+                <div className="text-sm font-bold text-gray-900">
+                  Hide Special Ed Classes
+                </div>
+              </button>
+
               {/* Westview Graduation Only Toggle */}
               <button
                 onClick={() => setWestviewGradOnly(!westviewGradOnly)}
@@ -2150,7 +2173,7 @@ function App() {
                   }}
                   className="text-sm font-bold text-gray-900 w-full text-left mb-2"
                 >
-                  Early Graduation Mode
+                  Early Graduation
                 </button>
 
                 {earlyGradMode.enabled && (
@@ -2810,7 +2833,8 @@ function App() {
                                                   <optgroup key={group} label={group}>
                                                     {courses.map(course => {
                                                       const isAP = course.full_name.toUpperCase().startsWith('AP ');
-                                                      const shouldDisable = hideAPClasses && isAP;
+                                                      const isSpecialEd = course.full_name.startsWith('Special Ed');
+                                                      const shouldDisable = (hideAPClasses && isAP) || (hideSpecialEdClasses && isSpecialEd);
                                                       return (
                                                         <option
                                                           key={course.id}
@@ -2860,7 +2884,8 @@ function App() {
                                                   <optgroup key={group} label={group}>
                                                     {courses.map(course => {
                                                       const isAP = course.full_name.toUpperCase().startsWith('AP ');
-                                                      const shouldDisable = hideAPClasses && isAP;
+                                                      const isSpecialEd = course.full_name.startsWith('Special Ed');
+                                                      const shouldDisable = (hideAPClasses && isAP) || (hideSpecialEdClasses && isSpecialEd);
                                                       return (
                                                         <option
                                                           key={course.id}
