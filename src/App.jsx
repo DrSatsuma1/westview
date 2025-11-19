@@ -833,6 +833,11 @@ function App() {
           issues.push(`Year-long course "${courseInfo.full_name}" must be in both Fall and Spring`);
         }
       }
+
+      // Check for UNIFIED PE courses that require counselor consultation
+      if (courseInfo?.full_name && courseInfo.full_name.toUpperCase().includes('UNIFIED PE')) {
+        warnings.push(`⚠️ UNIFIED PE credit allocation varies - consult your counselor to determine how many credits count toward PE vs. Electives`);
+      }
     });
 
     // Check semester capacity
