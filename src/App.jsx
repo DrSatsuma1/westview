@@ -212,7 +212,7 @@ function App() {
 
       let credits = 0;
 
-      // Special handling for Health Science and Physical Education
+      // Special handling for dual-credit courses
       if (name === 'Health Science') {
         // Health Science only counts ENS 1-2 (5 credits)
         credits = relevantCourses.reduce((sum, c) => {
@@ -223,14 +223,41 @@ function App() {
           return sum;
         }, 0);
       } else if (name === 'Physical Education') {
-        // PE counts all PE courses, but ENS 1-2 only contributes 5 credits (not 10)
+        // PE counts all PE courses, but some courses only contribute partial credits
         credits = relevantCourses.reduce((sum, c) => {
           const info = COURSE_CATALOG[c.courseId];
           if (info.full_name === 'ENS 1-2') {
-            return sum + 5; // ENS 1-2 contributes only 5 credits to PE
+            return sum + 5; // ENS 1-2 contributes only 5 credits to PE (other 5 go to Health)
+          } else if (info.full_name === 'MARCHING PE FLAGS/TALL FLAGS (DANCE PROP)') {
+            return sum + 5; // MARCHING PE FLAGS contributes only 5 credits to PE (other 5 go to Fine Arts)
           }
           return sum + info.credits;
         }, 0);
+      } else if (name === 'Fine Arts/Foreign Language/CTE') {
+        // Fine Arts counts all Fine Arts/Foreign Language/CTE courses
+        // PLUS 5 credits from MARCHING PE FLAGS (which is in PE pathway)
+        const allCourses = courses.filter(c => {
+          const info = COURSE_CATALOG[c.courseId];
+          return info && req.pathways.includes(info.pathway);
+        });
+
+        // Also check for MARCHING PE FLAGS in PE pathway courses
+        const peCourses = courses.filter(c => {
+          const info = COURSE_CATALOG[c.courseId];
+          return info && info.pathway === 'Physical Education';
+        });
+
+        credits = allCourses.reduce((sum, c) => sum + COURSE_CATALOG[c.courseId].credits, 0);
+
+        // Add 5 credits from MARCHING PE FLAGS if present
+        const hasMarchingPE = peCourses.some(c => {
+          const info = COURSE_CATALOG[c.courseId];
+          return info && info.full_name === 'MARCHING PE FLAGS/TALL FLAGS (DANCE PROP)';
+        });
+
+        if (hasMarchingPE) {
+          credits += 5; // Add the Fine Arts portion of MARCHING PE FLAGS
+        }
       } else {
         // All other requirements count full credits
         credits = relevantCourses.reduce((sum, c) => sum + COURSE_CATALOG[c.courseId].credits, 0);
