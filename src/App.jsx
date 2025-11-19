@@ -2294,6 +2294,9 @@ function App() {
                   );
                 })}
               </div>
+              <p className="text-xs text-gray-600 text-center mt-4 pt-4 border-t border-gray-200">
+                Grade of C or better required
+              </p>
             </div>
           </div>
 
