@@ -6434,7 +6434,7 @@
     },
     {
       "course_id": "LBASIC_MATH_0020",
-      "full_name": "Special Ed BASIC MATH 1-8",
+      "full_name": "SPECIAL ED BASIC MATH 1-8",
       "course_numbers": [
         "002080",
         "002087"
@@ -6472,7 +6472,7 @@
     },
     {
       "course_id": "LBIOLOGY_12_0020",
-      "full_name": "Special Ed BIOLOGY 1-2",
+      "full_name": "SPECIAL ED BIOLOGY 1-2",
       "course_numbers": [
         "002072",
         "002073"
@@ -6510,7 +6510,7 @@
     },
     {
       "course_id": "LCIVICS_0020",
-      "full_name": "Special Ed CIVICS",
+      "full_name": "SPECIAL ED CIVICS",
       "course_numbers": [
         "002052"
       ],
@@ -6546,7 +6546,7 @@
     },
     {
       "course_id": "LCOMMUNITY_DOMAIN_0019",
-      "full_name": "Special Ed COMMUNITY DOMAIN SKILLS 1-8",
+      "full_name": "SPECIAL ED COMMUNITY DOMAIN SKILLS 1-8",
       "course_numbers": [
         "001926",
         "001933"
@@ -6584,7 +6584,7 @@
     },
     {
       "course_id": "LDEV_READING_0020",
-      "full_name": "Special Ed DEV READING 1-2",
+      "full_name": "SPECIAL ED DEV READING 1-2",
       "course_numbers": [
         "002018"
       ],
@@ -6621,7 +6621,7 @@
     },
     {
       "course_id": "LDOMESTIC_DOMAIN_0019",
-      "full_name": "Special Ed DOMESTIC DOMAIN SKILLS 1-8",
+      "full_name": "SPECIAL ED DOMESTIC DOMAIN SKILLS 1-8",
       "course_numbers": [
         "001918",
         "001925"
@@ -6659,7 +6659,7 @@
     },
     {
       "course_id": "LECONOMICS_0020",
-      "full_name": "Special Ed ECONOMICS",
+      "full_name": "SPECIAL ED ECONOMICS",
       "course_numbers": [
         "002054"
       ],
@@ -6695,7 +6695,7 @@
     },
     {
       "course_id": "LENGLISH_12_0020",
-      "full_name": "Special Ed ENGLISH 1-2",
+      "full_name": "SPECIAL ED ENGLISH 1-2",
       "course_numbers": [
         "002020",
         "002021"
@@ -6732,7 +6732,7 @@
     },
     {
       "course_id": "LENGLISH_34_0020",
-      "full_name": "Special Ed ENGLISH 3-4",
+      "full_name": "SPECIAL ED ENGLISH 3-4",
       "course_numbers": [
         "002022",
         "002023"
@@ -6769,7 +6769,7 @@
     },
     {
       "course_id": "LENGLISH_56_0020",
-      "full_name": "Special Ed ENGLISH 5-6",
+      "full_name": "SPECIAL ED ENGLISH 5-6",
       "course_numbers": [
         "002024",
         "002025"
@@ -6806,7 +6806,7 @@
     },
     {
       "course_id": "LENGLISH_78_0020",
-      "full_name": "Special Ed ENGLISH 7-8",
+      "full_name": "SPECIAL ED ENGLISH 7-8",
       "course_numbers": [
         "002026",
         "002027"
@@ -6843,7 +6843,7 @@
     },
     {
       "course_id": "LHEALTH_SKILLS_0020",
-      "full_name": "Special Ed HEALTH SKILLS",
+      "full_name": "SPECIAL ED HEALTH SKILLS",
       "course_numbers": [
         "002058",
         "072058"
@@ -6881,7 +6881,7 @@
     },
     {
       "course_id": "LINTEGRATED_MATHEMATICS_0020",
-      "full_name": "Special Ed INTEGRATED MATHEMATICS IA- IB",
+      "full_name": "SPECIAL ED INTEGRATED MATHEMATICS IA- IB",
       "course_numbers": [
         "002034",
         "002035"
@@ -6919,7 +6919,7 @@
     },
     {
       "course_id": "SPECIAL_ED",
-      "full_name": "Special Ed INTEGRATED MATHEMATICS IIA- IIB",
+      "full_name": "SPECIAL ED INTEGRATED MATHEMATICS IIA- IIB",
       "course_numbers": [
         "002040",
         "002041"
@@ -6957,7 +6957,7 @@
     },
     {
       "course_id": "LJOB_SKILLS_0020",
-      "full_name": "Special Ed JOB SKILLS",
+      "full_name": "SPECIAL ED JOB SKILLS",
       "course_numbers": [
         "002064"
       ],
@@ -6994,7 +6994,7 @@
     },
     {
       "course_id": "LLEARNING_STRATEGIES_0020",
-      "full_name": "Special Ed LEARNING STRATEGIES 1-2",
+      "full_name": "SPECIAL ED LEARNING STRATEGIES 1-2",
       "course_numbers": [
         "002062",
         "002063"
@@ -7033,7 +7033,7 @@
     },
     {
       "course_id": "LMARINE_SCIENCE_0020",
-      "full_name": "Special Ed MARINE SCIENCE 1-2",
+      "full_name": "SPECIAL ED MARINE SCIENCE 1-2",
       "course_numbers": [
         "002068",
         "002069"
@@ -7071,7 +7071,7 @@
     },
     {
       "course_id": "LMATH_ACCELERATION_0010",
-      "full_name": "Special Ed MATH ACCELERATION",
+      "full_name": "SPECIAL ED MATH ACCELERATION",
       "course_numbers": [
         "001026",
         "001027"
@@ -7109,7 +7109,7 @@
     },
     {
       "course_id": "LRECREATIONLEISURE_DOMAIN_0019",
-      "full_name": "Special Ed RECREATION/LEISURE DOMAIN SKILLS 1-6",
+      "full_name": "SPECIAL ED RECREATION/LEISURE DOMAIN SKILLS 1-6",
       "course_numbers": [
         "001934",
         "001939"
@@ -7147,7 +7147,7 @@
     },
     {
       "course_id": "LUS_HISTORY_0020",
-      "full_name": "Special Ed U.S. HISTORY 1-2",
+      "full_name": "SPECIAL ED U.S. HISTORY 1-2",
       "course_numbers": [
         "002050",
         "002051"
@@ -7184,7 +7184,7 @@
     },
     {
       "course_id": "LVOCATIONAL_DOMAIN_0019",
-      "full_name": "Special Ed VOCATIONAL DOMAIN SKILLS 1-11",
+      "full_name": "SPECIAL ED VOCATIONAL DOMAIN SKILLS 1-11",
       "course_numbers": [
         "001910",
         "001944"
@@ -7222,7 +7222,7 @@
     },
     {
       "course_id": "LWORLD_HISTORY_0020",
-      "full_name": "Special Ed WORLD HISTORY 1-2",
+      "full_name": "SPECIAL ED WORLD HISTORY 1-2",
       "course_numbers": [
         "002048",
         "002049"
@@ -7259,7 +7259,7 @@
     },
     {
       "course_id": "LWRITING_SKILLS_0020",
-      "full_name": "Special Ed WRITING SKILLS 1-2",
+      "full_name": "SPECIAL ED WRITING SKILLS 1-2",
       "course_numbers": [
         "002010",
         "002011"

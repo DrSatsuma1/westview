@@ -624,10 +624,20 @@ function App() {
         return info && info.uc_csu_category === cat;
       });
 
-      // For language courses, count years based on term_length
-      let years = cat === 'E'
-        ? relevantCourses.length  // Each yearlong course = 1 year
-        : relevantCourses.length;
+      // Deduplicate courses by courseId + year to avoid counting semester/yearlong courses multiple times
+      // A semester course at Westview (2 quarters) = 1 year at UC/CSU
+      const uniqueCourses = [];
+      const seen = new Set();
+      relevantCourses.forEach(c => {
+        const key = `${c.courseId}-${c.year}`;
+        if (!seen.has(key)) {
+          seen.add(key);
+          uniqueCourses.push(c);
+        }
+      });
+
+      // Count unique courses (each course = 1 year at UC/CSU)
+      let years = uniqueCourses.length;
 
       progress[cat] = {
         earned: years,
@@ -644,6 +654,17 @@ function App() {
       return info && info.uc_csu_category === 'G';
     });
 
+    // Deduplicate G courses
+    const uniqueGCourses = [];
+    const seenG = new Set();
+    gCourses.forEach(c => {
+      const key = `${c.courseId}-${c.year}`;
+      if (!seenG.has(key)) {
+        seenG.add(key);
+        uniqueGCourses.push(c);
+      }
+    });
+
     // Count extra courses from A-F that exceed requirements
     let extraAFCourses = 0;
     ['A', 'B', 'C', 'D', 'E', 'F'].forEach(cat => {
@@ -653,7 +674,7 @@ function App() {
       }
     });
 
-    const gYears = gCourses.length + extraAFCourses;
+    const gYears = uniqueGCourses.length + extraAFCourses;
     progress['G'] = {
       earned: gYears,
       needed: AG_REQUIREMENTS['G'].needed,
