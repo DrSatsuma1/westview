@@ -2390,6 +2390,7 @@ function App() {
                           <div className="space-y-2">
                             {slots.map((course, slotIndex) => {
                               const isAddingHere = showAddCourse?.year === year && showAddCourse?.quarter === quarter && showAddCourse?.slot === slotIndex;
+                              const isOptionalSlot = slotIndex >= 4; // Slots 5 and 6 (indices 4 and 5)
 
                               if (course) {
                                 // Filled slot with course
@@ -2407,8 +2408,10 @@ function App() {
                                     onDragOver={(e) => handleDragOver(e, year, quarter, slotIndex)}
                                     onDragLeave={handleDragLeave}
                                     onDrop={(e) => handleDrop(e, year, quarter, slotIndex)}
-                                    className={`bg-gray-50 rounded-lg p-3 transition-all border border-gray-200 cursor-move ${
-                                      isDragging ? 'opacity-50 border-blue-400' : 'hover:bg-gray-100'
+                                    className={`rounded-lg p-3 transition-all border cursor-move ${
+                                      isOptionalSlot ? 'bg-gray-100 border-gray-300' : 'bg-gray-50 border-gray-200'
+                                    } ${
+                                      isDragging ? 'opacity-50 border-blue-400' : (isOptionalSlot ? '' : 'hover:bg-gray-100')
                                     } ${
                                       isDropTarget ? 'ring-2 ring-blue-400 bg-blue-50' : ''
                                     }`}
@@ -2864,14 +2867,16 @@ function App() {
                                     onDragOver={(e) => handleDragOver(e, year, quarter, slotIndex)}
                                     onDragLeave={handleDragLeave}
                                     onDrop={(e) => handleDrop(e, year, quarter, slotIndex)}
-                                    className={`w-full bg-white rounded-lg p-3 border-2 border-dashed transition-all text-sm font-medium flex items-center justify-center min-h-[56px] cursor-pointer ${
-                                      isDropTarget
+                                    className={`w-full rounded-lg p-3 border-2 border-dashed transition-all text-sm font-medium flex items-center justify-center min-h-[56px] cursor-pointer ${
+                                      isOptionalSlot
+                                        ? 'bg-gray-100 border-gray-300 text-gray-400 opacity-50 hover:opacity-70'
+                                        : isDropTarget
                                         ? 'border-blue-400 bg-blue-50 text-blue-600 ring-2 ring-blue-400'
-                                        : 'border-gray-300 hover:border-blue-400 hover:bg-blue-50 text-gray-400 hover:text-blue-600'
+                                        : 'bg-white border-gray-300 hover:border-blue-400 hover:bg-blue-50 text-gray-400 hover:text-blue-600'
                                     }`}
                                   >
                                     <Plus size={18} className="mr-1" />
-                                    Add Course
+                                    {isOptionalSlot ? 'Add Course (Optional)' : 'Add Course'}
                                   </div>
                                 );
                               }
