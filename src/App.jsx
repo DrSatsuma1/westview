@@ -16,11 +16,11 @@ const WESTVIEW_REQUIREMENTS = {
   'English': { needed: 40, pathways: ['English'] },
   'Math': { needed: 30, pathways: ['Math'] },
   'Biological Science': { needed: 10, pathways: ['Science - Biological'] },
-  'Physical Science': { needed: 20, pathways: ['Science - Physical'] },
+  'Physical Science': { needed: 10, pathways: ['Science - Physical'] },
   'History/Social Science': { needed: 30, pathways: ['History/Social Science'] },
   'Fine Arts/Foreign Language/CTE': { needed: 10, pathways: ['Fine Arts', 'Foreign Language', 'CTE'] },
   'ENS/PE': { needed: 25, pathways: ['Physical Education'] },
-  'Electives': { needed: 50, pathways: ['Electives'] }
+  'Electives': { needed: 85, pathways: ['Electives'] }
 };
 
 const AG_REQUIREMENTS = {
@@ -744,6 +744,25 @@ function App() {
         if (!hasPEOpposite) {
           issues.push(`PE required for Grade ${year}`);
         }
+      }
+    }
+
+    // Check for Integrated Math I requirement (or higher level math)
+    // All students must pass Integrated Math I, OR start at a higher level (Math II, III, etc.)
+    if (yearInt === 12 && semester === 'Spring') {
+      // Only check at graduation (end of senior year)
+      const allCourses = courses.filter(c => parseInt(c.year) <= 12);
+      const hasMathI = allCourses.some(c => {
+        const info = getCourseInfo(c.courseId);
+        return info && /INTEGRATED MATHEMATICS I[^I]/i.test(info.full_name);
+      });
+      const hasHigherMath = allCourses.some(c => {
+        const info = getCourseInfo(c.courseId);
+        return info && /INTEGRATED MATHEMATICS (II|III)/i.test(info.full_name);
+      });
+
+      if (!hasMathI && !hasHigherMath) {
+        warnings.push('Integrated Math I (or higher) is required for graduation');
       }
     }
 
