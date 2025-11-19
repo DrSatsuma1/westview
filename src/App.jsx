@@ -1876,10 +1876,31 @@ function App() {
     // Filter suggestions for this specific year and term
     // Fall term = Q1, Q2; Spring term = Q3, Q4
     const termQuarters = term === 'fall' ? ['Q1', 'Q2'] : ['Q3', 'Q4'];
+    const targetQuarter = term === 'fall' ? 'Q1' : 'Q3';
 
-    const termSuggestions = allSuggestions.filter(s =>
-      s.year === year && termQuarters.includes(s.quarter)
-    );
+    // For each suggestion, check if the course already exists in THIS term
+    // If not, add it to the target quarter for this term
+    const termSuggestions = allSuggestions
+      .filter(s => s.year === year)
+      .map(s => {
+        // Check if this course (or its pathway) already exists in this term
+        const yearCourses = courses.filter(c => c.year === year);
+        const termCourses = yearCourses.filter(c => termQuarters.includes(c.quarter));
+        const suggestedCourseInfo = COURSE_CATALOG[s.courseId];
+
+        const hasInTerm = termCourses.some(c => {
+          const info = COURSE_CATALOG[c.courseId];
+          // Check if same course or same pathway (e.g., already has an English course)
+          return info && (c.courseId === s.courseId || info.pathway === suggestedCourseInfo.pathway);
+        });
+
+        // Only suggest if not already in this term
+        if (!hasInTerm) {
+          return { ...s, quarter: targetQuarter };
+        }
+        return null;
+      })
+      .filter(s => s !== null);
 
     // Add all suggested courses silently (no popup)
     if (termSuggestions.length > 0) {
