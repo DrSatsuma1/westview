@@ -1266,49 +1266,111 @@ function App() {
           .filter(([_, course]) =>
             course.pathway === 'English' &&
             course.grades_allowed.includes(parseInt(year)) &&
-            !course.full_name.toUpperCase().includes('HONORS') &&
             !course.full_name.toUpperCase().includes('AP')
           )
           .map(([id, course]) => ({ id, ...course }));
 
         if (englishCourses.length > 0) {
+          // For Grade 9, prefer ENGLISH 1-2 or HONORS ENGLISH 1-2
+          let suggestedEnglish = englishCourses[0];
+          if (year === '9') {
+            suggestedEnglish = englishCourses.find(c =>
+              c.full_name.toUpperCase().includes('ENGLISH 1-2')
+            ) || englishCourses[0];
+          }
+
           suggestions.push({
-            courseId: englishCourses[0].id,
+            courseId: suggestedEnglish.id,
             year,
             semester: 'Fall',
             reason: `Grade ${year} requires an English course`,
-            courseName: englishCourses[0].full_name
+            courseName: suggestedEnglish.full_name
           });
         }
       }
     });
 
-    // Check for missing PE in grades 9-10
+    // Check for missing ENS/PE in grades 9-10
     ['9', '10'].forEach(year => {
       if (!yearsToCheck.includes(year)) return; // Skip if year not applicable
 
       const yearCourses = courses.filter(c => c.year === year);
-      const hasPE = yearCourses.some(c => {
+      const fallCourses = yearCourses.filter(c => c.semester === 'Fall');
+      const springCourses = yearCourses.filter(c => c.semester === 'Spring');
+
+      const hasPEInFall = fallCourses.some(c => {
         const info = COURSE_CATALOG[c.courseId];
         return info && info.pathway === 'Physical Education';
       });
 
-      if (!hasPE) {
-        const peCourses = Object.entries(COURSE_CATALOG)
-          .filter(([_, course]) =>
-            course.pathway === 'Physical Education' &&
-            course.grades_allowed.includes(parseInt(year))
-          )
-          .map(([id, course]) => ({ id, ...course }));
+      const hasPEInSpring = springCourses.some(c => {
+        const info = COURSE_CATALOG[c.courseId];
+        return info && info.pathway === 'Physical Education';
+      });
 
-        if (peCourses.length > 0) {
-          suggestions.push({
-            courseId: peCourses[0].id,
-            year,
-            semester: 'Fall',
-            reason: `PE required for Grade ${year}`,
-            courseName: peCourses[0].full_name
-          });
+      // For Grade 9, suggest ENS 3-4 in Fall and ENS 1-2 in Spring
+      if (year === '9') {
+        if (!hasPEInFall) {
+          const ens34 = Object.entries(COURSE_CATALOG)
+            .find(([_, course]) =>
+              course.full_name.toUpperCase().includes('ENS 3-4') &&
+              course.grades_allowed.includes(9)
+            );
+
+          if (ens34) {
+            const [courseId, courseInfo] = ens34;
+            suggestions.push({
+              courseId,
+              year: '9',
+              semester: 'Fall',
+              reason: 'ENS 3-4 recommended for Grade 9 Fall',
+              courseName: courseInfo.full_name
+            });
+          }
+        }
+
+        if (!hasPEInSpring) {
+          const ens12 = Object.entries(COURSE_CATALOG)
+            .find(([_, course]) =>
+              course.full_name.toUpperCase().includes('ENS 1-2') &&
+              course.grades_allowed.includes(9)
+            );
+
+          if (ens12) {
+            const [courseId, courseInfo] = ens12;
+            suggestions.push({
+              courseId,
+              year: '9',
+              semester: 'Spring',
+              reason: 'ENS 1-2 recommended for Grade 9 Spring',
+              courseName: courseInfo.full_name
+            });
+          }
+        }
+      } else {
+        // For Grade 10, suggest any PE course if missing
+        const hasPE = yearCourses.some(c => {
+          const info = COURSE_CATALOG[c.courseId];
+          return info && info.pathway === 'Physical Education';
+        });
+
+        if (!hasPE) {
+          const peCourses = Object.entries(COURSE_CATALOG)
+            .filter(([_, course]) =>
+              course.pathway === 'Physical Education' &&
+              course.grades_allowed.includes(parseInt(year))
+            )
+            .map(([id, course]) => ({ id, ...course }));
+
+          if (peCourses.length > 0) {
+            suggestions.push({
+              courseId: peCourses[0].id,
+              year,
+              semester: 'Fall',
+              reason: `PE required for Grade ${year}`,
+              courseName: peCourses[0].full_name
+            });
+          }
         }
       }
     });
