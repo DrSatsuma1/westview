@@ -2052,57 +2052,51 @@ function App() {
 
             <div className="flex gap-4">
               {/* Hide AP Classes Toggle */}
-              <div className="bg-gray-50 border-2 border-gray-200 rounded-lg p-4">
-                <div className="flex items-center gap-3">
-                  <input
-                    type="checkbox"
-                    id="hideAPClasses"
-                    checked={hideAPClasses}
-                    onChange={(e) => setHideAPClasses(e.target.checked)}
-                    className="w-5 h-5 text-blue-600"
-                  />
-                  <label htmlFor="hideAPClasses" className="text-sm font-bold text-gray-900 cursor-pointer">
-                    Hide AP Classes
-                  </label>
+              <button
+                onClick={() => setHideAPClasses(!hideAPClasses)}
+                className={`border-2 rounded-lg p-4 transition-colors ${
+                  hideAPClasses
+                    ? 'bg-blue-100 border-blue-400'
+                    : 'bg-gray-50 border-gray-200 hover:bg-gray-100'
+                }`}
+              >
+                <div className="text-sm font-bold text-gray-900">
+                  Hide AP Classes
                 </div>
-              </div>
+              </button>
 
               {/* Westview Graduation Only Toggle */}
-              <div className="bg-gray-50 border-2 border-gray-200 rounded-lg p-4">
-                <div className="flex items-center gap-3">
-                  <input
-                    type="checkbox"
-                    id="westviewGradOnly"
-                    checked={westviewGradOnly}
-                    onChange={(e) => setWestviewGradOnly(e.target.checked)}
-                    className="w-5 h-5 text-blue-600"
-                  />
-                  <label htmlFor="westviewGradOnly" className="text-sm font-bold text-gray-900 cursor-pointer">
-                    Westview Graduation Only
-                  </label>
+              <button
+                onClick={() => setWestviewGradOnly(!westviewGradOnly)}
+                className={`border-2 rounded-lg p-4 transition-colors ${
+                  westviewGradOnly
+                    ? 'bg-blue-100 border-blue-400'
+                    : 'bg-gray-50 border-gray-200 hover:bg-gray-100'
+                }`}
+              >
+                <div className="text-sm font-bold text-gray-900">
+                  Westview Graduation Only
                 </div>
-              </div>
+              </button>
 
               {/* Early Graduation Mode Toggle */}
-              <div className="bg-gray-50 border-2 border-gray-200 rounded-lg p-4 min-w-[280px]">
-                <div className="flex items-center gap-3 mb-2">
-                  <input
-                    type="checkbox"
-                    id="earlyGradMode"
-                    checked={earlyGradMode.enabled}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setEarlyGradMode({ enabled: true, targetYear: '3year' });
-                      } else {
-                        setEarlyGradMode({ enabled: false, targetYear: null });
-                      }
-                    }}
-                    className="w-5 h-5 text-blue-600"
-                  />
-                  <label htmlFor="earlyGradMode" className="text-sm font-bold text-gray-900 cursor-pointer">
-                    Early Graduation Mode
-                  </label>
-                </div>
+              <div className={`border-2 rounded-lg p-4 min-w-[280px] transition-colors ${
+                earlyGradMode.enabled
+                  ? 'bg-blue-100 border-blue-400'
+                  : 'bg-gray-50 border-gray-200'
+              }`}>
+                <button
+                  onClick={() => {
+                    if (earlyGradMode.enabled) {
+                      setEarlyGradMode({ enabled: false, targetYear: null });
+                    } else {
+                      setEarlyGradMode({ enabled: true, targetYear: '3year' });
+                    }
+                  }}
+                  className="text-sm font-bold text-gray-900 w-full text-left mb-2"
+                >
+                  Early Graduation Mode
+                </button>
 
                 {earlyGradMode.enabled && (
                   <div className="ml-8 space-y-2">
