@@ -161,6 +161,10 @@ function App() {
   });
   const [showConcurrentForm, setShowConcurrentForm] = useState(false);
   const [newConcurrentCourse, setNewConcurrentCourse] = useState({ name: '', collegeUnits: 3 });
+  const [hideAPClasses, setHideAPClasses] = useState(() => {
+    const saved = localStorage.getItem('westview-hide-ap-classes');
+    return saved ? JSON.parse(saved) : false;
+  });
 
   // Drag and drop state
   const [draggedCourse, setDraggedCourse] = useState(null);
@@ -200,6 +204,11 @@ function App() {
   React.useEffect(() => {
     localStorage.setItem('westview-concurrent-courses', JSON.stringify(concurrentCourses));
   }, [concurrentCourses]);
+
+  // Save hide AP classes preference to localStorage
+  React.useEffect(() => {
+    localStorage.setItem('westview-hide-ap-classes', JSON.stringify(hideAPClasses));
+  }, [hideAPClasses]);
 
   // Calculate Westview graduation progress
   const westviewProgress = useMemo(() => {
@@ -1801,6 +1810,22 @@ function App() {
             </div>
 
             <div className="flex gap-4">
+              {/* Hide AP Classes Toggle */}
+              <div className="bg-gray-50 border-2 border-gray-200 rounded-lg p-4">
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    id="hideAPClasses"
+                    checked={hideAPClasses}
+                    onChange={(e) => setHideAPClasses(e.target.checked)}
+                    className="w-5 h-5 text-blue-600"
+                  />
+                  <label htmlFor="hideAPClasses" className="text-sm font-bold text-gray-900 cursor-pointer">
+                    Hide AP Classes
+                  </label>
+                </div>
+              </div>
+
               {/* Early Graduation Mode Toggle */}
               <div className="bg-gray-50 border-2 border-gray-200 rounded-lg p-4 min-w-[280px]">
                 <div className="flex items-center gap-3 mb-2">
@@ -2479,11 +2504,20 @@ function App() {
                                                 .filter(([_, courses]) => courses.length > 0)
                                                 .map(([group, courses]) => (
                                                   <optgroup key={group} label={group}>
-                                                    {courses.map(course => (
-                                                      <option key={course.id} value={course.id}>
-                                                        {course.full_name}{year === 9 && isRecommended9thGrade(course.full_name) ? ' ⭐ Recommended' : ''}
-                                                      </option>
-                                                    ))}
+                                                    {courses.map(course => {
+                                                      const isAP = course.full_name.toUpperCase().startsWith('AP ');
+                                                      const shouldDisable = hideAPClasses && isAP;
+                                                      return (
+                                                        <option
+                                                          key={course.id}
+                                                          value={course.id}
+                                                          disabled={shouldDisable}
+                                                          style={shouldDisable ? { color: '#9ca3af', fontStyle: 'italic' } : {}}
+                                                        >
+                                                          {course.full_name}{year === 9 && isRecommended9thGrade(course.full_name) ? ' ⭐ Recommended' : ''}{shouldDisable ? ' (Hidden)' : ''}
+                                                        </option>
+                                                      );
+                                                    })}
                                                   </optgroup>
                                                 ));
                                             })()
@@ -2520,21 +2554,39 @@ function App() {
                                                 .filter(([_, courses]) => courses.length > 0)
                                                 .map(([group, courses]) => (
                                                   <optgroup key={group} label={group}>
-                                                    {courses.map(course => (
-                                                      <option key={course.id} value={course.id}>
-                                                        {course.full_name}{year === 9 && isRecommended9thGrade(course.full_name) ? ' ⭐ Recommended' : ''}
-                                                      </option>
-                                                    ))}
+                                                    {courses.map(course => {
+                                                      const isAP = course.full_name.toUpperCase().startsWith('AP ');
+                                                      const shouldDisable = hideAPClasses && isAP;
+                                                      return (
+                                                        <option
+                                                          key={course.id}
+                                                          value={course.id}
+                                                          disabled={shouldDisable}
+                                                          style={shouldDisable ? { color: '#9ca3af', fontStyle: 'italic' } : {}}
+                                                        >
+                                                          {course.full_name}{year === 9 && isRecommended9thGrade(course.full_name) ? ' ⭐ Recommended' : ''}{shouldDisable ? ' (Hidden)' : ''}
+                                                        </option>
+                                                      );
+                                                    })}
                                                   </optgroup>
                                                 ));
                                             })()
                                           ) : (
                                             // Regular list for other pathways
-                                            coursesInPathway.map(course => (
-                                              <option key={course.id} value={course.id}>
-                                                {course.full_name}{year === 9 && isRecommended9thGrade(course.full_name) ? ' ⭐ Recommended' : ''}
-                                              </option>
-                                            ))
+                                            coursesInPathway.map(course => {
+                                              const isAP = course.full_name.toUpperCase().startsWith('AP ');
+                                              const shouldDisable = hideAPClasses && isAP;
+                                              return (
+                                                <option
+                                                  key={course.id}
+                                                  value={course.id}
+                                                  disabled={shouldDisable}
+                                                  style={shouldDisable ? { color: '#9ca3af', fontStyle: 'italic' } : {}}
+                                                >
+                                                  {course.full_name}{year === 9 && isRecommended9thGrade(course.full_name) ? ' ⭐ Recommended' : ''}{shouldDisable ? ' (Hidden)' : ''}
+                                                </option>
+                                              );
+                                            })
                                           )}
                                         </select>
                                           <div className="flex gap-2">
