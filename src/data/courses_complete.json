@@ -4014,11 +4014,11 @@
         10,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Physical Education",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -4052,7 +4052,7 @@
         10,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Physical Education",
