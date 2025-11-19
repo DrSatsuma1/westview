@@ -21,7 +21,7 @@ const WESTVIEW_REQUIREMENTS = {
   'Fine Arts/Foreign Language/CTE': { needed: 10, pathways: ['Fine Arts', 'Foreign Language', 'CTE'] },
   'Health Science': { needed: 5, pathways: ['Physical Education'], specialCourses: ['ENS 1-2'] },
   'Physical Education': { needed: 20, pathways: ['Physical Education'] },
-  'Electives': { needed: 85, pathways: ['Electives'] }
+  'Electives': { needed: 85, pathways: ['Electives', 'Clubs/Athletics'] }
 };
 
 const AG_REQUIREMENTS = {
@@ -1411,6 +1411,36 @@ function App() {
             setError(`Cannot take two ${language} courses in the same semester`);
             return;
           }
+        }
+      }
+    }
+
+    // Special validation for ROBOTICS club - must be consecutive quarters starting from Q1
+    if (courseName === 'ROBOTICS') {
+      const yearCourses = courses.filter(c => c.year === year);
+      const roboticsCourses = yearCourses.filter(c => {
+        const info = COURSE_CATALOG[c.courseId];
+        return info && info.full_name === 'ROBOTICS';
+      });
+
+      const roboticsQuarters = roboticsCourses.map(c => c.quarter).sort();
+
+      // If adding to a quarter other than Q1 and Q1 doesn't exist, block it
+      if (quarter !== 'Q1' && !roboticsQuarters.includes('Q1')) {
+        setError('ROBOTICS must start in Q1. You can take it for 1-4 consecutive quarters.');
+        return;
+      }
+
+      // Check for consecutive quarters: must be Q1, Q1+Q2, Q1+Q2+Q3, or Q1+Q2+Q3+Q4
+      if (roboticsQuarters.length > 0) {
+        const allQuarters = [...roboticsQuarters, quarter].sort();
+        const expectedSequence = ['Q1', 'Q2', 'Q3', 'Q4'].slice(0, allQuarters.length);
+
+        const isConsecutive = allQuarters.every((q, i) => q === expectedSequence[i]);
+
+        if (!isConsecutive) {
+          setError('ROBOTICS must be taken in consecutive quarters starting from Q1 (e.g., Q1 only, Q1+Q2, Q1+Q2+Q3, or Q1+Q2+Q3+Q4)');
+          return;
         }
       }
     }

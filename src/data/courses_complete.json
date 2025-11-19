@@ -7328,6 +7328,27 @@
       "alternate_ids": [],
       "notes": "Select this option when the student is not taking courses at Westview during this semester (e.g., attending another school, independent study, etc.)",
       "homework_hours_per_week": null
+    },
+    {
+      "course_id": "CLUB_ROBOTICS",
+      "full_name": "ROBOTICS",
+      "pathway": "Clubs/Athletics",
+      "uc_csu_category": null,
+      "credits": 1.25,
+      "term_length": "quarter",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "grades_allowed": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "is_ap_or_honors_pair": false,
+      "semester_restrictions": null,
+      "notes": "Club - Can be taken any number of quarters. 1.25 credits per quarter. Pass/Fail grading."
     }
   ]
 }
