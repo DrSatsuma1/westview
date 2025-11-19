@@ -172,6 +172,9 @@ function App() {
   });
   const [semesterValidation, setSemesterValidation] = useState(null);
 
+  // Course suggestions
+  const [suggestedCourses, setSuggestedCourses] = useState([]);
+
   // Save courses to localStorage whenever they change
   React.useEffect(() => {
     localStorage.setItem('westview-courses', JSON.stringify(courses));
@@ -1240,6 +1243,294 @@ function App() {
     setCourses(courses.filter(c => c.id !== id));
   };
 
+  // Generate course suggestions based on missing requirements
+  const generateCourseSuggestions = () => {
+    const suggestions = [];
+
+    // Determine which years to check based on early graduation mode
+    const yearsToCheck = earlyGradMode.enabled
+      ? (earlyGradMode.targetYear === '3year' ? ['9', '10', '11'] : ['9', '10', '11', '12'])
+      : ['9', '10', '11', '12'];
+
+    // Check for missing English courses (required all years)
+    yearsToCheck.forEach(year => {
+      const yearCourses = courses.filter(c => c.year === year);
+      const hasEnglish = yearCourses.some(c => {
+        const info = COURSE_CATALOG[c.courseId];
+        return info && info.pathway === 'English';
+      });
+
+      if (!hasEnglish) {
+        // Suggest grade-appropriate English course
+        const englishCourses = Object.entries(COURSE_CATALOG)
+          .filter(([_, course]) =>
+            course.pathway === 'English' &&
+            course.grades_allowed.includes(parseInt(year)) &&
+            !course.full_name.toUpperCase().includes('HONORS') &&
+            !course.full_name.toUpperCase().includes('AP')
+          )
+          .map(([id, course]) => ({ id, ...course }));
+
+        if (englishCourses.length > 0) {
+          suggestions.push({
+            courseId: englishCourses[0].id,
+            year,
+            semester: 'Fall',
+            reason: `Grade ${year} requires an English course`,
+            courseName: englishCourses[0].full_name
+          });
+        }
+      }
+    });
+
+    // Check for missing PE in grades 9-10
+    ['9', '10'].forEach(year => {
+      if (!yearsToCheck.includes(year)) return; // Skip if year not applicable
+
+      const yearCourses = courses.filter(c => c.year === year);
+      const hasPE = yearCourses.some(c => {
+        const info = COURSE_CATALOG[c.courseId];
+        return info && info.pathway === 'Physical Education';
+      });
+
+      if (!hasPE) {
+        const peCourses = Object.entries(COURSE_CATALOG)
+          .filter(([_, course]) =>
+            course.pathway === 'Physical Education' &&
+            course.grades_allowed.includes(parseInt(year))
+          )
+          .map(([id, course]) => ({ id, ...course }));
+
+        if (peCourses.length > 0) {
+          suggestions.push({
+            courseId: peCourses[0].id,
+            year,
+            semester: 'Fall',
+            reason: `PE required for Grade ${year}`,
+            courseName: peCourses[0].full_name
+          });
+        }
+      }
+    });
+
+    // Check for missing Math courses
+    yearsToCheck.forEach(year => {
+      const yearCourses = courses.filter(c => c.year === year);
+      const hasMath = yearCourses.some(c => {
+        const info = COURSE_CATALOG[c.courseId];
+        return info && info.pathway === 'Math';
+      });
+
+      if (!hasMath) {
+        // Suggest appropriate math course based on grade
+        const mathCourses = Object.entries(COURSE_CATALOG)
+          .filter(([_, course]) =>
+            course.pathway === 'Math' &&
+            course.grades_allowed.includes(parseInt(year)) &&
+            !course.full_name.toUpperCase().includes('HONORS') &&
+            !course.full_name.toUpperCase().includes('AP')
+          )
+          .map(([id, course]) => ({ id, ...course }));
+
+        if (mathCourses.length > 0) {
+          // Prefer Integrated Math sequence
+          let suggestedMath = mathCourses.find(c => c.full_name.includes('INTEGRATED MATHEMATICS I')) || mathCourses[0];
+
+          suggestions.push({
+            courseId: suggestedMath.id,
+            year,
+            semester: 'Fall',
+            reason: `Math course required for Grade ${year}`,
+            courseName: suggestedMath.full_name
+          });
+        }
+      }
+    });
+
+    // Check for missing Science courses (need both biological and physical)
+    yearsToCheck.forEach(year => {
+      const yearCourses = courses.filter(c => c.year === year);
+      const hasScience = yearCourses.some(c => {
+        const info = COURSE_CATALOG[c.courseId];
+        return info && (info.pathway === 'Science - Biological' || info.pathway === 'Science - Physical');
+      });
+
+      if (!hasScience && year === '9') {
+        // Suggest Biology for grade 9
+        const biologyCourses = Object.entries(COURSE_CATALOG)
+          .filter(([_, course]) =>
+            course.pathway === 'Science - Biological' &&
+            course.grades_allowed.includes(9) &&
+            !course.full_name.toUpperCase().includes('AP')
+          )
+          .map(([id, course]) => ({ id, ...course }));
+
+        if (biologyCourses.length > 0) {
+          suggestions.push({
+            courseId: biologyCourses[0].id,
+            year: '9',
+            semester: 'Fall',
+            reason: 'Biological science required',
+            courseName: biologyCourses[0].full_name
+          });
+        }
+      } else if (!hasScience && year === '10') {
+        // Suggest Chemistry for grade 10
+        const chemistryCourses = Object.entries(COURSE_CATALOG)
+          .filter(([_, course]) =>
+            course.pathway === 'Science - Physical' &&
+            course.grades_allowed.includes(10) &&
+            course.full_name.toUpperCase().includes('CHEMISTRY')
+          )
+          .map(([id, course]) => ({ id, ...course }));
+
+        if (chemistryCourses.length > 0) {
+          suggestions.push({
+            courseId: chemistryCourses[0].id,
+            year: '10',
+            semester: 'Fall',
+            reason: 'Physical science required',
+            courseName: chemistryCourses[0].full_name
+          });
+        }
+      }
+    });
+
+    // Check for missing History/Social Science
+    yearsToCheck.forEach(year => {
+      const yearCourses = courses.filter(c => c.year === year);
+      const hasHistory = yearCourses.some(c => {
+        const info = COURSE_CATALOG[c.courseId];
+        return info && info.pathway === 'History/Social Science';
+      });
+
+      if (!hasHistory && (year === '10' || year === '11' || year === '12')) {
+        const historyCourses = Object.entries(COURSE_CATALOG)
+          .filter(([_, course]) =>
+            course.pathway === 'History/Social Science' &&
+            course.grades_allowed.includes(parseInt(year)) &&
+            !course.full_name.toUpperCase().includes('AP')
+          )
+          .map(([id, course]) => ({ id, ...course }));
+
+        if (historyCourses.length > 0) {
+          let suggestedCourse = historyCourses[0];
+
+          // Prefer World History for grade 10, US History for grade 11, Civics for grade 12
+          if (year === '10') {
+            suggestedCourse = historyCourses.find(c => c.full_name.toUpperCase().includes('WORLD HISTORY')) || suggestedCourse;
+          } else if (year === '11') {
+            suggestedCourse = historyCourses.find(c => c.full_name.toUpperCase().includes('UNITED STATES HISTORY')) || suggestedCourse;
+          } else if (year === '12') {
+            suggestedCourse = historyCourses.find(c => c.full_name.toUpperCase().includes('CIVICS')) || suggestedCourse;
+          }
+
+          suggestions.push({
+            courseId: suggestedCourse.id,
+            year,
+            semester: 'Fall',
+            reason: `History/Social Science required for Grade ${year}`,
+            courseName: suggestedCourse.full_name
+          });
+        }
+      }
+    });
+
+    // CTE Pathway Suggestions
+    if (ctePathwayMode.enabled && ctePathwayMode.pathway) {
+      const pathway = CTE_PATHWAYS[ctePathwayMode.pathway];
+      const allCourses = courses;
+
+      // Check for concentrator course
+      const concentratorCourses = pathway.courses.filter(c => c.level === 'Concentrator');
+      const hasConcentrator = concentratorCourses.some(cteCourse => {
+        return allCourses.some(scheduledCourse => {
+          const info = COURSE_CATALOG[scheduledCourse.courseId];
+          return info && info.full_name.toUpperCase().includes(cteCourse.name.toUpperCase());
+        });
+      });
+
+      if (!hasConcentrator && concentratorCourses.length > 0) {
+        // Suggest first concentrator course
+        const cteCourse = concentratorCourses[0];
+        const matchingCourse = Object.entries(COURSE_CATALOG)
+          .find(([_, course]) => course.full_name.toUpperCase().includes(cteCourse.name.toUpperCase()));
+
+        if (matchingCourse) {
+          const [courseId, courseInfo] = matchingCourse;
+          // Find earliest applicable grade from yearsToCheck
+          const suggestedYear = yearsToCheck.find(y => cteCourse.grades.includes(parseInt(y)));
+
+          if (suggestedYear) {
+            suggestions.push({
+              courseId,
+              year: suggestedYear,
+              semester: 'Fall',
+              reason: `CTE ${pathway.name} - Concentrator course required`,
+              courseName: courseInfo.full_name
+            });
+          }
+        }
+      }
+
+      // Check for capstone course
+      const capstoneCourses = pathway.courses.filter(c => c.level === 'Capstone');
+      const hasCapstone = capstoneCourses.some(cteCourse => {
+        return allCourses.some(scheduledCourse => {
+          const info = COURSE_CATALOG[scheduledCourse.courseId];
+          return info && info.full_name.toUpperCase().includes(cteCourse.name.toUpperCase());
+        });
+      });
+
+      if (!hasCapstone && capstoneCourses.length > 0 && hasConcentrator) {
+        // Suggest first capstone course (only if concentrator is present)
+        const cteCourse = capstoneCourses[0];
+        const matchingCourse = Object.entries(COURSE_CATALOG)
+          .find(([_, course]) => course.full_name.toUpperCase().includes(cteCourse.name.toUpperCase()));
+
+        if (matchingCourse) {
+          const [courseId, courseInfo] = matchingCourse;
+          // Find latest applicable grade from yearsToCheck
+          const suggestedYear = yearsToCheck.reverse().find(y => cteCourse.grades.includes(parseInt(y)));
+
+          if (suggestedYear) {
+            suggestions.push({
+              courseId,
+              year: suggestedYear,
+              semester: 'Fall',
+              reason: `CTE ${pathway.name} - Capstone course required`,
+              courseName: courseInfo.full_name
+            });
+          }
+        }
+      }
+    }
+
+    setSuggestedCourses(suggestions);
+  };
+
+  // Approve and add a suggested course
+  const approveSuggestion = (suggestion) => {
+    // Remove from suggestions
+    setSuggestedCourses(suggestedCourses.filter(s =>
+      !(s.courseId === suggestion.courseId && s.year === suggestion.year && s.semester === suggestion.semester)
+    ));
+
+    // Add the course
+    const courseInfo = COURSE_CATALOG[suggestion.courseId];
+    if (!courseInfo) return;
+
+    const termReqs = schedulingEngine.getTermRequirements(suggestion.courseId);
+
+    if (termReqs.requiresBothSemesters && suggestion.semester === 'Fall') {
+      const fall = { courseId: suggestion.courseId, id: Date.now(), year: suggestion.year, semester: 'Fall' };
+      const spring = { courseId: suggestion.courseId, id: Date.now() + 1, year: suggestion.year, semester: 'Spring' };
+      setCourses([...courses, fall, spring]);
+    } else {
+      setCourses([...courses, { courseId: suggestion.courseId, id: Date.now(), year: suggestion.year, semester: suggestion.semester }]);
+    }
+  };
+
   // Get unique pathways for course selection
   const pathways = useMemo(() => {
     const uniquePathways = [...new Set(Object.values(COURSE_CATALOG).map(c => c.pathway))];
@@ -1513,6 +1804,54 @@ function App() {
           </div>
         </div>
       )}
+
+      {/* Suggest Courses Button and Suggestions */}
+      <div className="max-w-[1800px] mx-auto px-6 pt-6">
+        <div className="flex items-center justify-between mb-4">
+          <button
+            onClick={generateCourseSuggestions}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold shadow-lg transition-colors flex items-center gap-2"
+          >
+            <GraduationCap size={20} />
+            Suggest Courses
+          </button>
+          {suggestedCourses.length > 0 && (
+            <span className="text-sm text-gray-600">
+              {suggestedCourses.length} suggestion{suggestedCourses.length !== 1 ? 's' : ''} found
+            </span>
+          )}
+        </div>
+
+        {/* Display Suggestions */}
+        {suggestedCourses.length > 0 && (
+          <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-4 mb-6">
+            <h3 className="font-bold text-blue-900 mb-3 flex items-center gap-2">
+              <AlertCircle size={18} />
+              Suggested Courses (Click to approve and add)
+            </h3>
+            <div className="space-y-2">
+              {suggestedCourses.map((suggestion, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => approveSuggestion(suggestion)}
+                  className="w-full bg-white hover:bg-blue-100 border border-blue-300 rounded-lg p-3 text-left transition-colors"
+                >
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <div className="font-semibold text-gray-900">{suggestion.courseName}</div>
+                      <div className="text-sm text-gray-600 mt-1">
+                        Grade {suggestion.year} • {suggestion.semester} Semester
+                      </div>
+                      <div className="text-xs text-blue-700 mt-1">{suggestion.reason}</div>
+                    </div>
+                    <div className="text-blue-600 font-bold text-sm">Click to Add</div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
 
       <div className="max-w-[1800px] mx-auto px-6 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
