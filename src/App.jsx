@@ -203,6 +203,38 @@ const RECOMMENDED_9TH_GRADE = {
   ]
 };
 
+// Helper function to shorten course names for display on cards
+function shortenCourseName(fullName) {
+  let name = fullName;
+
+  // Common abbreviations
+  name = name.replace(/Integrated Mathematics/gi, 'Integrated Math');
+  name = name.replace(/Mathematics/gi, 'Math');
+  name = name.replace(/Literature/gi, 'Lit');
+  name = name.replace(/Physical Education/gi, 'PE');
+  name = name.replace(/Social Science/gi, 'Soc Sci');
+
+  // Convert number pairs to letter pairs
+  // 1-2 → A-B, 3-4 → C-D, 5-6 → E-F, 7-8 → G-H, 9-10 → I-J
+  const levelMap = {
+    ' 1-2': 'A-B',
+    ' 3-4': 'C-D',
+    ' 5-6': 'E-F',
+    ' 7-8': 'G-H',
+    ' 9-10': 'I-J'
+  };
+
+  // Apply level conversions
+  for (const [numPair, letterPair] of Object.entries(levelMap)) {
+    if (name.endsWith(numPair)) {
+      name = name.slice(0, -numPair.length) + ' ' + letterPair;
+      break;
+    }
+  }
+
+  return name;
+}
+
 function App() {
   // Load courses from localStorage on initial render
   const [courses, setCourses] = useState(() => {
@@ -3095,7 +3127,9 @@ function App() {
                                 const isDragging = draggedCourse?.course?.id === course.id;
                                 const isDropTarget = dragOverSlot?.year === year && dragOverSlot?.quarter === quarter && dragOverSlot?.slot === slotIndex;
                                 const pathwayColor = PATHWAY_COLORS[info.pathway] || 'bg-gray-400';
-                                const courseNumber = info.course_numbers && info.course_numbers.length > 0 ? info.course_numbers[0] : '';
+                                const courseNumber = info.course_numbers && info.course_numbers.length > 0
+                                  ? info.course_numbers.join(' - ')
+                                  : '';
 
                                 // Determine CTE pathway for this course
                                 let ctePathway = null;
@@ -3129,7 +3163,7 @@ function App() {
                                       <div className="flex-1 min-w-0">
                                         <div className="flex items-center gap-1.5 mb-1">
                                           {info.is_ap_or_honors_pair && <Award className="text-purple-600 flex-shrink-0" size={16} />}
-                                          <div className="font-bold text-sm text-gray-900 truncate">{info.full_name}</div>
+                                          <div className="font-bold text-sm text-gray-900 truncate">{shortenCourseName(info.full_name)}</div>
                                         </div>
                                         <div className="text-xs text-gray-500">
                                           {courseNumber && <span>{courseNumber} | </span>}
