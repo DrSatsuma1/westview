@@ -2181,6 +2181,21 @@ function App() {
                   </div>
                 )}
               </div>
+
+              {/* Clear All Button */}
+              <button
+                onClick={() => {
+                  if (window.confirm('Are you sure you want to clear all courses from your schedule? This cannot be undone.')) {
+                    setCourses([]);
+                    setCompletedSemesters({});
+                  }
+                }}
+                className="bg-red-600 hover:bg-red-700 text-white border-2 border-red-600 rounded-lg p-4 transition-colors"
+              >
+                <div className="text-sm font-bold">
+                  Clear All Courses
+                </div>
+              </button>
             </div>
           </div>
 
