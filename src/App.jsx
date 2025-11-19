@@ -179,6 +179,10 @@ function App() {
     const saved = localStorage.getItem('westview-hide-ap-classes');
     return saved ? JSON.parse(saved) : false;
   });
+  const [westviewGradOnly, setWestviewGradOnly] = useState(() => {
+    const saved = localStorage.getItem('westview-grad-only');
+    return saved ? JSON.parse(saved) : false;
+  });
 
   // Drag and drop state
   const [draggedCourse, setDraggedCourse] = useState(null);
@@ -218,6 +222,11 @@ function App() {
   React.useEffect(() => {
     localStorage.setItem('westview-concurrent-courses', JSON.stringify(concurrentCourses));
   }, [concurrentCourses]);
+
+  // Save Westview Grad Only mode to localStorage
+  React.useEffect(() => {
+    localStorage.setItem('westview-grad-only', JSON.stringify(westviewGradOnly));
+  }, [westviewGradOnly]);
 
   // Save hide AP classes preference to localStorage
   React.useEffect(() => {
@@ -854,14 +863,10 @@ function App() {
     const warnings = [];
     const info = [];
 
-    // Check minimum course load (typically 6-7 courses)
+    // Check if quarter has any courses
     if (quarterCourses.length === 0) {
       issues.push('No courses scheduled for this semester');
       return { valid: false, issues, warnings, info };
-    }
-
-    if (quarterCourses.length < 5) {
-      warnings.push(`Light course load (${quarterCourses.length} courses). Most students take 6-7 courses per quarter.`);
     }
 
     // Check for required courses based on grade
@@ -1264,6 +1269,13 @@ function App() {
 
     // Check for Off-Roll restrictions
     if (courseInfo.pathway === 'Off-Roll') {
+      // Off-Roll can only be in slots 0 (1st class) or 3 (4th class)
+      const currentSlot = showAddCourse?.slot;
+      if (currentSlot !== undefined && currentSlot !== 0 && currentSlot !== 3) {
+        setError('Off-Roll courses can only be selected as the 1st or 4th class of the day (not 2nd, 3rd, 5th, or 6th)');
+        return;
+      }
+
       // Off-Roll allowed in grades 9, 11, 12 (not 10)
       if (year === '10') {
         setError('Off-Roll courses are not allowed in Grade 10');
@@ -1855,6 +1867,34 @@ function App() {
     setSuggestedCourses(suggestions);
   };
 
+  // Generate and display suggestions for a specific term (Fall or Spring)
+  const suggestCoursesForTerm = (year, term) => {
+    // Generate all suggestions
+    generateCourseSuggestions();
+
+    // Filter suggestions for this specific year and term
+    // Fall term = Q1, Q2; Spring term = Q3, Q4
+    const termQuarters = term === 'fall' ? ['Q1', 'Q2'] : ['Q3', 'Q4'];
+
+    // Show an alert with the suggestions for this term
+    setTimeout(() => {
+      const termSuggestions = suggestedCourses.filter(s =>
+        s.year === year && termQuarters.includes(s.quarter)
+      );
+
+      if (termSuggestions.length === 0) {
+        alert(`No course suggestions for Grade ${year} ${term === 'fall' ? 'Fall' : 'Spring'} term.\n\nYou appear to have the core required courses scheduled.`);
+      } else {
+        const suggestionText = termSuggestions.map(s =>
+          `• ${s.courseName}\n  Reason: ${s.reason}`
+        ).join('\n\n');
+
+        const termName = term === 'fall' ? 'Fall' : 'Spring';
+        alert(`Course Suggestions for Grade ${year} ${termName}:\n\n${suggestionText}\n\nThese suggestions are based on your missing Westview graduation and UC/CSU requirements.`);
+      }
+    }, 100); // Small delay to let state update
+  };
+
   // Approve and add a suggested course
   const approveSuggestion = (suggestion) => {
     // Remove from suggestions
@@ -2027,6 +2067,22 @@ function App() {
                 </div>
               </div>
 
+              {/* Westview Graduation Only Toggle */}
+              <div className="bg-gray-50 border-2 border-gray-200 rounded-lg p-4">
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    id="westviewGradOnly"
+                    checked={westviewGradOnly}
+                    onChange={(e) => setWestviewGradOnly(e.target.checked)}
+                    className="w-5 h-5 text-blue-600"
+                  />
+                  <label htmlFor="westviewGradOnly" className="text-sm font-bold text-gray-900 cursor-pointer">
+                    Westview Graduation Only
+                  </label>
+                </div>
+              </div>
+
               {/* Early Graduation Mode Toggle */}
               <div className="bg-gray-50 border-2 border-gray-200 rounded-lg p-4 min-w-[280px]">
                 <div className="flex items-center gap-3 mb-2">
@@ -2149,28 +2205,32 @@ function App() {
                   </div>
                 </div>
 
-                <div className="h-12 w-px bg-white opacity-30"></div>
+                {!westviewGradOnly && (
+                  <>
+                    <div className="h-12 w-px bg-white opacity-30"></div>
 
-                <div className="text-center">
-                  <div className="text-sm font-medium opacity-90">UC/CSU A-G</div>
-                  <div className="flex items-center gap-2 mt-1">
-                    {ucsuEligible ? (
-                      <>
-                        <CheckCircle2 size={20} className="text-green-300" />
-                        <span className="font-semibold">Eligible!</span>
-                      </>
-                    ) : (
-                      <>
-                        <Circle size={20} className="text-yellow-300" />
-                        <span className="font-semibold">
-                          {Object.values(agProgress).filter(p => !p.met).length} requirements left
-                        </span>
-                      </>
-                    )}
-                  </div>
-                </div>
+                    <div className="text-center">
+                      <div className="text-sm font-medium opacity-90">UC/CSU A-G</div>
+                      <div className="flex items-center gap-2 mt-1">
+                        {ucsuEligible ? (
+                          <>
+                            <CheckCircle2 size={20} className="text-green-300" />
+                            <span className="font-semibold">Eligible!</span>
+                          </>
+                        ) : (
+                          <>
+                            <Circle size={20} className="text-yellow-300" />
+                            <span className="font-semibold">
+                              {Object.values(agProgress).filter(p => !p.met).length} requirements left
+                            </span>
+                          </>
+                        )}
+                      </div>
+                    </div>
 
-                <div className="h-12 w-px bg-white opacity-30"></div>
+                    <div className="h-12 w-px bg-white opacity-30"></div>
+                  </>
+                )}
 
                 <div className="text-center">
                   <div className="text-sm font-medium opacity-90">Courses Planned</div>
@@ -2181,54 +2241,6 @@ function App() {
           </div>
         </div>
       )}
-
-      {/* Suggest Courses Button and Suggestions */}
-      <div className="max-w-[1800px] mx-auto px-6 pt-6">
-        <div className="flex items-center justify-between mb-4">
-          <button
-            onClick={generateCourseSuggestions}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold shadow-lg transition-colors flex items-center gap-2"
-          >
-            <GraduationCap size={20} />
-            Suggest Courses
-          </button>
-          {suggestedCourses.length > 0 && (
-            <span className="text-sm text-gray-600">
-              {suggestedCourses.length} suggestion{suggestedCourses.length !== 1 ? 's' : ''} found
-            </span>
-          )}
-        </div>
-
-        {/* Display Suggestions */}
-        {suggestedCourses.length > 0 && (
-          <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-4 mb-6">
-            <h3 className="font-bold text-blue-900 mb-3 flex items-center gap-2">
-              <AlertCircle size={18} />
-              Suggested Courses (Click to approve and add)
-            </h3>
-            <div className="space-y-2">
-              {suggestedCourses.map((suggestion, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => approveSuggestion(suggestion)}
-                  className="w-full bg-white hover:bg-blue-100 border border-blue-300 rounded-lg p-3 text-left transition-colors"
-                >
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <div className="font-semibold text-gray-900">{suggestion.courseName}</div>
-                      <div className="text-sm text-gray-600 mt-1">
-                        Grade {suggestion.year} • {suggestion.quarter} Semester
-                      </div>
-                      <div className="text-xs text-blue-700 mt-1">{suggestion.reason}</div>
-                    </div>
-                    <div className="text-blue-600 font-bold text-sm">Click to Add</div>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
 
       <div className="max-w-[1800px] mx-auto px-6 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
@@ -2305,10 +2317,33 @@ function App() {
                     <div className="bg-gray-100 px-6 py-4 border-b-2 border-gray-200">
                       <h3 className="text-xl font-bold text-gray-900">Grade {year}</h3>
                     </div>
+
+                    {/* Suggestion buttons per semester */}
+                    <div className="grid grid-cols-2 gap-4 px-6 py-4 bg-gray-50 border-b border-gray-200">
+                      <button
+                        onClick={() => suggestCoursesForTerm(year, 'fall')}
+                        className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-sm transition-colors"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                        </svg>
+                        Suggest Fall Courses
+                      </button>
+                      <button
+                        onClick={() => suggestCoursesForTerm(year, 'spring')}
+                        className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-sm transition-colors"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                        </svg>
+                        Suggest Spring Courses
+                      </button>
+                    </div>
+
                     <div className="grid grid-cols-4 divide-x divide-gray-200">
                       {['Q1', 'Q2', 'Q3', 'Q4'].map(quarter => {
                         const quarterCourses = getCoursesForQuarter(year, quarter);
-                        const slots = Array.from({ length: 4 }, (_, i) => quarterCourses[i] || null);
+                        const slots = Array.from({ length: 6 }, (_, i) => quarterCourses[i] || null);
                         // Q1 and Q2 are Fall term, Q3 and Q4 are Spring term
                         const displayYear = (quarter === 'Q1' || quarter === 'Q2') ? fallYear : springYear;
 
@@ -3001,47 +3036,49 @@ function App() {
               </div>
             </div>
 
-            {/* UC/CSU Requirements */}
-            <div className="bg-white rounded-xl border border-gray-200 p-6">
-              <h3 className="text-lg font-bold text-gray-900 mb-2">UC/CSU Eligibility</h3>
-              <p className="text-sm text-gray-600 mb-4">A-G Requirements</p>
-              <div className="space-y-4">
-                {Object.entries(AG_REQUIREMENTS).map(([cat, req]) => {
-                  const prog = agProgress[cat];
-                  const pct = Math.min((prog.earned / prog.needed) * 100, 100);
-                  return (
-                    <div key={cat}>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-medium text-gray-700">{req.short}</span>
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-bold text-gray-900">
-                            {prog.earned}/{prog.needed} {prog.needed === 1 ? 'year' : 'years'}
-                          </span>
-                          {prog.met ? (
-                            <CheckCircle2 className="text-green-600" size={18} />
-                          ) : prog.earned > 0 ? (
-                            <AlertCircle className="text-orange-500" size={18} />
-                          ) : (
-                            <Circle className="text-gray-300" size={18} />
-                          )}
+            {/* UC/CSU Requirements - Only show if not in Westview Graduation Only mode */}
+            {!westviewGradOnly && (
+              <div className="bg-white rounded-xl border border-gray-200 p-6">
+                <h3 className="text-lg font-bold text-gray-900 mb-2">UC/CSU Eligibility</h3>
+                <p className="text-sm text-gray-600 mb-4">A-G Requirements</p>
+                <div className="space-y-4">
+                  {Object.entries(AG_REQUIREMENTS).map(([cat, req]) => {
+                    const prog = agProgress[cat];
+                    const pct = Math.min((prog.earned / prog.needed) * 100, 100);
+                    return (
+                      <div key={cat}>
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-sm font-medium text-gray-700">{req.short}</span>
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm font-bold text-gray-900">
+                              {prog.earned}/{prog.needed} {prog.needed === 1 ? 'year' : 'years'}
+                            </span>
+                            {prog.met ? (
+                              <CheckCircle2 className="text-green-600" size={18} />
+                            ) : prog.earned > 0 ? (
+                              <AlertCircle className="text-orange-500" size={18} />
+                            ) : (
+                              <Circle className="text-gray-300" size={18} />
+                            )}
+                          </div>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div
+                            className={`h-2 rounded-full transition-all ${
+                              prog.met ? 'bg-green-500' : prog.earned > 0 ? 'bg-orange-500' : 'bg-gray-300'
+                            }`}
+                            style={{ width: `${pct}%` }}
+                          />
                         </div>
                       </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div
-                          className={`h-2 rounded-full transition-all ${
-                            prog.met ? 'bg-green-500' : prog.earned > 0 ? 'bg-orange-500' : 'bg-gray-300'
-                          }`}
-                          style={{ width: `${pct}%` }}
-                        />
-                      </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
+                <p className="text-xs text-gray-600 text-center mt-4 pt-4 border-t border-gray-200">
+                  Grade of C or better required
+                </p>
               </div>
-              <p className="text-xs text-gray-600 text-center mt-4 pt-4 border-t border-gray-200">
-                Grade of C or better required
-              </p>
-            </div>
+            )}
           </div>
 
         </div>
