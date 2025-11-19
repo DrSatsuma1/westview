@@ -233,6 +233,20 @@ function App() {
           }
           return sum + info.credits;
         }, 0);
+
+        // Add 10 PE credits from Naval Science courses (if any exist in Electives pathway)
+        const navalScienceCourses = courses.filter(c => {
+          const info = COURSE_CATALOG[c.courseId];
+          return info && info.full_name && info.full_name.toUpperCase().includes('NAVAL SCIENCE');
+        });
+
+        navalScienceCourses.forEach(c => {
+          const info = COURSE_CATALOG[c.courseId];
+          // Naval Science yearlong courses (4 quarters) provide 10 PE credits
+          if (info.term_length === 'yearlong') {
+            credits += 10;
+          }
+        });
       } else if (name === 'Fine Arts/Foreign Language/CTE') {
         // Fine Arts counts all Fine Arts/Foreign Language/CTE courses
         // PLUS 5 credits from MARCHING PE FLAGS (which is in PE pathway)
@@ -258,6 +272,24 @@ function App() {
         if (hasMarchingPE) {
           credits += 5; // Add the Fine Arts portion of MARCHING PE FLAGS
         }
+      } else if (name === 'Electives') {
+        // Electives count full credits from all elective courses
+        credits = relevantCourses.reduce((sum, c) => sum + COURSE_CATALOG[c.courseId].credits, 0);
+
+        // Add 10 Elective credits from Naval Science courses (which are in Science pathway, not Electives)
+        const navalScienceCourses = courses.filter(c => {
+          const info = COURSE_CATALOG[c.courseId];
+          return info && info.full_name && info.full_name.toUpperCase().includes('NAVAL SCIENCE');
+        });
+
+        navalScienceCourses.forEach(c => {
+          const info = COURSE_CATALOG[c.courseId];
+          // Naval Science yearlong courses (4 quarters) provide 10 Elective credits
+          // (in addition to counting toward Science requirement)
+          if (info.term_length === 'yearlong') {
+            credits += 10;
+          }
+        });
       } else {
         // All other requirements count full credits
         credits = relevantCourses.reduce((sum, c) => sum + COURSE_CATALOG[c.courseId].credits, 0);
@@ -834,9 +866,9 @@ function App() {
         }
       }
 
-      // Check for UNIFIED PE courses that require counselor consultation
-      if (courseInfo?.full_name && courseInfo.full_name.toUpperCase().includes('UNIFIED PE')) {
-        warnings.push(`⚠️ UNIFIED PE credit allocation varies - consult your counselor to determine how many credits count toward PE vs. Electives`);
+      // Check for UNIFIED PE and O.C.I.S./P.E. courses that require counselor consultation
+      if (courseInfo?.full_name && (courseInfo.full_name.toUpperCase().includes('UNIFIED PE') || courseInfo.full_name.toUpperCase().includes('O.C.I.S./P.E.'))) {
+        warnings.push(`⚠️ ${courseInfo.full_name} credit allocation varies - consult your counselor to determine how many credits count toward PE vs. Electives`);
       }
     });
 
