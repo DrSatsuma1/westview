@@ -2271,7 +2271,7 @@ function App() {
                         <span className="text-sm font-medium text-gray-700">{req.short}</span>
                         <div className="flex items-center gap-2">
                           <span className="text-sm font-bold text-gray-900">
-                            {prog.earned}/{prog.needed}
+                            {prog.earned}/{prog.needed} {prog.needed === 1 ? 'year' : 'years'}
                           </span>
                           {prog.met ? (
                             <CheckCircle2 className="text-green-600" size={18} />
