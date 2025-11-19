@@ -761,11 +761,14 @@ function App() {
       }
     });
 
-    // Check semester capacity (max 8 courses)
+    // Check semester capacity
+    // Standard load is 3 courses per semester
     if (semesterCourses.length > 8) {
       issues.push(`Overloaded schedule (${semesterCourses.length} courses). Maximum is 8 courses per semester.`);
-    } else if (semesterCourses.length >= 7) {
-      warnings.push(`Heavy course load (${semesterCourses.length} courses). Consider your workload carefully.`);
+    } else if (semesterCourses.length >= 5) {
+      warnings.push(`Above standard load (${semesterCourses.length} courses). Standard is 3 courses per semester. Consider your workload carefully.`);
+    } else if (semesterCourses.length === 4) {
+      info.push(`Moderate load (${semesterCourses.length} courses). Standard is 3 courses per semester.`);
     }
 
     // Calculate credits for the semester
@@ -1580,7 +1583,8 @@ function App() {
                         }, 0);
 
                         // Check semester capacity
-                        const isOverloaded = semesterCourses.length >= 7;
+                        // Standard load is 3 courses
+                        const isOverloaded = semesterCourses.length >= 5;
                         const isMaxCapacity = semesterCourses.length >= 8;
 
                         const isCompleted = completedSemesters[`${year}-${semester}`];
