@@ -1881,10 +1881,8 @@ function App() {
       s.year === year && termQuarters.includes(s.quarter)
     );
 
-    if (termSuggestions.length === 0) {
-      alert(`No course suggestions for Grade ${year} ${term === 'fall' ? 'Fall' : 'Spring'} term.\n\nYou appear to have the core required courses scheduled.`);
-    } else {
-      // Add all suggested courses
+    // Add all suggested courses silently (no popup)
+    if (termSuggestions.length > 0) {
       const newCourses = [];
       termSuggestions.forEach(suggestion => {
         const courseInfo = COURSE_CATALOG[suggestion.courseId];
@@ -1928,11 +1926,6 @@ function App() {
 
       // Add all courses at once
       setCourses([...courses, ...newCourses]);
-
-      // Show confirmation
-      const termName = term === 'fall' ? 'Fall' : 'Spring';
-      const courseNames = termSuggestions.map(s => s.courseName).join(', ');
-      alert(`Added ${termSuggestions.length} course${termSuggestions.length > 1 ? 's' : ''} to Grade ${year} ${termName}:\n\n${courseNames}`);
     }
   };
 
