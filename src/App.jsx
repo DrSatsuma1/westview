@@ -1223,6 +1223,35 @@ function App() {
           return;
         }
       }
+
+      // Prevent taking ENGLISH 1-2 and ENGLISH 3-4 simultaneously in the same year
+      if (isRegularEnglish12) {
+        const hasEnglish34SameYear = courses.some(c =>
+          c.year === year &&
+          COURSE_CATALOG[c.courseId] &&
+          (COURSE_CATALOG[c.courseId].full_name.toUpperCase() === 'ENGLISH 3-4' ||
+           COURSE_CATALOG[c.courseId].full_name.toUpperCase() === 'H. ENGLISH 3-4' ||
+           COURSE_CATALOG[c.courseId].full_name.toUpperCase() === 'HONORS ENGLISH 3-4')
+        );
+        if (hasEnglish34SameYear) {
+          setError('Cannot take ENGLISH 1-2 and ENGLISH 3-4 in the same year');
+          return;
+        }
+      }
+
+      if (isRegularEnglish34) {
+        const hasEnglish12SameYear = courses.some(c =>
+          c.year === year &&
+          COURSE_CATALOG[c.courseId] &&
+          (COURSE_CATALOG[c.courseId].full_name.toUpperCase() === 'ENGLISH 1-2' ||
+           COURSE_CATALOG[c.courseId].full_name.toUpperCase() === 'H. ENGLISH 1-2' ||
+           COURSE_CATALOG[c.courseId].full_name.toUpperCase() === 'HONORS ENGLISH 1-2')
+        );
+        if (hasEnglish12SameYear) {
+          setError('Cannot take ENGLISH 3-4 and ENGLISH 1-2 in the same year');
+          return;
+        }
+      }
     }
 
     // Check for foreign language prerequisites (warning only, doesn't block)

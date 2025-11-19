@@ -500,7 +500,7 @@
     },
     {
       "course_id": "HIGH_SCHOOL_0003",
-      "full_name": "ENGLISH 1-2",
+      "full_name": "HIGH SCHOOL ENGLISH 1-2",
       "course_numbers": [
         "000301",
         "000302"
@@ -538,7 +538,7 @@
     },
     {
       "course_id": "HIGH_SCHOOL",
-      "full_name": "ENGLISH 3-4",
+      "full_name": "HIGH SCHOOL ENGLISH 3-4",
       "course_numbers": [
         "000310",
         "000311"
@@ -614,7 +614,7 @@
     },
     {
       "course_id": "HON_HIGH_0003",
-      "full_name": "HONORS ENGLISH 1-2",
+      "full_name": "HONORS HIGH SCHOOL ENGLISH 1-2",
       "course_numbers": [
         "000303",
         "000304"
