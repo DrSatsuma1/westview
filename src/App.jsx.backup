@@ -139,23 +139,9 @@ function App() {
   // Load courses from localStorage on initial render
   const [courses, setCourses] = useState(() => {
     const saved = localStorage.getItem('westview-courses');
-    if (!saved) return [];
-
-    const parsed = JSON.parse(saved);
-
-    // Migration: Check if data is from old semester-based system
-    // If any course has a 'semester' field instead of 'quarter', clear the data
-    const hasOldData = parsed.some(c => c.semester !== undefined);
-    if (hasOldData) {
-      console.log('Detected old semester-based data. Clearing localStorage for quarter system migration.');
-      localStorage.removeItem('westview-courses');
-      localStorage.removeItem('westview-completed-semesters');
-      return [];
-    }
-
-    return parsed;
+    return saved ? JSON.parse(saved) : [];
   });
-  const [showAddCourse, setShowAddCourse] = useState(null); // null or { year, quarter, slot }
+  const [showAddCourse, setShowAddCourse] = useState(null); // null or { year, semester, slot }
   const [selectedCategory, setSelectedCategory] = useState(''); // Track selected category
   const [newCourse, setNewCourse] = useState({ courseId: '' });
   const [courseSearchQuery, setCourseSearchQuery] = useState(''); // For searching all courses
@@ -233,23 +219,12 @@ function App() {
         return info && req.pathways.includes(info.pathway);
       });
 
-      // Deduplicate courses by courseId + year to avoid counting semester/yearlong courses multiple times
-      const uniqueCourses = [];
-      const seen = new Set();
-      relevantCourses.forEach(c => {
-        const key = `${c.courseId}-${c.year}`;
-        if (!seen.has(key)) {
-          seen.add(key);
-          uniqueCourses.push(c);
-        }
-      });
-
       let credits = 0;
 
       // Special handling for dual-credit courses
       if (name === 'Health Science') {
         // Health Science only counts ENS 1-2 (5 credits)
-        credits = uniqueCourses.reduce((sum, c) => {
+        credits = relevantCourses.reduce((sum, c) => {
           const info = COURSE_CATALOG[c.courseId];
           if (req.specialCourses && req.specialCourses.includes(info.full_name)) {
             return sum + 5; // ENS 1-2 contributes 5 credits to Health Science
@@ -258,7 +233,7 @@ function App() {
         }, 0);
       } else if (name === 'Physical Education') {
         // PE counts all PE courses, but some courses only contribute partial credits
-        credits = uniqueCourses.reduce((sum, c) => {
+        credits = relevantCourses.reduce((sum, c) => {
           const info = COURSE_CATALOG[c.courseId];
           if (info.full_name === 'ENS 1-2') {
             return sum + 5; // ENS 1-2 contributes only 5 credits to PE (other 5 go to Health)
@@ -269,25 +244,14 @@ function App() {
         }, 0);
 
         // Add 10 PE credits from Naval Science courses (if any exist in Electives pathway)
-        // Deduplicate by courseId + year to avoid counting same course multiple times
         const navalScienceCourses = courses.filter(c => {
           const info = COURSE_CATALOG[c.courseId];
           return info && info.full_name && info.full_name.toUpperCase().includes('NAVAL SCIENCE');
         });
 
-        const uniqueNaval = [];
-        const seenNaval = new Set();
         navalScienceCourses.forEach(c => {
-          const key = `${c.courseId}-${c.year}`;
-          if (!seenNaval.has(key)) {
-            seenNaval.add(key);
-            uniqueNaval.push(c);
-          }
-        });
-
-        uniqueNaval.forEach(c => {
           const info = COURSE_CATALOG[c.courseId];
-          // Naval Science yearlong courses provide 10 PE credits
+          // Naval Science yearlong courses (4 quarters) provide 10 PE credits
           if (info.term_length === 'yearlong') {
             credits += 10;
           }
@@ -295,14 +259,18 @@ function App() {
       } else if (name === 'Fine Arts/Foreign Language/CTE') {
         // Fine Arts counts all Fine Arts/Foreign Language/CTE courses
         // PLUS 5 credits from MARCHING PE FLAGS (which is in PE pathway)
-        // Use uniqueCourses which is already deduplicated
-        credits = uniqueCourses.reduce((sum, c) => sum + COURSE_CATALOG[c.courseId].credits, 0);
+        const allCourses = courses.filter(c => {
+          const info = COURSE_CATALOG[c.courseId];
+          return info && req.pathways.includes(info.pathway);
+        });
 
         // Also check for MARCHING PE FLAGS in PE pathway courses
         const peCourses = courses.filter(c => {
           const info = COURSE_CATALOG[c.courseId];
           return info && info.pathway === 'Physical Education';
         });
+
+        credits = allCourses.reduce((sum, c) => sum + COURSE_CATALOG[c.courseId].credits, 0);
 
         // Add 5 credits from MARCHING PE FLAGS if present
         const hasMarchingPE = peCourses.some(c => {
@@ -315,28 +283,17 @@ function App() {
         }
       } else if (name === 'Electives') {
         // Electives count full credits from all elective courses
-        credits = uniqueCourses.reduce((sum, c) => sum + COURSE_CATALOG[c.courseId].credits, 0);
+        credits = relevantCourses.reduce((sum, c) => sum + COURSE_CATALOG[c.courseId].credits, 0);
 
         // Add 10 Elective credits from Naval Science courses (which are in Science pathway, not Electives)
-        // Deduplicate by courseId + year
         const navalScienceCourses = courses.filter(c => {
           const info = COURSE_CATALOG[c.courseId];
           return info && info.full_name && info.full_name.toUpperCase().includes('NAVAL SCIENCE');
         });
 
-        const uniqueNavalElec = [];
-        const seenNavalElec = new Set();
         navalScienceCourses.forEach(c => {
-          const key = `${c.courseId}-${c.year}`;
-          if (!seenNavalElec.has(key)) {
-            seenNavalElec.add(key);
-            uniqueNavalElec.push(c);
-          }
-        });
-
-        uniqueNavalElec.forEach(c => {
           const info = COURSE_CATALOG[c.courseId];
-          // Naval Science yearlong courses provide 10 Elective credits
+          // Naval Science yearlong courses (4 quarters) provide 10 Elective credits
           // (in addition to counting toward Science requirement)
           if (info.term_length === 'yearlong') {
             credits += 10;
@@ -344,7 +301,7 @@ function App() {
         });
       } else {
         // All other requirements count full credits
-        credits = uniqueCourses.reduce((sum, c) => sum + COURSE_CATALOG[c.courseId].credits, 0);
+        credits = relevantCourses.reduce((sum, c) => sum + COURSE_CATALOG[c.courseId].credits, 0);
       }
 
       progress[name] = {
@@ -361,24 +318,13 @@ function App() {
 
   // Calculate early graduation eligibility and requirements
   const earlyGradEligibility = useMemo(() => {
-    // Deduplicate courses by courseId + year
-    const uniqueCoursesForEarlyGrad = [];
-    const seen = new Set();
-    courses.forEach(c => {
-      const key = `${c.courseId}-${c.year}`;
-      if (!seen.has(key)) {
-        seen.add(key);
-        uniqueCoursesForEarlyGrad.push(c);
-      }
-    });
-
-    const grade11Courses = uniqueCoursesForEarlyGrad.filter(c => c.year === '11');
+    const grade11Courses = courses.filter(c => c.year === '11');
     const grade11Credits = grade11Courses.reduce((sum, c) => {
       const info = COURSE_CATALOG[c.courseId];
       return sum + (info ? info.credits : 0);
     }, 0);
 
-    const creditsThrough11 = uniqueCoursesForEarlyGrad
+    const creditsThrough11 = courses
       .filter(c => ['9', '10', '11'].includes(c.year))
       .reduce((sum, c) => {
         const info = COURSE_CATALOG[c.courseId];
@@ -500,8 +446,8 @@ function App() {
   }, [courses, ctePathwayMode]);
 
   // Get courses for a specific semester (defined before useMemo that uses it)
-  const getCoursesForQuarter = (year, quarter) => {
-    return courses.filter(c => c.year === year && c.quarter === quarter);
+  const getCoursesForSemester = (year, semester) => {
+    return courses.filter(c => c.year === year && c.semester === semester);
   };
 
   // Calculate UC/CSU progress
@@ -534,14 +480,8 @@ function App() {
     const validation = { errors: [], warnings: [] };
 
     ['9', '10', '11', '12'].forEach(year => {
-      const q1Courses = getCoursesForQuarter(year, 'Q1');
-      const q2Courses = getCoursesForQuarter(year, 'Q2');
-      const q3Courses = getCoursesForQuarter(year, 'Q3');
-      const q4Courses = getCoursesForQuarter(year, 'Q4');
-
-      // For scheduling engine compatibility, combine Q1+Q2 as "fall" and Q3+Q4 as "spring"
-      const fallCourses = [...q1Courses, ...q2Courses];
-      const springCourses = [...q3Courses, ...q4Courses];
+      const fallCourses = getCoursesForSemester(year, 'Fall');
+      const springCourses = getCoursesForSemester(year, 'Spring');
 
       const schedule = {
         fall: fallCourses.map(c => c.courseId),
@@ -557,9 +497,9 @@ function App() {
       }
 
       // Check for missing mandatory courses in years with courses
-      const hasCoursesInAnyQuarter = q1Courses.length > 0 || q2Courses.length > 0 || q3Courses.length > 0 || q4Courses.length > 0;
-      if (hasCoursesInAnyQuarter) {
-        const allYearCourses = [...q1Courses, ...q2Courses, ...q3Courses, ...q4Courses];
+      const hasCoursesInBothSemesters = fallCourses.length > 0 && springCourses.length > 0;
+      if (hasCoursesInBothSemesters) {
+        const allYearCourses = [...fallCourses, ...springCourses];
 
         // Check for English (required all 4 years)
         const hasEnglish = allYearCourses.some(c => {
@@ -769,7 +709,7 @@ function App() {
   };
 
   // Drag-and-drop handlers
-  const handleDragStart = (e, course, year, quarter) => {
+  const handleDragStart = (e, course, year, semester) => {
     setDraggedCourse({ course, year, semester });
     e.dataTransfer.effectAllowed = 'move';
     // Add semi-transparent effect
@@ -782,26 +722,26 @@ function App() {
     e.currentTarget.style.opacity = '1';
   };
 
-  const handleDragOver = (e, targetYear, targetQuarter, slotIndex) => {
+  const handleDragOver = (e, targetYear, targetSemester, slotIndex) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
-    setDragOverSlot({ year: targetYear, quarter: targetQuarter, slot: slotIndex });
+    setDragOverSlot({ year: targetYear, semester: targetSemester, slot: slotIndex });
   };
 
   const handleDragLeave = () => {
     setDragOverSlot(null);
   };
 
-  const handleDrop = (e, targetYear, targetQuarter, slotIndex) => {
+  const handleDrop = (e, targetYear, targetSemester, slotIndex) => {
     e.preventDefault();
 
     if (!draggedCourse) return;
 
-    const { course, year: sourceYear, quarter: sourceQuarter } = draggedCourse;
+    const { course, year: sourceYear, semester: sourceSemester } = draggedCourse;
     const courseInfo = getCourseInfo(course.courseId);
 
     // Don't do anything if dropping in the same location
-    if (sourceYear === targetYear && sourceQuarter === targetQuarter) {
+    if (sourceYear === targetYear && sourceSemester === targetSemester) {
       setDraggedCourse(null);
       setDragOverSlot(null);
       return;
@@ -809,35 +749,30 @@ function App() {
 
     // Check if course is yearlong
     if (courseInfo.term_length === 'yearlong') {
-      // For yearlong courses, we need to move both quarters of the term
-      // Determine quarter pairs
-      const getQuarterPair = (q) => {
-        if (q === 'Q1' || q === 'Q2') return ['Q1', 'Q2'];
-        return ['Q3', 'Q4'];
-      };
+      // For yearlong courses, we need to move both semesters
+      // Find the course in both fall and spring
+      const oppositeSemester = sourceSemester === 'Fall' ? 'Spring' : 'Fall';
+      const oppositeTargetSemester = targetSemester === 'Fall' ? 'Spring' : 'Fall';
 
-      const targetPair = getQuarterPair(targetQuarter);
-      const [targetQ1, targetQ2] = targetPair;
-
-      // Update courses by removing from both source quarters and adding to both target quarters
+      // Update courses by removing from both source semesters and adding to both target semesters
       setCourses(prev => {
-        // Remove from both source quarters (all instances of this course in source year)
+        // Remove from both source semesters
         const withoutSource = prev.filter(c =>
           !(c.courseId === course.courseId && c.year === sourceYear)
         );
 
-        // Add to both target quarters
+        // Add to both target semesters
         return [
           ...withoutSource,
-          { ...course, year: targetYear, quarter: targetQ1, id: `${course.courseId}-${targetYear}-${targetQ1}` },
-          { ...course, year: targetYear, quarter: targetQ2, id: `${course.courseId}-${targetYear}-${targetQ2}` }
+          { ...course, year: targetYear, semester: targetSemester, id: `${course.courseId}-${targetYear}-${targetSemester}` },
+          { ...course, year: targetYear, semester: oppositeTargetSemester, id: `${course.courseId}-${targetYear}-${oppositeTargetSemester}` }
         ];
       });
     } else {
       // For semester courses, just move to the target semester
       setCourses(prev => prev.map(c => {
         if (c.id === course.id) {
-          return { ...c, year: targetYear, quarter: targetQuarter, id: `${c.courseId}-${targetYear}-${targetQuarter}` };
+          return { ...c, year: targetYear, semester: targetSemester, id: `${c.courseId}-${targetYear}-${targetSemester}` };
         }
         return c;
       }));
@@ -848,68 +783,61 @@ function App() {
   };
 
   // Validate semester completion
-  const validateSemesterCompletion = (year, quarter) => {
-    const quarterCourses = getCoursesForQuarter(year, quarter);
+  const validateSemesterCompletion = (year, semester) => {
+    const semesterCourses = getCoursesForSemester(year, semester);
     const issues = [];
     const warnings = [];
     const info = [];
 
     // Check minimum course load (typically 6-7 courses)
-    if (quarterCourses.length === 0) {
+    if (semesterCourses.length === 0) {
       issues.push('No courses scheduled for this semester');
       return { valid: false, issues, warnings, info };
     }
 
-    if (quarterCourses.length < 5) {
-      warnings.push(`Light course load (${quarterCourses.length} courses). Most students take 6-7 courses per quarter.`);
+    if (semesterCourses.length < 5) {
+      warnings.push(`Light course load (${semesterCourses.length} courses). Most students take 6-7 courses per semester.`);
     }
 
     // Check for required courses based on grade
     const yearInt = parseInt(year);
 
     // Check for English (required all 4 years)
-    const hasEnglish = quarterCourses.some(c => {
+    const hasEnglish = semesterCourses.some(c => {
       const info = getCourseInfo(c.courseId);
       return info?.pathway === 'English';
     });
 
     if (!hasEnglish) {
-      // Check if English is in ANY other quarter of this year (for year-long courses)
-      const allQuarters = ['Q1', 'Q2', 'Q3', 'Q4'];
-      const otherQuarters = allQuarters.filter(q => q !== quarter);
-      const hasEnglishElsewhere = otherQuarters.some(q => {
-        const otherCourses = getCoursesForQuarter(year, q);
-        return otherCourses.some(c => {
-          const info = getCourseInfo(c.courseId);
-          return info?.pathway === 'English';
-        });
+      // Check if English is in the opposite semester (year-long)
+      const oppositeSemester = semester === 'Fall' ? 'Spring' : 'Fall';
+      const oppositeCourses = getCoursesForSemester(year, oppositeSemester);
+      const hasEnglishOpposite = oppositeCourses.some(c => {
+        const info = getCourseInfo(c.courseId);
+        return info?.pathway === 'English' && info?.term_length === 'yearlong';
       });
 
-      if (!hasEnglishElsewhere) {
+      if (!hasEnglishOpposite) {
         issues.push('Missing English course - required all 4 years');
       }
     }
 
     // Check for PE (required grades 9-10)
     if (yearInt === 9 || yearInt === 10) {
-      const hasPE = quarterCourses.some(c => {
+      const hasPE = semesterCourses.some(c => {
         const info = getCourseInfo(c.courseId);
         return info?.pathway === 'Physical Education';
       });
 
       if (!hasPE) {
-        // Check if PE is in ANY other quarter of this year
-        const allQuarters = ['Q1', 'Q2', 'Q3', 'Q4'];
-        const otherQuarters = allQuarters.filter(q => q !== quarter);
-        const hasPEElsewhere = otherQuarters.some(q => {
-          const otherCourses = getCoursesForQuarter(year, q);
-          return otherCourses.some(c => {
-            const info = getCourseInfo(c.courseId);
-            return info?.pathway === 'Physical Education';
-          });
+        const oppositeSemester = semester === 'Fall' ? 'Spring' : 'Fall';
+        const oppositeCourses = getCoursesForSemester(year, oppositeSemester);
+        const hasPEOpposite = oppositeCourses.some(c => {
+          const info = getCourseInfo(c.courseId);
+          return info?.pathway === 'Physical Education' && info?.term_length === 'yearlong';
         });
 
-        if (!hasPEElsewhere) {
+        if (!hasPEOpposite) {
           issues.push(`PE required for Grade ${year}`);
         }
       }
@@ -917,8 +845,8 @@ function App() {
 
     // Check for Integrated Math I requirement (or higher level math)
     // All students must pass Integrated Math I, OR start at a higher level (Math II, III, etc.)
-    if (yearInt === 12 && quarter === 'Q4') {
-      // Only check at graduation (end of senior year - Q4 of grade 12)
+    if (yearInt === 12 && semester === 'Spring') {
+      // Only check at graduation (end of senior year)
       const allCourses = courses.filter(c => parseInt(c.year) <= 12);
       const hasMathI = allCourses.some(c => {
         const info = getCourseInfo(c.courseId);
@@ -934,23 +862,16 @@ function App() {
       }
     }
 
-    // Check for yearlong courses that should be in both quarters of the term
-    quarterCourses.forEach(course => {
+    // Check for yearlong courses that should be in both semesters
+    semesterCourses.forEach(course => {
       const courseInfo = getCourseInfo(course.courseId);
       if (courseInfo?.term_length === 'yearlong') {
-        // Determine the opposite quarter in the same term
-        let oppositeQuarter;
-        if (quarter === 'Q1') oppositeQuarter = 'Q2';
-        else if (quarter === 'Q2') oppositeQuarter = 'Q1';
-        else if (quarter === 'Q3') oppositeQuarter = 'Q4';
-        else oppositeQuarter = 'Q3';
-
-        const oppositeCourses = getCoursesForQuarter(year, oppositeQuarter);
+        const oppositeSemester = semester === 'Fall' ? 'Spring' : 'Fall';
+        const oppositeCourses = getCoursesForSemester(year, oppositeSemester);
         const hasOpposite = oppositeCourses.some(c => c.courseId === course.courseId);
 
         if (!hasOpposite) {
-          const termName = (quarter === 'Q1' || quarter === 'Q2') ? 'Fall' : 'Spring';
-          issues.push(`Year-long course "${courseInfo.full_name}" must be in both quarters of ${termName} term`);
+          issues.push(`Year-long course "${courseInfo.full_name}" must be in both Fall and Spring`);
         }
       }
 
@@ -962,22 +883,22 @@ function App() {
 
     // Check semester capacity
     // Standard load is 3 courses per semester
-    if (quarterCourses.length > 8) {
-      issues.push(`Overloaded schedule (${quarterCourses.length} courses). Maximum is 8 courses per quarter.`);
-    } else if (quarterCourses.length >= 5) {
-      warnings.push(`Above standard load (${quarterCourses.length} courses). Standard is 3 courses per quarter. Consider your workload carefully.`);
-    } else if (quarterCourses.length === 4) {
-      info.push(`Moderate load (${quarterCourses.length} courses). Standard is 3 courses per quarter.`);
+    if (semesterCourses.length > 8) {
+      issues.push(`Overloaded schedule (${semesterCourses.length} courses). Maximum is 8 courses per semester.`);
+    } else if (semesterCourses.length >= 5) {
+      warnings.push(`Above standard load (${semesterCourses.length} courses). Standard is 3 courses per semester. Consider your workload carefully.`);
+    } else if (semesterCourses.length === 4) {
+      info.push(`Moderate load (${semesterCourses.length} courses). Standard is 3 courses per semester.`);
     }
 
     // Calculate credits for the semester
-    const quarterCredits = quarterCourses.reduce((sum, c) => {
+    const semesterCredits = semesterCourses.reduce((sum, c) => {
       const info = getCourseInfo(c.courseId);
       return sum + (info ? info.credits : 0);
     }, 0);
 
-    info.push(`${quarterCourses.length} courses scheduled`);
-    info.push(`${quarterCredits} credits for this semester`);
+    info.push(`${semesterCourses.length} courses scheduled`);
+    info.push(`${semesterCredits} credits for this semester`);
 
     // Check UC A-G progress for juniors and seniors
     if (yearInt >= 11) {
@@ -985,17 +906,14 @@ function App() {
       const yearsToCheck = yearInt === 11 ? ['9', '10', '11'] : ['9', '10', '11', '12'];
       let agCoursesCompleted = 0;
 
-      const quarterOrder = ['Q1', 'Q2', 'Q3', 'Q4'];
-      const currentQuarterIndex = quarterOrder.indexOf(quarter);
-
       yearsToCheck.forEach(checkYear => {
-        quarterOrder.forEach((checkQuarter, qIndex) => {
-          // Only count if we're checking up to the current quarter
+        ['Fall', 'Spring'].forEach(checkSemester => {
+          // Only count if we're checking up to the current semester
           if (parseInt(checkYear) < yearInt ||
-              (parseInt(checkYear) === yearInt && qIndex <= currentQuarterIndex)) {
+              (parseInt(checkYear) === yearInt && (checkSemester === 'Fall' || (checkSemester === 'Spring' && semester === 'Spring')))) {
 
-            const quarterCourses = getCoursesForQuarter(checkYear, checkQuarter);
-            quarterCourses.forEach(c => {
+            const semCourses = getCoursesForSemester(checkYear, checkSemester);
+            semCourses.forEach(c => {
               const info = getCourseInfo(c.courseId);
               if (info?.uc_csu_category) {
                 agCoursesCompleted++;
@@ -1005,15 +923,15 @@ function App() {
         });
       });
 
-      // Remove duplicates (yearlong courses counted multiple times)
+      // Remove duplicates (yearlong courses counted twice)
       const uniqueAGCourses = new Set();
       yearsToCheck.forEach(checkYear => {
-        quarterOrder.forEach((checkQuarter, qIndex) => {
+        ['Fall', 'Spring'].forEach(checkSemester => {
           if (parseInt(checkYear) < yearInt ||
-              (parseInt(checkYear) === yearInt && qIndex <= currentQuarterIndex)) {
+              (parseInt(checkYear) === yearInt && (checkSemester === 'Fall' || (checkSemester === 'Spring' && semester === 'Spring')))) {
 
-            const quarterCourses = getCoursesForQuarter(checkYear, checkQuarter);
-            quarterCourses.forEach(c => {
+            const semCourses = getCoursesForSemester(checkYear, checkSemester);
+            semCourses.forEach(c => {
               const info = getCourseInfo(c.courseId);
               if (info?.uc_csu_category) {
                 uniqueAGCourses.add(c.courseId);
@@ -1026,7 +944,7 @@ function App() {
       const uniqueCount = uniqueAGCourses.size;
 
       // UC requirement: 11 A-G courses by end of junior year
-      if (yearInt === 11 && quarter === 'Q4') {
+      if (yearInt === 11 && semester === 'Spring') {
         if (uniqueCount < 11) {
           issues.push(`UC requirement: Need 11 A-G courses by end of junior year. Currently have ${uniqueCount}.`);
         } else {
@@ -1035,7 +953,7 @@ function App() {
       }
 
       // Total requirement: 15 A-G courses by graduation
-      if (yearInt === 12 && quarter === 'Q4') {
+      if (yearInt === 12 && semester === 'Spring') {
         if (uniqueCount < 15) {
           issues.push(`UC requirement: Need 15 A-G courses total for graduation. Currently have ${uniqueCount}.`);
         } else {
@@ -1053,29 +971,29 @@ function App() {
   };
 
   // Handle marking semester as complete
-  const markSemesterComplete = (year, quarter) => {
-    const validation = validateSemesterCompletion(year, quarter);
-    setSemesterValidation({ year, quarter, ...validation });
+  const markSemesterComplete = (year, semester) => {
+    const validation = validateSemesterCompletion(year, semester);
+    setSemesterValidation({ year, semester, ...validation });
 
     if (validation.valid) {
       setCompletedSemesters(prev => ({
         ...prev,
-        [`${year}-${quarter}`]: true
+        [`${year}-${semester}`]: true
       }));
     }
   };
 
   // Handle unmarking semester
-  const unmarkSemesterComplete = (year, quarter) => {
+  const unmarkSemesterComplete = (year, semester) => {
     setCompletedSemesters(prev => {
       const newCompleted = { ...prev };
-      delete newCompleted[`${year}-${quarter}`];
+      delete newCompleted[`${year}-${semester}`];
       return newCompleted;
     });
     setSemesterValidation(null);
   };
 
-  const addCourse = (year, quarter) => {
+  const addCourse = (year, semester) => {
     if (!newCourse.courseId) return;
 
     const courseInfo = getCourseInfo(newCourse.courseId);
@@ -1085,7 +1003,7 @@ function App() {
     setWarning(null);
 
     // Get semester courses early for validation checks
-    const quarterCourses = getCoursesForQuarter(year, quarter);
+    const semesterCourses = getCoursesForSemester(year, semester);
 
     // Early graduation mode validations
     if (earlyGradMode.enabled) {
@@ -1106,18 +1024,18 @@ function App() {
           );
           const isCivicsEcon = courseName.includes('CIVICS') && courseName.includes('ECONOMICS');
 
-          // Show warning if they haven't added these yet (check in Q1 of grade 11)
-          if (!earlyGradEligibility.hasSeniorEnglish && !isSeniorEnglish && (quarter === 'Q1' || quarter === 'Q2')) {
+          // Show warning if they haven't added these yet
+          if (!earlyGradEligibility.hasSeniorEnglish && !isSeniorEnglish && semester === 'Fall') {
             setWarning('Early Graduation: Remember to add a Senior English course in Grade 11');
           }
-          if (!earlyGradEligibility.hasCivicsEcon && !isCivicsEcon && (quarter === 'Q1' || quarter === 'Q2')) {
+          if (!earlyGradEligibility.hasCivicsEcon && !isCivicsEcon && semester === 'Fall') {
             setWarning('Early Graduation: Remember to add Civics/Economics in Grade 11');
           }
         }
       } else if (earlyGradMode.targetYear === '3.5year') {
-        // 3.5-year plan: Can add courses to grade 12 Fall (Q1/Q2) only
-        if (year === '12' && (quarter === 'Q3' || quarter === 'Q4')) {
-          setError('Early Graduation (3.5 years): Cannot add courses to Grade 12 Spring (Q3/Q4)');
+        // 3.5-year plan: Can add courses to grade 12 Fall only
+        if (year === '12' && semester === 'Spring') {
+          setError('Early Graduation (3.5 years): Cannot add courses to Grade 12 Spring');
           return;
         }
       }
@@ -1189,11 +1107,7 @@ function App() {
       const allCourses = courses.map(c => COURSE_CATALOG[c.courseId]);
 
       // Check if trying to add English 1-2 when they already have 3-4
-      // Only check for regular ENGLISH 1-2, not HIGH SCHOOL ENGLISH 1-2
-      const isRegularEnglish12 = (courseName === 'ENGLISH 1-2' || courseName === 'ENGLISH IA-IB' ||
-                                   courseName.startsWith('H. ENGLISH 1-2') || courseName.startsWith('HONORS ENGLISH 1-2'));
-
-      if (isRegularEnglish12) {
+      if (courseName.includes('ENGLISH 1-2') || courseName.includes('ENGLISH IA-IB')) {
         const hasHigherEnglish = allCourses.some(c =>
           c && c.pathway === 'English' &&
           (c.full_name.toUpperCase().includes('ENGLISH 3-4') ||
@@ -1208,11 +1122,7 @@ function App() {
       }
 
       // Check if trying to add English 3-4 when they already have 5-6 or higher
-      // Only check for regular ENGLISH 3-4, not HIGH SCHOOL ENGLISH 3-4
-      const isRegularEnglish34 = (courseName === 'ENGLISH 3-4' || courseName === 'ENGLISH IIA-IIB' ||
-                                   courseName.startsWith('H. ENGLISH 3-4') || courseName.startsWith('HONORS ENGLISH 3-4'));
-
-      if (isRegularEnglish34) {
+      if (courseName.includes('ENGLISH 3-4') || courseName.includes('ENGLISH IIA-IIB')) {
         const hasHigherEnglish = allCourses.some(c =>
           c && c.pathway === 'English' &&
           (c.full_name.toUpperCase().includes('ENGLISH 5-6') ||
@@ -1242,7 +1152,7 @@ function App() {
       }
 
       // Count existing Off-Roll courses in this semester
-      const semesterOffRollCount = quarterCourses.filter(c => {
+      const semesterOffRollCount = semesterCourses.filter(c => {
         const info = COURSE_CATALOG[c.courseId];
         return info && info.pathway === 'Off-Roll';
       }).length;
@@ -1262,7 +1172,7 @@ function App() {
     }
 
     // Check for duplicate course in same semester
-    const alreadyHasCourse = quarterCourses.some(c => c.courseId === newCourse.courseId);
+    const alreadyHasCourse = semesterCourses.some(c => c.courseId === newCourse.courseId);
     if (alreadyHasCourse) {
       setError('This course is already in this semester');
       return;
@@ -1303,14 +1213,14 @@ function App() {
       }
     }
 
-    // Check school service course limit (max 1 per quarter)
+    // Check school service course limit (max 1 per semester)
     const isSchoolService = courseName.includes('ACADEMIC TUTOR') ||
                             (courseName.includes('LIBRARY') && courseName.includes('ASSISTANT')) ||
                             courseName.includes('WORK EXPERIENCE') ||
                             courseName.includes('TEACHER') && courseName.includes('ASSISTANT');
 
     if (isSchoolService) {
-      const hasSchoolService = quarterCourses.some(c => {
+      const hasSchoolService = semesterCourses.some(c => {
         const info = COURSE_CATALOG[c.courseId];
         if (!info) return false;
         const name = info.full_name.toUpperCase();
@@ -1335,7 +1245,7 @@ function App() {
       }
 
       // Cannot combine with other school service courses
-      const hasOtherSchoolService = quarterCourses.some(c => {
+      const hasOtherSchoolService = semesterCourses.some(c => {
         const info = COURSE_CATALOG[c.courseId];
         if (!info) return false;
         const name = info.full_name.toUpperCase();
@@ -1369,7 +1279,7 @@ function App() {
         else if (courseName.includes('LATIN')) language = 'Latin';
 
         if (language) {
-          const hasSameLanguage = quarterCourses.some(c => {
+          const hasSameLanguage = semesterCourses.some(c => {
             const cInfo = COURSE_CATALOG[c.courseId];
             if (!cInfo || cInfo.pathway !== 'Foreign Language') return false;
             const cName = cInfo.full_name.toUpperCase();
@@ -1389,73 +1299,36 @@ function App() {
     // Use scheduling engine to get term requirements
     const termReqs = schedulingEngine.getTermRequirements(newCourse.courseId);
 
-    // Year-long validation - must start in Fall term (Q1 or Q2)
-    // Note: semester courses can be taken in either Fall or Spring, so only check for yearlong
-    if (termReqs.type === 'yearlong' && (quarter === 'Q3' || quarter === 'Q4')) {
-      setError('Year-long courses must start in Fall term (Q1 or Q2)');
+    // Year-long validation
+    if (termReqs.requiresBothSemesters && semester === 'Spring') {
+      setError('Year-long courses must start in Fall');
       return;
     }
 
-    // Check if year-long course would duplicate in opposite term
-    if (termReqs.type === 'yearlong') {
-      if (quarter === 'Q1' || quarter === 'Q2') {
-        // Adding to Fall, check if already in Spring
-        const springQ3Courses = getCoursesForQuarter(year, 'Q3');
-        const springQ4Courses = getCoursesForQuarter(year, 'Q4');
-        const alreadyInSpring = [...springQ3Courses, ...springQ4Courses].some(c => c.courseId === newCourse.courseId);
-        if (alreadyInSpring) {
-          setError('This year-long course is already in Spring term');
-          return;
-        }
-      }
-    }
-
-    // Check if semester course would duplicate in same term
-    if (termReqs.type === 'semester') {
-      const allQuarters = ['Q1', 'Q2', 'Q3', 'Q4'];
-      const currentTermQuarters = (quarter === 'Q1' || quarter === 'Q2') ? ['Q1', 'Q2'] : ['Q3', 'Q4'];
-      const alreadyInTerm = currentTermQuarters.some(q => {
-        const qCourses = getCoursesForQuarter(year, q);
-        return qCourses.some(c => c.courseId === newCourse.courseId);
-      });
-      if (alreadyInTerm) {
-        const termName = (quarter === 'Q1' || quarter === 'Q2') ? 'Fall' : 'Spring';
-        setError(`This course is already scheduled in ${termName} term`);
+    // Check if year-long course would duplicate in Spring semester
+    if (termReqs.requiresBothSemesters && semester === 'Fall') {
+      const springSemesterCourses = getCoursesForSemester(year, 'Spring');
+      const alreadyInSpring = springSemesterCourses.some(c => c.courseId === newCourse.courseId);
+      if (alreadyInSpring) {
+        setError('This year-long course is already in Spring semester');
         return;
       }
     }
 
     // Check if course can be scheduled in this semester
-    // Map quarters to semesters for scheduling engine: Q1/Q2 = fall, Q3/Q4 = spring
-    const semesterName = (quarter === 'Q1' || quarter === 'Q2') ? 'fall' : 'spring';
+    const semesterName = semester.toLowerCase();
     if (!schedulingEngine.canScheduleInSemester(newCourse.courseId, semesterName)) {
-      const termName = (quarter === 'Q1' || quarter === 'Q2') ? 'Fall' : 'Spring';
-      setError(`This course is not offered in ${termName} term (${quarter})`);
+      setError(`This course is not offered in ${semester}`);
       return;
     }
 
-    // Add course(s) - yearlong and semester courses automatically add to both quarters of the term
-    // In 4x4 block schedule: yearlong = all 4 quarters, semester = both quarters of one term
-    const needsBothQuarters = termReqs.requiresBothSemesters || termReqs.type === 'semester';
-
-    if (needsBothQuarters) {
-      // Determine the quarter pair based on which quarter was selected
-      let firstQuarter, secondQuarter;
-      if (quarter === 'Q1' || quarter === 'Q2') {
-        // Fall term - add to both Q1 and Q2
-        firstQuarter = 'Q1';
-        secondQuarter = 'Q2';
-      } else {
-        // Spring term - add to both Q3 and Q4
-        firstQuarter = 'Q3';
-        secondQuarter = 'Q4';
-      }
-      const q1Course = { ...newCourse, id: Date.now(), year, quarter: firstQuarter };
-      const q2Course = { ...newCourse, id: Date.now() + 1, year, quarter: secondQuarter };
-      setCourses([...courses, q1Course, q2Course]);
+    // Add course(s) - yearlong courses automatically add to both semesters
+    if (termReqs.requiresBothSemesters && semester === 'Fall') {
+      const fall = { ...newCourse, id: Date.now(), year, semester: 'Fall' };
+      const spring = { ...newCourse, id: Date.now() + 1, year, semester: 'Spring' };
+      setCourses([...courses, fall, spring]);
     } else {
-      // Only quarter-length courses go in a single quarter
-      setCourses([...courses, { ...newCourse, id: Date.now(), year, quarter }]);
+      setCourses([...courses, { ...newCourse, id: Date.now(), year, semester }]);
     }
 
     setNewCourse({ courseId: '' });
@@ -1507,7 +1380,7 @@ function App() {
           suggestions.push({
             courseId: suggestedEnglish.id,
             year,
-            quarter: 'Q1',
+            semester: 'Fall',
             reason: `Grade ${year} requires an English course`,
             courseName: suggestedEnglish.full_name
           });
@@ -1520,8 +1393,8 @@ function App() {
       if (!yearsToCheck.includes(year)) return; // Skip if year not applicable
 
       const yearCourses = courses.filter(c => c.year === year);
-      const fallCourses = yearCourses.filter(c => c.quarter === 'Q1' || c.quarter === 'Q2');
-      const springCourses = yearCourses.filter(c => c.quarter === 'Q3' || c.quarter === 'Q4');
+      const fallCourses = yearCourses.filter(c => c.semester === 'Fall');
+      const springCourses = yearCourses.filter(c => c.semester === 'Spring');
 
       const hasPEInFall = fallCourses.some(c => {
         const info = COURSE_CATALOG[c.courseId];
@@ -1547,7 +1420,7 @@ function App() {
             suggestions.push({
               courseId,
               year: '9',
-              quarter: 'Q1',
+              semester: 'Fall',
               reason: 'ENS 3-4 recommended for Grade 9 Fall',
               courseName: courseInfo.full_name
             });
@@ -1566,7 +1439,7 @@ function App() {
             suggestions.push({
               courseId,
               year: '9',
-              quarter: 'Q3',
+              semester: 'Spring',
               reason: 'ENS 1-2 recommended for Grade 9 Spring',
               courseName: courseInfo.full_name
             });
@@ -1591,7 +1464,7 @@ function App() {
             suggestions.push({
               courseId: peCourses[0].id,
               year,
-              quarter: 'Q1',
+              semester: 'Fall',
               reason: `PE required for Grade ${year}`,
               courseName: peCourses[0].full_name
             });
@@ -1626,7 +1499,7 @@ function App() {
           suggestions.push({
             courseId: suggestedMath.id,
             year,
-            quarter: 'Q1',
+            semester: 'Fall',
             reason: `Math course required for Grade ${year}`,
             courseName: suggestedMath.full_name
           });
@@ -1656,7 +1529,7 @@ function App() {
           suggestions.push({
             courseId: biologyCourses[0].id,
             year: '9',
-            quarter: 'Q1',
+            semester: 'Fall',
             reason: 'Biological science required',
             courseName: biologyCourses[0].full_name
           });
@@ -1675,7 +1548,7 @@ function App() {
           suggestions.push({
             courseId: chemistryCourses[0].id,
             year: '10',
-            quarter: 'Q1',
+            semester: 'Fall',
             reason: 'Physical science required',
             courseName: chemistryCourses[0].full_name
           });
@@ -1715,7 +1588,7 @@ function App() {
           suggestions.push({
             courseId: suggestedCourse.id,
             year,
-            quarter: 'Q1',
+            semester: 'Fall',
             reason: `History/Social Science required for Grade ${year}`,
             courseName: suggestedCourse.full_name
           });
@@ -1752,7 +1625,7 @@ function App() {
             suggestions.push({
               courseId,
               year: suggestedYear,
-              quarter: 'Q1',
+              semester: 'Fall',
               reason: `CTE ${pathway.name} - Concentrator course required`,
               courseName: courseInfo.full_name
             });
@@ -1784,7 +1657,7 @@ function App() {
             suggestions.push({
               courseId,
               year: suggestedYear,
-              quarter: 'Q1',
+              semester: 'Fall',
               reason: `CTE ${pathway.name} - Capstone course required`,
               courseName: courseInfo.full_name
             });
@@ -1800,7 +1673,7 @@ function App() {
   const approveSuggestion = (suggestion) => {
     // Remove from suggestions
     setSuggestedCourses(suggestedCourses.filter(s =>
-      !(s.courseId === suggestion.courseId && s.year === suggestion.year && s.quarter === suggestion.quarter)
+      !(s.courseId === suggestion.courseId && s.year === suggestion.year && s.semester === suggestion.semester)
     ));
 
     // Add the course
@@ -1809,27 +1682,12 @@ function App() {
 
     const termReqs = schedulingEngine.getTermRequirements(suggestion.courseId);
 
-    // Yearlong and semester courses need both quarters of the term
-    const needsBothQuarters = termReqs.requiresBothSemesters || termReqs.type === 'semester';
-
-    if (needsBothQuarters) {
-      // Determine the quarter pair based on which quarter was suggested
-      let firstQuarter, secondQuarter;
-      if (suggestion.quarter === 'Q1' || suggestion.quarter === 'Q2') {
-        // Fall term - add to both Q1 and Q2
-        firstQuarter = 'Q1';
-        secondQuarter = 'Q2';
-      } else {
-        // Spring term - add to both Q3 and Q4
-        firstQuarter = 'Q3';
-        secondQuarter = 'Q4';
-      }
-      const q1Course = { courseId: suggestion.courseId, id: Date.now(), year: suggestion.year, quarter: firstQuarter };
-      const q2Course = { courseId: suggestion.courseId, id: Date.now() + 1, year: suggestion.year, quarter: secondQuarter };
-      setCourses([...courses, q1Course, q2Course]);
+    if (termReqs.requiresBothSemesters && suggestion.semester === 'Fall') {
+      const fall = { courseId: suggestion.courseId, id: Date.now(), year: suggestion.year, semester: 'Fall' };
+      const spring = { courseId: suggestion.courseId, id: Date.now() + 1, year: suggestion.year, semester: 'Spring' };
+      setCourses([...courses, fall, spring]);
     } else {
-      // Only quarter-length courses
-      setCourses([...courses, { courseId: suggestion.courseId, id: Date.now(), year: suggestion.year, quarter: suggestion.quarter }]);
+      setCourses([...courses, { courseId: suggestion.courseId, id: Date.now(), year: suggestion.year, semester: suggestion.semester }]);
     }
   };
 
@@ -2158,7 +2016,7 @@ function App() {
                     <div>
                       <div className="font-semibold text-gray-900">{suggestion.courseName}</div>
                       <div className="text-sm text-gray-600 mt-1">
-                        Grade {suggestion.year} • {suggestion.quarter} Semester
+                        Grade {suggestion.year} • {suggestion.semester} Semester
                       </div>
                       <div className="text-xs text-blue-700 mt-1">{suggestion.reason}</div>
                     </div>
@@ -2248,7 +2106,7 @@ function App() {
                     </div>
                     <div className="grid grid-cols-4 divide-x divide-gray-200">
                       {['Q1', 'Q2', 'Q3', 'Q4'].map(quarter => {
-                        const quarterCourses = getCoursesForQuarter(year, quarter);
+                        const quarterCourses = getCoursesForSemester(year, quarter);
                         const slots = Array.from({ length: 4 }, (_, i) => quarterCourses[i] || null);
                         // Q1 and Q2 are Fall term, Q3 and Q4 are Spring term
                         const displayYear = (quarter === 'Q1' || quarter === 'Q2') ? fallYear : springYear;
@@ -2384,7 +2242,7 @@ function App() {
                                                 if (pathway === 'Off-Roll') {
                                                   // Auto-add Off-Roll course without showing dropdown
                                                   setNewCourse({ courseId: 'OFF_ROLL_PLACEHOLDER' });
-                                                  setTimeout(() => addCourse(year, quarter), 0);
+                                                  setTimeout(() => addCourse(year, semester), 0);
                                                 } else {
                                                   setSelectedCategory(pathway);
                                                 }
@@ -2453,7 +2311,7 @@ function App() {
                                                 )}
                                                 <div className="flex gap-2">
                                                   <button
-                                                    onClick={() => addCourse(year, quarter)}
+                                                    onClick={() => addCourse(year, semester)}
                                                     disabled={!newCourse.courseId}
                                                     className="flex-1 bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 text-sm font-medium disabled:bg-gray-300"
                                                   >
@@ -2561,7 +2419,7 @@ function App() {
                                                         setShowConcurrentForm(false);
 
                                                         // Add the course
-                                                        setTimeout(() => addCourse(year, quarter), 0);
+                                                        setTimeout(() => addCourse(year, semester), 0);
                                                       }
                                                     }}
                                                     disabled={!newConcurrentCourse.name || newConcurrentCourse.collegeUnits <= 0}
@@ -2734,7 +2592,7 @@ function App() {
                                         </select>
                                           <div className="flex gap-2">
                                             <button
-                                              onClick={() => addCourse(year, quarter)}
+                                              onClick={() => addCourse(year, semester)}
                                               disabled={!newCourse.courseId}
                                               className="flex-1 bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 text-sm font-medium disabled:bg-gray-300"
                                             >
@@ -2761,21 +2619,21 @@ function App() {
                                 );
                               } else {
                                 // Empty slot
-                                const isDropTarget = dragOverSlot?.year === year && dragOverSlot?.quarter === semester && dragOverSlot?.slot === slotIndex;
+                                const isDropTarget = dragOverSlot?.year === year && dragOverSlot?.semester === semester && dragOverSlot?.slot === slotIndex;
 
                                 return (
                                   <div
                                     key={`slot-${slotIndex}`}
                                     onClick={() => {
-                                      setShowAddCourse({ year, quarter, slot: slotIndex });
+                                      setShowAddCourse({ year, semester, slot: slotIndex });
                                       setSelectedCategory('');
                                       setNewCourse({ courseId: '' });
                                       setError(null);
                                       setWarning(null);
                                     }}
-                                    onDragOver={(e) => handleDragOver(e, year, quarter, slotIndex)}
+                                    onDragOver={(e) => handleDragOver(e, year, semester, slotIndex)}
                                     onDragLeave={handleDragLeave}
-                                    onDrop={(e) => handleDrop(e, year, quarter, slotIndex)}
+                                    onDrop={(e) => handleDrop(e, year, semester, slotIndex)}
                                     className={`w-full bg-white rounded-lg p-3 border-2 border-dashed transition-all text-sm font-medium flex items-center justify-center min-h-[56px] cursor-pointer ${
                                       isDropTarget
                                         ? 'border-blue-400 bg-blue-50 text-blue-600 ring-2 ring-blue-400'
@@ -2791,10 +2649,10 @@ function App() {
                           </div>
 
                           {/* Semester Credit Total */}
-                          {quarterCourses.length > 0 && (
+                          {semesterCourses.length > 0 && (
                             <div className="mt-3 pt-3 border-t border-gray-300">
                               <div className="text-sm font-semibold text-gray-700">
-                                Semester Total: {quarterCredits} credits
+                                Semester Total: {semesterCredits} credits
                               </div>
                             </div>
                           )}
@@ -2808,7 +2666,7 @@ function App() {
                       <div className="mx-6 mb-4 mt-4 bg-white border-2 border-gray-300 rounded-lg p-4 shadow-lg">
                         <div className="flex items-start justify-between mb-3">
                           <h3 className="font-bold text-lg text-gray-900">
-                            {semesterValidation.quarter} Semester - Grade {semesterValidation.year} Validation
+                            {semesterValidation.semester} Semester - Grade {semesterValidation.year} Validation
                           </h3>
                           <button
                             onClick={() => setSemesterValidation(null)}
@@ -2864,7 +2722,7 @@ function App() {
                         {semesterValidation.valid ? (
                           <div className="bg-green-50 border border-green-300 rounded-lg p-3 text-center">
                             <div className="text-green-800 font-bold text-lg">✓ Semester Looks Good!</div>
-                            <div className="text-sm text-green-700 mt-1">No blocking issues found. You can proceed to the next quarter.</div>
+                            <div className="text-sm text-green-700 mt-1">No blocking issues found. You can proceed to the next semester.</div>
                           </div>
                         ) : (
                           <div className="bg-red-50 border border-red-300 rounded-lg p-3 text-center">
@@ -2877,8 +2735,8 @@ function App() {
 
                     {/* Year Total */}
                     {(() => {
-                      const fallCourses = getCoursesForQuarter(year, 'Fall');
-                      const springCourses = getCoursesForQuarter(year, 'Spring');
+                      const fallCourses = getCoursesForSemester(year, 'Fall');
+                      const springCourses = getCoursesForSemester(year, 'Spring');
                       const yearCredits = [...fallCourses, ...springCourses].reduce((sum, c) => {
                         const info = COURSE_CATALOG[c.courseId];
                         return sum + (info ? info.credits : 0);
