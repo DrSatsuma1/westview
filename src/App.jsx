@@ -143,6 +143,7 @@ function App() {
   const [showAddCourse, setShowAddCourse] = useState(null); // null or { year, semester, slot }
   const [selectedCategory, setSelectedCategory] = useState(''); // Track selected category
   const [newCourse, setNewCourse] = useState({ courseId: '' });
+  const [courseSearchQuery, setCourseSearchQuery] = useState(''); // For searching all courses
   const [error, setError] = useState(null);
   const [warning, setWarning] = useState(null);
   const [earlyGradMode, setEarlyGradMode] = useState(() => {
@@ -1497,78 +1498,6 @@ function App() {
           {/* Main Content - 4-Year Grid */}
           <div className="lg:col-span-3">
 
-            {/* Semester Validation Modal */}
-            {semesterValidation && (
-              <div className="mb-4 bg-white border-2 border-gray-300 rounded-lg p-4 shadow-lg">
-                <div className="flex items-start justify-between mb-3">
-                  <h3 className="font-bold text-lg text-gray-900">
-                    {semesterValidation.semester} Semester - Grade {semesterValidation.year} Validation
-                  </h3>
-                  <button
-                    onClick={() => setSemesterValidation(null)}
-                    className="text-gray-400 hover:text-gray-600 text-xl font-bold"
-                  >
-                    ×
-                  </button>
-                </div>
-
-                {/* Issues (blocking) */}
-                {semesterValidation.issues.length > 0 && (
-                  <div className="mb-3 bg-red-50 border border-red-300 rounded-lg p-3">
-                    <div className="font-semibold text-red-800 mb-2 flex items-center gap-2">
-                      <AlertCircle size={18} className="text-red-600" />
-                      Issues Found
-                    </div>
-                    <ul className="list-disc list-inside space-y-1">
-                      {semesterValidation.issues.map((issue, idx) => (
-                        <li key={idx} className="text-sm text-red-800">{issue}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {/* Warnings */}
-                {semesterValidation.warnings.length > 0 && (
-                  <div className="mb-3 bg-yellow-50 border border-yellow-300 rounded-lg p-3">
-                    <div className="font-semibold text-yellow-800 mb-2 flex items-center gap-2">
-                      <AlertCircle size={18} className="text-yellow-600" />
-                      Warnings
-                    </div>
-                    <ul className="list-disc list-inside space-y-1">
-                      {semesterValidation.warnings.map((warning, idx) => (
-                        <li key={idx} className="text-sm text-yellow-800">{warning}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {/* Info */}
-                {semesterValidation.info.length > 0 && (
-                  <div className="mb-3 bg-blue-50 border border-blue-300 rounded-lg p-3">
-                    <div className="font-semibold text-blue-800 mb-2">Summary</div>
-                    <ul className="list-disc list-inside space-y-1">
-                      {semesterValidation.info.map((info, idx) => (
-                        <li key={idx} className="text-sm text-blue-800">{info}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {/* Overall Status */}
-                {semesterValidation.valid ? (
-                  <div className="bg-green-50 border border-green-300 rounded-lg p-3 text-center">
-                    <div className="text-green-800 font-bold text-lg">✓ Semester Looks Good!</div>
-                    <div className="text-sm text-green-700 mt-1">No blocking issues found. You can proceed to the next semester.</div>
-                  </div>
-                ) : (
-                  <div className="bg-red-50 border border-red-300 rounded-lg p-3 text-center">
-                    <div className="text-red-800 font-bold text-lg">⚠ Issues Need Attention</div>
-                    <div className="text-sm text-red-700 mt-1">Please resolve the issues above before marking this semester as complete.</div>
-                  </div>
-                )}
-              </div>
-            )}
-
             {/* Compact Warnings Row */}
             {(scheduleValidation.errors.length > 0 || englishWarnings.length > 0 || peWarnings.length > 0 || prereqWarnings.length > 0) && (
               <div className="flex flex-wrap gap-2 mb-4">
@@ -1759,8 +1688,14 @@ function App() {
                                     {/* Step 1: Select Pathway */}
                                     {!selectedCategory ? (
                                       <>
-                                        <p className="text-xs text-gray-600 mb-2 font-medium">Select a subject:</p>
+                                        <p className="text-xs text-gray-600 mb-2 font-medium">Select a subject or search:</p>
                                         <div className="grid grid-cols-2 gap-2 mb-2">
+                                          <button
+                                            onClick={() => setSelectedCategory('Search')}
+                                            className="col-span-2 bg-blue-600 text-white border-2 border-blue-600 hover:bg-blue-700 rounded px-3 py-2 text-sm font-medium transition-colors"
+                                          >
+                                            🔍 Search All Courses
+                                          </button>
                                           {pathways.map(pathway => (
                                             <button
                                               key={pathway}
@@ -1786,13 +1721,81 @@ function App() {
                                         <div className="flex items-center justify-between mb-2">
                                           <p className="text-xs text-gray-600 font-medium">{selectedCategory}</p>
                                           <button
-                                            onClick={() => setSelectedCategory('')}
+                                            onClick={() => {
+                                              setSelectedCategory('');
+                                              setCourseSearchQuery('');
+                                            }}
                                             className="text-xs text-blue-600 hover:text-blue-700 font-medium"
                                           >
                                             ← Change Subject
                                           </button>
                                         </div>
-                                        {selectedCategory === 'Concurrent Enrollment' ? (
+                                        {selectedCategory === 'Search' ? (
+                                          // Search All Courses
+                                          (() => {
+                                            const query = courseSearchQuery.toLowerCase();
+                                            const allCourses = Object.values(COURSE_CATALOG);
+                                            const searchResults = courseSearchQuery.length >= 2
+                                              ? allCourses.filter(course =>
+                                                  course.full_name.toLowerCase().includes(query) &&
+                                                  course.grades_allowed.includes(parseInt(year))
+                                                ).slice(0, 20)
+                                              : [];
+
+                                            return (
+                                              <div className="space-y-2">
+                                                <input
+                                                  type="text"
+                                                  placeholder="Type course name... (e.g., AP Computer Science)"
+                                                  value={courseSearchQuery}
+                                                  onChange={(e) => setCourseSearchQuery(e.target.value)}
+                                                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+                                                  autoFocus
+                                                />
+                                                {courseSearchQuery.length >= 2 && searchResults.length === 0 && (
+                                                  <p className="text-sm text-gray-500 italic py-2">No courses found matching "{courseSearchQuery}"</p>
+                                                )}
+                                                {searchResults.length > 0 && (
+                                                  <select
+                                                    value={newCourse.courseId}
+                                                    onChange={(e) => setNewCourse({ courseId: e.target.value })}
+                                                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm max-h-48 overflow-y-auto"
+                                                    size={Math.min(searchResults.length + 1, 10)}
+                                                  >
+                                                    <option value="">Select from {searchResults.length} results...</option>
+                                                    {searchResults.map(course => (
+                                                      <option key={course.id} value={course.id}>
+                                                        {course.full_name} ({course.credits} cr{course.term_length === 'yearlong' ? ', Year-long' : ''})
+                                                      </option>
+                                                    ))}
+                                                  </select>
+                                                )}
+                                                <div className="flex gap-2">
+                                                  <button
+                                                    onClick={() => addCourse(year, semester)}
+                                                    disabled={!newCourse.courseId}
+                                                    className="flex-1 bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 text-sm font-medium disabled:bg-gray-300"
+                                                  >
+                                                    Add Course
+                                                  </button>
+                                                  <button
+                                                    onClick={() => {
+                                                      setShowAddCourse(null);
+                                                      setSelectedCategory('');
+                                                      setNewCourse({ courseId: '' });
+                                                      setCourseSearchQuery('');
+                                                      setError(null);
+                                                      setWarning(null);
+                                                    }}
+                                                    className="bg-gray-200 text-gray-700 px-3 py-2 rounded hover:bg-gray-300 text-sm font-medium"
+                                                  >
+                                                    Cancel
+                                                  </button>
+                                                </div>
+                                              </div>
+                                            );
+                                          })()
+                                        ) : selectedCategory === 'Concurrent Enrollment' ? (
                                           // Special UI for Concurrent Enrollment
                                           <div className="space-y-3">
                                             {!showConcurrentForm ? (
@@ -2091,6 +2094,78 @@ function App() {
                         );
                       })}
                     </div>
+
+                    {/* Semester Validation Modal - appears only for this year */}
+                    {semesterValidation && semesterValidation.year === year && (
+                      <div className="mx-6 mb-4 mt-4 bg-white border-2 border-gray-300 rounded-lg p-4 shadow-lg">
+                        <div className="flex items-start justify-between mb-3">
+                          <h3 className="font-bold text-lg text-gray-900">
+                            {semesterValidation.semester} Semester - Grade {semesterValidation.year} Validation
+                          </h3>
+                          <button
+                            onClick={() => setSemesterValidation(null)}
+                            className="text-gray-400 hover:text-gray-600 text-xl font-bold"
+                          >
+                            ×
+                          </button>
+                        </div>
+
+                        {/* Issues (blocking) */}
+                        {semesterValidation.issues.length > 0 && (
+                          <div className="mb-3 bg-red-50 border border-red-300 rounded-lg p-3">
+                            <div className="font-semibold text-red-800 mb-2 flex items-center gap-2">
+                              <AlertCircle size={18} className="text-red-600" />
+                              Issues Found
+                            </div>
+                            <ul className="list-disc list-inside space-y-1">
+                              {semesterValidation.issues.map((issue, idx) => (
+                                <li key={idx} className="text-sm text-red-800">{issue}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+
+                        {/* Warnings */}
+                        {semesterValidation.warnings.length > 0 && (
+                          <div className="mb-3 bg-yellow-50 border border-yellow-300 rounded-lg p-3">
+                            <div className="font-semibold text-yellow-800 mb-2 flex items-center gap-2">
+                              <AlertCircle size={18} className="text-yellow-600" />
+                              Warnings
+                            </div>
+                            <ul className="list-disc list-inside space-y-1">
+                              {semesterValidation.warnings.map((warning, idx) => (
+                                <li key={idx} className="text-sm text-yellow-800">{warning}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+
+                        {/* Info */}
+                        {semesterValidation.info.length > 0 && (
+                          <div className="mb-3 bg-blue-50 border border-blue-300 rounded-lg p-3">
+                            <div className="font-semibold text-blue-800 mb-2">Summary</div>
+                            <ul className="list-disc list-inside space-y-1">
+                              {semesterValidation.info.map((info, idx) => (
+                                <li key={idx} className="text-sm text-blue-800">{info}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+
+                        {/* Overall Status */}
+                        {semesterValidation.valid ? (
+                          <div className="bg-green-50 border border-green-300 rounded-lg p-3 text-center">
+                            <div className="text-green-800 font-bold text-lg">✓ Semester Looks Good!</div>
+                            <div className="text-sm text-green-700 mt-1">No blocking issues found. You can proceed to the next semester.</div>
+                          </div>
+                        ) : (
+                          <div className="bg-red-50 border border-red-300 rounded-lg p-3 text-center">
+                            <div className="text-red-800 font-bold text-lg">⚠ Issues Need Attention</div>
+                            <div className="text-sm text-red-700 mt-1">Please resolve the issues above before marking this semester as complete.</div>
+                          </div>
+                        )}
+                      </div>
+                    )}
 
                     {/* Year Total */}
                     {(() => {
