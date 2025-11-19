@@ -878,8 +878,23 @@ function App() {
       return { valid: false, issues, warnings, info };
     }
 
-    // Check for required courses based on grade
+    // Check minimum course count for the term (both quarters combined)
+    // Determine which term this quarter belongs to
+    const termQuarters = (quarter === 'Q1' || quarter === 'Q2') ? ['Q1', 'Q2'] : ['Q3', 'Q4'];
+    const termCourses = courses.filter(c =>
+      c.year === year && termQuarters.includes(c.quarter)
+    );
+
+    // Minimum 3 courses per term for grades 9-11, minimum 2 for grade 12
     const yearInt = parseInt(year);
+    const minCourses = yearInt === 12 ? 2 : 3;
+
+    if (termCourses.length < minCourses) {
+      issues.push(`Minimum ${minCourses} courses required per semester (currently ${termCourses.length} in this term)`);
+      return { valid: false, issues, warnings, info };
+    }
+
+    // Check for required courses based on grade
 
     // Check for English (required all 4 years)
     const hasEnglish = quarterCourses.some(c => {
