@@ -1267,7 +1267,7 @@ function App() {
               <p className="text-gray-600 mt-1 mb-3">Plan your path through high school</p>
 
               {/* CTE Pathway Selection */}
-              <div className="bg-gray-50 border-2 border-gray-200 rounded-lg p-4 inline-block">
+              <div className="bg-gray-50 border-2 border-gray-200 rounded-lg p-4">
                 <p className="text-sm font-bold text-gray-900 mb-3">CTE Pathways</p>
                 <div className="grid grid-cols-4 gap-2">
                   <button
