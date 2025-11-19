@@ -1867,7 +1867,7 @@ function App() {
     setSuggestedCourses(suggestions);
   };
 
-  // Generate and display suggestions for a specific term (Fall or Spring)
+  // Generate and add suggestions for a specific term (Fall or Spring)
   const suggestCoursesForTerm = (year, term) => {
     // Generate all suggestions
     generateCourseSuggestions();
@@ -1876,7 +1876,7 @@ function App() {
     // Fall term = Q1, Q2; Spring term = Q3, Q4
     const termQuarters = term === 'fall' ? ['Q1', 'Q2'] : ['Q3', 'Q4'];
 
-    // Show an alert with the suggestions for this term
+    // Add courses after state update
     setTimeout(() => {
       const termSuggestions = suggestedCourses.filter(s =>
         s.year === year && termQuarters.includes(s.quarter)
@@ -1885,12 +1885,55 @@ function App() {
       if (termSuggestions.length === 0) {
         alert(`No course suggestions for Grade ${year} ${term === 'fall' ? 'Fall' : 'Spring'} term.\n\nYou appear to have the core required courses scheduled.`);
       } else {
-        const suggestionText = termSuggestions.map(s =>
-          `• ${s.courseName}\n  Reason: ${s.reason}`
-        ).join('\n\n');
+        // Add all suggested courses
+        const newCourses = [];
+        termSuggestions.forEach(suggestion => {
+          const courseInfo = COURSE_CATALOG[suggestion.courseId];
+          if (!courseInfo) return;
 
+          const termReqs = schedulingEngine.getTermRequirements(suggestion.courseId);
+          const needsBothQuarters = termReqs.requiresBothSemesters || termReqs.type === 'semester';
+
+          if (needsBothQuarters) {
+            // Add to both quarters of the term
+            let firstQuarter, secondQuarter;
+            if (suggestion.quarter === 'Q1' || suggestion.quarter === 'Q2') {
+              firstQuarter = 'Q1';
+              secondQuarter = 'Q2';
+            } else {
+              firstQuarter = 'Q3';
+              secondQuarter = 'Q4';
+            }
+            newCourses.push({
+              courseId: suggestion.courseId,
+              id: Date.now() + newCourses.length * 2,
+              year: suggestion.year,
+              quarter: firstQuarter
+            });
+            newCourses.push({
+              courseId: suggestion.courseId,
+              id: Date.now() + newCourses.length * 2 + 1,
+              year: suggestion.year,
+              quarter: secondQuarter
+            });
+          } else {
+            // Only quarter-length course
+            newCourses.push({
+              courseId: suggestion.courseId,
+              id: Date.now() + newCourses.length,
+              year: suggestion.year,
+              quarter: suggestion.quarter
+            });
+          }
+        });
+
+        // Add all courses at once
+        setCourses([...courses, ...newCourses]);
+
+        // Show confirmation
         const termName = term === 'fall' ? 'Fall' : 'Spring';
-        alert(`Course Suggestions for Grade ${year} ${termName}:\n\n${suggestionText}\n\nThese suggestions are based on your missing Westview graduation and UC/CSU requirements.`);
+        const courseNames = termSuggestions.map(s => s.courseName).join(', ');
+        alert(`Added ${termSuggestions.length} course${termSuggestions.length > 1 ? 's' : ''} to Grade ${year} ${termName}:\n\n${courseNames}`);
       }
     }, 100); // Small delay to let state update
   };
