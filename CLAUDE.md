@@ -8,6 +8,58 @@ Westview UC/CSU A-G Course Planner - A web application for Westview High School 
 
 **Tech Stack:** React 18 + Vite + Tailwind CSS (client-side only, no backend)
 
+## Mandatory Workflow: Superpowers Debugging Skills
+
+**CRITICAL:** When working on this codebase, you MUST use the superpowers debugging skills. This is not optional.
+
+### Required Skills for Bug Fixes
+
+**ALWAYS use these skills when encountering errors, failures, or unexpected behavior:**
+
+1. **systematic-debugging** - MANDATORY for ANY bug, test failure, or unexpected behavior
+   - Four-phase framework: Root Cause Investigation → Pattern Analysis → Hypothesis Testing → Implementation
+   - NEVER propose fixes before completing Phase 1 (Root Cause Investigation)
+   - Use this skill BEFORE attempting ANY fix
+
+2. **root-cause-tracing** - Use when errors occur deep in execution
+   - Systematically trace bugs backward through call stack
+   - Add instrumentation when needed to identify source of invalid data
+   - Find the ORIGINAL trigger, not just the symptom
+
+3. **verification-before-completion** - MANDATORY before claiming work is complete
+   - Run verification commands and confirm output
+   - Evidence before assertions always
+   - Never claim "fixed" without proof
+
+4. **defense-in-depth** - Use when invalid data causes failures
+   - Validate at every layer data passes through
+   - Make bugs structurally impossible
+   - Multiple validation layers, not just one check
+
+### Working Philosophy
+
+**Correctness over speed:** Never rush to a "quick solution" when a correct solution requires more investigation. Take the time to understand the root cause before attempting fixes.
+
+**No trial-and-error debugging:** Random fixes without understanding the problem are unacceptable. Always trace the root cause first.
+
+**Evidence-based development:** Browser console errors, compilation output, and test results are the source of truth. Never guess at what might be wrong.
+
+### Common Failure Patterns to Avoid
+
+- Making changes without understanding why they're needed
+- Trying multiple fixes in rapid succession without verification
+- Assuming the error message is misleading rather than investigating it
+- Skipping skill usage because "this seems simple"
+- Moving on before verifying the fix actually worked
+
+### When to Use Each Skill
+
+- **See blank page / compilation error** → Use systematic-debugging + root-cause-tracing
+- **About to commit / create PR** → Use verification-before-completion
+- **Data validation failing** → Use defense-in-depth
+- **Test is flaky** → Use condition-based-waiting skill
+- **Any error occurs** → Use systematic-debugging (mandatory, no exceptions)
+
 ## Development Commands
 
 ```bash
