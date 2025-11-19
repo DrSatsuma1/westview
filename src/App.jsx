@@ -19,7 +19,7 @@ const WESTVIEW_REQUIREMENTS = {
   'Physical Science': { needed: 20, pathways: ['Science - Physical'] },
   'History/Social Science': { needed: 30, pathways: ['History/Social Science'] },
   'Fine Arts/Foreign Language/CTE': { needed: 10, pathways: ['Fine Arts', 'Foreign Language', 'CTE'] },
-  'ENS/PE': { needed: 20, pathways: ['Physical Education'] },
+  'ENS/PE': { needed: 25, pathways: ['Physical Education'] },
   'Electives': { needed: 50, pathways: ['Electives'] }
 };
 
