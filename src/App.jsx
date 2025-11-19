@@ -19,7 +19,8 @@ const WESTVIEW_REQUIREMENTS = {
   'Physical Science': { needed: 10, pathways: ['Science - Physical'] },
   'History/Social Science': { needed: 30, pathways: ['History/Social Science'] },
   'Fine Arts/Foreign Language/CTE': { needed: 10, pathways: ['Fine Arts', 'Foreign Language', 'CTE'] },
-  'ENS/PE': { needed: 25, pathways: ['Physical Education'] },
+  'Health Science': { needed: 5, pathways: ['Physical Education'], specialCourses: ['ENS 1-2'] },
+  'Physical Education': { needed: 20, pathways: ['Physical Education'] },
   'Electives': { needed: 85, pathways: ['Electives'] }
 };
 
@@ -209,7 +210,31 @@ function App() {
         return info && req.pathways.includes(info.pathway);
       });
 
-      const credits = relevantCourses.reduce((sum, c) => sum + COURSE_CATALOG[c.courseId].credits, 0);
+      let credits = 0;
+
+      // Special handling for Health Science and Physical Education
+      if (name === 'Health Science') {
+        // Health Science only counts ENS 1-2 (5 credits)
+        credits = relevantCourses.reduce((sum, c) => {
+          const info = COURSE_CATALOG[c.courseId];
+          if (req.specialCourses && req.specialCourses.includes(info.full_name)) {
+            return sum + 5; // ENS 1-2 contributes 5 credits to Health Science
+          }
+          return sum;
+        }, 0);
+      } else if (name === 'Physical Education') {
+        // PE counts all PE courses, but ENS 1-2 only contributes 5 credits (not 10)
+        credits = relevantCourses.reduce((sum, c) => {
+          const info = COURSE_CATALOG[c.courseId];
+          if (info.full_name === 'ENS 1-2') {
+            return sum + 5; // ENS 1-2 contributes only 5 credits to PE
+          }
+          return sum + info.credits;
+        }, 0);
+      } else {
+        // All other requirements count full credits
+        credits = relevantCourses.reduce((sum, c) => sum + COURSE_CATALOG[c.courseId].credits, 0);
+      }
 
       progress[name] = {
         earned: credits,
