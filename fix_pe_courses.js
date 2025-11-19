@@ -18,8 +18,36 @@ const updates = [];
 coursesData.courses = coursesData.courses.map(course => {
   const name = course.full_name.toUpperCase();
 
-  // COURT SPORTS 1-2 should be 10 credits (one semester)
+  // COURT SPORTS 1-2 should be 10 credits (one semester = quarters 1-2)
   if (name.includes('COURT SPORTS 1-2')) {
+    if (course.credits !== 10) {
+      updates.push({
+        name: course.full_name,
+        field: 'credits',
+        from: course.credits,
+        to: 10
+      });
+      course.credits = 10;
+      updatedCount++;
+    }
+  }
+
+  // RACQUET SPORTS 1-2 should be 10 credits (one semester = quarters 1-2)
+  if (name.includes('RACQUET SPORTS 1-2')) {
+    if (course.credits !== 10) {
+      updates.push({
+        name: course.full_name,
+        field: 'credits',
+        from: course.credits,
+        to: 10
+      });
+      course.credits = 10;
+      updatedCount++;
+    }
+  }
+
+  // TEAM ATHLETICS/WEIGHTS should be 10 credits
+  if (name.includes('TEAM ATHLETICS/WEIGHTS')) {
     if (course.credits !== 10) {
       updates.push({
         name: course.full_name,
