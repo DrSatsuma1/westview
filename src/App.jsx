@@ -30,7 +30,7 @@ const AG_REQUIREMENTS = {
   'D': { name: 'Laboratory Science', needed: 2, short: 'Science' },
   'E': { name: 'Language Other Than English', needed: 2, short: 'Language' },
   'F': { name: 'Visual & Performing Arts', needed: 1, short: 'Arts' },
-  'G': { name: 'College Prep Elective', needed: 1, short: 'Elective' }
+  'G': { name: 'College Prep Elective', needed: 1, short: 'College Prep Elective' }
 };
 
 const GRADE_OPTIONS = ['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D+', 'D', 'D-', 'F'];
