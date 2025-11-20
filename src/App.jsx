@@ -2368,26 +2368,31 @@ function App() {
 
           if (!hasLanguage && needed > 0) {
             // Suggest Foreign Language - stick with same language across all years
-            // Check what language student has taken in previous years
-            const allYearCourses = courses.filter(c => parseInt(c.year) <= parseInt(year));
-            const previousLanguage = allYearCourses.find(c => {
+            // Check what language student has taken in ANY year (not just previous)
+            const allStudentCourses = courses; // Check ALL courses, not just up to this year
+            const existingLanguageCourse = allStudentCourses.find(c => {
               const info = COURSE_CATALOG[c.courseId];
               return info && info.pathway === 'Foreign Language';
             });
 
-            let languageFilter = 'SPANISH 1-2'; // Default for Grade 9
-            if (previousLanguage) {
-              const prevInfo = COURSE_CATALOG[previousLanguage.courseId];
-              // Extract language name (e.g., "SPANISH", "CHINESE", etc.)
-              const langName = prevInfo.full_name.split(' ')[0];
-              languageFilter = langName; // Continue with same language
+            let languageName = 'SPANISH'; // Default to Spanish
+            if (existingLanguageCourse) {
+              const existingInfo = COURSE_CATALOG[existingLanguageCourse.courseId];
+              // Extract language name (e.g., "SPANISH", "CHINESE MANDARIN", etc.)
+              // Split by space and take first word, or first two if second is also caps
+              const words = existingInfo.full_name.toUpperCase().split(' ');
+              languageName = words[0]; // e.g., "SPANISH" or "CHINESE"
+              // Handle multi-word languages like "CHINESE MANDARIN"
+              if (words.length > 1 && words[1].match(/^[A-Z]+$/)) {
+                languageName = words[0] + ' ' + words[1];
+              }
             }
 
             const languageCourses = Object.entries(COURSE_CATALOG)
               .filter(([_, course]) =>
                 course.pathway === 'Foreign Language' &&
                 course.grades_allowed.includes(parseInt(year)) &&
-                course.full_name.toUpperCase().includes(languageFilter)
+                course.full_name.toUpperCase().startsWith(languageName)
               )
               .map(([id, course]) => ({ id, ...course }));
 
