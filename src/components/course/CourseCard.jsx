@@ -83,19 +83,6 @@ export function CourseCard({
     ? info.course_numbers[0]
     : '';
 
-  // Determine CTE pathway for this course (if applicable)
-  // CTE and Fine Arts courses may belong to specific career pathways
-  let ctePathway = null;
-  if (info.pathway === 'CTE' || info.pathway === 'Fine Arts') {
-    for (const [pathwayKey, pathwayData] of Object.entries(ctePathways)) {
-      if (pathwayData.courses.some(c =>
-        info.full_name.toUpperCase().includes(c.name.toUpperCase())
-      )) {
-        ctePathway = pathwayKey;
-        break;
-      }
-    }
-  }
 
   return (
     <div
@@ -165,25 +152,13 @@ export function CourseCard({
             {info.credits} cr.
           </div>
 
-          {/* CTE pathway icon and remove button */}
-          <div className="flex items-center gap-2">
-            {ctePathway && ctePathwayIcons[ctePathway] && (
-              <div className="flex items-center">
-                {React.createElement(ctePathwayIcons[ctePathway].icon, {
-                  className: `${ctePathwayIcons[ctePathway].color} flex-shrink-0`,
-                  size: 20
-                })}
-              </div>
-            )}
-
-            {/* Remove button */}
-            <button
-              onClick={() => onRemove(course.id)}
-              className="text-red-600 hover:text-red-700 text-xl font-bold flex-shrink-0"
-            >
-              ×
-            </button>
-          </div>
+          {/* Remove button */}
+          <button
+            onClick={() => onRemove(course.id)}
+            className="text-red-600 hover:text-red-700 text-xl font-bold flex-shrink-0"
+          >
+            ×
+          </button>
         </div>
       </div>
     </div>
