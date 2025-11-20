@@ -2066,10 +2066,14 @@ function App() {
       }
     });
 
-    // Check for missing ENS/PE in grades 9-10
-    ['9', '10'].forEach(year => {
-      if (!yearsToCheck.includes(year)) return; // Skip if year not applicable
+    // Check for missing ENS/PE
+    // Year 1: ENS 3-4 in Fall, ENS 1-2 in Spring
+    // Years 2-3: No PE required
+    // Year 4: One PE class
 
+    // Grade 9 PE requirements
+    if (yearsToCheck.includes('9')) {
+      const year = '9';
       const yearCourses = courses.filter(c => c.year === year);
       const fallCourses = yearCourses.filter(c => c.quarter === 'Q1' || c.quarter === 'Q2');
       const springCourses = yearCourses.filter(c => c.quarter === 'Q3' || c.quarter === 'Q4');
@@ -2084,73 +2088,77 @@ function App() {
         return info && info.pathway === 'Physical Education';
       });
 
-      // For Grade 9, suggest ENS 3-4 in Fall and ENS 1-2 in Spring
-      if (year === '9') {
-        if (!hasPEInFall) {
-          const ens34 = Object.entries(COURSE_CATALOG)
-            .find(([_, course]) =>
-              course.full_name.toUpperCase().includes('ENS 3-4') &&
-              course.grades_allowed.includes(9)
-            );
+      // Suggest ENS 3-4 in Fall
+      if (!hasPEInFall) {
+        const ens34 = Object.entries(COURSE_CATALOG)
+          .find(([_, course]) =>
+            course.full_name.toUpperCase().includes('ENS 3-4') &&
+            course.grades_allowed.includes(9)
+          );
 
-          if (ens34) {
-            const [courseId, courseInfo] = ens34;
-            suggestions.push({
-              courseId,
-              year: '9',
-              quarter: 'Q1',
-              reason: 'ENS 3-4 recommended for Grade 9 Fall',
-              courseName: courseInfo.full_name
-            });
-          }
-        }
-
-        if (!hasPEInSpring) {
-          const ens12 = Object.entries(COURSE_CATALOG)
-            .find(([_, course]) =>
-              course.full_name.toUpperCase().includes('ENS 1-2') &&
-              course.grades_allowed.includes(9)
-            );
-
-          if (ens12) {
-            const [courseId, courseInfo] = ens12;
-            suggestions.push({
-              courseId,
-              year: '9',
-              quarter: 'Q3',
-              reason: 'ENS 1-2 recommended for Grade 9 Spring',
-              courseName: courseInfo.full_name
-            });
-          }
-        }
-      } else if (year === '10') {
-        // For Grade 10 only, suggest any PE course if missing
-        // Grades 11 and 12 do not require PE
-        const hasPE = yearCourses.some(c => {
-          const info = COURSE_CATALOG[c.courseId];
-          return info && info.pathway === 'Physical Education';
-        });
-
-        if (!hasPE) {
-          const peCourses = Object.entries(COURSE_CATALOG)
-            .filter(([_, course]) =>
-              course.pathway === 'Physical Education' &&
-              course.grades_allowed.includes(parseInt(year))
-            )
-            .map(([id, course]) => ({ id, ...course }));
-
-          if (peCourses.length > 0) {
-            suggestions.push({
-              courseId: peCourses[0].id,
-              year,
-              quarter: null, // Flexible - can be scheduled in either term
-              reason: `PE required for Grade ${year}`,
-              courseName: peCourses[0].full_name
-            });
-          }
+        if (ens34) {
+          const [courseId, courseInfo] = ens34;
+          suggestions.push({
+            courseId,
+            year: '9',
+            quarter: 'Q1',
+            reason: 'ENS 3-4 recommended for Grade 9 Fall',
+            courseName: courseInfo.full_name
+          });
         }
       }
-    });
+
+      // Suggest ENS 1-2 in Spring
+      if (!hasPEInSpring) {
+        const ens12 = Object.entries(COURSE_CATALOG)
+          .find(([_, course]) =>
+            course.full_name.toUpperCase().includes('ENS 1-2') &&
+            course.grades_allowed.includes(9)
+          );
+
+        if (ens12) {
+          const [courseId, courseInfo] = ens12;
+          suggestions.push({
+            courseId,
+            year: '9',
+            quarter: 'Q3',
+            reason: 'ENS 1-2 recommended for Grade 9 Spring',
+            courseName: courseInfo.full_name
+          });
+        }
+      }
+    }
+
+    // Grade 12 PE requirement (one PE class for the year)
+    if (yearsToCheck.includes('12')) {
+      const year = '12';
+      const yearCourses = courses.filter(c => c.year === year);
+
+      const hasPE = yearCourses.some(c => {
+        const info = COURSE_CATALOG[c.courseId];
+        return info && info.pathway === 'Physical Education';
+      });
+
+      if (!hasPE) {
+        const peCourses = Object.entries(COURSE_CATALOG)
+          .filter(([_, course]) =>
+            course.pathway === 'Physical Education' &&
+            course.grades_allowed.includes(12) &&
+            !course.full_name.toUpperCase().includes('ENS') // Not ENS courses
+          )
+          .map(([id, course]) => ({ id, ...course }));
+
+        if (peCourses.length > 0) {
+          suggestions.push({
+            courseId: peCourses[0].id,
+            year: '12',
+            quarter: null, // Flexible - can be scheduled in either term
+            reason: 'PE required for Grade 12',
+            courseName: peCourses[0].full_name
+          });
+        }
+      }
+    }
 
     // Check for missing Math courses
     yearsToCheck.forEach(year => {
@@ -2164,18 +2172,23 @@ function App() {
       if (!hasMath) {
         // Suggest appropriate math course based on grade
         const mathCourses = Object.entries(COURSE_CATALOG)
-          .filter(([_, course]) =>
-            course.pathway === 'Math' &&
-            course.grades_allowed.includes(parseInt(year)) &&
-            !course.full_name.toUpperCase().includes('HONORS') &&
-            !course.full_name.toUpperCase().includes('AP') &&
-            !(year === '12' && isYearlongCourse(course)) // Grade 12: avoid yearlong courses
-          )
+          .filter(([_, course]) => {
+            const courseName = course.full_name.toUpperCase();
+            return (
+              course.pathway === 'Math' &&
+              course.grades_allowed.includes(parseInt(year)) &&
+              !courseName.includes('HONORS') &&
+              !courseName.includes('AP') &&
+              !(year === '12' && isYearlongCourse(course)) && // Grade 12: avoid yearlong courses
+              !(year === '12' && (courseName.includes('INTEGRATED MATHEMATICS I ') ||
+                                   courseName.includes('INTEGRATED MATHEMATICS II'))) // No Int Math I/II in Year 12
+            );
+          })
           .map(([id, course]) => ({ id, ...course }));
 
         if (mathCourses.length > 0) {
-          // Prefer Integrated Math sequence
-          let suggestedMath = mathCourses.find(c => c.full_name.includes('INTEGRATED MATHEMATICS I')) || mathCourses[0];
+          // Prefer Integrated Math sequence for grades 9-11, not for grade 12
+          let suggestedMath = (year !== '12' && mathCourses.find(c => c.full_name.includes('INTEGRATED MATHEMATICS I'))) || mathCourses[0];
 
           suggestions.push({
             courseId: suggestedMath.id,
@@ -2546,16 +2559,44 @@ function App() {
             const alreadyInYearIds = yearCourses.map(c => c.courseId);
             const allUsedIds = [...alreadySuggestedIds, ...alreadyInYearIds];
 
+            // Check if Foreign Language already suggested for this year
+            // Students should stick to ONE language, not mix different languages
+            const alreadySuggestedLanguage = veryFinalSuggestions.some(s => {
+              const info = COURSE_CATALOG[s.courseId];
+              return info && info.pathway === 'Foreign Language';
+            });
+
+            // Count AP classes in this term (for Years 2-3, max 2 AP per semester)
+            const apCountInTerm = termCourses.filter(c => {
+              const info = COURSE_CATALOG[c.courseId];
+              return info && info.full_name.toUpperCase().includes('AP');
+            }).length + veryFinalSuggestions.filter(s => {
+              const info = COURSE_CATALOG[s.courseId];
+              return info && info.full_name.toUpperCase().includes('AP');
+            }).length;
+
+            // For Years 2-3 (grades 10-11), allow AP classes if count < 2
+            // For Year 1 (grade 9) and Year 4 (grade 12), never suggest AP
+            const canSuggestAP = (year === '10' || year === '11') && apCountInTerm < 2;
+
             const electiveCourses = Object.entries(COURSE_CATALOG)
-              .filter(([id, course]) =>
-                !allUsedIds.includes(id) &&
-                course.grades_allowed.includes(parseInt(year)) &&
-                !course.full_name.toUpperCase().includes('AP') &&
-                !course.full_name.toUpperCase().includes('HONORS') &&
-                !isYearlongCourse(course) && // Exclude yearlong courses from auto-fill
-                (course.pathway === 'Fine Arts' || course.pathway === 'Foreign Language' ||
-                 course.pathway === 'CTE' || course.pathway === 'Electives')
-              )
+              .filter(([id, course]) => {
+                const courseNameUpper = course.full_name.toUpperCase();
+                const isAP = courseNameUpper.includes('AP');
+                const isHonors = courseNameUpper.includes('HONORS');
+
+                return (
+                  !allUsedIds.includes(id) &&
+                  course.grades_allowed.includes(parseInt(year)) &&
+                  !(isAP && !canSuggestAP) && // Only allow AP if canSuggestAP is true
+                  !isHonors &&
+                  !isYearlongCourse(course) && // Exclude yearlong courses from auto-fill
+                  (course.pathway === 'Fine Arts' ||
+                   (!alreadySuggestedLanguage && course.pathway === 'Foreign Language') ||
+                   course.pathway === 'CTE' ||
+                   course.pathway === 'Electives')
+                );
+              })
               .map(([id, course]) => ({ id, ...course }));
 
             if (electiveCourses.length > 0) {
