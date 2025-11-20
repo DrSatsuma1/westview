@@ -151,15 +151,20 @@ export function TestScoreForm({
           </select>
 
           {/* Score Input */}
-          <input
-            type="number"
+          <select
             value={score}
             onChange={(e) => setScore(e.target.value)}
-            placeholder="Score"
-            min="1"
-            max="7"
             className="text-xs border border-gray-300 rounded px-2 py-1.5"
-          />
+          >
+            <option value="">Score</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+          </select>
 
           {/* Add Button */}
           <button

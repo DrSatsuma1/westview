@@ -2791,6 +2791,22 @@ function App() {
                 />
                 <button
                   onClick={() => {
+                    // Scroll to test scores section at bottom
+                    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                    // Show test scores section if hidden
+                    if (!showTestScores) {
+                      setShowTestScores(true);
+                    }
+                  }}
+                  className="flex items-center gap-2 px-4 py-3 rounded-lg border-2 border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  <span className="text-sm font-bold">AP/Test Scores</span>
+                </button>
+                <button
+                  onClick={() => {
                     if (window.confirm('Are you sure you want to clear all courses from your schedule? This cannot be undone.')) {
                       setCourses([]);
                       setCompletedSemesters({});
@@ -3556,47 +3572,51 @@ function App() {
         {/* College Credits from Test Scores - Bottom Section */}
         {testScores.length > 0 && (
           <div className="max-w-[1800px] mx-auto px-12 pb-16 mt-12">
-            <div className="bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl shadow-lg p-6">
-              <h3 className="text-2xl font-bold mb-4">College Credits from Test Scores</h3>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                {/* CSU Credits */}
-                <div className="bg-white/10 backdrop-blur rounded-lg p-4">
-                  <div className="text-sm font-medium opacity-90 mb-2">CSU System</div>
-                  <div className="text-4xl font-bold">{collegeCredits.csu}</div>
-                  <div className="text-sm opacity-75 mt-1">Semester Units</div>
-                </div>
-
-                {/* UC Credits */}
-                <div className="bg-white/10 backdrop-blur rounded-lg p-4">
-                  <div className="text-sm font-medium opacity-90 mb-2">UC System</div>
-                  <div className="text-4xl font-bold">{collegeCredits.uc}</div>
-                  <div className="text-sm opacity-75 mt-1">Semester Units (Berkeley/Merced)</div>
-                </div>
+            <div className="bg-white rounded-xl shadow-lg border-2 border-gray-200 overflow-hidden">
+              <div className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-4">
+                <h3 className="text-2xl font-bold">College Credits from Test Scores</h3>
               </div>
 
-              {/* Detailed Breakdown */}
-              {collegeCredits.details.length > 0 && (
-                <div className="bg-white/10 backdrop-blur rounded-lg p-4">
-                  <div className="text-sm font-bold mb-3">Credit Breakdown by Exam</div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+              <div className="p-6">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b-2 border-gray-300">
+                      <th className="text-left py-3 px-4 font-bold text-[#1A202C]">Test</th>
+                      <th className="text-center py-3 px-4 font-bold text-[#1A202C]">Score</th>
+                      <th className="text-center py-3 px-4 font-bold text-[#1A202C]">CSU Units</th>
+                      <th className="text-center py-3 px-4 font-bold text-[#1A202C]">UC Units</th>
+                    </tr>
+                  </thead>
+                  <tbody>
                     {collegeCredits.details.map((detail, idx) => (
-                      <div key={idx} className="bg-white/10 rounded px-3 py-2 text-sm">
-                        <div className="font-medium">{detail.exam}</div>
-                        <div className="text-xs opacity-90 mt-1">
-                          Score: {detail.score} • CSU: {detail.csu} • UC: {detail.uc}
-                        </div>
-                      </div>
+                      <tr key={idx} className="border-b border-gray-200 hover:bg-gray-50">
+                        <td className="py-3 px-4 text-[#1A202C]">{detail.exam}</td>
+                        <td className="py-3 px-4 text-center text-[#718096]">{detail.score}</td>
+                        <td className="py-3 px-4 text-center text-[#718096]">{detail.csu}</td>
+                        <td className="py-3 px-4 text-center text-[#718096]">{detail.uc}</td>
+                      </tr>
                     ))}
-                  </div>
-                </div>
-              )}
+                  </tbody>
+                  <tfoot className="bg-gray-50 border-t-2 border-gray-300">
+                    <tr>
+                      <td colSpan="2" className="py-4 px-4 text-right font-bold text-[#1A202C]">Total CSU Credits:</td>
+                      <td className="py-4 px-4 text-center font-bold text-[#2B6CB0] text-xl">{collegeCredits.csu}</td>
+                      <td className="py-4 px-4"></td>
+                    </tr>
+                    <tr>
+                      <td colSpan="2" className="py-4 px-4 text-right font-bold text-[#1A202C]">Total UC Credits:</td>
+                      <td className="py-4 px-4"></td>
+                      <td className="py-4 px-4 text-center font-bold text-[#2B6CB0] text-xl">{collegeCredits.uc}</td>
+                    </tr>
+                  </tfoot>
+                </table>
 
-              <div className="mt-4 pt-4 border-t border-white/20">
-                <p className="text-xs opacity-75">
-                  Note: Credit values are estimates based on typical CSU and UC policies. Actual credit awarded may vary by campus.
-                  UC credits shown are semester units for Berkeley/Merced (multiply by 1.5 for quarter units at other UCs).
-                </p>
+                <div className="mt-6 pt-4 border-t border-gray-200">
+                  <p className="text-xs text-[#718096]">
+                    Note: Credit values are estimates based on typical CSU and UC policies. Actual credit awarded may vary by campus.
+                    UC credits shown are semester units for Berkeley/Merced (multiply by 1.5 for quarter units at other UCs).
+                  </p>
+                </div>
               </div>
             </div>
           </div>
