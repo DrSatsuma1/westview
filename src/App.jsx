@@ -2671,7 +2671,7 @@ function App() {
     <div className="min-h-screen bg-gray-200">
       {/* Simplified Header */}
       <header className="bg-white border-b border-gray-200">
-        <div className="max-w-[1800px] mx-auto px-6 py-6">
+        <div className="max-w-[1800px] mx-auto px-12 py-12">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             {/* Left: Title */}
             <div className="lg:col-span-3">
@@ -2754,13 +2754,13 @@ function App() {
 
       {/* Overall Progress Summary Bar */}
       <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white sticky top-0 z-10 shadow-md">
-          <div className="max-w-7xl mx-auto px-6 py-3">
+          <div className="max-w-7xl mx-auto px-12 py-6">
             <div className="flex items-center justify-start gap-6">
             </div>
           </div>
         </div>
 
-      <div className="max-w-[1800px] mx-auto px-6 py-8">
+      <div className="max-w-[1800px] mx-auto px-12 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
 
           {/* Main Content - 4-Year Grid */}
@@ -3439,7 +3439,7 @@ function App() {
 
         {/* College Credits from Test Scores - Bottom Section */}
         {testScores.length > 0 && (
-          <div className="max-w-[1800px] mx-auto px-6 pb-8 mt-6">
+          <div className="max-w-[1800px] mx-auto px-12 pb-16 mt-12">
             <div className="bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl shadow-lg p-6">
               <h3 className="text-2xl font-bold mb-4">College Credits from Test Scores</h3>
 
