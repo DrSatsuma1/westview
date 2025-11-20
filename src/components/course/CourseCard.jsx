@@ -109,20 +109,20 @@ export function CourseCard({
             {info.is_ap_or_honors_pair && (
               <Award className="text-purple-600 flex-shrink-0" size={16} />
             )}
-            <div className="font-bold text-sm text-gray-900 break-words">
+            <div className="font-bold text-base text-gray-900 break-words">
               {info.full_name}
             </div>
           </div>
 
           {/* Course number and pathway */}
-          <div className="text-xs text-gray-700 font-medium">
+          <div className="text-sm text-gray-700 font-medium">
             {courseNumber && <span className="text-gray-600">{courseNumber} | </span>}
             <span>{info.pathway}</span>
           </div>
 
           {/* Year-long indicator */}
           {isYearLong && (
-            <div className="text-xs text-gray-600 font-medium mt-0.5">
+            <div className="text-sm text-gray-600 font-medium mt-0.5">
               Year-long
             </div>
           )}
@@ -134,7 +134,7 @@ export function CourseCard({
                 value={course.grade || ''}
                 onChange={(e) => onGradeChange(course.id, e.target.value)}
                 onClick={(e) => e.stopPropagation()}
-                className="text-xs border border-gray-300 rounded px-2 py-1 bg-white"
+                className="text-sm border border-gray-300 rounded px-2 py-1 bg-white"
               >
                 <option value="">Select Grade</option>
                 {gradeOptions.map(grade => (
@@ -148,14 +148,14 @@ export function CourseCard({
         {/* Right side: Credits, CTE icon, and remove button */}
         <div className="flex flex-col items-end gap-2 flex-shrink-0">
           {/* Credit value */}
-          <div className="text-xs text-gray-700 font-semibold">
+          <div className="text-sm text-gray-700 font-semibold">
             {info.credits} credits
           </div>
 
           {/* Remove button */}
           <button
             onClick={() => onRemove(course.id)}
-            className="text-red-600 hover:text-red-700 text-xl font-bold flex-shrink-0"
+            className="text-red-600 hover:text-red-700 text-2xl font-bold flex-shrink-0"
           >
             ×
           </button>
