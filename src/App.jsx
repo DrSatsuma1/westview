@@ -2366,7 +2366,13 @@ function App() {
             return info && info.pathway === 'Foreign Language';
           });
 
-          if (!hasLanguage && needed > 0) {
+          // ALSO check if we already suggested one for this term in current cycle
+          const alreadySuggestedForTerm = termSuggestions.some(s => {
+            const info = COURSE_CATALOG[s.courseId];
+            return info && info.pathway === 'Foreign Language';
+          });
+
+          if (!hasLanguage && !alreadySuggestedForTerm && needed > 0) {
             // Suggest Foreign Language - stick with same language across all years
             // Check what language student has taken in ANY year OR already suggested
             const allStudentCourses = courses; // Check ALL existing courses
