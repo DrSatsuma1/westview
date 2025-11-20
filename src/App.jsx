@@ -2472,7 +2472,8 @@ function App() {
                 !course.full_name.toUpperCase().includes('AP') &&
                 !course.full_name.toUpperCase().includes('HONORS') &&
                 !isYearlongCourse(course) && // Exclude yearlong courses from auto-fill
-                (course.pathway === 'Fine Arts/Foreign Language/CTE' || course.pathway === 'Electives')
+                (course.pathway === 'Fine Arts' || course.pathway === 'Foreign Language' ||
+                 course.pathway === 'CTE' || course.pathway === 'Electives')
               )
               .map(([id, course]) => ({ id, ...course }));
 
