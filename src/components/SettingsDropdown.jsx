@@ -52,7 +52,7 @@ export function SettingsDropdown({
         className="p-3 hover:opacity-70 transition-opacity"
         title="Settings"
       >
-        <Cog className="text-slate-600" size={22} strokeWidth={1.5} />
+        <Cog className="text-slate-600" size={44} strokeWidth={3} />
       </button>
 
       {isOpen && (
