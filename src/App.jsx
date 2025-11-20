@@ -43,20 +43,20 @@ const AG_REQUIREMENTS = {
 
 const GRADE_OPTIONS = ['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D+', 'D', 'D-', 'F'];
 
-// Pathway Color Mapping (for left border stripe on course cards)
+// Pathway Color Mapping (for left border stripe on course cards) - Pastel Rainbow Theme
 const PATHWAY_COLORS = {
-  'English': 'border-l-blue-500',
-  'Math': 'border-l-green-500',
-  'Physical Education': 'border-l-orange-500',
-  'History/Social Science': 'border-l-red-500',
-  'Science - Biological': 'border-l-purple-500',
-  'Science - Physical': 'border-l-indigo-500',
-  'Foreign Language': 'border-l-pink-500',
-  'Fine Arts': 'border-l-amber-500',
-  'CTE': 'border-l-teal-500',
-  'Electives': 'border-l-gray-500',
-  'Off-Roll': 'border-l-slate-500',
-  'Clubs/Athletics': 'border-l-cyan-500'
+  'English': 'border-l-[#EB9DA2]',           // Blush Pink
+  'Math': 'border-l-[#BBE8B5]',              // Light Green
+  'Physical Education': 'border-l-[#F0B884]', // Peach
+  'History/Social Science': 'border-l-[#E8E6A5]', // Light Yellow
+  'Science - Biological': 'border-l-[#BBE8B5]',   // Light Green
+  'Science - Physical': 'border-l-[#ACBBE8]',     // Light Blue
+  'Foreign Language': 'border-l-[#EB9DA2]',  // Blush Pink
+  'Fine Arts': 'border-l-[#C5ACE8]',         // Light Purple
+  'CTE': 'border-l-[#F0B884]',               // Peach
+  'Electives': 'border-l-[#E8E6A5]',         // Light Yellow
+  'Off-Roll': 'border-l-[#C5ACE8]',          // Light Purple
+  'Clubs/Athletics': 'border-l-[#ACBBE8]'    // Light Blue
 };
 
 // CTE Pathway Icon Mapping (for course cards)
