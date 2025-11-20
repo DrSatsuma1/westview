@@ -2368,19 +2368,26 @@ function App() {
 
           if (!hasLanguage && needed > 0) {
             // Suggest Foreign Language - stick with same language across all years
-            // Check what language student has taken in ANY year (not just previous)
-            const allStudentCourses = courses; // Check ALL courses, not just up to this year
+            // Check what language student has taken in ANY year OR already suggested
+            const allStudentCourses = courses; // Check ALL existing courses
             const existingLanguageCourse = allStudentCourses.find(c => {
               const info = COURSE_CATALOG[c.courseId];
               return info && info.pathway === 'Foreign Language';
             });
 
+            // ALSO check if we already suggested a language in this generation cycle
+            const alreadySuggestedLanguage = suggestions.find(s => {
+              const info = COURSE_CATALOG[s.courseId];
+              return info && info.pathway === 'Foreign Language';
+            });
+
             let languageName = 'SPANISH'; // Default to Spanish
-            if (existingLanguageCourse) {
-              const existingInfo = COURSE_CATALOG[existingLanguageCourse.courseId];
+            const languageSource = existingLanguageCourse || alreadySuggestedLanguage;
+            if (languageSource) {
+              const sourceInfo = COURSE_CATALOG[languageSource.courseId];
               // Extract language name (e.g., "SPANISH", "CHINESE MANDARIN", etc.)
               // Split by space and take first word, or first two if second is also caps
-              const words = existingInfo.full_name.toUpperCase().split(' ');
+              const words = sourceInfo.full_name.toUpperCase().split(' ');
               languageName = words[0]; // e.g., "SPANISH" or "CHINESE"
               // Handle multi-word languages like "CHINESE MANDARIN"
               if (words.length > 1 && words[1].match(/^[A-Z]+$/)) {
