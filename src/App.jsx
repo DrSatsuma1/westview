@@ -2791,22 +2791,6 @@ function App() {
                 />
                 <button
                   onClick={() => {
-                    // Scroll to test scores section at bottom
-                    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-                    // Show test scores section if hidden
-                    if (!showTestScores) {
-                      setShowTestScores(true);
-                    }
-                  }}
-                  className="flex items-center gap-2 px-4 py-3 rounded-lg border-2 border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                  <span className="text-sm font-bold">AP/Test Scores</span>
-                </button>
-                <button
-                  onClick={() => {
                     if (window.confirm('Are you sure you want to clear all courses from your schedule? This cannot be undone.')) {
                       setCourses([]);
                       setCompletedSemesters({});
@@ -2852,23 +2836,6 @@ function App() {
             </div>
           )}
 
-          {/* AP/IB/CLEP/A-Level Test Scores Section */}
-          {showTestScores && (
-            <TestScoreForm
-              testScores={testScores}
-              selectedTestType={selectedTestType}
-              testSubjects={TEST_SUBJECTS}
-              onAddScore={(type, subject, score, agCategory) => {
-                setTestScores([...testScores, { type, subject, score, agCategory }]);
-              }}
-              onRemoveScore={(idx) => {
-                const updated = testScores.filter((_, i) => i !== idx);
-                setTestScores(updated);
-              }}
-              onTestTypeChange={setSelectedTestType}
-              testScoresRef={testScoresRef}
-            />
-          )}
         </div>
       </header>
 
@@ -3568,6 +3535,26 @@ function App() {
           />
 
         </div>
+
+        {/* AP/IB/CLEP/A-Level Test Scores Input Section */}
+        {showTestScores && (
+          <div className="max-w-[1800px] mx-auto px-12 mt-12">
+            <TestScoreForm
+              testScores={testScores}
+              selectedTestType={selectedTestType}
+              testSubjects={TEST_SUBJECTS}
+              onAddScore={(type, subject, score, agCategory) => {
+                setTestScores([...testScores, { type, subject, score, agCategory }]);
+              }}
+              onRemoveScore={(idx) => {
+                const updated = testScores.filter((_, i) => i !== idx);
+                setTestScores(updated);
+              }}
+              onTestTypeChange={setSelectedTestType}
+              testScoresRef={testScoresRef}
+            />
+          </div>
+        )}
 
         {/* College Credits from Test Scores - Bottom Section */}
         {testScores.length > 0 && (
