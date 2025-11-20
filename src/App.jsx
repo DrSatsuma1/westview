@@ -2426,7 +2426,13 @@ function App() {
               return info && info.pathway === 'History/Social Science';
             });
 
-            if (!hasHistory) {
+            // Check if history suggestion already added for this year
+            const hasHistoryInSuggestions = suggestions.some(s => {
+              const info = COURSE_CATALOG[s.courseId];
+              return info && info.pathway === 'History/Social Science' && s.year === year;
+            });
+
+            if (!hasHistory && !hasHistoryInSuggestions) {
               const historyCourses = Object.entries(COURSE_CATALOG)
                 .filter(([_, course]) =>
                   course.pathway === 'History/Social Science' &&
