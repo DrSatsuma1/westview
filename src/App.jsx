@@ -5,6 +5,7 @@ import { SchedulingEngine } from './scheduling/SchedulingEngine.js';
 import { SettingsDropdown } from './components/SettingsDropdown.jsx';
 import { EarlyGradButton } from './components/EarlyGradButton.jsx';
 import { CourseCard } from './components/course/CourseCard.jsx';
+import { ProgressBar } from './components/progress/ProgressBar.jsx';
 
 // Load course catalog from JSON
 const COURSE_CATALOG = courseCatalogData.courses.reduce((acc, course) => {
@@ -3418,33 +3419,13 @@ function App() {
                 {Object.entries(WESTVIEW_REQUIREMENTS).map(([name, req]) => {
                   const prog = westviewProgress[name];
                   if (!prog) return null;
-                  const pct = Math.min((prog.earned / prog.needed) * 100, 100);
                   return (
-                    <div key={name}>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-medium text-gray-700">{name}</span>
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-bold text-gray-900">
-                            {prog.earned}/{prog.needed}
-                          </span>
-                          {prog.met ? (
-                            <CheckCircle2 className="text-green-600" size={18} />
-                          ) : prog.earned > 0 ? (
-                            <AlertCircle className="text-orange-500" size={18} />
-                          ) : (
-                            <Circle className="text-gray-300" size={18} />
-                          )}
-                        </div>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div
-                          className={`h-2 rounded-full transition-all ${
-                            prog.met ? 'bg-green-500' : prog.earned > 0 ? 'bg-orange-500' : 'bg-gray-300'
-                          }`}
-                          style={{ width: `${pct}%` }}
-                        />
-                      </div>
-                    </div>
+                    <ProgressBar
+                      key={name}
+                      label={name}
+                      earned={prog.earned}
+                      needed={prog.needed}
+                    />
                   );
                 })}
               </div>
@@ -3458,32 +3439,15 @@ function App() {
                 <div className="space-y-4">
                   {Object.entries(AG_REQUIREMENTS).map(([cat, req]) => {
                     const prog = agProgress[cat];
-                    const pct = Math.min((prog.earned / prog.needed) * 100, 100);
                     return (
                       <div key={cat}>
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-sm font-medium text-gray-700">{req.short}</span>
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm font-bold text-gray-900">
-                              {prog.earned}/{prog.needed} {prog.needed === 1 ? 'year' : 'years'}
-                            </span>
-                            {prog.met ? (
-                              <CheckCircle2 className="text-green-600" size={18} />
-                            ) : prog.earned > 0 ? (
-                              <AlertCircle className="text-orange-500" size={18} />
-                            ) : (
-                              <Circle className="text-gray-300" size={18} />
-                            )}
-                          </div>
-                        </div>
-                        <div className="w-full bg-gray-200 rounded-full h-2">
-                          <div
-                            className={`h-2 rounded-full transition-all ${
-                              prog.met ? 'bg-green-500' : prog.earned > 0 ? 'bg-orange-500' : 'bg-gray-300'
-                            }`}
-                            style={{ width: `${pct}%` }}
-                          />
-                        </div>
+                        <ProgressBar
+                          label={req.short}
+                          earned={prog.earned}
+                          needed={prog.needed}
+                          unit="year"
+                          showPlural={true}
+                        />
                         {prog.met && !prog.meetsRecommended && prog.recommended > prog.needed && (
                           <div className="mt-1 text-xs text-orange-600 flex items-center gap-1">
                             <AlertCircle size={12} />
