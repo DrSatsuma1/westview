@@ -148,8 +148,8 @@ export function CourseCard({
         {/* Right side: Credits, CTE icon, and remove button */}
         <div className="flex flex-col items-end gap-2 flex-shrink-0">
           {/* Credit value */}
-          <div className="text-xs text-gray-400">
-            {info.credits} cr.
+          <div className="text-xs text-gray-700 font-semibold">
+            {info.credits} credits
           </div>
 
           {/* Remove button */}
