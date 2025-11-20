@@ -2,6 +2,8 @@ import React, { useState, useMemo, useRef } from 'react';
 import { Plus, CheckCircle2, AlertCircle, Circle, GraduationCap, Award, Briefcase, Beaker, Palette, Wrench, Laptop, Music, Video } from 'lucide-react';
 import courseCatalogData from './data/courses_complete.json';
 import { SchedulingEngine } from './scheduling/SchedulingEngine.js';
+import { SettingsDropdown } from './components/SettingsDropdown.jsx';
+import { EarlyGradButton } from './components/EarlyGradButton.jsx';
 
 // Load course catalog from JSON
 const COURSE_CATALOG = courseCatalogData.courses.reduce((acc, course) => {
@@ -2464,269 +2466,55 @@ function App() {
   }, [selectedCategory]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Clean Header */}
+    <div className="min-h-screen bg-gray-200">
+      {/* Simplified Header */}
       <header className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-6 py-6">
-          <div className="flex items-start justify-between gap-6">
-            <>
-            <div className="flex-1">
-              <h1 className="text-3xl font-bold text-gray-900">Westview High School Course Planner</h1>
-              <p className="text-gray-600 mt-1 mb-3">Plan your path through high school</p>
-
-              {/* CTE Pathway Selection */}
-              <div className="bg-gray-50 border-2 border-gray-200 rounded-lg p-4">
-                <p className="text-sm font-bold text-gray-900 mb-3">CTE Pathways</p>
-                <div className="grid grid-cols-7 gap-2 mb-4">
-                  <button
-                    onClick={() => setCtePathwayMode(prev =>
-                      prev.pathway === 'business' ? { enabled: false, pathway: null } : { enabled: true, pathway: 'business' }
-                    )}
-                    className={`px-2 py-2 rounded text-xs font-medium transition-colors whitespace-normal ${
-                      ctePathwayMode.pathway === 'business'
-                        ? 'bg-purple-600 text-white'
-                        : 'bg-white text-gray-700 hover:bg-purple-50 border border-gray-300'
-                    }`}
-                  >
-                    Business & Finance
-                  </button>
-                  <button
-                    onClick={() => setCtePathwayMode(prev =>
-                      prev.pathway === 'biotech' ? { enabled: false, pathway: null } : { enabled: true, pathway: 'biotech' }
-                    )}
-                    className={`px-2 py-2 rounded text-xs font-medium transition-colors whitespace-normal ${
-                      ctePathwayMode.pathway === 'biotech'
-                        ? 'bg-purple-600 text-white'
-                        : 'bg-white text-gray-700 hover:bg-purple-50 border border-gray-300'
-                    }`}
-                  >
-                    Biotechnology
-                  </button>
-                  <button
-                    onClick={() => setCtePathwayMode(prev =>
-                      prev.pathway === 'design' ? { enabled: false, pathway: null } : { enabled: true, pathway: 'design' }
-                    )}
-                    className={`px-2 py-2 rounded text-xs font-medium transition-colors whitespace-normal ${
-                      ctePathwayMode.pathway === 'design'
-                        ? 'bg-purple-600 text-white'
-                        : 'bg-white text-gray-700 hover:bg-purple-50 border border-gray-300'
-                    }`}
-                  >
-                    Design & Media
-                  </button>
-                  <button
-                    onClick={() => setCtePathwayMode(prev =>
-                      prev.pathway === 'engineering' ? { enabled: false, pathway: null } : { enabled: true, pathway: 'engineering' }
-                    )}
-                    className={`px-2 py-2 rounded text-xs font-medium transition-colors whitespace-normal ${
-                      ctePathwayMode.pathway === 'engineering'
-                        ? 'bg-purple-600 text-white'
-                        : 'bg-white text-gray-700 hover:bg-purple-50 border border-gray-300'
-                    }`}
-                  >
-                    Engineering
-                  </button>
-                  <button
-                    onClick={() => setCtePathwayMode(prev =>
-                      prev.pathway === 'ict' ? { enabled: false, pathway: null } : { enabled: true, pathway: 'ict' }
-                    )}
-                    className={`px-2 py-2 rounded text-xs font-medium transition-colors whitespace-normal ${
-                      ctePathwayMode.pathway === 'ict'
-                        ? 'bg-purple-600 text-white'
-                        : 'bg-white text-gray-700 hover:bg-purple-50 border border-gray-300'
-                    }`}
-                  >
-                    Information & Communication Technology
-                  </button>
-                  <button
-                    onClick={() => setCtePathwayMode(prev =>
-                      prev.pathway === 'performingArts' ? { enabled: false, pathway: null } : { enabled: true, pathway: 'performingArts' }
-                    )}
-                    className={`px-2 py-2 rounded text-xs font-medium transition-colors whitespace-normal ${
-                      ctePathwayMode.pathway === 'performingArts'
-                        ? 'bg-purple-600 text-white'
-                        : 'bg-white text-gray-700 hover:bg-purple-50 border border-gray-300'
-                    }`}
-                  >
-                    Performing Arts
-                  </button>
-                  <button
-                    onClick={() => setCtePathwayMode(prev =>
-                      prev.pathway === 'productionArts' ? { enabled: false, pathway: null } : { enabled: true, pathway: 'productionArts' }
-                    )}
-                    className={`px-2 py-2 rounded text-xs font-medium transition-colors whitespace-normal ${
-                      ctePathwayMode.pathway === 'productionArts'
-                        ? 'bg-purple-600 text-white'
-                        : 'bg-white text-gray-700 hover:bg-purple-50 border border-gray-300'
-                    }`}
-                  >
-                    Production Arts
-                  </button>
+        <div className="max-w-[1800px] mx-auto px-6 py-6">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            {/* Left: Title */}
+            <div className="lg:col-span-3">
+              <div className="flex items-center gap-4">
+                <div className="flex-grow">
+                  <h1 className="text-3xl font-bold text-gray-900">Westview High School Course Planner</h1>
+                  <p className="text-gray-600 mt-1">Plan your path through high school</p>
                 </div>
-
-                {/* Toggle Buttons */}
-                <div className="grid grid-cols-3 gap-2">
-                  {/* Hide AP Classes Toggle */}
-                  <button
-                    onClick={() => setHideAPClasses(!hideAPClasses)}
-                    className={`border-2 rounded-lg p-3 transition-colors ${
-                      hideAPClasses
-                        ? 'bg-blue-100 border-blue-400'
-                        : 'bg-white border-gray-300 hover:bg-gray-100'
-                    }`}
-                  >
-                    <div className="text-xs font-bold text-gray-900">
-                      Hide AP Classes
-                    </div>
-                  </button>
-
-                  {/* Hide Special Ed Classes Toggle */}
-                  <button
-                    onClick={() => setHideSpecialEdClasses(!hideSpecialEdClasses)}
-                    className={`border-2 rounded-lg p-3 transition-colors ${
-                      hideSpecialEdClasses
-                        ? 'bg-blue-100 border-blue-400'
-                        : 'bg-white border-gray-300 hover:bg-gray-100'
-                    }`}
-                  >
-                    <div className="text-xs font-bold text-gray-900">
-                      Hide Special Ed Classes
-                    </div>
-                  </button>
-
-                  {/* Ignore UC/CSU Requirements Toggle */}
-                  <button
-                    onClick={() => setWestviewGradOnly(!westviewGradOnly)}
-                    className={`border-2 rounded-lg p-3 transition-colors ${
-                      westviewGradOnly
-                        ? 'bg-blue-100 border-blue-400'
-                        : 'bg-white border-gray-300 hover:bg-gray-100'
-                    }`}
-                  >
-                    <div className="text-xs font-bold text-gray-900">
-                      Ignore UC/CSU Requirements
-                    </div>
-                  </button>
-
-                  {/* GPA Mode Toggle */}
-                  <button
-                    onClick={() => setGpaMode(!gpaMode)}
-                    className={`border-2 rounded-lg p-3 transition-colors ${
-                      gpaMode
-                        ? 'bg-blue-100 border-blue-400'
-                        : 'bg-white border-gray-300 hover:bg-gray-100'
-                    }`}
-                  >
-                    <div className="text-xs font-bold text-gray-900">
-                      GPA Mode
-                    </div>
-                  </button>
-
-                  {/* Early Graduation Mode Toggle */}
-                  <div className={`border-2 rounded-lg p-3 transition-colors ${
-                    earlyGradMode.enabled
-                      ? 'bg-blue-100 border-blue-400'
-                      : 'bg-white border-gray-300'
-                  }`}>
-                    <button
-                      onClick={() => {
-                        if (earlyGradMode.enabled) {
-                          setEarlyGradMode({ enabled: false, targetYear: null });
-                        } else {
-                          setEarlyGradMode({ enabled: true, targetYear: '3year' });
-                        }
-                      }}
-                      className="text-xs font-bold text-gray-900 w-full text-center mb-2"
-                    >
-                      Early Graduation
-                    </button>
-
-                    {earlyGradMode.enabled && (
-                      <div className="ml-4 space-y-1">
-                        <label className="flex items-center gap-2 cursor-pointer">
-                          <input
-                            type="radio"
-                            name="earlyGradTarget"
-                            checked={earlyGradMode.targetYear === '3year'}
-                            onChange={() => setEarlyGradMode({ enabled: true, targetYear: '3year' })}
-                            className="w-3 h-3 text-blue-600"
-                          />
-                          <span className="text-xs text-gray-700">3 years (end of 11th)</span>
-                        </label>
-                        <label className="flex items-center gap-2 cursor-pointer">
-                          <input
-                            type="radio"
-                            name="earlyGradTarget"
-                            checked={earlyGradMode.targetYear === '3.5year'}
-                            onChange={() => setEarlyGradMode({ enabled: true, targetYear: '3.5year' })}
-                            className="w-3 h-3 text-blue-600"
-                          />
-                          <span className="text-xs text-gray-700">3.5 years (mid 12th)</span>
-                        </label>
-                      </div>
-                    )}
-
-                    {/* Eligibility indicator */}
-                    {earlyGradEligibility.creditsThrough11 >= 170 && (
-                      <div className="mt-2 pt-2 border-t border-gray-300">
-                        <div className="text-xs font-bold text-green-700">
-                          ✓ Eligible: {earlyGradEligibility.creditsThrough11} credits through Grade 11
-                        </div>
-                        {!earlyGradEligibility.hasSeniorEnglish && (
-                          <div className="text-xs text-orange-600 mt-1">⚠ Need Senior English in Grade 11</div>
-                        )}
-                        {!earlyGradEligibility.hasCivicsEcon && (
-                          <div className="text-xs text-orange-600 mt-1">⚠ Need Civics/Economics in Grade 11</div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* AP/IB/CLEP/A-Level Test Scores Toggle */}
-                  <button
-                    onClick={() => {
-                      if (!showTestScores) {
-                        setShowTestScores(true);
-                        // Scroll to test scores section after a short delay to ensure it's rendered
-                        setTimeout(() => {
-                          testScoresRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }, 100);
-                      } else {
-                        setShowTestScores(false);
-                      }
-                    }}
-                    className={`border-2 rounded-lg p-3 transition-colors col-span-2 ${
-                      showTestScores
-                        ? 'bg-blue-100 border-blue-400'
-                        : 'bg-white border-gray-300 hover:bg-gray-100'
-                    }`}
-                  >
-                    <div className="text-xs font-bold text-gray-900">
-                      AP/IB/CLEP/A-Level Scores
-                    </div>
-                  </button>
-                </div>
+                <EarlyGradButton
+                  earlyGradMode={earlyGradMode}
+                  setEarlyGradMode={setEarlyGradMode}
+                  earlyGradEligibility={earlyGradEligibility}
+                />
+                <button
+                  onClick={() => {
+                    if (window.confirm('Are you sure you want to clear all courses from your schedule? This cannot be undone.')) {
+                      setCourses([]);
+                      setCompletedSemesters({});
+                    }
+                  }}
+                  className="bg-red-600 hover:bg-red-700 text-white border-2 border-red-600 rounded-lg px-4 py-3 transition-colors text-sm font-bold"
+                >
+                  Clear All Courses
+                </button>
               </div>
             </div>
 
-            <div className="flex gap-4">
-
-              {/* Clear All Button */}
-              <button
-                onClick={() => {
-                  if (window.confirm('Are you sure you want to clear all courses from your schedule? This cannot be undone.')) {
-                    setCourses([]);
-                    setCompletedSemesters({});
-                  }
-                }}
-                className="bg-red-600 hover:bg-red-700 text-white border-2 border-red-600 rounded-lg p-4 transition-colors"
-              >
-                <div className="text-sm font-bold">
-                  Clear All Courses
-                </div>
-              </button>
+            {/* Right: Settings */}
+            <div className="flex justify-end">
+              <SettingsDropdown
+                gpaMode={gpaMode}
+                setGpaMode={setGpaMode}
+                westviewGradOnly={westviewGradOnly}
+                setWestviewGradOnly={setWestviewGradOnly}
+                showTestScores={showTestScores}
+                setShowTestScores={setShowTestScores}
+                hideAPClasses={hideAPClasses}
+                setHideAPClasses={setHideAPClasses}
+                hideSpecialEdClasses={hideSpecialEdClasses}
+                setHideSpecialEdClasses={setHideSpecialEdClasses}
+                ctePathwayMode={ctePathwayMode}
+                setCtePathwayMode={setCtePathwayMode}
+                testScoresRef={testScoresRef}
+              />
             </div>
-            </>
           </div>
 
           {/* Pathway progress indicator */}
@@ -2869,19 +2657,17 @@ function App() {
       {/* Overall Progress Summary Bar */}
       <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white sticky top-0 z-10 shadow-md">
           <div className="max-w-7xl mx-auto px-6 py-3">
-            <div className="flex items-center justify-between gap-6">
+            <div className="flex items-center justify-start gap-6">
               <div className="flex items-center gap-2">
                 <GraduationCap size={24} />
                 <div>
-                  <div className="text-sm font-medium opacity-90">Total Credits</div>
                   <div className="text-2xl font-bold">{totalCredits} / 230</div>
                 </div>
               </div>
 
               <div className="flex items-center gap-6">
                 <div className="text-center">
-                  <div className="text-sm font-medium opacity-90">Westview Graduation</div>
-                  <div className="flex items-center gap-2 mt-1">
+                  <div className="flex items-center gap-2">
                     {westviewGraduationReady ? (
                       <>
                         <CheckCircle2 size={20} className="text-green-300" />
@@ -2901,8 +2687,7 @@ function App() {
                     <div className="h-12 w-px bg-white opacity-30"></div>
 
                     <div className="text-center">
-                      <div className="text-sm font-medium opacity-90">UC/CSU A-G</div>
-                      <div className="flex items-center gap-2 mt-1">
+                      <div className="flex items-center gap-2">
                         {ucsuEligible ? (
                           <>
                             <CheckCircle2 size={20} className="text-green-300" />
@@ -3008,7 +2793,7 @@ function App() {
             )}
 
             {/* 4-Year Course Grid */}
-            <div className="space-y-6">
+            <div className="space-y-8">
               {['9', '10', '11', '12'].map((year, yearIndex) => {
                 const baseYear = 2025 + yearIndex;
                 const fallYear = baseYear;
@@ -3029,7 +2814,7 @@ function App() {
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                         </svg>
-                        Suggest Fall Courses
+                        Auto-fill Fall Semester
                       </button>
                       <button
                         onClick={() => suggestCoursesForTerm(year, 'spring')}
@@ -3038,7 +2823,7 @@ function App() {
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                         </svg>
-                        Suggest Spring Courses
+                        Auto-fill Spring Semester
                       </button>
                     </div>
 
@@ -3098,7 +2883,7 @@ function App() {
                                 const isDropTarget = dragOverSlot?.year === year && dragOverSlot?.quarter === quarter && dragOverSlot?.slot === slotIndex;
                                 const pathwayColor = PATHWAY_COLORS[info.pathway] || 'bg-gray-400';
                                 const courseNumber = info.course_numbers && info.course_numbers.length > 0
-                                  ? info.course_numbers.join(' - ')
+                                  ? info.course_numbers[0]
                                   : '';
 
                                 // Determine CTE pathway for this course
@@ -3121,7 +2906,7 @@ function App() {
                                     onDragOver={(e) => handleDragOver(e, year, quarter, slotIndex)}
                                     onDragLeave={handleDragLeave}
                                     onDrop={(e) => handleDrop(e, year, quarter, slotIndex)}
-                                    className={`rounded-lg p-3 transition-all border-l-4 border-r border-t border-b bg-white shadow-sm cursor-move ${pathwayColor} ${
+                                    className={`rounded-lg p-3 transition-all border-l-4 border-r border-t border-b bg-gray-100 shadow-md cursor-move ${pathwayColor} ${
                                       isOptionalSlot ? 'border-gray-300' : 'border-gray-200'
                                     } ${
                                       isDragging ? 'opacity-50 border-blue-400' : 'hover:shadow-md'
@@ -3135,11 +2920,11 @@ function App() {
                                           {info.is_ap_or_honors_pair && <Award className="text-purple-600 flex-shrink-0" size={16} />}
                                           <div className="font-bold text-sm text-gray-900 truncate">{info.full_name}</div>
                                         </div>
-                                        <div className="text-xs text-gray-500">
-                                          {courseNumber && <span>{courseNumber} | </span>}
+                                        <div className="text-xs text-gray-700 font-medium">
+                                          {courseNumber && <span className="text-gray-600">{courseNumber} | </span>}
                                           <span>{info.pathway}</span>
                                         </div>
-                                        <div className="text-xs text-gray-400 mt-0.5">
+                                        <div className="text-xs text-gray-600 font-medium mt-0.5">
                                           {isYearLong && 'Year-long'}
                                           {isYearLong && info.uc_csu_category && ' • '}
                                           {info.uc_csu_category && (
@@ -3763,7 +3548,20 @@ function App() {
             {/* Westview Graduation Requirements */}
             <div className="bg-white rounded-xl border border-gray-200 p-6">
               <h3 className="text-lg font-bold text-gray-900 mb-2">Westview Graduation</h3>
-              <p className="text-sm text-gray-600 mb-4">230 credits required</p>
+              <div className="mb-4">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-medium text-gray-700">Total Credits</span>
+                  <span className="text-sm font-bold text-gray-900">{totalCredits}/230</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div
+                    className={`h-2 rounded-full transition-all ${
+                      totalCredits >= 230 ? 'bg-green-500' : totalCredits > 0 ? 'bg-blue-500' : 'bg-gray-300'
+                    }`}
+                    style={{ width: `${Math.min((totalCredits / 230) * 100, 100)}%` }}
+                  ></div>
+                </div>
+              </div>
               <div className="space-y-4">
                 {Object.entries(WESTVIEW_REQUIREMENTS).map(([name, req]) => {
                   const prog = westviewProgress[name];
