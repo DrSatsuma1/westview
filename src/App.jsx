@@ -2868,29 +2868,10 @@ function App() {
 
                         return (
                           <div key={quarter} className="p-5">
-                            <div className="flex items-center justify-between mb-4">
+                            <div className="mb-4">
                               <h4 className="font-bold text-gray-700 text-base">
                                 {quarter} {displayYear}
                               </h4>
-                              <div className="flex items-center gap-2">
-                                {quarterCourses.length > 0 && (
-                                  isCompleted ? (
-                                    <button
-                                      onClick={() => unmarkSemesterComplete(year, quarter)}
-                                      className="text-xs font-semibold px-3 py-1 rounded bg-green-100 text-green-700 hover:bg-green-200 border border-green-300"
-                                    >
-                                      ✓ Done
-                                    </button>
-                                  ) : (
-                                    <button
-                                      onClick={() => markSemesterComplete(year, quarter)}
-                                      className="text-xs font-semibold px-3 py-1 rounded bg-blue-100 text-blue-700 hover:bg-blue-200 border border-blue-300"
-                                    >
-                                      Mark Done
-                                    </button>
-                                  )
-                                )}
-                              </div>
                             </div>
 
                           {/* 4 Course Slots */}
@@ -3396,77 +3377,6 @@ function App() {
                       })}
                     </div>
 
-                    {/* Semester Validation Modal - appears only for this year */}
-                    {semesterValidation && semesterValidation.year === year && (
-                      <div className="mx-6 mb-4 mt-4 bg-white border-2 border-gray-300 rounded-lg p-4 shadow-lg">
-                        <div className="flex items-start justify-between mb-3">
-                          <h3 className="font-bold text-lg text-gray-900">
-                            {semesterValidation.quarter} Semester - Grade {semesterValidation.year} Validation
-                          </h3>
-                          <button
-                            onClick={() => setSemesterValidation(null)}
-                            className="text-gray-400 hover:text-gray-600 text-xl font-bold"
-                          >
-                            ×
-                          </button>
-                        </div>
-
-                        {/* Issues (blocking) */}
-                        {semesterValidation.issues.length > 0 && (
-                          <div className="mb-3 bg-red-50 border border-red-300 rounded-lg p-3">
-                            <div className="font-semibold text-red-800 mb-2 flex items-center gap-2">
-                              <AlertCircle size={18} className="text-red-600" />
-                              Issues Found
-                            </div>
-                            <ul className="list-disc list-inside space-y-1">
-                              {semesterValidation.issues.map((issue, idx) => (
-                                <li key={idx} className="text-sm text-red-800">{issue}</li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-
-                        {/* Warnings */}
-                        {semesterValidation.warnings.length > 0 && (
-                          <div className="mb-3 bg-yellow-50 border border-yellow-300 rounded-lg p-3">
-                            <div className="font-semibold text-yellow-800 mb-2 flex items-center gap-2">
-                              <AlertCircle size={18} className="text-yellow-600" />
-                              Warnings
-                            </div>
-                            <ul className="list-disc list-inside space-y-1">
-                              {semesterValidation.warnings.map((warning, idx) => (
-                                <li key={idx} className="text-sm text-yellow-800">{warning}</li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-
-                        {/* Info */}
-                        {semesterValidation.info.length > 0 && (
-                          <div className="mb-3 bg-blue-50 border border-blue-300 rounded-lg p-3">
-                            <div className="font-semibold text-blue-800 mb-2">Summary</div>
-                            <ul className="list-disc list-inside space-y-1">
-                              {semesterValidation.info.map((info, idx) => (
-                                <li key={idx} className="text-sm text-blue-800">{info}</li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-
-                        {/* Overall Status */}
-                        {semesterValidation.valid ? (
-                          <div className="bg-green-50 border border-green-300 rounded-lg p-3 text-center">
-                            <div className="text-green-800 font-bold text-lg">✓ Semester Looks Good!</div>
-                            <div className="text-sm text-green-700 mt-1">No blocking issues found. You can proceed to the next quarter.</div>
-                          </div>
-                        ) : (
-                          <div className="bg-red-50 border border-red-300 rounded-lg p-3 text-center">
-                            <div className="text-red-800 font-bold text-lg">⚠ Issues Need Attention</div>
-                            <div className="text-sm text-red-700 mt-1">Please resolve the issues above before marking this semester as complete.</div>
-                          </div>
-                        )}
-                      </div>
-                    )}
 
                     {/* Year Total */}
                     {(() => {
