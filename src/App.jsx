@@ -2107,8 +2107,9 @@ function App() {
             });
           }
         }
-      } else {
-        // For Grade 10, suggest any PE course if missing
+      } else if (year === '10') {
+        // For Grade 10 only, suggest any PE course if missing
+        // Grades 11 and 12 do not require PE
         const hasPE = yearCourses.some(c => {
           const info = COURSE_CATALOG[c.courseId];
           return info && info.pathway === 'Physical Education';
