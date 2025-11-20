@@ -133,16 +133,12 @@ export function CourseCard({
             <span>{info.pathway}</span>
           </div>
 
-          {/* Year-long indicator and UC/CSU category */}
-          <div className="text-xs text-gray-600 font-medium mt-0.5">
-            {isYearLong && 'Year-long'}
-            {isYearLong && info.uc_csu_category && ' • '}
-            {info.uc_csu_category && (
-              <span>
-                {agRequirements[info.uc_csu_category]?.short || info.uc_csu_category}
-              </span>
-            )}
-          </div>
+          {/* Year-long indicator */}
+          {isYearLong && (
+            <div className="text-xs text-gray-600 font-medium mt-0.5">
+              Year-long
+            </div>
+          )}
 
           {/* Grade selection dropdown (only shown in GPA mode for A-G courses) */}
           {gpaMode && info.uc_csu_category && (
