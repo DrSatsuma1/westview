@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Settings, X } from 'lucide-react';
+import { Cog, X } from 'lucide-react';
 
 export function SettingsDropdown({
   gpaMode,
@@ -52,7 +52,7 @@ export function SettingsDropdown({
         className="p-3 hover:opacity-70 transition-opacity"
         title="Settings"
       >
-        <Settings className="text-slate-700 fill-slate-700" size={20} strokeWidth={0} />
+        <Cog className="text-slate-600 fill-slate-600" size={22} strokeWidth={0} />
       </button>
 
       {isOpen && (
