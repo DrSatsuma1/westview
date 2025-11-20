@@ -60,6 +60,43 @@ Westview UC/CSU A-G Course Planner - A web application for Westview High School 
 - **Test is flaky** → Use condition-based-waiting skill
 - **Any error occurs** → Use systematic-debugging (mandatory, no exceptions)
 
+## File Editing Safety Protocol
+
+**CRITICAL: When using the Edit tool:**
+
+1. **Keep old_string matches small** (< 20 lines)
+   - Large matches increase risk of unintended deletions
+   - Use precise, unique strings for matching
+
+2. **Always Read before Edit** to verify exact context
+   - Check line numbers and surrounding code
+   - Ensure you understand what will be replaced
+
+3. **Immediately verify Edit results** by checking:
+   - Line count didn't decrease unexpectedly
+   - Run: `git diff --stat <file>` after each edit
+   - If deletions > 50 lines, STOP and review
+
+4. **For multi-location changes** (like color palettes):
+   - Edit ONE location at a time
+   - Verify after EACH edit
+   - Don't batch multiple edits without verification
+
+5. **After any Edit, check:**
+   ```bash
+   git diff --stat <file>
+   ```
+   If you see massive deletions (>100 lines), immediately:
+   ```bash
+   git restore <file>
+   ```
+   Then investigate what went wrong before trying again.
+
+6. **Emergency recovery:**
+   - If you accidentally delete code: `git restore <file>`
+   - Check `.bak` files if available
+   - Never continue with broken code - fix immediately
+
 ## Development Commands
 
 ```bash

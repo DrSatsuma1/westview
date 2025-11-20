@@ -2469,6 +2469,7 @@ function App() {
       <header className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-start justify-between gap-6">
+            <>
             <div className="flex-1">
               <h1 className="text-3xl font-bold text-gray-900">Westview High School Course Planner</h1>
               <p className="text-gray-600 mt-1 mb-3">Plan your path through high school</p>
@@ -2725,6 +2726,7 @@ function App() {
                 </div>
               </button>
             </div>
+            </>
           </div>
 
           {/* Pathway progress indicator */}
