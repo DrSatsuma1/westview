@@ -1986,6 +1986,17 @@ function App() {
     setCourses(courses.filter(c => c.id !== id));
   };
 
+  // Helper function to determine if a course is truly yearlong
+  // Checks both term_length field and notes for "Year-Long" or "linked w/"
+  const isYearlongCourse = (course) => {
+    if (course.term_length === 'yearlong') return true;
+    if (course.notes) {
+      const notesUpper = course.notes.toUpperCase();
+      return notesUpper.includes('YEAR-LONG') || notesUpper.includes('LINKED W/');
+    }
+    return false;
+  };
+
   // Generate course suggestions based on missing requirements
   // term parameter: 'fall' or 'spring' - to check requirements per term, not per year
   const generateCourseSuggestions = (term = null) => {
@@ -2002,11 +2013,8 @@ function App() {
     // Check for missing English courses (required all years)
     yearsToCheck.forEach(year => {
       const yearCourses = courses.filter(c => c.year === year);
-      // If checking for a specific term, only check courses in that term
-      const coursesToCheck = termQuarters
-        ? yearCourses.filter(c => termQuarters.includes(c.quarter))
-        : yearCourses;
-      const hasEnglish = coursesToCheck.some(c => {
+      // Check entire YEAR for English (students take one English per year, not per semester)
+      const hasEnglish = yearCourses.some(c => {
         const info = COURSE_CATALOG[c.courseId];
         return info && info.pathway === 'English';
       });
@@ -2129,10 +2137,8 @@ function App() {
     // Check for missing Math courses
     yearsToCheck.forEach(year => {
       const yearCourses = courses.filter(c => c.year === year);
-      const coursesToCheck = termQuarters
-        ? yearCourses.filter(c => termQuarters.includes(c.quarter))
-        : yearCourses;
-      const hasMath = coursesToCheck.some(c => {
+      // Check entire YEAR for Math (students typically take one Math per year)
+      const hasMath = yearCourses.some(c => {
         const info = COURSE_CATALOG[c.courseId];
         return info && info.pathway === 'Math';
       });
@@ -2166,10 +2172,8 @@ function App() {
     // Check for missing Science courses (need both biological and physical)
     yearsToCheck.forEach(year => {
       const yearCourses = courses.filter(c => c.year === year);
-      const coursesToCheck = termQuarters
-        ? yearCourses.filter(c => termQuarters.includes(c.quarter))
-        : yearCourses;
-      const hasScience = coursesToCheck.some(c => {
+      // Check entire YEAR for Science (students typically take one Science per year)
+      const hasScience = yearCourses.some(c => {
         const info = COURSE_CATALOG[c.courseId];
         return info && (info.pathway === 'Science - Biological' || info.pathway === 'Science - Physical');
       });
@@ -2218,10 +2222,8 @@ function App() {
     // Check for missing History/Social Science
     yearsToCheck.forEach(year => {
       const yearCourses = courses.filter(c => c.year === year);
-      const coursesToCheck = termQuarters
-        ? yearCourses.filter(c => termQuarters.includes(c.quarter))
-        : yearCourses;
-      const hasHistory = coursesToCheck.some(c => {
+      // Check entire YEAR for History (students typically take one History per year)
+      const hasHistory = yearCourses.some(c => {
         const info = COURSE_CATALOG[c.courseId];
         return info && info.pathway === 'History/Social Science';
       });
@@ -2328,6 +2330,160 @@ function App() {
       }
     }
 
+    // Fill to minimum course count with Foreign Language or Arts if needed
+    // Target: 4 courses per semester for grades 9-11, 3 minimum
+    yearsToCheck.forEach(year => {
+      const yearCourses = courses.filter(c => c.year === year);
+
+      // Check courses per term
+      const fallQuarters = ['Q1', 'Q2'];
+      const springQuarters = ['Q3', 'Q4'];
+
+      // If checking specific term, only check that term
+      const termsToCheck = termQuarters
+        ? [{ quarters: termQuarters, name: term }]
+        : [{ quarters: fallQuarters, name: 'fall' }, { quarters: springQuarters, name: 'spring' }];
+
+      termsToCheck.forEach(({ quarters, name: termName }) => {
+        const termCourses = yearCourses.filter(c => quarters.includes(c.quarter));
+        const termSuggestions = suggestions.filter(s =>
+          s.year === year && (s.quarter === null || quarters.includes(s.quarter))
+        );
+        const projectedCount = termCourses.length + termSuggestions.length;
+
+        // Minimum 3, target 4 for grades 9-11
+        const targetCount = parseInt(year) <= 11 ? 4 : 3;
+
+        if (projectedCount < targetCount) {
+          const needed = targetCount - projectedCount;
+
+          // Check if Foreign Language is missing from entire year
+          const hasLanguage = yearCourses.some(c => {
+            const info = COURSE_CATALOG[c.courseId];
+            return info && info.pathway === 'Foreign Language';
+          });
+
+          if (!hasLanguage && needed > 0) {
+            // Suggest Foreign Language (Spanish 1-2 for Grade 9)
+            const languageCourses = Object.entries(COURSE_CATALOG)
+              .filter(([_, course]) =>
+                course.pathway === 'Foreign Language' &&
+                course.grades_allowed.includes(parseInt(year)) &&
+                course.full_name.toUpperCase().includes('SPANISH 1-2')
+              )
+              .map(([id, course]) => ({ id, ...course }));
+
+            if (languageCourses.length > 0) {
+              suggestions.push({
+                courseId: languageCourses[0].id,
+                year,
+                quarter: null, // Flexible - let term requirements determine quarters
+                reason: `Foreign Language recommended for ${year === '9' ? 'UC/CSU eligibility' : 'graduation'}`,
+                courseName: languageCourses[0].full_name
+              });
+            }
+          }
+
+          // Recalculate after adding Foreign Language
+          const updatedTermSuggestions = suggestions.filter(s =>
+            s.year === year && (s.quarter === null || quarters.includes(s.quarter))
+          );
+          const updatedProjectedCount = termCourses.length + updatedTermSuggestions.length;
+
+          // If still below target, suggest Arts for UC/CSU requirement
+          // Students can take multiple courses in Fine Arts/Foreign Language/CTE pathway
+          if (updatedProjectedCount < targetCount) {
+            const artsCourses = Object.entries(COURSE_CATALOG)
+              .filter(([_, course]) =>
+                course.pathway === 'Fine Arts' &&
+                course.grades_allowed.includes(parseInt(year)) &&
+                !course.full_name.toUpperCase().includes('AP') &&
+                !isYearlongCourse(course) // Exclude yearlong courses from auto-fill
+              )
+              .map(([id, course]) => ({ id, ...course }));
+
+            if (artsCourses.length > 0) {
+              suggestions.push({
+                courseId: artsCourses[0].id,
+                year,
+                quarter: null, // Flexible - let term requirements determine quarters
+                reason: 'Visual/Performing Arts recommended for UC/CSU eligibility',
+                courseName: artsCourses[0].full_name
+              });
+            }
+          }
+
+          // If STILL below target after Arts, suggest History/Social Science or more electives
+          const finalTermSuggestions = suggestions.filter(s =>
+            s.year === year && (s.quarter === null || quarters.includes(s.quarter))
+          );
+          const finalProjectedCount = termCourses.length + finalTermSuggestions.length;
+
+          // For grades 10-12, suggest History if missing
+          if (finalProjectedCount < targetCount && (year === '10' || year === '11' || year === '12')) {
+            const hasHistory = yearCourses.some(c => {
+              const info = COURSE_CATALOG[c.courseId];
+              return info && info.pathway === 'History/Social Science';
+            });
+
+            if (!hasHistory) {
+              const historyCourses = Object.entries(COURSE_CATALOG)
+                .filter(([_, course]) =>
+                  course.pathway === 'History/Social Science' &&
+                  course.grades_allowed.includes(parseInt(year)) &&
+                  !course.full_name.toUpperCase().includes('AP')
+                )
+                .map(([id, course]) => ({ id, ...course }));
+
+              if (historyCourses.length > 0) {
+                suggestions.push({
+                  courseId: historyCourses[0].id,
+                  year,
+                  quarter: null, // Flexible - let term requirements determine quarters
+                  reason: 'History/Social Science recommended for UC/CSU eligibility',
+                  courseName: historyCourses[0].full_name
+                });
+              }
+            }
+          }
+
+          // If STILL below target, suggest another elective (any available course)
+          const veryFinalSuggestions = suggestions.filter(s =>
+            s.year === year && (s.quarter === null || quarters.includes(s.quarter))
+          );
+          const veryFinalCount = termCourses.length + veryFinalSuggestions.length;
+
+          if (veryFinalCount < targetCount) {
+            // Find an elective course not already suggested
+            const alreadySuggestedIds = veryFinalSuggestions.map(s => s.courseId);
+            const alreadyInYearIds = yearCourses.map(c => c.courseId);
+            const allUsedIds = [...alreadySuggestedIds, ...alreadyInYearIds];
+
+            const electiveCourses = Object.entries(COURSE_CATALOG)
+              .filter(([id, course]) =>
+                !allUsedIds.includes(id) &&
+                course.grades_allowed.includes(parseInt(year)) &&
+                !course.full_name.toUpperCase().includes('AP') &&
+                !course.full_name.toUpperCase().includes('HONORS') &&
+                !isYearlongCourse(course) && // Exclude yearlong courses from auto-fill
+                (course.pathway === 'Fine Arts/Foreign Language/CTE' || course.pathway === 'Electives')
+              )
+              .map(([id, course]) => ({ id, ...course }));
+
+            if (electiveCourses.length > 0) {
+              suggestions.push({
+                courseId: electiveCourses[0].id,
+                year,
+                quarter: null, // Flexible - let term requirements determine quarters
+                reason: 'Elective to reach target course count',
+                courseName: electiveCourses[0].full_name
+              });
+            }
+          }
+        }
+      });
+    });
+
     setSuggestedCourses(suggestions);
     return suggestions; // Return suggestions for direct use
   };
@@ -2350,19 +2506,34 @@ function App() {
       // null quarter means flexible - can be scheduled in any term
       .filter(s => s.quarter === null || termQuarters.includes(s.quarter))
       .map(s => {
-        // Check if this course (or its pathway) already exists in this term
+        // Check if this course (or its pathway) already exists
         const yearCourses = courses.filter(c => c.year === year);
-        const termCourses = yearCourses.filter(c => termQuarters.includes(c.quarter));
         const suggestedCourseInfo = COURSE_CATALOG[s.courseId];
 
-        const hasInTerm = termCourses.some(c => {
-          const info = COURSE_CATALOG[c.courseId];
-          // Check if same course or same pathway (e.g., already has an English course)
-          return info && (c.courseId === s.courseId || info.pathway === suggestedCourseInfo.pathway);
+        // For semester courses, check only this term (allows same course in both semesters if needed)
+        // For other courses, check only this term
+        const isSemesterCourse = suggestedCourseInfo.term_length === 'semester';
+        const coursesToCheck = yearCourses.filter(c => termQuarters.includes(c.quarter));
+
+        const hasInTerm = coursesToCheck.some(c => {
+          // For semester courses: only block if SAME course already exists in THIS TERM
+          // (allows different English courses like literature in same semester)
+          // For other courses: check same course OR same pathway
+          if (isSemesterCourse) {
+            return c.courseId === s.courseId;
+          } else {
+            const info = COURSE_CATALOG[c.courseId];
+            return info && (c.courseId === s.courseId || info.pathway === suggestedCourseInfo.pathway);
+          }
         });
 
-        // Only suggest if not already in this term
-        if (!hasInTerm) {
+        // Special check for ENS/PE courses: block if same course exists ANYWHERE in year
+        // (prevents ENS 3-4 in both Fall and Spring)
+        const isPECourse = suggestedCourseInfo.pathway === 'Physical Education';
+        const hasInYear = isPECourse && yearCourses.some(c => c.courseId === s.courseId);
+
+        // Only suggest if not already in this term (or anywhere in year for PE courses)
+        if (!hasInTerm && !hasInYear) {
           return { ...s, quarter: targetQuarter };
         }
         return null;
