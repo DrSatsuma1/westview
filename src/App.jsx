@@ -45,18 +45,19 @@ const GRADE_OPTIONS = ['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D+', 
 
 // Pathway Color Mapping (for left border stripe on course cards) - Pastel Rainbow Theme
 const PATHWAY_COLORS = {
-  'English': 'border-l-[#EB9DA2]',           // Blush Pink
-  'Math': 'border-l-[#BBE8B5]',              // Light Green
-  'Physical Education': 'border-l-[#F0B884]', // Peach
-  'History/Social Science': 'border-l-[#E8E6A5]', // Light Yellow
-  'Science - Biological': 'border-l-[#BBE8B5]',   // Light Green
-  'Science - Physical': 'border-l-[#ACBBE8]',     // Light Blue
-  'Foreign Language': 'border-l-[#EB9DA2]',  // Blush Pink
-  'Fine Arts': 'border-l-[#C5ACE8]',         // Light Purple
-  'CTE': 'border-l-[#F0B884]',               // Peach
-  'Electives': 'border-l-[#E8E6A5]',         // Light Yellow
-  'Off-Roll': 'border-l-[#C5ACE8]',          // Light Purple
-  'Clubs/Athletics': 'border-l-[#ACBBE8]'    // Light Blue
+  'English': 'border-l-[#E53E3E]',           // Classic Red
+  'Math': 'border-l-[#3182CE]',              // Strong Blue
+  'Physical Education': 'border-l-[#ED8936]', // Orange
+  'History/Social Science': 'border-l-[#805AD5]', // Purple
+  'Science - Biological': 'border-l-[#D69E2E]',   // Gold/Yellow
+  'Science - Physical': 'border-l-[#D69E2E]',     // Gold/Yellow
+  'Foreign Language': 'border-l-[#38A169]',  // Kelly Green
+  'Fine Arts': 'border-l-[#38A169]',         // Kelly Green
+  'CTE': 'border-l-[#38A169]',               // Kelly Green
+  'Electives': 'border-l-[#D53F8C]',         // Pink/Magenta
+  'Off-Roll': 'border-l-[#D53F8C]',          // Pink/Magenta
+  'Clubs/Athletics': 'border-l-[#D53F8C]',   // Pink/Magenta (same as Electives)
+  'Health': 'border-l-[#00B5D8]'             // Cyan/Teal
 };
 
 // CTE Pathway Icon Mapping (for course cards)
@@ -2771,7 +2772,7 @@ function App() {
   }, [selectedCategory]);
 
   return (
-    <div className="min-h-screen bg-gray-200">
+    <div className="min-h-screen bg-[#F4F7FA]">
       {/* Simplified Header */}
       <header className="bg-white border-b border-gray-200">
         <div className="max-w-[1800px] mx-auto px-12 py-12">
@@ -2780,8 +2781,8 @@ function App() {
             <div className="lg:col-span-3">
               <div className="flex items-center gap-4">
                 <div className="flex-grow">
-                  <h1 className="text-3xl font-bold text-gray-900">Westview High School Course Planner</h1>
-                  <p className="text-gray-600 mt-1">Plan your path through high school</p>
+                  <h1 className="text-3xl font-bold text-[#1A202C]">Westview High School Course Planner</h1>
+                  <p className="text-[#718096] mt-1">Plan your path through high school</p>
                 </div>
                 <EarlyGradButton
                   earlyGradMode={earlyGradMode}
@@ -2795,7 +2796,7 @@ function App() {
                       setCompletedSemesters({});
                     }
                   }}
-                  className="bg-red-600 hover:bg-red-700 text-white border-2 border-red-600 rounded-lg px-4 py-3 transition-colors text-sm font-bold"
+                  className="bg-[#C53030] hover:bg-[#9B2C2C] text-white border-2 border-[#C53030] rounded-lg px-4 py-3 transition-colors text-sm font-bold"
                 >
                   Clear All Courses
                 </button>
@@ -2948,14 +2949,14 @@ function App() {
                 return (
                   <div key={year} className="bg-white rounded-xl border-2 border-gray-200 overflow-hidden">
                     <div className="bg-gray-100 px-6 py-4 border-b-2 border-gray-200">
-                      <h3 className="text-xl font-bold text-gray-900">Grade {year}</h3>
+                      <h3 className="text-xl font-bold text-[#1A202C]">Grade {year}</h3>
                     </div>
 
                     {/* Suggestion buttons per semester */}
                     <div className="grid grid-cols-2 gap-4 px-6 py-4 bg-gray-50 border-b border-gray-200">
                       <button
                         onClick={() => suggestCoursesForTerm(year, 'fall')}
-                        className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-sm transition-colors"
+                        className="flex items-center justify-center gap-2 px-4 py-2 bg-[#2B6CB0] text-white rounded-lg hover:bg-[#1E4E8C] font-medium text-sm transition-colors"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
@@ -2964,13 +2965,23 @@ function App() {
                       </button>
                       <button
                         onClick={() => suggestCoursesForTerm(year, 'spring')}
-                        className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-sm transition-colors"
+                        className="flex items-center justify-center gap-2 px-4 py-2 bg-[#2B6CB0] text-white rounded-lg hover:bg-[#1E4E8C] font-medium text-sm transition-colors"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                         </svg>
                         Auto-fill Spring Semester
                       </button>
+                    </div>
+
+                    {/* Semester Labels */}
+                    <div className="grid grid-cols-2 bg-gray-50 border-t border-gray-200">
+                      <div className="px-6 py-3 border-r border-gray-200">
+                        <h3 className="text-center font-bold text-[#1A202C] text-lg">Fall Semester</h3>
+                      </div>
+                      <div className="px-6 py-3">
+                        <h3 className="text-center font-bold text-[#1A202C] text-lg">Spring Semester</h3>
+                      </div>
                     </div>
 
                     <div className="grid grid-cols-4 divide-x divide-gray-200">
@@ -2991,7 +3002,7 @@ function App() {
                         return (
                           <div key={quarter} className="p-5">
                             <div className="mb-4">
-                              <h4 className="font-bold text-gray-700 text-base">
+                              <h4 className="font-bold text-[#718096] text-base">
                                 {quarter} {displayYear}
                               </h4>
                             </div>
@@ -3049,11 +3060,11 @@ function App() {
                                     {/* Step 1: Select Pathway */}
                                     {!selectedCategory ? (
                                       <>
-                                        <p className="text-xs text-gray-600 mb-2 font-medium">Select a subject or search:</p>
+                                        <p className="text-xs text-[#718096] mb-2 font-medium">Select a subject or search:</p>
                                         <div className="grid grid-cols-2 gap-2 mb-2">
                                           <button
                                             onClick={() => setSelectedCategory('Search')}
-                                            className="col-span-2 bg-blue-600 text-white border-2 border-blue-600 hover:bg-blue-700 rounded px-3 py-2 text-sm font-medium transition-colors"
+                                            className="col-span-2 bg-[#2B6CB0] text-white border-2 border-blue-600 hover:bg-[#1E4E8C] rounded px-3 py-2 text-sm font-medium transition-colors"
                                           >
                                             🔍 Search All Courses
                                           </button>
@@ -3069,7 +3080,7 @@ function App() {
                                                   setSelectedCategory(pathway);
                                                 }
                                               }}
-                                              className="bg-white border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 rounded px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-700 transition-colors"
+                                              className="bg-white border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 rounded px-3 py-2 text-sm font-medium text-[#718096] hover:text-blue-700 transition-colors"
                                             >
                                               {pathway}
                                             </button>
@@ -3080,7 +3091,7 @@ function App() {
                                       <>
                                         {/* Step 2: Select Course */}
                                         <div className="flex items-center justify-between mb-2">
-                                          <p className="text-xs text-gray-600 font-medium">{selectedCategory}</p>
+                                          <p className="text-xs text-[#718096] font-medium">{selectedCategory}</p>
                                           <button
                                             onClick={() => {
                                               setSelectedCategory('');
@@ -3135,7 +3146,7 @@ function App() {
                                                   <button
                                                     onClick={() => addCourse(year, quarter)}
                                                     disabled={!newCourse.courseId}
-                                                    className="flex-1 bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 text-sm font-medium disabled:bg-gray-300"
+                                                    className="flex-1 bg-[#2B6CB0] text-white px-3 py-2 rounded hover:bg-[#1E4E8C] text-sm font-medium disabled:bg-gray-300"
                                                   >
                                                     Add Course
                                                   </button>
@@ -3148,7 +3159,7 @@ function App() {
                                                       setError(null);
                                                       setWarning(null);
                                                     }}
-                                                    className="bg-gray-200 text-gray-700 px-3 py-2 rounded hover:bg-gray-300 text-sm font-medium"
+                                                    className="bg-[#EDF2F7] text-[#718096] px-3 py-2 rounded hover:bg-[#E2E8F0] text-sm font-medium"
                                                   >
                                                     Cancel
                                                   </button>
@@ -3163,7 +3174,7 @@ function App() {
                                               <>
                                                 {concurrentCourses.length > 0 && (
                                                   <div>
-                                                    <p className="text-xs text-gray-600 mb-2 font-medium">Previously entered courses:</p>
+                                                    <p className="text-xs text-[#718096] mb-2 font-medium">Previously entered courses:</p>
                                                     <select
                                                       value={newCourse.courseId}
                                                       onChange={(e) => setNewCourse({ courseId: e.target.value })}
@@ -3190,7 +3201,7 @@ function App() {
                                               </>
                                             ) : (
                                               <div className="space-y-2">
-                                                <p className="text-xs text-gray-600 font-medium">Enter college course details:</p>
+                                                <p className="text-xs text-[#718096] font-medium">Enter college course details:</p>
                                                 <input
                                                   type="text"
                                                   placeholder="Course name (e.g., BIO 101)"
@@ -3200,7 +3211,7 @@ function App() {
                                                   autoFocus
                                                 />
                                                 <div>
-                                                  <label className="block text-xs text-gray-600 mb-1">College Semester Units</label>
+                                                  <label className="block text-xs text-[#718096] mb-1">College Semester Units</label>
                                                   <input
                                                     type="number"
                                                     placeholder="Units (e.g., 3)"
@@ -3245,7 +3256,7 @@ function App() {
                                                       }
                                                     }}
                                                     disabled={!newConcurrentCourse.name || newConcurrentCourse.collegeUnits <= 0}
-                                                    className="flex-1 bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 text-sm font-medium disabled:bg-gray-300"
+                                                    className="flex-1 bg-[#2B6CB0] text-white px-3 py-2 rounded hover:bg-[#1E4E8C] text-sm font-medium disabled:bg-gray-300"
                                                   >
                                                     Add Course
                                                   </button>
@@ -3418,7 +3429,7 @@ function App() {
                                             <button
                                               onClick={() => addCourse(year, quarter)}
                                               disabled={!newCourse.courseId}
-                                              className="flex-1 bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 text-sm font-medium disabled:bg-gray-300"
+                                              className="flex-1 bg-[#2B6CB0] text-white px-3 py-2 rounded hover:bg-[#1E4E8C] text-sm font-medium disabled:bg-gray-300"
                                             >
                                               Add
                                             </button>
@@ -3430,7 +3441,7 @@ function App() {
                                                 setError(null);
                                                 setWarning(null);
                                               }}
-                                              className="flex-1 bg-gray-200 text-gray-700 px-3 py-2 rounded hover:bg-gray-300 text-sm font-medium"
+                                              className="flex-1 bg-[#EDF2F7] text-[#718096] px-3 py-2 rounded hover:bg-[#E2E8F0] text-sm font-medium"
                                             >
                                               Cancel
                                             </button>
@@ -3487,7 +3498,7 @@ function App() {
 
                               return semesterCourses.length > 0 ? (
                                 <div className="mt-3 pt-3 border-t border-gray-300">
-                                  <div className="text-sm font-semibold text-gray-700">
+                                  <div className="text-sm font-semibold text-[#718096]">
                                     Semester Total: {semesterTotal} credits
                                   </div>
                                 </div>
@@ -3512,7 +3523,7 @@ function App() {
                       if (fallCourses.length > 0 || springCourses.length > 0) {
                         return (
                           <div className="bg-gray-50 px-6 py-3 border-t-2 border-gray-200">
-                            <div className="text-base font-bold text-gray-900">
+                            <div className="text-base font-bold text-[#1A202C]">
                               Year Total: {yearCredits} credits
                             </div>
                           </div>
