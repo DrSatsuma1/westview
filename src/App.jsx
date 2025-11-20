@@ -8,6 +8,7 @@ import { CourseCard } from './components/course/CourseCard.jsx';
 import { ProgressBar } from './components/progress/ProgressBar.jsx';
 import { WarningBanner } from './components/ui/WarningBanner.jsx';
 import { RequirementsSidebar } from './components/progress/RequirementsSidebar.jsx';
+import { TestScoreForm } from './components/test-scores/TestScoreForm.jsx';
 
 // Load course catalog from JSON
 const COURSE_CATALOG = courseCatalogData.courses.reduce((acc, course) => {
@@ -2536,112 +2537,20 @@ function App() {
 
           {/* AP/IB/CLEP/A-Level Test Scores Section */}
           {showTestScores && (
-            <div ref={testScoresRef} className="mt-4">
-              <div className="bg-white border-2 border-gray-200 rounded-lg p-4">
-                <div className="text-sm font-bold text-gray-900 mb-3">AP/IB/CLEP/A-Level Test Scores</div>
-
-                {/* Test Scores List */}
-                <div className="space-y-2 mb-3">
-                  {testScores.map((test, idx) => (
-                    <div key={idx} className="flex items-center justify-between bg-gray-50 rounded-lg p-2 border border-gray-200">
-                      <div className="text-sm">
-                        <span className="font-medium">{test.type} {test.subject}</span>
-                        <span className="text-gray-600 ml-2">Score: {test.score}</span>
-                        {test.agCategory && (
-                          <span className="ml-2 text-xs px-2 py-0.5 rounded bg-blue-100 text-blue-700">
-                            A-G: {test.agCategory}
-                          </span>
-                        )}
-                      </div>
-                      <button
-                        onClick={() => {
-                          const updated = testScores.filter((_, i) => i !== idx);
-                          setTestScores(updated);
-                        }}
-                        className="text-red-600 hover:text-red-700 text-lg font-bold"
-                      >
-                        ×
-                      </button>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Add New Test */}
-                <div className="grid grid-cols-4 gap-2 p-3 bg-blue-50 rounded-lg border border-blue-200">
-                  <select
-                    id="test-type"
-                    value={selectedTestType}
-                    onChange={(e) => setSelectedTestType(e.target.value)}
-                    className="text-xs border border-gray-300 rounded px-2 py-1.5"
-                  >
-                    <option value="">Type</option>
-                    <option value="AP">AP</option>
-                    <option value="IB">IB</option>
-                    <option value="CLEP">CLEP</option>
-                    <option value="A-Level">A-Level</option>
-                  </select>
-
-                  <select
-                    id="test-subject"
-                    className="text-xs border border-gray-300 rounded px-2 py-1.5"
-                    disabled={!selectedTestType}
-                  >
-                    <option value="">Subject</option>
-                    {selectedTestType && TEST_SUBJECTS[selectedTestType]?.map(subject => (
-                      <option key={subject} value={subject}>{subject}</option>
-                    ))}
-                  </select>
-
-                  <input
-                    type="number"
-                    id="test-score"
-                    placeholder="Score"
-                    min="1"
-                    max="7"
-                    className="text-xs border border-gray-300 rounded px-2 py-1.5"
-                  />
-
-                  <button
-                    onClick={() => {
-                      const type = document.getElementById('test-type').value;
-                      const subject = document.getElementById('test-subject').value;
-                      const score = document.getElementById('test-score').value;
-
-                      if (type && subject && score) {
-                        // Determine A-G category based on subject
-                        let agCategory = null;
-                        const subjectUpper = subject.toUpperCase();
-
-                        if (subjectUpper.includes('HISTORY') || subjectUpper.includes('GOVERNMENT') || subjectUpper.includes('GEOGRAPHY')) {
-                          agCategory = 'A';
-                        } else if (subjectUpper.includes('ENGLISH') || subjectUpper.includes('LITERATURE')) {
-                          agCategory = 'B';
-                        } else if (subjectUpper.includes('CALCULUS') || subjectUpper.includes('STATISTICS') || subjectUpper.includes('PRECALC')) {
-                          agCategory = 'C';
-                        } else if (subjectUpper.includes('BIOLOGY') || subjectUpper.includes('CHEMISTRY') || subjectUpper.includes('PHYSICS') || subjectUpper.includes('ENVIRONMENTAL')) {
-                          agCategory = 'D';
-                        } else if (subjectUpper.includes('SPANISH') || subjectUpper.includes('FRENCH') || subjectUpper.includes('CHINESE') || subjectUpper.includes('JAPANESE') || subjectUpper.includes('GERMAN') || subjectUpper.includes('LATIN')) {
-                          agCategory = 'E';
-                        } else if (subjectUpper.includes('ART') || subjectUpper.includes('MUSIC') || subjectUpper.includes('THEATER') || subjectUpper.includes('DANCE')) {
-                          agCategory = 'F';
-                        } else if (subjectUpper.includes('COMPUTER SCIENCE') || subjectUpper.includes('ECONOMICS') || subjectUpper.includes('PSYCHOLOGY')) {
-                          agCategory = 'G';
-                        }
-
-                        setTestScores([...testScores, { type, subject, score: parseInt(score), agCategory }]);
-
-                        // Clear inputs and reset state
-                        setSelectedTestType('');
-                        document.getElementById('test-score').value = '';
-                      }
-                    }}
-                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded px-2 py-1.5"
-                  >
-                    Add
-                  </button>
-                </div>
-              </div>
-            </div>
+            <TestScoreForm
+              testScores={testScores}
+              selectedTestType={selectedTestType}
+              testSubjects={TEST_SUBJECTS}
+              onAddScore={(type, subject, score, agCategory) => {
+                setTestScores([...testScores, { type, subject, score, agCategory }]);
+              }}
+              onRemoveScore={(idx) => {
+                const updated = testScores.filter((_, i) => i !== idx);
+                setTestScores(updated);
+              }}
+              onTestTypeChange={setSelectedTestType}
+              testScoresRef={testScoresRef}
+            />
           )}
         </div>
       </header>
