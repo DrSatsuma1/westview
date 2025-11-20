@@ -36,7 +36,7 @@ const AG_REQUIREMENTS = {
   'B': { name: 'English', needed: 4, short: 'English', recommended: 4 },
   'C': { name: 'Mathematics (including Geometry)', needed: 3, short: 'Math (including Geometry)', recommended: 4 },
   'D': { name: 'Laboratory Science', needed: 2, short: 'Science', recommended: 3 },
-  'E': { name: 'Language Other Than English', needed: 2, short: 'Language', recommended: 3 },
+  'E': { name: 'Language Other Than English', needed: 2, short: 'Foreign Language', recommended: 3 },
   'F': { name: 'Visual & Performing Arts', needed: 1, short: 'Arts', recommended: 1 },
   'G': { name: 'College Prep Elective', needed: 1, short: 'College Prep Elective', recommended: 1 }
 };
