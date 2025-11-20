@@ -2517,28 +2517,16 @@ function App() {
             </div>
           </div>
 
-          {/* Pathway progress indicator */}
+          {/* CTE Pathway Button */}
           {ctePathwayMode.enabled && ctePathwayProgress.totalRequired > 0 && (
-            <div className="mt-4">
-              <div className="bg-purple-50 border-2 border-purple-200 rounded-lg p-4">
-                <div className="text-sm font-bold text-purple-900 mb-2">
-                  {ctePathwayProgress.pathwayName}
-                </div>
-                <div className="text-xs text-gray-700 mb-1">
-                  Courses: {ctePathwayProgress.totalCompleted}/{ctePathwayProgress.totalRequired}
-                  {ctePathwayProgress.hasConcentrator && <span className="ml-2">• Concentrator ✓</span>}
-                  {ctePathwayProgress.capstoneCount > 0 && <span className="ml-2">• {ctePathwayProgress.capstoneCount} Capstone{ctePathwayProgress.capstoneCount > 1 ? 's' : ''} ✓</span>}
-                </div>
-                {ctePathwayProgress.isPathwayCompleter ? (
-                  <div className="text-xs font-bold text-green-700 mt-2 p-2 bg-green-50 rounded border border-green-200">
-                    🎓 {ctePathwayProgress.completionStatus}
-                  </div>
-                ) : (
-                  <div className="text-xs text-orange-600 mt-1">
-                    {ctePathwayProgress.completionStatus}
-                  </div>
-                )}
-              </div>
+            <div className="mt-2">
+              <button
+                className="px-3 py-1.5 rounded-md bg-purple-100 border border-purple-300 hover:bg-purple-200 transition-colors text-xs font-medium text-purple-900"
+                title={`${ctePathwayProgress.pathwayName}\nCourses: ${ctePathwayProgress.totalCompleted}/${ctePathwayProgress.totalRequired}\n${ctePathwayProgress.hasConcentrator ? 'Concentrator ✓\n' : ''}${ctePathwayProgress.capstoneCount > 0 ? `${ctePathwayProgress.capstoneCount} Capstone${ctePathwayProgress.capstoneCount > 1 ? 's' : ''} ✓\n` : ''}${ctePathwayProgress.completionStatus}`}
+              >
+                {ctePathwayProgress.pathwayName.split(' ')[0]} {ctePathwayProgress.totalCompleted}/{ctePathwayProgress.totalRequired}
+                {ctePathwayProgress.isPathwayCompleter && ' ✓'}
+              </button>
             </div>
           )}
 
@@ -2660,24 +2648,15 @@ function App() {
             <div className="flex items-center justify-start gap-6">
               <div className="flex items-center gap-2">
                 <GraduationCap size={24} />
-                <div>
-                  <div className="text-2xl font-bold">{totalCredits} / 230</div>
-                </div>
               </div>
 
               <div className="flex items-center gap-6">
                 <div className="text-center">
                   <div className="flex items-center gap-2">
                     {westviewGraduationReady ? (
-                      <>
-                        <CheckCircle2 size={20} className="text-green-300" />
-                        <span className="font-semibold">Ready!</span>
-                      </>
+                      <CheckCircle2 size={20} className="text-green-300" />
                     ) : (
-                      <>
-                        <Circle size={20} className="text-yellow-300" />
-                        <span className="font-semibold">In Progress</span>
-                      </>
+                      <Circle size={20} className="text-yellow-300" />
                     )}
                   </div>
                 </div>
@@ -2689,17 +2668,9 @@ function App() {
                     <div className="text-center">
                       <div className="flex items-center gap-2">
                         {ucsuEligible ? (
-                          <>
-                            <CheckCircle2 size={20} className="text-green-300" />
-                            <span className="font-semibold">Eligible!</span>
-                          </>
+                          <CheckCircle2 size={20} className="text-green-300" />
                         ) : (
-                          <>
-                            <Circle size={20} className="text-yellow-300" />
-                            <span className="font-semibold">
-                              {Object.values(agProgress).filter(p => !p.met).length} requirements left
-                            </span>
-                          </>
+                          <Circle size={20} className="text-yellow-300" />
                         )}
                       </div>
                     </div>
@@ -2707,23 +2678,6 @@ function App() {
                     <div className="h-12 w-px bg-white opacity-30"></div>
                   </>
                 )}
-
-                {gpaMode && ucGPA && (
-                  <>
-                    <div className="text-center">
-                      <div className="text-sm font-medium opacity-90">UC GPA</div>
-                      <div className="text-xl font-bold mt-1">{ucGPA.weightedCapped}</div>
-                      <div className="text-xs opacity-75 mt-0.5">Weighted & Capped</div>
-                    </div>
-
-                    <div className="h-12 w-px bg-white opacity-30"></div>
-                  </>
-                )}
-
-                <div className="text-center">
-                  <div className="text-sm font-medium opacity-90">Courses Planned</div>
-                  <div className="text-xl font-bold mt-1">{courses.length}</div>
-                </div>
               </div>
             </div>
           </div>
