@@ -2,6 +2,22 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Git Workflow
+
+**CRITICAL: Always create a new branch for major changes.**
+
+Before any refactoring, feature work, or significant modifications:
+1. Use `superpowers:using-git-worktrees` skill to create isolated workspace
+2. Branch naming: `refactor/`, `feature/`, `fix/` prefixes
+3. Never commit major changes directly to `main`
+
+**Major changes include:**
+- Component extraction/refactoring
+- New features or UI sections
+- Schema migrations
+- Validation logic changes
+- Changes affecting >50 lines
+
 ## Project Overview
 
 Westview UC/CSU A-G Course Planner - A web application for Westview High School students to plan their 4-year course schedule, track graduation requirements (230 credits), and ensure UC/CSU A-G eligibility.
