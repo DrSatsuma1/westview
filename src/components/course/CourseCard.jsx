@@ -122,7 +122,7 @@ export function CourseCard({
             {info.is_ap_or_honors_pair && (
               <Award className="text-purple-600 flex-shrink-0" size={16} />
             )}
-            <div className="font-bold text-sm text-gray-900 truncate">
+            <div className="font-bold text-sm text-gray-900 break-words">
               {info.full_name}
             </div>
           </div>
