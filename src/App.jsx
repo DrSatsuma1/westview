@@ -2367,12 +2367,27 @@ function App() {
           });
 
           if (!hasLanguage && needed > 0) {
-            // Suggest Foreign Language (Spanish 1-2 for Grade 9)
+            // Suggest Foreign Language - stick with same language across all years
+            // Check what language student has taken in previous years
+            const allYearCourses = courses.filter(c => parseInt(c.year) <= parseInt(year));
+            const previousLanguage = allYearCourses.find(c => {
+              const info = COURSE_CATALOG[c.courseId];
+              return info && info.pathway === 'Foreign Language';
+            });
+
+            let languageFilter = 'SPANISH 1-2'; // Default for Grade 9
+            if (previousLanguage) {
+              const prevInfo = COURSE_CATALOG[previousLanguage.courseId];
+              // Extract language name (e.g., "SPANISH", "CHINESE", etc.)
+              const langName = prevInfo.full_name.split(' ')[0];
+              languageFilter = langName; // Continue with same language
+            }
+
             const languageCourses = Object.entries(COURSE_CATALOG)
               .filter(([_, course]) =>
                 course.pathway === 'Foreign Language' &&
                 course.grades_allowed.includes(parseInt(year)) &&
-                course.full_name.toUpperCase().includes('SPANISH 1-2')
+                course.full_name.toUpperCase().includes(languageFilter)
               )
               .map(([id, course]) => ({ id, ...course }));
 
