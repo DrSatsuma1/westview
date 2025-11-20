@@ -6,6 +6,7 @@ import { SettingsDropdown } from './components/SettingsDropdown.jsx';
 import { EarlyGradButton } from './components/EarlyGradButton.jsx';
 import { CourseCard } from './components/course/CourseCard.jsx';
 import { ProgressBar } from './components/progress/ProgressBar.jsx';
+import { WarningBanner } from './components/ui/WarningBanner.jsx';
 
 // Load course catalog from JSON
 const COURSE_CATALOG = courseCatalogData.courses.reduce((acc, course) => {
@@ -2663,54 +2664,66 @@ function App() {
               <div className="flex flex-wrap gap-2 mb-4">
                 {/* Schedule Validation Errors */}
                 {scheduleValidation.errors.length > 0 && (
-                  <div className="bg-red-50 border border-red-400 rounded-lg px-3 py-2 flex items-center gap-2 min-w-fit max-w-[48%]">
-                    <AlertCircle className="text-red-600 flex-shrink-0" size={16} />
-                    <div className="text-sm text-red-800">
-                      <span className="font-semibold">Schedule Issues:</span>{' '}
-                      {scheduleValidation.errors.map((err, idx) => (
-                        <span key={idx}>
-                          {idx > 0 && ', '}Grade {err.year}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
+                  <WarningBanner
+                    type="error"
+                    compact={true}
+                    message={
+                      <>
+                        <span className="font-semibold">Schedule Issues:</span>{' '}
+                        {scheduleValidation.errors.map((err, idx) => (
+                          <span key={idx}>
+                            {idx > 0 && ', '}Grade {err.year}
+                          </span>
+                        ))}
+                      </>
+                    }
+                  />
                 )}
 
                 {/* English Warning */}
                 {englishWarnings.length > 0 && (
-                  <div className="bg-yellow-50 border border-yellow-400 rounded-lg px-3 py-2 flex items-center gap-2 min-w-fit max-w-[48%]">
-                    <AlertCircle className="text-yellow-600 flex-shrink-0" size={16} />
-                    <div className="text-sm text-yellow-800">
-                      <span className="font-semibold">Missing English:</span>{' '}
-                      Grade{englishWarnings.length > 1 ? 's' : ''} {englishWarnings.join(', ')}
-                    </div>
-                  </div>
+                  <WarningBanner
+                    type="warning"
+                    compact={true}
+                    message={
+                      <>
+                        <span className="font-semibold">Missing English:</span>{' '}
+                        Grade{englishWarnings.length > 1 ? 's' : ''} {englishWarnings.join(', ')}
+                      </>
+                    }
+                  />
                 )}
 
                 {/* PE Warning */}
                 {peWarnings.length > 0 && (
-                  <div className="bg-yellow-50 border border-yellow-400 rounded-lg px-3 py-2 flex items-center gap-2 min-w-fit max-w-[48%]">
-                    <AlertCircle className="text-yellow-600 flex-shrink-0" size={16} />
-                    <div className="text-sm text-yellow-800">
-                      <span className="font-semibold">Missing PE:</span>{' '}
-                      Grade{peWarnings.length > 1 ? 's' : ''} {peWarnings.join(', ')}
-                    </div>
-                  </div>
+                  <WarningBanner
+                    type="warning"
+                    compact={true}
+                    message={
+                      <>
+                        <span className="font-semibold">Missing PE:</span>{' '}
+                        Grade{peWarnings.length > 1 ? 's' : ''} {peWarnings.join(', ')}
+                      </>
+                    }
+                  />
                 )}
 
                 {/* Prerequisite Warnings */}
                 {prereqWarnings.length > 0 && (
-                  <div className="bg-orange-50 border border-orange-400 rounded-lg px-3 py-2 flex items-center gap-2 min-w-fit max-w-[48%]">
-                    <AlertCircle className="text-orange-600 flex-shrink-0" size={16} />
-                    <div className="text-sm text-orange-800">
-                      <span className="font-semibold">Prerequisites:</span>{' '}
-                      {prereqWarnings.map((w, idx) => (
-                        <span key={idx}>
-                          {idx > 0 && ' • '}{w.message}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
+                  <WarningBanner
+                    type="orange"
+                    compact={true}
+                    message={
+                      <>
+                        <span className="font-semibold">Prerequisites:</span>{' '}
+                        {prereqWarnings.map((w, idx) => (
+                          <span key={idx}>
+                            {idx > 0 && ' • '}{w.message}
+                          </span>
+                        ))}
+                      </>
+                    }
+                  />
                 )}
               </div>
             )}
@@ -2836,14 +2849,10 @@ function App() {
                                 return (
                                   <div key={`slot-${slotIndex}`} className="bg-blue-50 rounded-lg p-3 border-2 border-blue-300">
                                     {error && (
-                                      <div className="bg-red-100 border border-red-300 text-red-800 px-3 py-2 rounded text-sm mb-2">
-                                        {error}
-                                      </div>
+                                      <WarningBanner type="error" message={error} icon={false} className="mb-2" />
                                     )}
                                     {warning && (
-                                      <div className="bg-yellow-100 border border-yellow-400 text-yellow-900 px-3 py-2 rounded text-sm mb-2">
-                                        {warning}
-                                      </div>
+                                      <WarningBanner type="warning" message={warning} icon={false} className="mb-2" />
                                     )}
 
                                     {/* Step 1: Select Pathway */}
