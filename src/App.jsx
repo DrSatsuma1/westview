@@ -4,6 +4,7 @@ import courseCatalogData from './data/courses_complete.json';
 import { SchedulingEngine } from './scheduling/SchedulingEngine.js';
 import { SettingsDropdown } from './components/SettingsDropdown.jsx';
 import { EarlyGradButton } from './components/EarlyGradButton.jsx';
+import { CourseCard } from './components/course/CourseCard.jsx';
 
 // Load course catalog from JSON
 const COURSE_CATALOG = courseCatalogData.courses.reduce((acc, course) => {
@@ -2797,107 +2798,37 @@ function App() {
                               const isOptionalSlot = slotIndex >= 4; // Slots 5 and 6 (indices 4 and 5)
 
                               if (course) {
-                                // Filled slot with course
-                                const info = COURSE_CATALOG[course.courseId];
-                                const isYearLong = info.term_length === 'yearlong';
-                                const isDragging = draggedCourse?.course?.id === course.id;
-                                const isDropTarget = dragOverSlot?.year === year && dragOverSlot?.quarter === quarter && dragOverSlot?.slot === slotIndex;
-                                const pathwayColor = PATHWAY_COLORS[info.pathway] || 'bg-gray-400';
-                                const courseNumber = info.course_numbers && info.course_numbers.length > 0
-                                  ? info.course_numbers[0]
-                                  : '';
-
-                                // Determine CTE pathway for this course
-                                let ctePathway = null;
-                                if (info.pathway === 'CTE' || info.pathway === 'Fine Arts') {
-                                  for (const [pathwayKey, pathwayData] of Object.entries(CTE_PATHWAYS)) {
-                                    if (pathwayData.courses.some(c => info.full_name.toUpperCase().includes(c.name.toUpperCase()))) {
-                                      ctePathway = pathwayKey;
-                                      break;
-                                    }
-                                  }
-                                }
-
+                                // Filled slot with course - render using CourseCard component
                                 return (
-                                  <div
+                                  <CourseCard
                                     key={course.id}
-                                    draggable={true}
-                                    onDragStart={(e) => handleDragStart(e, course, year, quarter)}
+                                    course={course}
+                                    year={year}
+                                    quarter={quarter}
+                                    slotIndex={slotIndex}
+                                    isOptionalSlot={isOptionalSlot}
+                                    gpaMode={gpaMode}
+                                    draggedCourse={draggedCourse}
+                                    dragOverSlot={dragOverSlot}
+                                    courseCatalog={COURSE_CATALOG}
+                                    pathwayColors={PATHWAY_COLORS}
+                                    agRequirements={AG_REQUIREMENTS}
+                                    gradeOptions={GRADE_OPTIONS}
+                                    ctePathways={CTE_PATHWAYS}
+                                    ctePathwayIcons={CTE_PATHWAY_ICONS}
+                                    onDragStart={handleDragStart}
                                     onDragEnd={handleDragEnd}
-                                    onDragOver={(e) => handleDragOver(e, year, quarter, slotIndex)}
+                                    onDragOver={handleDragOver}
                                     onDragLeave={handleDragLeave}
-                                    onDrop={(e) => handleDrop(e, year, quarter, slotIndex)}
-                                    className={`rounded-lg p-3 transition-all border-l-4 border-r border-t border-b bg-gray-100 shadow-md cursor-move ${pathwayColor} ${
-                                      isOptionalSlot ? 'border-gray-300' : 'border-gray-200'
-                                    } ${
-                                      isDragging ? 'opacity-50 border-blue-400' : 'hover:shadow-md'
-                                    } ${
-                                      isDropTarget ? 'ring-2 ring-blue-400 bg-blue-50' : ''
-                                    }`}
-                                  >
-                                    <div className="flex items-start justify-between gap-2">
-                                      <div className="flex-1 min-w-0">
-                                        <div className="flex items-center gap-1.5 mb-1">
-                                          {info.is_ap_or_honors_pair && <Award className="text-purple-600 flex-shrink-0" size={16} />}
-                                          <div className="font-bold text-sm text-gray-900 truncate">{info.full_name}</div>
-                                        </div>
-                                        <div className="text-xs text-gray-700 font-medium">
-                                          {courseNumber && <span className="text-gray-600">{courseNumber} | </span>}
-                                          <span>{info.pathway}</span>
-                                        </div>
-                                        <div className="text-xs text-gray-600 font-medium mt-0.5">
-                                          {isYearLong && 'Year-long'}
-                                          {isYearLong && info.uc_csu_category && ' • '}
-                                          {info.uc_csu_category && (
-                                            <span>
-                                              {AG_REQUIREMENTS[info.uc_csu_category]?.short || info.uc_csu_category}
-                                            </span>
-                                          )}
-                                        </div>
-                                        {gpaMode && info.uc_csu_category && (
-                                          <div className="mt-2">
-                                            <select
-                                              value={course.grade || ''}
-                                              onChange={(e) => {
-                                                const updatedCourses = courses.map(c =>
-                                                  c.id === course.id ? { ...c, grade: e.target.value } : c
-                                                );
-                                                setCourses(updatedCourses);
-                                              }}
-                                              onClick={(e) => e.stopPropagation()}
-                                              className="text-xs border border-gray-300 rounded px-2 py-1 bg-white"
-                                            >
-                                              <option value="">Select Grade</option>
-                                              {GRADE_OPTIONS.map(grade => (
-                                                <option key={grade} value={grade}>{grade}</option>
-                                              ))}
-                                            </select>
-                                          </div>
-                                        )}
-                                      </div>
-                                      <div className="flex flex-col items-end gap-2 flex-shrink-0">
-                                        <div className="text-xs text-gray-400">
-                                          {info.credits} cr.
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                          {ctePathway && CTE_PATHWAY_ICONS[ctePathway] && (
-                                            <div className="flex items-center">
-                                              {React.createElement(CTE_PATHWAY_ICONS[ctePathway].icon, {
-                                                className: `${CTE_PATHWAY_ICONS[ctePathway].color} flex-shrink-0`,
-                                                size: 20
-                                              })}
-                                            </div>
-                                          )}
-                                          <button
-                                            onClick={() => removeCourse(course.id)}
-                                            className="text-red-600 hover:text-red-700 text-xl font-bold flex-shrink-0"
-                                          >
-                                            ×
-                                          </button>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
+                                    onDrop={handleDrop}
+                                    onRemove={removeCourse}
+                                    onGradeChange={(courseId, grade) => {
+                                      const updatedCourses = courses.map(c =>
+                                        c.id === courseId ? { ...c, grade } : c
+                                      );
+                                      setCourses(updatedCourses);
+                                    }}
+                                  />
                                 );
                               } else if (isAddingHere) {
                                 // Empty slot with form open
