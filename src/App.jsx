@@ -2646,39 +2646,6 @@ function App() {
       <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white sticky top-0 z-10 shadow-md">
           <div className="max-w-7xl mx-auto px-6 py-3">
             <div className="flex items-center justify-start gap-6">
-              <div className="flex items-center gap-2">
-                <GraduationCap size={24} />
-              </div>
-
-              <div className="flex items-center gap-6">
-                <div className="text-center">
-                  <div className="flex items-center gap-2">
-                    {westviewGraduationReady ? (
-                      <CheckCircle2 size={20} className="text-green-300" />
-                    ) : (
-                      <Circle size={20} className="text-yellow-300" />
-                    )}
-                  </div>
-                </div>
-
-                {!westviewGradOnly && (
-                  <>
-                    <div className="h-12 w-px bg-white opacity-30"></div>
-
-                    <div className="text-center">
-                      <div className="flex items-center gap-2">
-                        {ucsuEligible ? (
-                          <CheckCircle2 size={20} className="text-green-300" />
-                        ) : (
-                          <Circle size={20} className="text-yellow-300" />
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="h-12 w-px bg-white opacity-30"></div>
-                  </>
-                )}
-              </div>
             </div>
           </div>
         </div>
@@ -3501,10 +3468,10 @@ function App() {
           <div className="space-y-6">
             {/* Westview Graduation Requirements */}
             <div className="bg-white rounded-xl border border-gray-200 p-6">
-              <h3 className="text-lg font-bold text-gray-900 mb-2">Westview Graduation</h3>
+              <h3 className="text-lg font-bold text-gray-900 mb-2">Westview</h3>
               <div className="mb-4">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-gray-700">Total Credits</span>
+                  <span className="text-sm font-medium text-gray-700">Progress to Graduation</span>
                   <span className="text-sm font-bold text-gray-900">{totalCredits}/230</span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
