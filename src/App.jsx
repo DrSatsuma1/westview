@@ -2025,7 +2025,8 @@ function App() {
           .filter(([_, course]) =>
             course.pathway === 'English' &&
             course.grades_allowed.includes(parseInt(year)) &&
-            !course.full_name.toUpperCase().includes('AP')
+            !course.full_name.toUpperCase().includes('AP') &&
+            !(year === '12' && isYearlongCourse(course)) // Grade 12: avoid yearlong courses
           )
           .map(([id, course]) => ({ id, ...course }));
 
@@ -2150,7 +2151,8 @@ function App() {
             course.pathway === 'Math' &&
             course.grades_allowed.includes(parseInt(year)) &&
             !course.full_name.toUpperCase().includes('HONORS') &&
-            !course.full_name.toUpperCase().includes('AP')
+            !course.full_name.toUpperCase().includes('AP') &&
+            !(year === '12' && isYearlongCourse(course)) // Grade 12: avoid yearlong courses
           )
           .map(([id, course]) => ({ id, ...course }));
 
@@ -2437,7 +2439,8 @@ function App() {
                 .filter(([_, course]) =>
                   course.pathway === 'History/Social Science' &&
                   course.grades_allowed.includes(parseInt(year)) &&
-                  !course.full_name.toUpperCase().includes('AP')
+                  !course.full_name.toUpperCase().includes('AP') &&
+                  !(year === '12' && isYearlongCourse(course)) // Grade 12: avoid yearlong courses
                 )
                 .map(([id, course]) => ({ id, ...course }));
 
