@@ -290,6 +290,12 @@ function App() {
   // Course suggestions
   const [suggestedCourses, setSuggestedCourses] = useState([]);
 
+  // Track if student met Foreign Language requirement in grades 7/8
+  const [metForeignLanguageIn78, setMetForeignLanguageIn78] = useState(() => {
+    const saved = localStorage.getItem('westview-met-fl-in-78');
+    return saved ? JSON.parse(saved) : false;
+  });
+
   // Save courses to localStorage whenever they change
   React.useEffect(() => {
     localStorage.setItem('westview-courses', JSON.stringify(courses));
@@ -339,6 +345,11 @@ function App() {
   React.useEffect(() => {
     localStorage.setItem('westview-test-scores', JSON.stringify(testScores));
   }, [testScores]);
+
+  // Save Foreign Language met in 7/8 grade flag to localStorage
+  React.useEffect(() => {
+    localStorage.setItem('westview-met-fl-in-78', JSON.stringify(metForeignLanguageIn78));
+  }, [metForeignLanguageIn78]);
 
   // Calculate Westview graduation progress
   const westviewProgress = useMemo(() => {
@@ -646,6 +657,11 @@ function App() {
       // Count unique courses (each course = 1 year at UC/CSU)
       let years = uniqueCourses.length;
 
+      // Special handling for Foreign Language (Category E): Add 2 years if met in grades 7/8
+      if (cat === 'E' && metForeignLanguageIn78) {
+        years += 2;
+      }
+
       progress[cat] = {
         earned: years,
         needed: AG_REQUIREMENTS[cat].needed,
@@ -691,7 +707,7 @@ function App() {
     };
 
     return progress;
-  }, [courses]);
+  }, [courses, metForeignLanguageIn78]);
 
   const ucsuEligible = Object.values(agProgress).every(p => p.met);
 
@@ -2401,21 +2417,49 @@ function App() {
               }
             }
 
+            // Helper to extract level number from course name (e.g., "SPANISH 3-4" => 3)
+            const getLevelNumber = (name) => {
+              const match = name.match(/(\d+)-(\d+)/);
+              return match ? parseInt(match[1]) : 0;
+            };
+
+            // Find the highest level already taken or suggested for this language
+            let highestLevel = 0;
+            const allCoursesAndSuggestions = [...courses, ...suggestions];
+            allCoursesAndSuggestions.forEach(c => {
+              const info = COURSE_CATALOG[c.courseId];
+              if (info && info.pathway === 'Foreign Language' &&
+                  info.full_name.toUpperCase().startsWith(languageName)) {
+                const level = getLevelNumber(info.full_name);
+                if (level > highestLevel) highestLevel = level;
+              }
+            });
+
+            // Find the next level up (e.g., if they took 1-2, suggest 3-4)
+            const targetLevel = highestLevel + 2; // 1-2 => 3, 3-4 => 5, etc.
+
+            // Find all foreign language courses for this language that are allowed for this grade
             const languageCourses = Object.entries(COURSE_CATALOG)
               .filter(([_, course]) =>
                 course.pathway === 'Foreign Language' &&
                 course.grades_allowed.includes(parseInt(year)) &&
-                course.full_name.toUpperCase().startsWith(languageName)
+                course.full_name.toUpperCase().startsWith(languageName) &&
+                !course.full_name.toUpperCase().includes('LITERATURE') && // Exclude literature courses
+                !course.full_name.toUpperCase().includes('AP') // Exclude AP courses for auto-suggestions
               )
-              .map(([id, course]) => ({ id, ...course }));
+              .map(([id, course]) => ({ id, ...course, level: getLevelNumber(course.full_name) }))
+              .sort((a, b) => a.level - b.level);
 
-            if (languageCourses.length > 0) {
+            // Find the course at the target level, or the first available course if none at that level
+            let suggestedCourse = languageCourses.find(c => c.level >= targetLevel) || languageCourses[0];
+
+            if (suggestedCourse) {
               suggestions.push({
-                courseId: languageCourses[0].id,
+                courseId: suggestedCourse.id,
                 year,
                 quarter: null, // Flexible - let term requirements determine quarters
                 reason: `Foreign Language recommended for ${year === '9' ? 'UC/CSU eligibility' : 'graduation'}`,
-                courseName: languageCourses[0].full_name
+                courseName: suggestedCourse.full_name
               });
             }
           }
@@ -3451,6 +3495,8 @@ function App() {
             biliteracySealEligibility={biliteracySealEligibility}
             westviewGradOnly={westviewGradOnly}
             gpaMode={gpaMode}
+            metForeignLanguageIn78={metForeignLanguageIn78}
+            setMetForeignLanguageIn78={setMetForeignLanguageIn78}
           />
 
         </div>

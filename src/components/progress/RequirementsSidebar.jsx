@@ -47,7 +47,9 @@ export function RequirementsSidebar({
   ucGPA,
   biliteracySealEligibility,
   westviewGradOnly,
-  gpaMode
+  gpaMode,
+  metForeignLanguageIn78,
+  setMetForeignLanguageIn78
 }) {
   return (
     <div className="space-y-6">
@@ -117,6 +119,24 @@ export function RequirementsSidebar({
                 </div>
               );
             })}
+          </div>
+
+          {/* Foreign Language met in grades 7/8 button */}
+          <div className="mt-4 pt-4 border-t border-gray-200">
+            <label className="flex items-center justify-between p-3 hover:bg-gray-50 rounded cursor-pointer border border-gray-200">
+              <div className="flex-1">
+                <span className="text-sm font-medium text-gray-900">Met Foreign Language in grades 7/8</span>
+                <p className="text-xs text-gray-600 mt-1">
+                  Check if your high school accepts your 7th/8th grade language courses as equivalent (adds 2 years)
+                </p>
+              </div>
+              <input
+                type="checkbox"
+                checked={metForeignLanguageIn78}
+                onChange={(e) => setMetForeignLanguageIn78(e.target.checked)}
+                className="w-5 h-5 ml-3 flex-shrink-0"
+              />
+            </label>
           </div>
 
           <p className="text-xs text-gray-600 text-center mt-4 pt-4 border-t border-gray-200">

@@ -52,7 +52,7 @@ export function SettingsDropdown({
         className="p-3 hover:opacity-70 transition-opacity"
         title="Settings"
       >
-        <Settings className="text-slate-700" size={40} strokeWidth={2} />
+        <Settings className="text-slate-700" size={40} strokeWidth={2.5} />
       </button>
 
       {isOpen && (

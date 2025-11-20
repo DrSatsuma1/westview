@@ -145,8 +145,8 @@ export function CourseCard({
           )}
         </div>
 
-        {/* Right side: Credits, CTE icon, and remove button */}
-        <div className="flex flex-col items-end gap-2 flex-shrink-0">
+        {/* Right side: Credits and remove button */}
+        <div className="flex flex-col items-end justify-between flex-shrink-0">
           {/* Credit value */}
           <div className="text-sm text-gray-700 font-semibold">
             {info.credits} credits
@@ -155,7 +155,7 @@ export function CourseCard({
           {/* Remove button */}
           <button
             onClick={() => onRemove(course.id)}
-            className="text-red-600 hover:text-red-700 text-2xl font-bold flex-shrink-0"
+            className="text-red-500 hover:text-red-600 text-2xl font-bold flex-shrink-0"
           >
             ×
           </button>
