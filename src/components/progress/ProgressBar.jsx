@@ -33,6 +33,7 @@ export function ProgressBar({
   label,
   earned,
   needed,
+  recommended = null,
   unit = '',
   showPlural = false
 }) {
@@ -47,6 +48,9 @@ export function ProgressBar({
   // Format unit text with optional pluralization
   const unitText = unit ? (showPlural && needed !== 1 ? `${unit}s` : unit) : '';
 
+  // Show recommended if it differs from needed
+  const showRecommended = recommended && recommended > needed;
+
   return (
     <div>
       {/* Label, count, and status icon row */}
@@ -54,9 +58,9 @@ export function ProgressBar({
         <span className="text-sm font-medium text-gray-700">{label}</span>
 
         <div className="flex items-center gap-2">
-          {/* Earned/Needed count */}
+          {/* Earned/Needed count - show recommended if different */}
           <span className="text-sm font-bold text-gray-900">
-            {earned}/{needed}{unitText && ` ${unitText}`}
+            {earned}/{needed}{showRecommended && <span className="text-gray-500 font-normal"> ({recommended} rec.)</span>}{unitText && ` ${unitText}`}
           </span>
 
           {/* Status icon */}

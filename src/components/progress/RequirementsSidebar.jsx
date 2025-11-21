@@ -106,10 +106,11 @@ export function RequirementsSidebar({
                     label={req.short}
                     earned={prog.earned}
                     needed={prog.needed}
+                    recommended={prog.recommended}
                     unit="year"
                     showPlural={true}
                   />
-                  {/* Recommended year warning for competitive admission */}
+                  {/* Recommended year warning for competitive admission - show when met minimum but not recommended */}
                   {prog.met && !prog.meetsRecommended && prog.recommended > prog.needed && (
                     <div className="mt-1 text-xs text-orange-600 flex items-center gap-1">
                       <AlertCircle size={12} />

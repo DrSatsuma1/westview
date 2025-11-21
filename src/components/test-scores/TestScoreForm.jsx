@@ -41,6 +41,7 @@
  */
 
 import React, { useState } from 'react';
+import { Pencil } from 'lucide-react';
 
 export function TestScoreForm({
   testScores,
@@ -48,12 +49,14 @@ export function TestScoreForm({
   testSubjects,
   onAddScore,
   onRemoveScore,
+  onUpdateScore,
   onTestTypeChange,
   testScoresRef
 }) {
   // Local state for form inputs
   const [subject, setSubject] = useState('');
   const [score, setScore] = useState('');
+  const [editingIndex, setEditingIndex] = useState(null); // Track which test is being edited
 
   // Determine A-G category based on subject keywords
   const determineAGCategory = (subject) => {
@@ -78,17 +81,42 @@ export function TestScoreForm({
     return null; // No A-G category
   };
 
-  // Handle adding a new test score
+  // Handle adding or updating a test score
   const handleAddScore = () => {
     if (selectedTestType && subject && score) {
       const agCategory = determineAGCategory(subject);
-      onAddScore(selectedTestType, subject, parseInt(score), agCategory);
+
+      if (editingIndex !== null) {
+        // Update existing score
+        onUpdateScore(editingIndex, selectedTestType, subject, parseInt(score), agCategory);
+        setEditingIndex(null);
+      } else {
+        // Add new score
+        onAddScore(selectedTestType, subject, parseInt(score), agCategory);
+      }
 
       // Clear form
       setSubject('');
       setScore('');
       onTestTypeChange('');
     }
+  };
+
+  // Handle editing a test score - populate form with existing data
+  const handleEdit = (idx) => {
+    const test = testScores[idx];
+    onTestTypeChange(test.type);
+    setSubject(test.subject);
+    setScore(test.score.toString());
+    setEditingIndex(idx);
+  };
+
+  // Cancel editing
+  const handleCancelEdit = () => {
+    setSubject('');
+    setScore('');
+    onTestTypeChange('');
+    setEditingIndex(null);
   };
 
   return (
@@ -99,7 +127,7 @@ export function TestScoreForm({
         {/* Test Scores List */}
         <div className="space-y-2 mb-3">
           {testScores.map((test, idx) => (
-            <div key={idx} className="flex items-center justify-between bg-gray-50 rounded-lg p-2 border border-gray-200">
+            <div key={idx} className={`flex items-center justify-between rounded-lg p-2 border ${editingIndex === idx ? 'bg-yellow-50 border-yellow-300' : 'bg-gray-50 border-gray-200'}`}>
               <div className="text-sm">
                 <span className="font-medium">{test.type} {test.subject}</span>
                 <span className="text-gray-600 ml-2">Score: {test.score}</span>
@@ -109,12 +137,22 @@ export function TestScoreForm({
                   </span>
                 )}
               </div>
-              <button
-                onClick={() => onRemoveScore(idx)}
-                className="text-red-600 hover:text-red-700 text-lg font-bold"
-              >
-                ×
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => handleEdit(idx)}
+                  className="text-blue-600 hover:text-blue-700 p-1"
+                  title="Edit"
+                >
+                  <Pencil size={14} />
+                </button>
+                <button
+                  onClick={() => onRemoveScore(idx)}
+                  className="text-red-600 hover:text-red-700 text-lg font-bold"
+                  title="Remove"
+                >
+                  ×
+                </button>
+              </div>
             </div>
           ))}
         </div>
@@ -166,13 +204,27 @@ export function TestScoreForm({
             <option value="7">7</option>
           </select>
 
-          {/* Add Button */}
-          <button
-            onClick={handleAddScore}
-            className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded px-2 py-1.5"
-          >
-            Add
-          </button>
+          {/* Add/Update Button */}
+          <div className="flex gap-1">
+            <button
+              onClick={handleAddScore}
+              className={`text-white text-xs font-medium rounded px-2 py-1.5 ${
+                editingIndex !== null
+                  ? 'bg-yellow-600 hover:bg-yellow-700'
+                  : 'bg-blue-600 hover:bg-blue-700'
+              }`}
+            >
+              {editingIndex !== null ? 'Update' : 'Add'}
+            </button>
+            {editingIndex !== null && (
+              <button
+                onClick={handleCancelEdit}
+                className="bg-gray-400 hover:bg-gray-500 text-white text-xs font-medium rounded px-2 py-1.5"
+              >
+                Cancel
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>

@@ -484,10 +484,16 @@ function App() {
           credits += 5; // Add the Fine Arts portion of MARCHING PE FLAGS
         }
       } else if (name === 'Electives') {
-        // Electives count full credits from all elective courses
+        // ELECTIVES = Direct elective courses + excess credits from other subjects
+        // 1. Direct elective pathway courses (full credits)
         credits = uniqueCourses.reduce((sum, c) => sum + COURSE_CATALOG[c.courseId].credits, 0);
 
-        // Add 10 Elective credits from Naval Science courses (which are in Science pathway, not Electives)
+        // 2. Add excess credits from other subject areas (beyond minimum requirements)
+        // We need to calculate other categories first, then add their excess here
+        // This will be done in a second pass after the loop - mark for later
+        // Store placeholder for now, will be updated after first pass
+
+        // 3. Add 10 Elective credits from Naval Science courses (which are in Science pathway, not Electives)
         // Deduplicate by courseId + year
         const navalScienceCourses = courses.filter(c => {
           const info = COURSE_CATALOG[c.courseId];
@@ -523,10 +529,54 @@ function App() {
         met: credits >= req.needed
       };
     });
+
+    // SECOND PASS: Add excess credits from other categories to Electives
+    // Electives receive any credits beyond the minimum requirement for each subject
+    if (progress['Electives']) {
+      let excessCredits = 0;
+      Object.entries(progress).forEach(([name, data]) => {
+        if (name !== 'Electives') {
+          const excess = data.earned - data.needed;
+          if (excess > 0) {
+            excessCredits += excess;
+          }
+        }
+      });
+      progress['Electives'].earned += excessCredits;
+      progress['Electives'].met = progress['Electives'].earned >= progress['Electives'].needed;
+    }
+
     return progress;
   }, [courses]);
 
-  const totalCredits = Object.values(westviewProgress).reduce((sum, p) => sum + p.earned, 0);
+  // Calculate total credits toward graduation with 80 credit/year cap
+  // Maximum 80 credits count per year, regardless of how many courses are taken
+  const totalCredits = useMemo(() => {
+    // Deduplicate courses by courseId + year
+    const uniqueCourses = [];
+    const seen = new Set();
+    courses.forEach(c => {
+      const key = `${c.courseId}-${c.year}`;
+      if (!seen.has(key)) {
+        seen.add(key);
+        uniqueCourses.push(c);
+      }
+    });
+
+    // Calculate credits per year, capped at 80 each
+    const yearsCredits = {};
+    ['9', '10', '11', '12'].forEach(year => {
+      const yearCourses = uniqueCourses.filter(c => c.year === year);
+      const rawCredits = yearCourses.reduce((sum, c) => {
+        const info = COURSE_CATALOG[c.courseId];
+        return sum + (info ? info.credits : 0);
+      }, 0);
+      yearsCredits[year] = Math.min(rawCredits, 80); // Cap at 80 per year
+    });
+
+    return Object.values(yearsCredits).reduce((sum, credits) => sum + credits, 0);
+  }, [courses]);
+
   const westviewGraduationReady = totalCredits >= 230 && Object.values(westviewProgress).every(p => p.met);
 
   // Calculate early graduation eligibility and requirements
@@ -700,9 +750,92 @@ function App() {
       // Count unique courses (each course = 1 year at UC/CSU)
       let years = uniqueCourses.length;
 
-      // Special handling for Foreign Language (Category E): Add 2 years if met in grades 7/8
-      if (cat === 'E' && metForeignLanguageIn78) {
-        years += 2;
+      // Special handling for Math (Category C):
+      // UC/CSU counts: Math I=1yr, Math II=2yr, Math III=3yr, Honors Pre-Calc=4yr, AP Calc AB/BC=5yr
+      if (cat === 'C') {
+        let highestMathYear = 0;
+
+        uniqueCourses.forEach(c => {
+          const info = COURSE_CATALOG[c.courseId];
+          if (!info || info.pathway !== 'Math') return;
+
+          const nameUpper = info.full_name.toUpperCase();
+          let impliedYears = 1; // Default: 1 year
+
+          // AP Calculus AB or BC = 5 years (implies Math I/II/III + Honors Pre-Calc + AP Calc)
+          if (nameUpper.includes('AP') && nameUpper.includes('CALCULUS')) {
+            impliedYears = 5;
+          }
+          // Honors Pre-Calculus = 4 years
+          else if (nameUpper.includes('PRECALCULUS') || nameUpper.includes('PRE-CALCULUS')) {
+            impliedYears = 4;
+          }
+          // Integrated Math III = 3 years
+          else if (nameUpper.includes('MATHEMATICS III') || nameUpper.includes('MATH III')) {
+            impliedYears = 3;
+          }
+          // Integrated Math II = 2 years
+          else if (nameUpper.includes('MATHEMATICS II') || nameUpper.includes('MATH II')) {
+            impliedYears = 2;
+          }
+          // Integrated Math I = 1 year
+          else if (nameUpper.includes('MATHEMATICS I') || nameUpper.includes('MATH I')) {
+            impliedYears = 1;
+          }
+          // Statistics = 4 years (typically taken after Math III)
+          else if (nameUpper.includes('STATISTICS')) {
+            impliedYears = 4;
+          }
+
+          if (impliedYears > highestMathYear) {
+            highestMathYear = impliedYears;
+          }
+        });
+
+        years = highestMathYear > 0 ? highestMathYear : uniqueCourses.length;
+      }
+
+      // Special handling for Foreign Language (Category E):
+      // UC/CSU counts by highest level: 1-2=1yr, 3-4=2yr, 5-6=3yr, 7-8=4yr, Honors 7-8=5yr, AP=6yr
+      if (cat === 'E') {
+        let highestLevelYears = 0;
+
+        uniqueCourses.forEach(c => {
+          const info = COURSE_CATALOG[c.courseId];
+          if (!info || info.pathway !== 'Foreign Language') return;
+
+          const nameUpper = info.full_name.toUpperCase();
+          let impliedYears = 0;
+
+          // AP Language courses = 6 years (highest level)
+          if (nameUpper.includes('AP ')) {
+            impliedYears = 6;
+          }
+          // Honors 7-8 or 9-10 = 5 years (comes after non-honors 7-8)
+          else if (nameUpper.includes('HONORS') && (nameUpper.includes('7-8') || nameUpper.includes('9-10'))) {
+            impliedYears = 5;
+          }
+          // Regular numbered courses
+          else {
+            const levelMatch = nameUpper.match(/(\d+)-(\d+)/);
+            if (levelMatch) {
+              const levelNum = parseInt(levelMatch[1]);
+              // Level 1-2 = 1 year, 3-4 = 2 years, 5-6 = 3 years, 7-8 = 4 years
+              impliedYears = Math.ceil(levelNum / 2);
+            }
+          }
+
+          if (impliedYears > highestLevelYears) {
+            highestLevelYears = impliedYears;
+          }
+        });
+
+        years = highestLevelYears;
+
+        // Add 2 years if met in grades 7/8
+        if (metForeignLanguageIn78) {
+          years += 2;
+        }
       }
 
       progress[cat] = {
@@ -3559,6 +3692,11 @@ function App() {
                   }}
                   onRemoveScore={(idx) => {
                     const updated = testScores.filter((_, i) => i !== idx);
+                    setTestScores(updated);
+                  }}
+                  onUpdateScore={(idx, type, subject, score, agCategory) => {
+                    const updated = [...testScores];
+                    updated[idx] = { type, subject, score, agCategory };
                     setTestScores(updated);
                   }}
                   onTestTypeChange={setSelectedTestType}

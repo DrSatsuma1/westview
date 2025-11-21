@@ -331,6 +331,14 @@ src/
     └── courseUtils.ts         # TypeScript version
 ```
 
+## Task Tracking
+
+**Read `todo.md` at start of each session for task tracking.**
+
+- Update `todo.md` directly when tasks are added/completed
+- Do NOT read session logs for todo tracking (wastes context)
+- Session logs are only for debugging/history reference
+
 ## Known Limitations
 
 - No backend: All data stored in component state, lost on refresh

@@ -101,7 +101,7 @@ export function CourseCard({
       onDragOver={(e) => onDragOver(e, year, quarter, slotIndex)}
       onDragLeave={onDragLeave}
       onDrop={(e) => onDrop(e, year, quarter, slotIndex)}
-      className={`rounded-lg p-3 min-h-[140px] transition-all border-l-4 border-r border-t border-b bg-gray-100 shadow-md cursor-move ${pathwayColor} ${
+      className={`rounded-lg p-3 min-h-[160px] transition-all border-l-4 border-r border-t border-b bg-gray-100 shadow-md cursor-move ${pathwayColor} ${
         isOptionalSlot ? 'border-gray-300' : 'border-gray-200'
       } ${
         isDragging ? 'opacity-50 border-blue-400' : 'hover:shadow-md'
