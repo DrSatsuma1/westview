@@ -3722,8 +3722,7 @@ function App() {
         {/* AP/IB/CLEP/A-Level Test Scores Input Section */}
         {showTestScores && (
           <div id="test-scores-section" className="max-w-[1800px] mx-auto px-12 mt-12">
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-              <div className="lg:col-span-3">
+            <div className="lg:pr-[calc(25%+1.5rem)]">
                 <TestScoreForm
                   testScores={testScores}
                   selectedTestType={selectedTestType}
@@ -3743,7 +3742,6 @@ function App() {
                   onTestTypeChange={setSelectedTestType}
                   testScoresRef={testScoresRef}
                 />
-              </div>
             </div>
           </div>
         )}
@@ -3751,8 +3749,7 @@ function App() {
         {/* College Credits from Test Scores - Bottom Section */}
         {testScores.length > 0 && (
           <div className="max-w-[1800px] mx-auto px-12 pb-16 mt-12">
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-              <div className="lg:col-span-3">
+            <div className="lg:pr-[calc(25%+1.5rem)]">
                 <div className="bg-white rounded-xl shadow-lg border-2 border-gray-200 overflow-hidden">
                   <div className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-4">
                     <h3 className="text-2xl font-bold">College Credits from Test Scores</h3>
@@ -3800,7 +3797,6 @@ function App() {
                     </div>
                   </div>
                 </div>
-              </div>
             </div>
           </div>
         )}
