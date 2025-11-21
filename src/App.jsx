@@ -1565,9 +1565,14 @@ function App() {
       'AVID_34_0015': { requires: 'HIGH_SCHOOL', name: 'English 3-4' },
       'AVID_56_0015': { requires: 'UNITED_STATES_0013', name: 'US History 1-2' },
 
-      // CS courses require AP CS A (but AP CS A can be alone)
+      // AP CS A group - NONE can be standalone, must have at least one partner
+      'AP_COMPUTER_0010': {
+        requiresOneOf: ['COMPUTER_SCIENCE_0009', 'DATA_STRUCTURES_0010', 'STUDIO_ART_0003'],
+        names: ['Computer Science & Software Engineering 1-2', 'Data Structures 1-2', 'Studio Art 1-2: Graphic Design']
+      },
       'COMPUTER_SCIENCE_0009': { requires: 'AP_COMPUTER_0010', name: 'AP Computer Science A 1-2' },
       'DATA_STRUCTURES_0010': { requires: 'AP_COMPUTER_0010', name: 'AP Computer Science A 1-2' },
+      'STUDIO_ART_0003': { requires: 'AP_COMPUTER_0010', name: 'AP Computer Science A 1-2' },
 
       // Bidirectional required pairs (neither can be alone)
       'HON_SPANISH_0004': { requires: 'AP_SPANISH_0004', name: 'AP Spanish Language 1-2' },
@@ -1584,15 +1589,63 @@ function App() {
 
       'AP_PHYSICS_0001': { requires: 'AP_PHYSICS', name: 'AP Physics C: Electricity & Magnetism 1-2' },
       'AP_PHYSICS': { requires: 'AP_PHYSICS_0001', name: 'AP Physics C: Mechanics 1-2' },
+
+      // Science pairs
+      'HON_BIOLOGY_0012': { requires: 'AP_BIOLOGY_0012', name: 'AP Biology 3-4' },
+      'AP_BIOLOGY_0012': { requires: 'HON_BIOLOGY_0012', name: 'Honors Biology 1-2' },
+
+      'HON_CHEMISTRY_0012': { requires: 'AP_CHEMISTRY_0012', name: 'AP Chemistry 3-4' },
+      'AP_CHEMISTRY_0012': { requires: 'HON_CHEMISTRY_0012', name: 'Honors Chemistry 1-2' },
+
+      'HON_WORLD_0013': { requires: 'AP_WORLD_0013', name: 'AP World History 1-2' },
+      'AP_WORLD_0013': { requires: 'HON_WORLD_0013', name: 'Honors World History 1-2' },
+
+      // Statistics/College Algebra pair
+      'COLLEGE_ALGEBRA_0010': { requires: 'AP_STATISTICS_0010', name: 'AP Statistics 1-2' },
+      'STATISTICS_0010': { requires: 'AP_STATISTICS_0010', name: 'AP Statistics 1-2' },
+      'AP_STATISTICS_0010': {
+        requiresOneOf: ['COLLEGE_ALGEBRA_0010', 'STATISTICS_0010'],
+        names: ['College Algebra 1', 'Statistics']
+      },
+
+      // Studio Art pairs
+      'STUDIO_ART_0001': { requires: 'AP_STUDIO', name: 'AP Studio Art 3D: Ceramics' },
+      'AP_STUDIO': { requires: 'STUDIO_ART_0001', name: 'Studio Art 1-2: Ceramics' },
+
+      'STUDIO_ART_0002': { requires: 'AP_STUDIO_0002', name: 'AP Studio Art: Drawing & Painting' },
+      'AP_STUDIO_0002': { requires: 'STUDIO_ART_0002', name: 'Studio Art 1-2: Drawing & Painting' },
+
+      'STUDIO_ART': { requires: 'AP_STUDIO_0001', name: 'AP Studio Art 2D: Photography' },
+      'AP_STUDIO_0001': { requires: 'STUDIO_ART', name: 'Studio Art 1-2: Digital Photography' },
+
+      // Dance/Marching PE pair
+      'MARCHING_PE_0011': { requires: 'DANCE_PROP_0011', name: 'Dance Prop (Tall Flags)' },
+      'DANCE_PROP_0011': { requires: 'MARCHING_PE_0011', name: 'Marching PE Flags/Tall Flags' },
     };
 
     if (linkedRequirements[newCourse.courseId]) {
       const requirement = linkedRequirements[newCourse.courseId];
-      const hasRequiredCourse = yearCourses.some(c => c.courseId === requirement.requires);
 
-      if (!hasRequiredCourse) {
-        setError(`${courseInfo.full_name} must be taken with ${requirement.name}`);
-        return;
+      // Handle "requires one of" (e.g., AP CS A needs CS OR Data Structures OR Studio Art)
+      if (requirement.requiresOneOf) {
+        const hasAnyPartner = requirement.requiresOneOf.some(partnerId =>
+          yearCourses.some(c => c.courseId === partnerId)
+        );
+
+        if (!hasAnyPartner) {
+          const partnerNames = requirement.names.join(', or ');
+          setError(`${courseInfo.full_name} must be taken with one of: ${partnerNames}`);
+          return;
+        }
+      }
+      // Handle standard single requirement
+      else if (requirement.requires) {
+        const hasRequiredCourse = yearCourses.some(c => c.courseId === requirement.requires);
+
+        if (!hasRequiredCourse) {
+          setError(`${courseInfo.full_name} must be taken with ${requirement.name}`);
+          return;
+        }
       }
     }
 
@@ -2769,22 +2822,34 @@ function App() {
         { type: 'bidirectional', courses: ['BRITISH_LITERATURE_0003', 'AP_ENGLISH'] },     // Brit Lit ↔ AP English Lit
         { type: 'bidirectional', courses: ['HON_AMERICAN_0003', 'AP_UNITED'] },           // Hon Am Lit ↔ AP US History
 
+        // Science pairs - ALWAYS TOGETHER
+        { type: 'bidirectional', courses: ['HON_BIOLOGY_0012', 'AP_BIOLOGY_0012'] },       // Honors Biology ↔ AP Biology 3-4
+        { type: 'bidirectional', courses: ['HON_CHEMISTRY_0012', 'AP_CHEMISTRY_0012'] },   // Honors Chemistry ↔ AP Chemistry 3-4
+        { type: 'bidirectional', courses: ['HON_WORLD_0013', 'AP_WORLD_0013'] },           // Honors World History ↔ AP World History
+
+        // Statistics pair - ALWAYS TOGETHER (AP Stats needs one of two prerequisite courses)
+        { type: 'bidirectional', courses: ['COLLEGE_ALGEBRA_0010', 'AP_STATISTICS_0010'] }, // College Algebra ↔ AP Statistics
+        { type: 'bidirectional', courses: ['STATISTICS_0010', 'AP_STATISTICS_0010'] },      // Statistics ↔ AP Statistics
+
+        // Studio Art pairs - ALWAYS TOGETHER
+        { type: 'bidirectional', courses: ['STUDIO_ART', 'AP_STUDIO_0001'] },              // Studio Art Digital Photography ↔ AP Studio 2D
+        { type: 'bidirectional', courses: ['STUDIO_ART_0002', 'AP_STUDIO_0002'] },         // Studio Art Drawing & Painting ↔ AP Studio Drawing
+        { type: 'bidirectional', courses: ['STUDIO_ART_0001', 'AP_STUDIO'] },              // Studio Art Ceramics ↔ AP Studio 3D
+
+        // Dance Prop/Marching PE pair - ALWAYS TOGETHER
+        { type: 'bidirectional', courses: ['MARCHING_PE_0011', 'DANCE_PROP_0011'] },       // Marching PE Flags ↔ Dance Prop (Tall Flags)
+
         // SEQUENTIAL REQUIRED (first triggers second, both required together)
         { type: 'sequential', first: 'AP_PHYSICS_0001', second: 'AP_PHYSICS' },  // AP Physics C: Mechanics → E&M
 
         // BIDIRECTIONAL (Computer Science courses)
         { type: 'bidirectional', courses: ['COMPUTER_SCIENCE_0009', 'AP_COMPUTER_0010'] }, // CS ↔ AP CS A
         { type: 'bidirectional', courses: ['DATA_STRUCTURES_0010', 'AP_COMPUTER_0010'] },  // Data Struct ↔ AP CS A
+        { type: 'bidirectional', courses: ['STUDIO_ART_0003', 'AP_COMPUTER_0010'] },       // Studio Art Graphic Design ↔ AP CS A
 
         // ONE-WAY TRIGGERS (first can be alone, optionally triggers second)
         { type: 'one_way', trigger: 'AP_UNITED_0013', adds: 'CIVICS__0013' },      // AP US Gov → Civics (Civics can be solo)
-        { type: 'one_way', trigger: 'HON_WORLD_0013', adds: 'AP_WORLD_0013' },     // Hon World Hist → AP World
         { type: 'one_way', trigger: 'PHYSICS_OF_0012', adds: 'AP_PHYSICS_0012' },  // Physics → AP Physics 1A-1B
-
-        // Studio Art (one-way)
-        { type: 'one_way', trigger: 'STUDIO_ART', adds: 'AP_STUDIO_0001' },        // Studio Art Digital → AP Studio 2D
-        { type: 'one_way', trigger: 'STUDIO_ART_0002', adds: 'AP_STUDIO_0002' },   // Studio Art Drawing → AP Studio Drawing
-        { type: 'one_way', trigger: 'STUDIO_ART_0001', adds: 'AP_STUDIO' },        // Studio Art Ceramics → AP Studio 3D
       ];
 
       // Process each rule
