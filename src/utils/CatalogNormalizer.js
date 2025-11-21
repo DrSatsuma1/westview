@@ -23,36 +23,64 @@ export function normalizePathway(pathway, courseName, ucCsuCategory) {
   const pathwayLower = pathway.toLowerCase().trim();
   const nameUpper = (courseName || '').toUpperCase();
 
-  // Fix History variations
-  if (pathwayLower.includes('history') || pathwayLower.includes('social')) {
+  // PRIORITY 1: Use UC/CSU category as source of truth
+  // This fixes courses with wrong pathway in catalog
+  if (ucCsuCategory === 'A') {
+    // Category A = History/Social Science
     return 'History/Social Science';
   }
-
-  // Fix Arts courses marked as "Electives" - use UC/CSU category F
+  if (ucCsuCategory === 'B') {
+    // Category B = English
+    // Fixes: American Literature, Humanities (marked as History but are English)
+    return 'English';
+  }
+  if (ucCsuCategory === 'C') {
+    // Category C = Math
+    return 'Math';
+  }
+  if (ucCsuCategory === 'D') {
+    // Category D = Science
+    // Determine if Biological or Physical
+    if (nameUpper.includes('BIOLOGY') || nameUpper.includes('LIVING')) {
+      return 'Science - Biological';
+    }
+    if (nameUpper.includes('CHEMISTRY') || nameUpper.includes('PHYSICS') || nameUpper.includes('PHYSICAL')) {
+      return 'Science - Physical';
+    }
+    // Default to Physical if unclear
+    return 'Science - Physical';
+  }
+  if (ucCsuCategory === 'E') {
+    // Category E = Foreign Language
+    return 'Foreign Language';
+  }
   if (ucCsuCategory === 'F') {
+    // Category F = Fine Arts
+    // Fixes: Web Design (marked as History but is Arts)
     return 'Fine Arts';
   }
+  if (ucCsuCategory === 'G') {
+    // Category G = Elective
+    return 'Electives';
+  }
 
-  // Fix CTE courses incorrectly marked as Science
-  // Common CTE keywords: Biotech, Engineering, Medical, PLTW, Robotics
-  const cteKeywords = ['BIOTECH', 'ENGINEERING', 'MEDICAL', 'PLTW', 'ROBOTICS', 'HEALTH SCIENCE'];
+  // PRIORITY 2: Fix CTE courses (no UC category but should be CTE)
+  const cteKeywords = ['BIOTECH', 'ENGINEERING', 'MEDICAL', 'PLTW', 'ROBOTICS', 'HEALTH SCIENCE', 'BUSINESS', 'MARKETING'];
   if (cteKeywords.some(keyword => nameUpper.includes(keyword))) {
     return 'CTE';
   }
 
-  // Fix Science variations - normalize to canonical form
-  if (pathwayLower.includes('science')) {
-    if (pathwayLower.includes('biological') || pathwayLower.includes('biology')) {
-      return 'Science - Biological';
-    }
-    if (pathwayLower.includes('physical') || pathwayLower.includes('physics') || pathwayLower.includes('chemistry')) {
-      return 'Science - Physical';
-    }
-    // Generic "Science" becomes Physical by default
-    return 'Science - Physical';
+  // PRIORITY 3: Fix PE courses (no UC category)
+  if (pathwayLower.includes('physical education') || nameUpper.includes('ENS ') || nameUpper.includes('PE ')) {
+    return 'Physical Education';
   }
 
-  // Normalize spacing in pathways
+  // PRIORITY 4: Fix Off-Roll courses
+  if (pathwayLower.includes('off-roll') || pathwayLower.includes('off roll')) {
+    return 'Off-Roll';
+  }
+
+  // PRIORITY 5: Fallback - normalize spacing
   return pathway.trim().replace(/\s+/g, ' ');
 }
 
