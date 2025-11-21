@@ -25,7 +25,8 @@ export class CandidateRanker {
 
     // Tier 1: Required core courses (700-950 points)
     // These MUST be taken for graduation
-    if (this.unmet.needsEnglish && course.pathway === 'English') {
+    // English: Check both pathway AND UC/CSU Category B (some English courses are categorized as History/Social Science)
+    if (this.unmet.needsEnglish && (course.pathway === 'English' || course.uc_csu_category === 'B')) {
       score = 900;
       score += this.gradeAppropriatenessBonus(course);
       return score;
