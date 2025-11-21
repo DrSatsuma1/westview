@@ -203,7 +203,7 @@
       "grades_allowed": [
         11
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "A",
       "pathway": "History/Social Science",
@@ -241,7 +241,7 @@
       "grades_allowed": [
         10
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "A",
       "pathway": "History/Social Science",
@@ -279,7 +279,7 @@
       "grades_allowed": [
         11
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "B",
       "pathway": "History/Social Science",
@@ -432,7 +432,7 @@
       "grades_allowed": [
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "B",
       "pathway": "History/Social Science",
@@ -778,7 +778,7 @@
         11,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Math",
@@ -1060,7 +1060,7 @@
         11,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "C",
       "pathway": "Math",
@@ -1305,7 +1305,7 @@
         11,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "D",
       "pathway": "Science - Biological",
@@ -1750,7 +1750,7 @@
         11,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "D",
       "pathway": "Science - Physical",
@@ -1832,7 +1832,7 @@
         11,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "D",
       "pathway": "Science - Biological",
@@ -1873,7 +1873,7 @@
         11,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "D",
       "pathway": "Science - Physical",
@@ -2926,7 +2926,7 @@
         9,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "F",
       "pathway": "Fine Arts",
@@ -3043,7 +3043,7 @@
         9,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "F",
       "pathway": "Fine Arts",
@@ -3082,7 +3082,7 @@
         9,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "F",
       "pathway": "Fine Arts",
@@ -3199,7 +3199,7 @@
         9,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "F",
       "pathway": "Fine Arts",
@@ -3432,7 +3432,7 @@
         11,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "G",
       "pathway": "Electives",
@@ -3471,7 +3471,7 @@
         9,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "F",
       "pathway": "Fine Arts",
@@ -3627,7 +3627,7 @@
         9,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "F",
       "pathway": "Fine Arts",
@@ -3743,7 +3743,7 @@
         9,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "F",
       "pathway": "Fine Arts",
@@ -3821,7 +3821,7 @@
         9,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "F",
       "pathway": "Fine Arts",
@@ -3899,7 +3899,7 @@
         9,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "F",
       "pathway": "Fine Arts",
@@ -4167,7 +4167,7 @@
         10,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Physical Education",
@@ -4398,7 +4398,7 @@
         9,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -4515,7 +4515,7 @@
         10,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Physical Education",
@@ -4836,7 +4836,7 @@
       "grades_allowed": [
         9
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Electives",
@@ -4989,7 +4989,7 @@
         9,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "G",
       "pathway": "CTE",
@@ -5067,7 +5067,7 @@
         11,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "G",
       "pathway": "Math",
@@ -5106,7 +5106,7 @@
         9,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "G",
       "pathway": "Fine Arts",
@@ -5261,7 +5261,7 @@
         9,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Electives",
@@ -5341,7 +5341,7 @@
         11,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "C",
       "pathway": "Math",
@@ -5499,7 +5499,7 @@
         9,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "G",
       "pathway": "Electives",
@@ -5537,7 +5537,7 @@
         11,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "C",
       "pathway": "Science - Physical",
@@ -5576,7 +5576,7 @@
         9,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "F",
       "pathway": "History/Social Science",
@@ -5615,7 +5615,7 @@
         9,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Electives",
@@ -5809,7 +5809,7 @@
         9,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "G",
       "pathway": "History/Social Science",
@@ -5849,7 +5849,7 @@
         11,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Science - Physical",
@@ -6048,7 +6048,7 @@
         9,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "G",
       "pathway": "History/Social Science",
@@ -6087,7 +6087,7 @@
         10,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "G",
       "pathway": "History/Social Science",
@@ -6126,7 +6126,7 @@
         9,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "G",
       "pathway": "Physical Education",
@@ -6477,7 +6477,7 @@
         9,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "History/Social Science",
@@ -6558,7 +6558,7 @@
         11,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Science - Biological",
@@ -6669,7 +6669,7 @@
         9,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Fine Arts",
@@ -6929,7 +6929,7 @@
         9,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Physical Education",
@@ -7125,7 +7125,7 @@
         11,
         12
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "D",
       "pathway": "Science - Biological",
@@ -7240,7 +7240,7 @@
       "grades_allowed": [
         11
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "A",
       "pathway": "History/Social Science",
@@ -7315,7 +7315,7 @@
       "grades_allowed": [
         10
       ],
-      "credits": 5,
+      "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "A",
       "pathway": "History/Social Science",
