@@ -2963,23 +2963,20 @@ function App() {
             {/* Compact Warnings Row */}
             {(scheduleValidation.errors.length > 0 || englishWarnings.length > 0 || peWarnings.length > 0 || prereqWarnings.length > 0) && (
               <div className="flex flex-wrap gap-2 mb-4">
-                {/* Schedule Validation Errors */}
-                {scheduleValidation.errors.length > 0 && (
+                {/* Schedule Validation Errors - show specific issues, not just grades */}
+                {scheduleValidation.errors.length > 0 && scheduleValidation.errors.map((err, idx) => (
                   <WarningBanner
+                    key={idx}
                     type="error"
                     compact={true}
                     message={
                       <>
-                        <span className="font-semibold">Schedule Issues:</span>{' '}
-                        {scheduleValidation.errors.map((err, idx) => (
-                          <span key={idx}>
-                            {idx > 0 && ', '}Grade {err.year}
-                          </span>
-                        ))}
+                        <span className="font-semibold">Grade {err.year}:</span>{' '}
+                        {err.message || 'Schedule issue'}
                       </>
                     }
                   />
-                )}
+                ))}
 
                 {/* English Warning */}
                 {englishWarnings.length > 0 && (
