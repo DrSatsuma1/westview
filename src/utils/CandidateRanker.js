@@ -90,32 +90,33 @@ export class CandidateRanker {
       return score;
     }
 
-    // Tier 2: UC/CSU A-G gaps (300-700 points)
+    // Tier 2: UC/CSU A-G gaps (400-800 points)
     // CRITICAL: A-G must be completed by END OF YEAR 3 (Grade 11)
-    // Prioritize heavily in Years 9-11, de-prioritize in Year 12 (too late for A-G)
+    // Heavily prioritize in Years 9-11 to ensure UC eligibility
     if (this.unmet.agGaps && this.unmet.agGaps.includes(course.uc_csu_category)) {
       const agPriority = {
         'A': 5, // History
         'B': 6, // English (shouldn't happen, but just in case)
         'C': 5, // Math
         'D': 4, // Science
-        'E': 3, // Foreign Language
-        'F': 2, // Arts
+        'E': 6, // Foreign Language - CRITICAL for UC/CSU
+        'F': 3, // Arts
         'G': 1  // Elective
       };
       const priority = agPriority[course.uc_csu_category] || 1;
-      score = 300 + (priority * 50);
+      score = 400 + (priority * 50);
 
-      // Year 12: URGENT - A-G deadline passed, heavily de-prioritize
-      // (Students should have completed A-G by end of Year 11)
+      // Year 12: A-G deadline passed - still suggest but lower priority
       if (this.year === 12) {
-        score -= 200; // Drop priority significantly (Year 12 courses don't count)
+        score -= 100; // Lower priority but still suggest
       }
-      // Years 9-11: BOOST priority - need to complete A-G by end of Year 11
+      // Years 9-11: CRITICAL - must complete A-G by end of Year 11
       else if (this.year === 11) {
-        score += 100; // Year 11 is last chance for A-G
+        score += 200; // URGENT - last chance for A-G
       } else if (this.year === 10) {
-        score += 50; // Year 10 important for A-G progress
+        score += 150; // Important for A-G progress
+      } else if (this.year === 9) {
+        score += 100; // Start A-G early
       }
     }
 
@@ -134,7 +135,7 @@ export class CandidateRanker {
             score = 400 + continuationBonus; // Still high priority
           }
         } else if (this.year === 9) {
-          score = 350; // Elevated priority for Grade 9 to start language
+          score = 800; // CRITICAL: Start foreign language Year 1 for UC/CSU (higher than history)
         } else {
           score = 250; // High priority elective (needed for UC/CSU)
         }
@@ -151,7 +152,7 @@ export class CandidateRanker {
     score += this.gradeAppropriatenessBonus(course);
     score -= this.penalizeAP(course);
     score -= this.penalizeYearlong(course);
-    score -= this.penalizeHonors(course);
+    // No honors penalty - honors courses are fine to suggest
 
     return Math.max(0, score); // Never go negative
   }
@@ -242,20 +243,19 @@ export class CandidateRanker {
   /**
    * Penalty for yearlong courses
    * @param {Object} course
-   * @returns {number} - Penalty points (0-200)
+   * @returns {number} - Penalty points (0-500)
    */
   penalizeYearlong(course) {
     const isYearlong = course.term_length === 'yearlong';
     if (!isYearlong) return 0;
 
-    // Grade 12: heavily avoid yearlong (can't finish if graduating early)
-    if (this.year === 12) return 200;
-
-    // Spring term: cannot suggest yearlong courses (must start in Fall)
+    // Spring term: cannot START yearlong courses in Spring (must start in Fall)
+    // This blocks suggesting a NEW yearlong course in Spring
     if (this.term === 'spring') return 500; // Effectively blocks it
 
-    // Fall term, grades 9-11: slight penalty (prefer flexibility)
-    return 25;
+    // No penalty for yearlong in Fall - they're fine to start
+    // (Grade 12 yearlong is fine unless early graduation mode)
+    return 0;
   }
 
   /**
