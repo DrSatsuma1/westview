@@ -2288,7 +2288,8 @@ function App() {
         year,
         term: term || 'fall', // Default to fall if no term specified
         westviewReqs: WESTVIEW_REQUIREMENTS,
-        agReqs: AG_REQUIREMENTS
+        agReqs: AG_REQUIREMENTS,
+        checkEligibility: checkCourseEligibility // Pass prerequisite checker
       });
 
       allSuggestions.push(...yearSuggestions);

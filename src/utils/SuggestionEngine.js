@@ -34,6 +34,7 @@ export class SuggestionEngine {
    * @param {string} params.term - 'fall' or 'spring'
    * @param {Object} params.westviewReqs - Westview graduation requirements
    * @param {Object} params.agReqs - UC/CSU A-G requirements
+   * @param {Function} params.checkEligibility - Function to check course prerequisites
    * @param {number} params.targetCount - Optional: override default target
    * @returns {Array} - Suggested courses with metadata
    */
@@ -43,6 +44,7 @@ export class SuggestionEngine {
     term,
     westviewReqs,
     agReqs,
+    checkEligibility = null,
     targetCount = null
   }) {
     const yearInt = parseInt(year);
@@ -90,6 +92,13 @@ export class SuggestionEngine {
     for (const { course, score } of scored) {
       if (suggestions.length >= target) break;
 
+      // Check prerequisites (if checker provided)
+      if (checkEligibility) {
+        const eligibility = checkEligibility(course.id, year);
+        // Skip if course has blocking prerequisite issues
+        if (eligibility.blocking) continue;
+      }
+
       // Check if this course passes business rules
       if (!businessRules.canAddCourse(course)) continue;
 
@@ -115,15 +124,15 @@ export class SuggestionEngine {
    */
   buildCandidatePool(year, courses) {
     const yearInt = parseInt(year);
-    const yearCourseIds = new Set(
-      courses.filter(c => c.year === year).map(c => c.courseId)
-    );
+
+    // Exclude courses already scheduled in ANY year (not just current year)
+    const allScheduledCourseIds = new Set(courses.map(c => c.courseId));
 
     return Object.entries(this.catalog)
       .filter(([id, course]) => {
         // Basic eligibility only - no pathway/AP/yearlong filtering here
         if (this.deprecated.includes(id)) return false;
-        if (yearCourseIds.has(id)) return false;
+        if (allScheduledCourseIds.has(id)) return false; // Already taken in any year
         if (!course.grades_allowed?.includes(yearInt)) return false;
 
         // Never suggest Special Ed courses
