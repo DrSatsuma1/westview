@@ -1,0 +1,14 @@
+{
+  "general": {
+    "previewFeatures": true
+  },
+  "ui": {
+    "accessibility": {
+      "screenReader": true
+    },
+    "theme": "Default"
+  },
+  "ide": {
+    "enabled": true
+  }
+}
