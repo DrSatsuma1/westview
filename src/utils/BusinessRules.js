@@ -28,6 +28,7 @@ export class BusinessRules {
     return (
       this.checkFineArtsLimit(course) &&
       this.checkPELimit(course) &&
+      this.checkIntegratedMathLimit(course) &&
       this.checkForeignLanguageConsistency(course) &&
       this.checkYearlongTermPlacement(course) &&
       this.checkDuplicates(course) &&
@@ -83,6 +84,37 @@ export class BusinessRules {
     );
 
     return !hasPEInTerm && !hasPEInSuggestions;
+  }
+
+  /**
+   * RULE: Only one Integrated Math course per semester
+   * (Int Math I, II, III should not be in same semester)
+   * @param {Object} course
+   * @returns {boolean}
+   */
+  checkIntegratedMathLimit(course) {
+    const courseNameUpper = course.full_name.toUpperCase();
+    const isIntegratedMath = courseNameUpper.includes('INTEGRATED MATHEMATICS');
+
+    if (!isIntegratedMath) return true;
+
+    // Check existing courses in this term
+    const termCourses = this.courses.filter(c =>
+      c.year === this.year && this.termQuarters.includes(c.quarter)
+    );
+
+    const hasIntMathInTerm = termCourses.some(c => {
+      const info = this.catalog[c.courseId];
+      return info && info.full_name.toUpperCase().includes('INTEGRATED MATHEMATICS');
+    });
+
+    // Check already suggested courses for this term
+    const hasIntMathInSuggestions = this.suggestions.some(s => {
+      const info = this.catalog[s.courseId];
+      return info && info.full_name.toUpperCase().includes('INTEGRATED MATHEMATICS');
+    });
+
+    return !hasIntMathInTerm && !hasIntMathInSuggestions;
   }
 
   /**
