@@ -2720,7 +2720,8 @@ function App() {
         { honors: 'HON_WORLD_0013', ap: 'AP_WORLD_0013' },       // Honors World History + AP World History
         { honors: 'HON_CHEMISTRY_0012', ap: 'AP_CHEMISTRY_0012' }, // Honors Chemistry + AP Chemistry
         { honors: 'PHYSICS_OF_0012', ap: 'AP_PHYSICS_0012' },      // Physics of the Universe + AP Physics 1A-1B
-        { honors: 'AP_PHYSICS_0001', ap: 'AP_PHYSICS' }           // AP Physics C: Mechanics + AP Physics C: E&M
+        { honors: 'AP_PHYSICS_0001', ap: 'AP_PHYSICS' },          // AP Physics C: Mechanics + AP Physics C: E&M
+        { honors: 'HON_SPANISH_0004', ap: 'AP_SPANISH_0004' }     // Honors Spanish 7-8 + AP Spanish Language
       ];
 
       linkedCoursePairs.forEach(pair => {
