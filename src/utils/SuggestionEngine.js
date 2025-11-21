@@ -139,6 +139,9 @@ export class SuggestionEngine {
         // Never suggest Special Ed courses
         if (course.full_name.toUpperCase().includes('SPECIAL ED')) return false;
 
+        // Never suggest ROBOTICS (complex scheduling constraints)
+        if (course.full_name.toUpperCase() === 'ROBOTICS') return false;
+
         return true;
       })
       .map(([id, course]) => ({ id, ...course }));

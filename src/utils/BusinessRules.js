@@ -27,6 +27,7 @@ export class BusinessRules {
   canAddCourse(course) {
     return (
       this.checkAPGrade9Restriction(course) &&
+      this.checkPETotalLimit(course) &&
       this.checkFineArtsLimit(course) &&
       this.checkPELimit(course) &&
       this.checkEnglishLimit(course) &&
@@ -52,6 +53,32 @@ export class BusinessRules {
 
     const courseNameUpper = course.full_name.toUpperCase();
     return !courseNameUpper.includes('AP');
+  }
+
+  /**
+   * RULE: Maximum 3 PE courses total across all 4 years
+   * @param {Object} course
+   * @returns {boolean}
+   */
+  checkPETotalLimit(course) {
+    if (course.pathway !== 'Physical Education') return true;
+
+    // Count PE courses already in schedule
+    const peCourses = this.courses.filter(c => {
+      const info = this.catalog[c.courseId];
+      return info && info.pathway === 'Physical Education';
+    });
+
+    // Count PE courses already in suggestions
+    const peInSuggestions = this.suggestions.filter(s => {
+      const info = this.catalog[s.courseId];
+      return info && info.pathway === 'Physical Education';
+    });
+
+    const totalPE = peCourses.length + peInSuggestions.length;
+
+    // Maximum 3 PE courses total
+    return totalPE < 3;
   }
 
   /**
