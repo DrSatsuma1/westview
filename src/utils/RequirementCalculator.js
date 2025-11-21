@@ -23,12 +23,14 @@ export class RequirementCalculator {
    */
   getUnmetWestview(year) {
     const yearCourses = this.courses.filter(c => c.year === year);
+    const yearInt = parseInt(year);
 
     return {
       needsEnglish: !this.hasPathway(yearCourses, 'English'),
       needsMath: !this.hasPathway(yearCourses, 'Math'),
       needsHistory: !this.hasPathway(yearCourses, 'History/Social Science'),
-      needsScience: !this.hasPathway(yearCourses, ['Science - Biological', 'Science - Physical']),
+      // Science is required for grades 9-10 (Biology in Grade 9, Chemistry in Grade 10)
+      needsScience: (yearInt === 9 || yearInt === 10) && !this.hasPathway(yearCourses, ['Science - Biological', 'Science - Physical']),
       needsPE: this.checkPERequirement(year, yearCourses)
     };
   }
