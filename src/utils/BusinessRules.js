@@ -42,7 +42,9 @@ export class BusinessRules {
       this.checkYearlongTermPlacement(course) &&
       this.checkDuplicates(course) &&
       this.checkSameSemesterLanguageLimit(course) &&
-      this.checkCalcBCReviewRequiresConcurrent(course)
+      this.checkCalcBCReviewRequiresConcurrent(course) &&
+      this.checkForeignLanguageSequence(course) &&
+      this.checkAPCalcBCPrerequisite(course)
     );
   }
 
@@ -437,5 +439,87 @@ export class BusinessRules {
 
     // Single-word languages (e.g., "SPANISH")
     return words[0];
+  }
+
+  /**
+   * RULE: Foreign language courses must be taken in sequence
+   * Cannot suggest level 3-4 without having 1-2 completed, etc.
+   * @param {Object} course
+   * @returns {boolean}
+   */
+  checkForeignLanguageSequence(course) {
+    if (course.pathway !== 'Foreign Language') return true;
+
+    // Extract level from course name (e.g., "3-4" from "SPANISH 3-4")
+    const levelMatch = course.full_name.toUpperCase().match(/(\d+)-(\d+)/);
+    if (!levelMatch) return true; // No level pattern, allow (e.g., AP courses)
+
+    const courseLevel = parseInt(levelMatch[1]);
+
+    // Level 1-2 has no prerequisite
+    if (courseLevel === 1) return true;
+
+    // For higher levels, check if prerequisite level is completed
+    const prerequisiteLevel = courseLevel - 2; // 3-4 needs 1-2, 5-6 needs 3-4, etc.
+    const language = this.extractLanguage(course.full_name);
+
+    // Check all scheduled courses for prerequisite completion
+    const hasPrerequisite = this.courses.some(c => {
+      const info = this.catalog[c.courseId];
+      if (!info || info.pathway !== 'Foreign Language') return false;
+
+      const cLanguage = this.extractLanguage(info.full_name);
+      if (cLanguage !== language) return false;
+
+      const cLevelMatch = info.full_name.toUpperCase().match(/(\d+)-(\d+)/);
+      if (!cLevelMatch) return false;
+
+      const cLevel = parseInt(cLevelMatch[1]);
+      return cLevel === prerequisiteLevel;
+    });
+
+    // Also check suggestions for prerequisite
+    const hasPrerequisiteInSuggestions = this.suggestions.some(s => {
+      const info = this.catalog[s.courseId];
+      if (!info || info.pathway !== 'Foreign Language') return false;
+
+      const sLanguage = this.extractLanguage(info.full_name);
+      if (sLanguage !== language) return false;
+
+      const sLevelMatch = info.full_name.toUpperCase().match(/(\d+)-(\d+)/);
+      if (!sLevelMatch) return false;
+
+      const sLevel = parseInt(sLevelMatch[1]);
+      return sLevel === prerequisiteLevel;
+    });
+
+    return hasPrerequisite || hasPrerequisiteInSuggestions;
+  }
+
+  /**
+   * RULE: AP Calculus BC requires AP Calculus AB as prerequisite
+   * Only suggest AP Calc BC if user has AP Calc AB completed
+   * @param {Object} course
+   * @returns {boolean}
+   */
+  checkAPCalcBCPrerequisite(course) {
+    const nameUpper = course.full_name.toUpperCase();
+
+    // Only apply to AP Calculus BC
+    if (!nameUpper.includes('AP CALCULUS BC')) return true;
+
+    // Check if AP Calculus AB is in scheduled courses
+    const hasAPCalcAB = this.courses.some(c => {
+      const info = this.catalog[c.courseId];
+      return info && info.full_name.toUpperCase().includes('AP CALCULUS AB');
+    });
+
+    // Also check suggestions
+    const hasAPCalcABInSuggestions = this.suggestions.some(s => {
+      const info = this.catalog[s.courseId];
+      return info && info.full_name.toUpperCase().includes('AP CALCULUS AB');
+    });
+
+    return hasAPCalcAB || hasAPCalcABInSuggestions;
   }
 }

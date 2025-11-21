@@ -71,7 +71,7 @@ export class SuggestionEngine {
     const candidates = this.buildCandidatePool(year, courses);
 
     // Step 3: Rank candidates by priority
-    const ranker = new CandidateRanker(unmetRequirements, year, term);
+    const ranker = new CandidateRanker(unmetRequirements, year, term, courses, this.catalog);
     const scored = candidates
       .map(course => ({
         course,

@@ -9,10 +9,12 @@
  */
 
 export class CandidateRanker {
-  constructor(unmetRequirements, year, term) {
+  constructor(unmetRequirements, year, term, courses = [], catalog = {}) {
     this.unmet = unmetRequirements;
     this.year = parseInt(year);
     this.term = term;
+    this.courses = courses;
+    this.catalog = catalog;
   }
 
   /**
@@ -121,9 +123,18 @@ export class CandidateRanker {
     // Fill to target course count
     if (score === 0) {
       if (course.pathway === 'Foreign Language') {
-        // Grade 9: Foreign Language is HIGH priority (recommend both semesters)
-        if (this.year === 9) {
-          score = 350; // Elevated priority for Grade 9 to ensure suggestion
+        // Check if this is the NEXT level in user's language sequence
+        const continuationBonus = this.getLanguageContinuationBonus(course);
+        if (continuationBonus > 0) {
+          // User has started this language - prioritize continuation!
+          // Years 10-11: CRITICAL to meet UC/CSU by end of Year 3
+          if (this.year === 10 || this.year === 11) {
+            score = 600 + continuationBonus; // Very high priority
+          } else {
+            score = 400 + continuationBonus; // Still high priority
+          }
+        } else if (this.year === 9) {
+          score = 350; // Elevated priority for Grade 9 to start language
         } else {
           score = 250; // High priority elective (needed for UC/CSU)
         }
@@ -276,5 +287,85 @@ export class CandidateRanker {
       nameUpper.includes('BIOLOGY') ||
       nameUpper.includes('ENGLISH 1')
     );
+  }
+
+  /**
+   * Calculate bonus for continuing a language sequence
+   * Returns high bonus if this course is the NEXT level after what user has
+   * @param {Object} course
+   * @returns {number} - Bonus (0 if not continuation, 50-100 if it is)
+   */
+  getLanguageContinuationBonus(course) {
+    if (course.pathway !== 'Foreign Language') return 0;
+
+    // Extract level from course name
+    const levelMatch = course.full_name.toUpperCase().match(/(\d+)-(\d+)/);
+    if (!levelMatch) return 0;
+
+    const courseLevel = parseInt(levelMatch[1]);
+    const language = this.extractLanguage(course.full_name);
+
+    // Find user's highest level in this language
+    const userHighestLevel = this.getUserHighestLanguageLevel(language);
+
+    // Check if this course is the NEXT level
+    const expectedNextLevel = userHighestLevel + 2; // 1-2 → 3-4, 3-4 → 5-6, etc.
+
+    if (courseLevel === expectedNextLevel) {
+      // This IS the next level - give big bonus!
+      // Higher bonus for earlier completion (UC/CSU deadline is Year 3)
+      if (this.year <= 11) {
+        return 100; // Critical to complete by Year 3
+      }
+      return 50;
+    }
+
+    return 0; // Not the next level
+  }
+
+  /**
+   * Get user's highest completed level for a specific language
+   * @param {string} language - e.g., "SPANISH", "CHINESE"
+   * @returns {number} - Highest level (1, 3, 5, 7, 9) or 0 if none
+   */
+  getUserHighestLanguageLevel(language) {
+    let highestLevel = 0;
+
+    this.courses.forEach(c => {
+      const info = this.catalog[c.courseId];
+      if (!info || info.pathway !== 'Foreign Language') return;
+
+      const cLanguage = this.extractLanguage(info.full_name);
+      if (cLanguage !== language) return;
+
+      const levelMatch = info.full_name.toUpperCase().match(/(\d+)-(\d+)/);
+      if (levelMatch) {
+        const level = parseInt(levelMatch[1]);
+        if (level > highestLevel) {
+          highestLevel = level;
+        }
+      }
+    });
+
+    return highestLevel;
+  }
+
+  /**
+   * Extract language name from course title
+   * @param {string} courseName - e.g., "SPANISH 3-4" or "CHINESE MANDARIN 1-2"
+   * @returns {string} - e.g., "SPANISH" or "CHINESE"
+   */
+  extractLanguage(courseName) {
+    const words = courseName.toUpperCase().split(' ');
+
+    // Multi-word languages (e.g., "CHINESE MANDARIN")
+    if (words.length > 1 && words[1].match(/^[A-Z]+$/)) {
+      if (!words[1].match(/\d/)) {
+        return `${words[0]} ${words[1]}`;
+      }
+    }
+
+    // Single-word languages (e.g., "SPANISH")
+    return words[0];
   }
 }
