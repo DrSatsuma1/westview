@@ -9,12 +9,17 @@ import { ProgressBar } from './components/progress/ProgressBar.jsx';
 import { WarningBanner } from './components/ui/WarningBanner.jsx';
 import { RequirementsSidebar } from './components/progress/RequirementsSidebar.jsx';
 import { TestScoreForm } from './components/test-scores/TestScoreForm.jsx';
+import { getNormalizedCatalog } from './utils/CatalogNormalizer.js';
+import { SuggestionEngine } from './utils/SuggestionEngine.js';
 
 // Load course catalog from JSON
 const COURSE_CATALOG = courseCatalogData.courses.reduce((acc, course) => {
   acc[course.course_id] = course;
   return acc;
 }, {});
+
+// Create normalized catalog (fixes pathway inconsistencies)
+const NORMALIZED_CATALOG = getNormalizedCatalog(COURSE_CATALOG);
 
 // Initialize scheduling engine
 const schedulingEngine = new SchedulingEngine(courseCatalogData.courses);
@@ -299,10 +304,21 @@ function App() {
   // Course suggestions
   const [suggestedCourses, setSuggestedCourses] = useState([]);
 
+  // Initialize suggestion engine (ONE-TIME setup with normalized catalog)
+  const [suggestionEngine] = useState(() => {
+    return new SuggestionEngine(NORMALIZED_CATALOG, DEPRECATED_COURSES);
+  });
+
   // Track if student met Foreign Language requirement in grades 7/8
   const [metForeignLanguageIn78, setMetForeignLanguageIn78] = useState(() => {
     const saved = localStorage.getItem('westview-met-fl-in-78');
     return saved ? JSON.parse(saved) : false;
+  });
+
+  // Locked semesters - prevent auto-suggest from replacing courses
+  const [lockedSemesters, setLockedSemesters] = useState(() => {
+    const saved = localStorage.getItem('westview-locked-semesters');
+    return saved ? JSON.parse(saved) : {};
   });
 
   // Save courses to localStorage whenever they change
@@ -359,6 +375,11 @@ function App() {
   React.useEffect(() => {
     localStorage.setItem('westview-met-fl-in-78', JSON.stringify(metForeignLanguageIn78));
   }, [metForeignLanguageIn78]);
+
+  // Save locked semesters to localStorage
+  React.useEffect(() => {
+    localStorage.setItem('westview-locked-semesters', JSON.stringify(lockedSemesters));
+  }, [lockedSemesters]);
 
   // Calculate Westview graduation progress
   const westviewProgress = useMemo(() => {
@@ -1996,6 +2017,15 @@ function App() {
       return;
     }
 
+    // Check for duplicate course across all 4 years (unless repeat courses allowed)
+    if (!allowRepeatCourses) {
+      const alreadyHasCourseInSchedule = courses.some(c => c.courseId === newCourse.courseId);
+      if (alreadyHasCourseInSchedule) {
+        setError('This course is already in your 4-year schedule. Enable "Allow Repeat Courses" in settings to override.');
+        return;
+      }
+    }
+
     // Check PE credit cap (max 40 credits toward graduation)
     if (courseInfo.pathway === 'Physical Education') {
       const totalPECredits = courses
@@ -2264,674 +2294,40 @@ function App() {
   // Generate course suggestions based on missing requirements
   // term parameter: 'fall' or 'spring' - to check requirements per term, not per year
   const generateCourseSuggestions = (term = null) => {
-    const suggestions = [];
-
     // Determine which years to check based on early graduation mode
     const yearsToCheck = earlyGradMode.enabled
       ? (earlyGradMode.targetYear === '3year' ? ['9', '10', '11'] : ['9', '10', '11', '12'])
       : ['9', '10', '11', '12'];
 
-    // Determine which quarters belong to this term
-    const termQuarters = term === 'fall' ? ['Q1', 'Q2'] : (term === 'spring' ? ['Q3', 'Q4'] : null);
+    const allSuggestions = [];
 
-    // Determine target quarter for suggestions (Q1 for fall, Q3 for spring, null if no term specified)
-    const targetQuarter = term === 'fall' ? 'Q1' : (term === 'spring' ? 'Q3' : null);
-
-    // Check for missing English courses (required all years)
-    yearsToCheck.forEach(year => {
-      const yearCourses = courses.filter(c => c.year === year);
-      // Check entire YEAR for English (students take one English per year, not per semester)
-      const hasEnglish = yearCourses.some(c => {
-        const info = COURSE_CATALOG[c.courseId];
-        return info && info.pathway === 'English';
+    // Generate suggestions for each year
+    for (const year of yearsToCheck) {
+      const yearSuggestions = suggestionEngine.generateSuggestions({
+        courses,
+        year,
+        term: term || 'fall', // Default to fall if no term specified
+        westviewReqs: WESTVIEW_REQUIREMENTS,
+        agReqs: AG_REQUIREMENTS,
+        checkEligibility: checkCourseEligibility // Pass prerequisite checker
       });
 
-      if (!hasEnglish) {
-        // Suggest grade-appropriate English course
-        const englishCourses = Object.entries(COURSE_CATALOG)
-          .filter(([id, course]) =>
-            course.pathway === 'English' &&
-            course.grades_allowed.includes(parseInt(year)) &&
-            !course.full_name.toUpperCase().includes('AP') &&
-            !course.full_name.toUpperCase().includes('SPECIAL ED') && // Never suggest Special Ed
-            !(year === '12' && isYearlongCourse(course)) && // Grade 12: avoid yearlong courses
-            !DEPRECATED_COURSES.includes(id) // Exclude deprecated courses
-          )
-          .map(([id, course]) => ({ id, ...course }));
-
-        if (englishCourses.length > 0) {
-          // For Grade 9, prefer ENGLISH 1-2 or HONORS ENGLISH 1-2
-          let suggestedEnglish = englishCourses[0];
-          if (year === '9') {
-            suggestedEnglish = englishCourses.find(c =>
-              c.full_name.toUpperCase().includes('ENGLISH 1-2')
-            ) || englishCourses[0];
-          }
-
-          suggestions.push({
-            courseId: suggestedEnglish.id,
-            year,
-            quarter: targetQuarter, // Assigned to specific term when term is provided
-            reason: `Grade ${year} requires an English course`,
-            courseName: suggestedEnglish.full_name
-          });
-        }
-      }
-    });
-
-    // Check for missing ENS/PE
-    // Year 1: ENS 3-4 in Fall, ENS 1-2 in Spring
-    // Years 2-3: No PE required
-    // Year 4: One PE class
-
-    // Grade 9 PE requirements
-    if (yearsToCheck.includes('9')) {
-      const year = '9';
-      const yearCourses = courses.filter(c => c.year === year);
-      const fallCourses = yearCourses.filter(c => c.quarter === 'Q1' || c.quarter === 'Q2');
-      const springCourses = yearCourses.filter(c => c.quarter === 'Q3' || c.quarter === 'Q4');
-
-      const hasPEInFall = fallCourses.some(c => {
-        const info = COURSE_CATALOG[c.courseId];
-        return info && info.pathway === 'Physical Education';
-      });
-
-      const hasPEInSpring = springCourses.some(c => {
-        const info = COURSE_CATALOG[c.courseId];
-        return info && info.pathway === 'Physical Education';
-      });
-
-      // Suggest ENS 3-4 in Fall
-      if (!hasPEInFall) {
-        const ens34 = Object.entries(COURSE_CATALOG)
-          .find(([id, course]) =>
-            course.full_name.toUpperCase().includes('ENS 3-4') &&
-            course.grades_allowed.includes(9) &&
-            !DEPRECATED_COURSES.includes(id)
-          );
-
-        if (ens34) {
-          const [courseId, courseInfo] = ens34;
-          suggestions.push({
-            courseId,
-            year: '9',
-            quarter: 'Q1',
-            reason: 'ENS 3-4 recommended for Grade 9 Fall',
-            courseName: courseInfo.full_name
-          });
-        }
-      }
-
-      // Suggest ENS 1-2 in Spring
-      if (!hasPEInSpring) {
-        const ens12 = Object.entries(COURSE_CATALOG)
-          .find(([id, course]) =>
-            course.full_name.toUpperCase().includes('ENS 1-2') &&
-            course.grades_allowed.includes(9) &&
-            !DEPRECATED_COURSES.includes(id)
-          );
-
-        if (ens12) {
-          const [courseId, courseInfo] = ens12;
-          suggestions.push({
-            courseId,
-            year: '9',
-            quarter: 'Q3',
-            reason: 'ENS 1-2 recommended for Grade 9 Spring',
-            courseName: courseInfo.full_name
-          });
-        }
-      }
+      allSuggestions.push(...yearSuggestions);
     }
 
-    // Grade 12 PE requirement (one PE class for the year)
-    if (yearsToCheck.includes('12')) {
-      const year = '12';
-      const yearCourses = courses.filter(c => c.year === year);
-
-      const hasPE = yearCourses.some(c => {
-        const info = COURSE_CATALOG[c.courseId];
-        return info && info.pathway === 'Physical Education';
-      });
-
-      if (!hasPE) {
-        const peCourses = Object.entries(COURSE_CATALOG)
-          .filter(([id, course]) =>
-            course.pathway === 'Physical Education' &&
-            course.grades_allowed.includes(12) &&
-            !course.full_name.toUpperCase().includes('ENS') && // Not ENS courses
-            !DEPRECATED_COURSES.includes(id)
-          )
-          .map(([id, course]) => ({ id, ...course }));
-
-        if (peCourses.length > 0) {
-          suggestions.push({
-            courseId: peCourses[0].id,
-            year: '12',
-            quarter: targetQuarter, // Flexible - can be scheduled in either term
-            reason: 'PE required for Grade 12',
-            courseName: peCourses[0].full_name
-          });
-        }
-      }
-    }
-
-    // Check for missing Math courses
-    yearsToCheck.forEach(year => {
-      const yearCourses = courses.filter(c => c.year === year);
-      // Check entire YEAR for Math (students typically take one Math per year)
-      const hasMath = yearCourses.some(c => {
-        const info = COURSE_CATALOG[c.courseId];
-        return info && info.pathway === 'Math';
-      });
-
-      if (!hasMath) {
-        // Suggest appropriate math course based on grade
-        const mathCourses = Object.entries(COURSE_CATALOG)
-          .filter(([id, course]) => {
-            const courseName = course.full_name.toUpperCase();
-            return (
-              course.pathway === 'Math' &&
-              course.grades_allowed.includes(parseInt(year)) &&
-              !courseName.includes('HONORS') &&
-              !courseName.includes('AP') &&
-              !(year === '12' && isYearlongCourse(course)) && // Grade 12: avoid yearlong courses
-              !(year === '12' && (courseName.includes('INTEGRATED MATHEMATICS I ') ||
-                                   courseName.includes('INTEGRATED MATHEMATICS II'))) && // No Int Math I/II in Year 12
-              !DEPRECATED_COURSES.includes(id)
-            );
-          })
-          .map(([id, course]) => ({ id, ...course }));
-
-        if (mathCourses.length > 0) {
-          // Integrated Math I only for Grade 9
-          let suggestedMath = (year === '9' && mathCourses.find(c => c.full_name.includes('INTEGRATED MATHEMATICS I'))) || mathCourses[0];
-
-          // Check eligibility (has met prerequisites)
-          const eligibility = checkCourseEligibility(suggestedMath.id, year);
-
-          // Only suggest if eligible (no blocking prerequisites)
-          if (eligibility.eligible || !eligibility.blocking) {
-            // Math placement: Use the target quarter for the current term being filled
-            // (User explicitly clicking "Auto-fill Fall" should get math in Fall)
-            const mathQuarter = targetQuarter;
-
-            suggestions.push({
-              courseId: suggestedMath.id,
-              year,
-              quarter: mathQuarter,
-              reason: `Math course required for Grade ${year}`,
-              courseName: suggestedMath.full_name
-            });
-          }
-        }
-      }
-    });
-
-    // Check for missing Science courses (need both biological and physical)
-    yearsToCheck.forEach(year => {
-      const yearCourses = courses.filter(c => c.year === year);
-      // Check entire YEAR for Science (students typically take one Science per year)
-      const hasScience = yearCourses.some(c => {
-        const info = COURSE_CATALOG[c.courseId];
-        return info && (info.pathway === 'Science - Biological' || info.pathway === 'Science - Physical');
-      });
-
-      if (!hasScience && year === '9') {
-        // Suggest Biology for grade 9
-        const biologyCourses = Object.entries(COURSE_CATALOG)
-          .filter(([id, course]) =>
-            course.pathway === 'Science - Biological' &&
-            course.grades_allowed.includes(9) &&
-            !course.full_name.toUpperCase().includes('AP') &&
-            !DEPRECATED_COURSES.includes(id)
-          )
-          .map(([id, course]) => ({ id, ...course }));
-
-        if (biologyCourses.length > 0) {
-          suggestions.push({
-            courseId: biologyCourses[0].id,
-            year: '9',
-            quarter: targetQuarter, // Flexible - can be scheduled in either term
-            reason: 'Biological science required',
-            courseName: biologyCourses[0].full_name
-          });
-        }
-      } else if (!hasScience && year === '10') {
-        // Suggest Chemistry for grade 10
-        const chemistryCourses = Object.entries(COURSE_CATALOG)
-          .filter(([id, course]) =>
-            course.pathway === 'Science - Physical' &&
-            course.grades_allowed.includes(10) &&
-            course.full_name.toUpperCase().includes('CHEMISTRY') &&
-            !DEPRECATED_COURSES.includes(id)
-          )
-          .map(([id, course]) => ({ id, ...course }));
-
-        if (chemistryCourses.length > 0) {
-          suggestions.push({
-            courseId: chemistryCourses[0].id,
-            year: '10',
-            quarter: targetQuarter, // Flexible - can be scheduled in either term
-            reason: 'Physical science required',
-            courseName: chemistryCourses[0].full_name
-          });
-        }
-      }
-    });
-
-    // Check for missing History/Social Science
-    yearsToCheck.forEach(year => {
-      const yearCourses = courses.filter(c => c.year === year);
-      // Check entire YEAR for History (students typically take one History per year)
-      const hasHistory = yearCourses.some(c => {
-        const info = COURSE_CATALOG[c.courseId];
-        return info && info.pathway === 'History/Social Science';
-      });
-
-      if (!hasHistory && (year === '10' || year === '11' || year === '12')) {
-        const historyCourses = Object.entries(COURSE_CATALOG)
-          .filter(([id, course]) =>
-            course.pathway === 'History/Social Science' &&
-            course.grades_allowed.includes(parseInt(year)) &&
-            !course.full_name.toUpperCase().includes('AP') &&
-            !course.full_name.toUpperCase().includes('HONORS') &&
-            !DEPRECATED_COURSES.includes(id)
-          )
-          .map(([id, course]) => ({ id, ...course }));
-
-        if (historyCourses.length > 0) {
-          let suggestedCourse = historyCourses[0];
-
-          // Prefer World History for grade 10, US History for grade 11, Civics for grade 12
-          if (year === '10') {
-            suggestedCourse = historyCourses.find(c => c.full_name.toUpperCase().includes('WORLD HISTORY')) || suggestedCourse;
-          } else if (year === '11') {
-            suggestedCourse = historyCourses.find(c => c.full_name.toUpperCase().includes('UNITED STATES HISTORY')) || suggestedCourse;
-          } else if (year === '12') {
-            suggestedCourse = historyCourses.find(c => c.full_name.toUpperCase().includes('CIVICS')) || suggestedCourse;
-          }
-
-          // Check eligibility (has met prerequisites)
-          const eligibility = checkCourseEligibility(suggestedCourse.id, year);
-
-          // Only suggest if eligible (no blocking prerequisites)
-          if (eligibility.eligible || !eligibility.blocking) {
-            suggestions.push({
-              courseId: suggestedCourse.id,
-              year,
-              quarter: targetQuarter, // Flexible - can be scheduled in either term
-              reason: `History/Social Science required for Grade ${year}`,
-              courseName: suggestedCourse.full_name
-            });
-          }
-        }
-      }
-    });
-
-    // CTE Pathway Suggestions
-    if (ctePathwayMode.enabled && ctePathwayMode.pathway) {
-      const pathway = CTE_PATHWAYS[ctePathwayMode.pathway];
-      const allCourses = courses;
-
-      // Check for concentrator course
-      const concentratorCourses = pathway.courses.filter(c => c.level === 'Concentrator');
-      const hasConcentrator = concentratorCourses.some(cteCourse => {
-        return allCourses.some(scheduledCourse => {
-          const info = COURSE_CATALOG[scheduledCourse.courseId];
-          return info && info.full_name.toUpperCase().includes(cteCourse.name.toUpperCase());
-        });
-      });
-
-      if (!hasConcentrator && concentratorCourses.length > 0) {
-        // Suggest first concentrator course
-        const cteCourse = concentratorCourses[0];
-        const matchingCourse = Object.entries(COURSE_CATALOG)
-          .find(([id, course]) =>
-            course.full_name.toUpperCase().includes(cteCourse.name.toUpperCase()) &&
-            !DEPRECATED_COURSES.includes(id)
-          );
-
-        if (matchingCourse) {
-          const [courseId, courseInfo] = matchingCourse;
-          // Find earliest applicable grade from yearsToCheck
-          const suggestedYear = yearsToCheck.find(y => cteCourse.grades.includes(parseInt(y)));
-
-          if (suggestedYear) {
-            suggestions.push({
-              courseId,
-              year: suggestedYear,
-              quarter: targetQuarter, // Flexible - can be scheduled in either term
-              reason: `CTE ${pathway.name} - Concentrator course required`,
-              courseName: courseInfo.full_name
-            });
-          }
-        }
-      }
-
-      // Check for capstone course
-      const capstoneCourses = pathway.courses.filter(c => c.level === 'Capstone');
-      const hasCapstone = capstoneCourses.some(cteCourse => {
-        return allCourses.some(scheduledCourse => {
-          const info = COURSE_CATALOG[scheduledCourse.courseId];
-          return info && info.full_name.toUpperCase().includes(cteCourse.name.toUpperCase());
-        });
-      });
-
-      if (!hasCapstone && capstoneCourses.length > 0 && hasConcentrator) {
-        // Suggest first capstone course (only if concentrator is present)
-        const cteCourse = capstoneCourses[0];
-        const matchingCourse = Object.entries(COURSE_CATALOG)
-          .find(([id, course]) =>
-            course.full_name.toUpperCase().includes(cteCourse.name.toUpperCase()) &&
-            !DEPRECATED_COURSES.includes(id)
-          );
-
-        if (matchingCourse) {
-          const [courseId, courseInfo] = matchingCourse;
-          // Find latest applicable grade from yearsToCheck
-          const suggestedYear = yearsToCheck.reverse().find(y => cteCourse.grades.includes(parseInt(y)));
-
-          if (suggestedYear) {
-            suggestions.push({
-              courseId,
-              year: suggestedYear,
-              quarter: targetQuarter, // Flexible - can be scheduled in either term
-              reason: `CTE ${pathway.name} - Capstone course required`,
-              courseName: courseInfo.full_name
-            });
-          }
-        }
-      }
-    }
-
-    // Fill to minimum course count with Foreign Language or Arts if needed
-    // Target: 4 courses per semester for grades 9-11, 3 minimum
-    yearsToCheck.forEach(year => {
-      const yearCourses = courses.filter(c => c.year === year);
-
-      // Check courses per term
-      const fallQuarters = ['Q1', 'Q2'];
-      const springQuarters = ['Q3', 'Q4'];
-
-      // If checking specific term, only check that term
-      const termsToCheck = termQuarters
-        ? [{ quarters: termQuarters, name: term }]
-        : [{ quarters: fallQuarters, name: 'fall' }, { quarters: springQuarters, name: 'spring' }];
-
-      termsToCheck.forEach(({ quarters, name: termName }) => {
-        const termCourses = yearCourses.filter(c => quarters.includes(c.quarter));
-        const termSuggestions = suggestions.filter(s =>
-          s.year === year && (s.quarter === null || quarters.includes(s.quarter))
-        );
-        const projectedCount = termCourses.length + termSuggestions.length;
-
-        // Minimum 3, target 4 for grades 9-11
-        const targetCount = parseInt(year) <= 11 ? 4 : 3;
-
-        if (projectedCount < targetCount) {
-          const needed = targetCount - projectedCount;
-
-          // Check if Foreign Language is missing from entire year
-          const hasLanguage = yearCourses.some(c => {
-            const info = COURSE_CATALOG[c.courseId];
-            return info && info.pathway === 'Foreign Language';
-          });
-
-          // ALSO check if we already suggested one for this term in current cycle
-          const alreadySuggestedForTerm = termSuggestions.some(s => {
-            const info = COURSE_CATALOG[s.courseId];
-            return info && info.pathway === 'Foreign Language';
-          });
-
-          if (!hasLanguage && !alreadySuggestedForTerm && needed > 0) {
-            // Suggest Foreign Language - stick with same language across all years
-            // Check what language student has taken in ANY year OR already suggested
-            const allStudentCourses = courses; // Check ALL existing courses
-            const existingLanguageCourse = allStudentCourses.find(c => {
-              const info = COURSE_CATALOG[c.courseId];
-              return info && info.pathway === 'Foreign Language';
-            });
-
-            // ALSO check if we already suggested a language in this generation cycle
-            const alreadySuggestedLanguage = suggestions.find(s => {
-              const info = COURSE_CATALOG[s.courseId];
-              return info && info.pathway === 'Foreign Language';
-            });
-
-            let languageName = 'SPANISH'; // Default to Spanish
-            const languageSource = existingLanguageCourse || alreadySuggestedLanguage;
-            if (languageSource) {
-              const sourceInfo = COURSE_CATALOG[languageSource.courseId];
-              // Extract language name (e.g., "SPANISH", "CHINESE MANDARIN", etc.)
-              // Split by space and take first word, or first two if second is also caps
-              const words = sourceInfo.full_name.toUpperCase().split(' ');
-              languageName = words[0]; // e.g., "SPANISH" or "CHINESE"
-              // Handle multi-word languages like "CHINESE MANDARIN"
-              if (words.length > 1 && words[1].match(/^[A-Z]+$/)) {
-                languageName = words[0] + ' ' + words[1];
-              }
-            }
-
-            // Helper to extract level number from course name (e.g., "SPANISH 3-4" => 3)
-            const getLevelNumber = (name) => {
-              const match = name.match(/(\d+)-(\d+)/);
-              return match ? parseInt(match[1]) : 0;
-            };
-
-            // Find the highest level already taken or suggested for this language
-            let highestLevel = 0;
-            const allCoursesAndSuggestions = [...courses, ...suggestions];
-            allCoursesAndSuggestions.forEach(c => {
-              const info = COURSE_CATALOG[c.courseId];
-              if (info && info.pathway === 'Foreign Language' &&
-                  info.full_name.toUpperCase().startsWith(languageName)) {
-                const level = getLevelNumber(info.full_name);
-                if (level > highestLevel) highestLevel = level;
-              }
-            });
-
-            // Find the next level up (e.g., if they took 1-2, suggest 3-4)
-            const targetLevel = highestLevel + 2; // 1-2 => 3, 3-4 => 5, etc.
-
-            // Find all foreign language courses for this language that are allowed for this grade
-            const languageCourses = Object.entries(COURSE_CATALOG)
-              .filter(([id, course]) =>
-                course.pathway === 'Foreign Language' &&
-                course.grades_allowed.includes(parseInt(year)) &&
-                course.full_name.toUpperCase().startsWith(languageName) &&
-                !course.full_name.toUpperCase().includes('LITERATURE') && // Exclude literature courses
-                !course.full_name.toUpperCase().includes('AP') && // Exclude AP courses for auto-suggestions
-                !DEPRECATED_COURSES.includes(id)
-              )
-              .map(([id, course]) => ({ id, ...course, level: getLevelNumber(course.full_name) }))
-              .sort((a, b) => a.level - b.level);
-
-            // Find the course at the target level, or the first available course if none at that level
-            let suggestedCourse = languageCourses.find(c => c.level >= targetLevel) || languageCourses[0];
-
-            if (suggestedCourse) {
-              suggestions.push({
-                courseId: suggestedCourse.id,
-                year,
-                quarter: targetQuarter, // Flexible - let term requirements determine quarters
-                reason: `Foreign Language recommended for ${year === '9' ? 'UC/CSU eligibility' : 'graduation'}`,
-                courseName: suggestedCourse.full_name
-              });
-            }
-          }
-
-          // Recalculate after adding Foreign Language
-          const updatedTermSuggestions = suggestions.filter(s =>
-            s.year === year && (s.quarter === null || quarters.includes(s.quarter))
-          );
-          const updatedProjectedCount = termCourses.length + updatedTermSuggestions.length;
-
-          // If still below target, suggest Arts for UC/CSU requirement
-          // RULE: Never suggest two Fine Arts in the same semester
-          if (updatedProjectedCount < targetCount) {
-            // Check if Fine Arts already in this term (existing courses or suggestions)
-            const hasFineArtsInTerm = termCourses.some(c => {
-              const info = COURSE_CATALOG[c.courseId];
-              return info && info.pathway === 'Fine Arts';
-            });
-
-            const hasFineArtsInSuggestions = updatedTermSuggestions.some(s => {
-              const info = COURSE_CATALOG[s.courseId];
-              return info && info.pathway === 'Fine Arts';
-            });
-
-            if (!hasFineArtsInTerm && !hasFineArtsInSuggestions) {
-              const artsCourses = Object.entries(COURSE_CATALOG)
-                .filter(([id, course]) =>
-                  course.pathway === 'Fine Arts' &&
-                  course.grades_allowed.includes(parseInt(year)) &&
-                  !course.full_name.toUpperCase().includes('AP') &&
-                  !isYearlongCourse(course) && // Exclude yearlong courses from auto-fill
-                  !DEPRECATED_COURSES.includes(id)
-                )
-                .map(([id, course]) => ({ id, ...course }));
-
-              if (artsCourses.length > 0) {
-                suggestions.push({
-                  courseId: artsCourses[0].id,
-                  year,
-                  quarter: targetQuarter, // Flexible - let term requirements determine quarters
-                  reason: 'Visual/Performing Arts recommended for UC/CSU eligibility',
-                  courseName: artsCourses[0].full_name
-                });
-              }
-            }
-          }
-
-          // If STILL below target after Arts, suggest History/Social Science or more electives
-          const finalTermSuggestions = suggestions.filter(s =>
-            s.year === year && (s.quarter === null || quarters.includes(s.quarter))
-          );
-          const finalProjectedCount = termCourses.length + finalTermSuggestions.length;
-
-          // For grades 10-12, suggest History if missing
-          if (finalProjectedCount < targetCount && (year === '10' || year === '11' || year === '12')) {
-            const hasHistory = yearCourses.some(c => {
-              const info = COURSE_CATALOG[c.courseId];
-              return info && info.pathway === 'History/Social Science';
-            });
-
-            // Check if history suggestion already added for this year
-            const hasHistoryInSuggestions = suggestions.some(s => {
-              const info = COURSE_CATALOG[s.courseId];
-              return info && info.pathway === 'History/Social Science' && s.year === year;
-            });
-
-            if (!hasHistory && !hasHistoryInSuggestions) {
-              const historyCourses = Object.entries(COURSE_CATALOG)
-                .filter(([id, course]) =>
-                  course.pathway === 'History/Social Science' &&
-                  course.grades_allowed.includes(parseInt(year)) &&
-                  !course.full_name.toUpperCase().includes('AP') &&
-                  !(year === '12' && isYearlongCourse(course)) && // Grade 12: avoid yearlong courses
-                  !DEPRECATED_COURSES.includes(id)
-                )
-                .map(([id, course]) => ({ id, ...course }));
-
-              if (historyCourses.length > 0) {
-                suggestions.push({
-                  courseId: historyCourses[0].id,
-                  year,
-                  quarter: targetQuarter, // Flexible - let term requirements determine quarters
-                  reason: 'History/Social Science recommended for UC/CSU eligibility',
-                  courseName: historyCourses[0].full_name
-                });
-              }
-            }
-          }
-
-          // If STILL below target, suggest another elective (any available course)
-          const veryFinalSuggestions = suggestions.filter(s =>
-            s.year === year && (s.quarter === null || quarters.includes(s.quarter))
-          );
-          const veryFinalCount = termCourses.length + veryFinalSuggestions.length;
-
-          if (veryFinalCount < targetCount) {
-            // Find an elective course not already suggested
-            const alreadySuggestedIds = veryFinalSuggestions.map(s => s.courseId);
-            const alreadyInYearIds = yearCourses.map(c => c.courseId);
-            const allUsedIds = [...alreadySuggestedIds, ...alreadyInYearIds];
-
-            // Check if Foreign Language already suggested for this year
-            // Students should stick to ONE language, not mix different languages
-            const alreadySuggestedLanguage = veryFinalSuggestions.some(s => {
-              const info = COURSE_CATALOG[s.courseId];
-              return info && info.pathway === 'Foreign Language';
-            });
-
-            // RULE: Never suggest two Fine Arts in the same semester
-            const hasFineArtsInTerm = termCourses.some(c => {
-              const info = COURSE_CATALOG[c.courseId];
-              return info && info.pathway === 'Fine Arts';
-            });
-
-            const hasFineArtsInSuggestions = veryFinalSuggestions.some(s => {
-              const info = COURSE_CATALOG[s.courseId];
-              return info && info.pathway === 'Fine Arts';
-            });
-
-            // Count AP classes in this term (for Years 2-3, max 2 AP per semester)
-            const apCountInTerm = termCourses.filter(c => {
-              const info = COURSE_CATALOG[c.courseId];
-              return info && info.full_name.toUpperCase().includes('AP');
-            }).length + veryFinalSuggestions.filter(s => {
-              const info = COURSE_CATALOG[s.courseId];
-              return info && info.full_name.toUpperCase().includes('AP');
-            }).length;
-
-            // For Years 2-3 (grades 10-11), allow AP classes if count < 2
-            // For Year 1 (grade 9) and Year 4 (grade 12), never suggest AP
-            const canSuggestAP = (year === '10' || year === '11') && apCountInTerm < 2;
-
-            const electiveCourses = Object.entries(COURSE_CATALOG)
-              .filter(([id, course]) => {
-                const courseNameUpper = course.full_name.toUpperCase();
-                const isAP = courseNameUpper.includes('AP');
-                const isHonors = courseNameUpper.includes('HONORS');
-                const isFineArts = course.pathway === 'Fine Arts';
-
-                return (
-                  !allUsedIds.includes(id) &&
-                  course.grades_allowed.includes(parseInt(year)) &&
-                  !(isAP && !canSuggestAP) && // Only allow AP if canSuggestAP is true
-                  !isHonors &&
-                  !isYearlongCourse(course) && // Exclude yearlong courses from auto-fill
-                  // Pathways to consider
-                  ((isFineArts && !hasFineArtsInTerm && !hasFineArtsInSuggestions) || // Fine Arts: only if none exist
-                   (!alreadySuggestedLanguage && course.pathway === 'Foreign Language') ||
-                   course.pathway === 'CTE' ||
-                   course.pathway === 'Electives') &&
-                  !DEPRECATED_COURSES.includes(id)
-                );
-              })
-              .map(([id, course]) => ({ id, ...course }));
-
-            if (electiveCourses.length > 0) {
-              suggestions.push({
-                courseId: electiveCourses[0].id,
-                year,
-                quarter: targetQuarter, // Flexible - let term requirements determine quarters
-                reason: 'Elective to reach target course count',
-                courseName: electiveCourses[0].full_name
-              });
-            }
-          }
-        }
-      });
-    });
-
-    setSuggestedCourses(suggestions);
-    return suggestions; // Return suggestions for direct use
+    setSuggestedCourses(allSuggestions);
+    return allSuggestions; // Return suggestions for direct use
   };
 
   // Generate and add suggestions for a specific term (Fall or Spring)
   const suggestCoursesForTerm = (year, term) => {
+    // Check if this semester is locked
+    const semesterKey = `${year}-${term}`;
+    if (lockedSemesters[semesterKey]) {
+      console.log(`Semester ${year} ${term} is locked - skipping auto-suggest`);
+      return; // Exit early if locked
+    }
+
     // Generate all suggestions and get them directly, passing term to check requirements per term
     const allSuggestions = generateCourseSuggestions(term);
 
@@ -3139,6 +2535,15 @@ function App() {
       // Add all courses at once
       setCourses([...courses, ...newCourses]);
     }
+  };
+
+  // Toggle lock state for a semester
+  const toggleSemesterLock = (year, term) => {
+    const semesterKey = `${year}-${term}`;
+    setLockedSemesters(prev => ({
+      ...prev,
+      [semesterKey]: !prev[semesterKey]
+    }));
   };
 
   // Approve and add a suggested course
@@ -3383,24 +2788,79 @@ function App() {
 
                     {/* Suggestion buttons per semester */}
                     <div className="grid grid-cols-2 gap-4 px-6 py-4 bg-gray-50 border-b border-gray-200">
-                      <button
-                        onClick={() => suggestCoursesForTerm(year, 'fall')}
-                        className="flex items-center justify-center gap-2 px-4 py-2 bg-[#2B6CB0] text-white rounded-lg hover:bg-[#1E4E8C] font-medium text-sm transition-colors"
-                      >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                        </svg>
-                        Auto-fill Fall Semester
-                      </button>
-                      <button
-                        onClick={() => suggestCoursesForTerm(year, 'spring')}
-                        className="flex items-center justify-center gap-2 px-4 py-2 bg-[#2B6CB0] text-white rounded-lg hover:bg-[#1E4E8C] font-medium text-sm transition-colors"
-                      >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                        </svg>
-                        Auto-fill Spring Semester
-                      </button>
+                      {/* Fall Semester Controls */}
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => suggestCoursesForTerm(year, 'fall')}
+                          disabled={lockedSemesters[`${year}-fall`]}
+                          className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
+                            lockedSemesters[`${year}-fall`]
+                              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                              : 'bg-[#2B6CB0] text-white hover:bg-[#1E4E8C]'
+                          }`}
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                          </svg>
+                          Auto-fill Fall
+                        </button>
+                        <button
+                          onClick={() => toggleSemesterLock(year, 'fall')}
+                          className={`px-3 py-2 rounded-lg font-medium text-sm transition-colors ${
+                            lockedSemesters[`${year}-fall`]
+                              ? 'bg-red-500 hover:bg-red-600 text-white'
+                              : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+                          }`}
+                          title={lockedSemesters[`${year}-fall`] ? 'Unlock Fall' : 'Lock Fall'}
+                        >
+                          {lockedSemesters[`${year}-fall`] ? (
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                          ) : (
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
+                            </svg>
+                          )}
+                        </button>
+                      </div>
+
+                      {/* Spring Semester Controls */}
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => suggestCoursesForTerm(year, 'spring')}
+                          disabled={lockedSemesters[`${year}-spring`]}
+                          className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
+                            lockedSemesters[`${year}-spring`]
+                              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                              : 'bg-[#2B6CB0] text-white hover:bg-[#1E4E8C]'
+                          }`}
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                          </svg>
+                          Auto-fill Spring
+                        </button>
+                        <button
+                          onClick={() => toggleSemesterLock(year, 'spring')}
+                          className={`px-3 py-2 rounded-lg font-medium text-sm transition-colors ${
+                            lockedSemesters[`${year}-spring`]
+                              ? 'bg-red-500 hover:bg-red-600 text-white'
+                              : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+                          }`}
+                          title={lockedSemesters[`${year}-spring`] ? 'Unlock Spring' : 'Lock Spring'}
+                        >
+                          {lockedSemesters[`${year}-spring`] ? (
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                          ) : (
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
+                            </svg>
+                          )}
+                        </button>
+                      </div>
                     </div>
 
                     {/* Semester Labels */}
