@@ -48,10 +48,8 @@ export class SuggestionEngine {
     targetCount = null
   }) {
     const yearInt = parseInt(year);
-    // Grade 9: 5 courses recommended (ENS, English, Math, Science, Foreign Language)
-    // Grades 10-11: 4 courses
-    // Grade 12: 3 courses minimum
-    const defaultTarget = yearInt === 9 ? 5 : (yearInt <= 11 ? 4 : 3);
+    // Target: 4 courses per semester for grades 9-11, 3 for grade 12
+    const defaultTarget = yearInt <= 11 ? 4 : 3;
     const target = targetCount ?? defaultTarget;
 
     // Step 1: Compute unmet requirements
