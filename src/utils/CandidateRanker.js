@@ -123,12 +123,33 @@ export class CandidateRanker {
   gradeAppropriatenessBonus(course) {
     const nameUpper = course.full_name.toUpperCase();
 
-    // Grade 9: prefer foundational courses
+    // Grade 9: prefer foundational courses and recommended electives
     if (this.year === 9) {
+      // Core required courses
       if (nameUpper.includes('ENGLISH 1-2')) return 50;
       if (nameUpper.includes('INTEGRATED MATHEMATICS I')) return 50;
       if (nameUpper.includes('BIOLOGY') && !nameUpper.includes('AP')) return 40;
-      if (nameUpper.includes('SPANISH 1-2') || nameUpper.includes('CHINESE 1-2')) return 30;
+
+      // Recommended Year 1 Foreign Language (level 1-2)
+      if (course.pathway === 'Foreign Language') {
+        if (nameUpper.includes('1-2')) return 40; // Spanish 1-2, Chinese 1-2, Filipino 1-2, French 1-2
+        if (nameUpper.includes('3-4') || nameUpper.includes('5-6')) return 10; // Higher levels get low bonus
+      }
+
+      // Recommended Year 1 CTE courses
+      if (nameUpper.includes('BUSINESS PRINCIPLES')) return 30;
+      if (nameUpper.includes('COMPUTER INFO') || nameUpper.includes('WEB DESIGN')) return 30;
+      if (nameUpper.includes('INTRO TO ENGINEERING') || nameUpper.includes('PRINCIPLES OF ENGINEERING')) return 30;
+
+      // Recommended Year 1 Fine Arts (entry-level courses)
+      if (course.pathway === 'Fine Arts') {
+        const isEntryLevel = nameUpper.includes('1-2') ||
+                            nameUpper.includes('BAND') ||
+                            nameUpper.includes('ORCHESTRA') ||
+                            nameUpper.includes('DRAMA 1-2') ||
+                            nameUpper.includes('CERAMICS 1-2');
+        if (isEntryLevel) return 30;
+      }
     }
 
     // Grade 10: prefer standard progression
