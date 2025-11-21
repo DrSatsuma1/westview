@@ -5163,16 +5163,13 @@
         "001650"
       ],
       "grades_allowed": [
-        9,
-        10,
-        11,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
       "uc_csu_category": "G",
       "pathway": "CTE",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -6124,7 +6121,7 @@
     },
     {
       "course_id": "AP_HUMAN_0013",
-      "full_name": "AP HUMAN GEOGRAPHY 1-2",
+      "full_name": "AP HUMAN GEOGRAPHY",
       "course_numbers": [
         "001312",
         "001313"
@@ -6135,11 +6132,11 @@
         11,
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
       "uc_csu_category": "A",
-      "pathway": "Science - Physical",
-      "term_length": "yearlong",
+      "pathway": "History/Social Science",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"

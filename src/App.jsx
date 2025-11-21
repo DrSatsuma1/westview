@@ -133,7 +133,7 @@ const CTE_PATHWAYS = {
       { name: 'INTRO TO FINANCE', level: 'Concentrator', grades: [9, 10] },
       { name: 'MARKETING ECONOMICS', level: 'Capstone', grades: [10, 11] },
       { name: 'ECONOMICS OF BUSINESS OWNERSHIP', level: 'Capstone', grades: [10, 11] },
-      { name: 'INTERNSHIP', level: 'Capstone', grades: [11, 12] }
+      { name: 'INTERNSHIP', level: 'Capstone', grades: [12] }
     ]
   },
   biotech: {
@@ -243,6 +243,7 @@ function App() {
 
     return parsed;
   });
+  const [courseHistory, setCourseHistory] = useState([]); // Undo history (max 5 states)
   const [showAddCourse, setShowAddCourse] = useState(null); // null or { year, quarter, slot }
   const [selectedCategory, setSelectedCategory] = useState(''); // Track selected category
   const [newCourse, setNewCourse] = useState({ courseId: '' });
@@ -331,6 +332,35 @@ function App() {
   React.useEffect(() => {
     localStorage.setItem('westview-courses', JSON.stringify(courses));
   }, [courses]);
+
+  // Helper to update courses and track history for undo (max 5 states)
+  const updateCourses = (newCoursesOrUpdater) => {
+    setCourseHistory(prev => {
+      const updated = [...prev, courses];
+      return updated.slice(-5); // Keep last 5 states
+    });
+    setCourses(newCoursesOrUpdater);
+  };
+
+  // Undo last course change
+  const handleUndo = () => {
+    if (courseHistory.length === 0) return;
+    const previousState = courseHistory[courseHistory.length - 1];
+    setCourseHistory(prev => prev.slice(0, -1));
+    setCourses(previousState); // Direct set, no history push
+  };
+
+  // Keyboard shortcut for undo (Ctrl+Z / Cmd+Z)
+  React.useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
+        e.preventDefault();
+        handleUndo();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [courseHistory, courses]);
 
   // Save completed semesters to localStorage
   React.useEffect(() => {
@@ -1587,7 +1617,7 @@ function App() {
       const [targetQ1, targetQ2] = targetPair;
 
       // Update courses by removing from both source quarters and adding to both target quarters
-      setCourses(prev => {
+      updateCourses(prev => {
         // Remove from both source quarters (all instances of this course in source year)
         const withoutSource = prev.filter(c =>
           !(c.courseId === course.courseId && c.year === sourceYear)
@@ -1602,7 +1632,7 @@ function App() {
       });
     } else {
       // For semester courses, just move to the target semester
-      setCourses(prev => prev.map(c => {
+      updateCourses(prev => prev.map(c => {
         if (c.id === course.id) {
           return { ...c, year: targetYear, quarter: targetQuarter, id: `${c.courseId}-${targetYear}-${targetQuarter}` };
         }
@@ -2403,10 +2433,10 @@ function App() {
       }
       const q1Course = { ...newCourse, id: Date.now(), year, quarter: firstQuarter };
       const q2Course = { ...newCourse, id: Date.now() + 1, year, quarter: secondQuarter };
-      setCourses([...courses, q1Course, q2Course]);
+      updateCourses([...courses, q1Course, q2Course]);
     } else {
       // Only quarter-length courses go in a single quarter
-      setCourses([...courses, { ...newCourse, id: Date.now(), year, quarter }]);
+      updateCourses([...courses, { ...newCourse, id: Date.now(), year, quarter }]);
     }
 
     setNewCourse({ courseId: '' });
@@ -2423,7 +2453,7 @@ function App() {
     const courseInfo = COURSE_CATALOG[courseToRemove.courseId];
     if (!courseInfo) {
       // Just remove this instance if no catalog info
-      setCourses(courses.filter(c => c.id !== id));
+      updateCourses(courses.filter(c => c.id !== id));
       return;
     }
 
@@ -2434,12 +2464,12 @@ function App() {
     if (needsBothQuarters) {
       // Remove ALL instances of this courseId in the same year
       // (both quarters of the semester)
-      setCourses(courses.filter(c =>
+      updateCourses(courses.filter(c =>
         !(c.courseId === courseToRemove.courseId && c.year === courseToRemove.year)
       ));
     } else {
       // Just remove this single instance
-      setCourses(courses.filter(c => c.id !== id));
+      updateCourses(courses.filter(c => c.id !== id));
     }
   };
 
@@ -2719,7 +2749,7 @@ function App() {
       }
 
       // Add all courses at once
-      setCourses([...courses, ...newCourses]);
+      updateCourses([...courses, ...newCourses]);
     }
   };
 
@@ -2762,10 +2792,10 @@ function App() {
       }
       const q1Course = { courseId: suggestion.courseId, id: Date.now(), year: suggestion.year, quarter: firstQuarter };
       const q2Course = { courseId: suggestion.courseId, id: Date.now() + 1, year: suggestion.year, quarter: secondQuarter };
-      setCourses([...courses, q1Course, q2Course]);
+      updateCourses([...courses, q1Course, q2Course]);
     } else {
       // Only quarter-length courses
-      setCourses([...courses, { courseId: suggestion.courseId, id: Date.now(), year: suggestion.year, quarter: suggestion.quarter }]);
+      updateCourses([...courses, { courseId: suggestion.courseId, id: Date.now(), year: suggestion.year, quarter: suggestion.quarter }]);
     }
   };
 
@@ -2837,6 +2867,17 @@ function App() {
                   earlyGradEligibility={earlyGradEligibility}
                 />
                 <button
+                  onClick={handleUndo}
+                  disabled={courseHistory.length === 0}
+                  className={`rounded-lg px-4 py-3 transition-colors text-sm font-bold min-w-[140px] text-center ${
+                    courseHistory.length === 0
+                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed border-2 border-gray-300'
+                      : 'bg-[#718096] hover:bg-[#4A5568] text-white border-2 border-[#718096]'
+                  }`}
+                >
+                  Undo
+                </button>
+                <button
                   onClick={() => {
                     if (window.confirm('Are you sure you want to clear all courses from your schedule? Locked semesters will be preserved.')) {
                       // Preserve courses in locked semesters
@@ -2845,7 +2886,7 @@ function App() {
                         const semesterKey = `${c.year}-${semester}`;
                         return lockedSemesters[semesterKey];
                       });
-                      setCourses(preservedCourses);
+                      updateCourses(preservedCourses);
                       // Clear completedSemesters for non-locked semesters only
                       const preservedCompleted = {};
                       Object.keys(completedSemesters).forEach(key => {
@@ -3146,7 +3187,7 @@ function App() {
                                       const updatedCourses = courses.map(c =>
                                         c.id === courseId ? { ...c, grade } : c
                                       );
-                                      setCourses(updatedCourses);
+                                      updateCourses(updatedCourses);
                                     }}
                                   />
                                 );
