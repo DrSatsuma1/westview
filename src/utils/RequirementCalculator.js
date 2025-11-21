@@ -37,15 +37,21 @@ export class RequirementCalculator {
 
   /**
    * Compute unmet UC/CSU A-G requirements across all years
+   * CRITICAL: UC/CSU A-G must be completed by END OF YEAR 3 (Grade 11)
+   * Year 4 (Grade 12) courses do NOT count toward A-G requirements
    * @returns {Array<string>} - Array of A-G category letters that need more courses (e.g., ['A', 'E'])
    */
   getUnmetAG() {
     const gaps = [];
 
     for (const [category, requirement] of Object.entries(this.agReqs)) {
+      // ONLY count courses from Years 9, 10, 11 (NOT Year 12)
       const relevantCourses = this.courses.filter(c => {
         const info = this.catalog[c.courseId];
-        return info && info.uc_csu_category === category;
+        const yearInt = parseInt(c.year);
+        return info &&
+               info.uc_csu_category === category &&
+               yearInt >= 9 && yearInt <= 11; // MUST complete by end of Grade 11
       });
 
       // Count years fulfilled (each yearlong course = 1 year)

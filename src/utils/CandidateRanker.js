@@ -87,8 +87,9 @@ export class CandidateRanker {
       return score;
     }
 
-    // Tier 2: UC/CSU A-G gaps (300-600 points)
-    // Important for college admission
+    // Tier 2: UC/CSU A-G gaps (300-700 points)
+    // CRITICAL: A-G must be completed by END OF YEAR 3 (Grade 11)
+    // Prioritize heavily in Years 9-11, de-prioritize in Year 12 (too late for A-G)
     if (this.unmet.agGaps && this.unmet.agGaps.includes(course.uc_csu_category)) {
       const agPriority = {
         'A': 5, // History
@@ -101,6 +102,18 @@ export class CandidateRanker {
       };
       const priority = agPriority[course.uc_csu_category] || 1;
       score = 300 + (priority * 50);
+
+      // Year 12: URGENT - A-G deadline passed, heavily de-prioritize
+      // (Students should have completed A-G by end of Year 11)
+      if (this.year === 12) {
+        score -= 200; // Drop priority significantly (Year 12 courses don't count)
+      }
+      // Years 9-11: BOOST priority - need to complete A-G by end of Year 11
+      else if (this.year === 11) {
+        score += 100; // Year 11 is last chance for A-G
+      } else if (this.year === 10) {
+        score += 50; // Year 10 important for A-G progress
+      }
     }
 
     // Tier 3: Electives (100-350 points)
