@@ -101,6 +101,12 @@ export class SuggestionEngine {
         if (eligibility.blocking) continue;
       }
 
+      // Check for chronological prerequisite violations
+      // (e.g., Math II in Fall when Math I is in Spring)
+      if (this.hasPrerequisiteInLaterQuarter(course, courses, year, targetQuarter)) {
+        continue; // Skip this course - prerequisite is not completed yet
+      }
+
       // Check if this course passes business rules
       if (!businessRules.canAddCourse(course)) continue;
 
@@ -230,5 +236,114 @@ export class SuggestionEngine {
     }
 
     return allSuggestions;
+  }
+
+  /**
+   * Check if a course has a prerequisite in a LATER quarter of the same year
+   * This prevents suggesting advanced courses before their prerequisites are completed
+   *
+   * Example: Math II in Fall (Q1) when Math I is in Spring (Q3) - WRONG!
+   * Fall comes before Spring chronologically.
+   *
+   * @param {Object} course - Course to check
+   * @param {Array} courses - All scheduled courses
+   * @param {string} year - Year we're suggesting for
+   * @param {string} targetQuarter - Quarter we're suggesting for (Q1, Q2, Q3, Q4)
+   * @returns {boolean} - true if prerequisite is in later quarter, false otherwise
+   */
+  hasPrerequisiteInLaterQuarter(course, courses, year, targetQuarter) {
+    // Define quarter chronology
+    const QUARTER_ORDER = ['Q1', 'Q2', 'Q3', 'Q4'];
+    const targetQuarterIndex = QUARTER_ORDER.indexOf(targetQuarter);
+
+    // Get courses in the same year
+    const yearCourses = courses.filter(c => c.year === year);
+
+    // Math sequence detection (Integrated Math I → II → III)
+    const courseName = course.full_name.toUpperCase();
+
+    if (courseName.includes('INTEGRATED MATHEMATICS II')) {
+      // Check if Math I is in a later quarter
+      const mathIInYear = yearCourses.find(c => {
+        const cInfo = this.catalog[c.courseId];
+        return cInfo && cInfo.full_name.toUpperCase().includes('INTEGRATED MATHEMATICS I') &&
+               !cInfo.full_name.toUpperCase().includes('III'); // Exclude Math III
+      });
+
+      if (mathIInYear) {
+        const mathIQuarterIndex = QUARTER_ORDER.indexOf(mathIInYear.quarter);
+        // If Math I is in a later quarter, block Math II suggestion
+        if (mathIQuarterIndex > targetQuarterIndex) {
+          return true; // BLOCK - prerequisite not completed yet
+        }
+      }
+    }
+
+    if (courseName.includes('INTEGRATED MATHEMATICS III')) {
+      // Check if Math II is in a later quarter
+      const mathIIInYear = yearCourses.find(c => {
+        const cInfo = this.catalog[c.courseId];
+        return cInfo && cInfo.full_name.toUpperCase().includes('INTEGRATED MATHEMATICS II') &&
+               !cInfo.full_name.toUpperCase().includes('III');
+      });
+
+      if (mathIIInYear) {
+        const mathIIQuarterIndex = QUARTER_ORDER.indexOf(mathIIInYear.quarter);
+        if (mathIIQuarterIndex > targetQuarterIndex) {
+          return true; // BLOCK
+        }
+      }
+    }
+
+    // Foreign Language sequence detection (1-2 → 3-4 → 5-6 → 7-8 → 9-10)
+    if (course.pathway === 'Foreign Language') {
+      const levelMatch = courseName.match(/(\d+)-(\d+)/);
+      if (levelMatch) {
+        const courseLevel = parseInt(levelMatch[1]);
+
+        // Find if lower level of same language is in later quarter
+        const language = this.extractLanguage(course.full_name);
+        const lowerLevelInYear = yearCourses.find(c => {
+          const cInfo = this.catalog[c.courseId];
+          if (!cInfo || cInfo.pathway !== 'Foreign Language') return false;
+
+          const cLanguage = this.extractLanguage(cInfo.full_name);
+          const cLevelMatch = cInfo.full_name.toUpperCase().match(/(\d+)-(\d+)/);
+          if (!cLevelMatch) return false;
+
+          const cLevel = parseInt(cLevelMatch[1]);
+          return cLanguage === language && cLevel < courseLevel;
+        });
+
+        if (lowerLevelInYear) {
+          const lowerQuarterIndex = QUARTER_ORDER.indexOf(lowerLevelInYear.quarter);
+          if (lowerQuarterIndex > targetQuarterIndex) {
+            return true; // BLOCK - lower level not completed yet
+          }
+        }
+      }
+    }
+
+    return false; // No blocking prerequisite found
+  }
+
+  /**
+   * Extract language name from course title
+   * @param {string} courseName - e.g., "SPANISH 3-4" or "CHINESE MANDARIN 1-2"
+   * @returns {string} - e.g., "SPANISH" or "CHINESE MANDARIN"
+   */
+  extractLanguage(courseName) {
+    const words = courseName.toUpperCase().split(' ');
+
+    // Multi-word languages (e.g., "CHINESE MANDARIN")
+    if (words.length > 1 && words[1].match(/^[A-Z]+$/)) {
+      // Check if second word is also language (not level like "1-2")
+      if (!words[1].match(/\d/)) {
+        return `${words[0]} ${words[1]}`;
+      }
+    }
+
+    // Single-word languages (e.g., "SPANISH")
+    return words[0];
   }
 }
