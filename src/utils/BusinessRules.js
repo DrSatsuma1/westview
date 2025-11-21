@@ -114,26 +114,27 @@ export class BusinessRules {
   }
 
   /**
-   * RULE: Only one Math course per YEAR (students take one Math per year)
+   * RULE: Only one Math course per semester (can take Math 1-2 Fall, Math 3-4 Spring)
    * @param {Object} course
    * @returns {boolean}
    */
   checkMathLimit(course) {
     if (course.pathway !== 'Math') return true;
 
-    // Check entire year - Math is required once per year, not per semester
-    const yearCourses = this.courses.filter(c => c.year === this.year);
+    // Check current semester only - students can take different math courses in Fall and Spring
+    const termCourses = this.courses.filter(c =>
+      c.year === this.year && this.termQuarters.includes(c.quarter)
+    );
 
-    const hasMathInYear = yearCourses.some(c =>
+    const hasMathInTerm = termCourses.some(c =>
       this.catalog[c.courseId]?.pathway === 'Math'
     );
 
-    // Check all suggestions for this year
-    const hasMathInYearSuggestions = this.suggestions.some(s =>
-      s.year === this.year && this.catalog[s.courseId]?.pathway === 'Math'
+    const hasMathInSuggestions = this.suggestions.some(s =>
+      this.catalog[s.courseId]?.pathway === 'Math'
     );
 
-    return !hasMathInYear && !hasMathInYearSuggestions;
+    return !hasMathInTerm && !hasMathInSuggestions;
   }
 
   /**
