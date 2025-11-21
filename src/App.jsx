@@ -2715,35 +2715,53 @@ function App() {
       });
 
       // Check for linked course pairs and add the linked course automatically
-      // Format: [honors/regular course ID, AP course ID]
+      // Format: base course (can be taken alone) → linked course (added automatically)
       const linkedCoursePairs = [
-        { honors: 'HON_WORLD_0013', ap: 'AP_WORLD_0013' },       // Honors World History + AP World History
-        { honors: 'HON_CHEMISTRY_0012', ap: 'AP_CHEMISTRY_0012' }, // Honors Chemistry + AP Chemistry
-        { honors: 'PHYSICS_OF_0012', ap: 'AP_PHYSICS_0012' },      // Physics of the Universe + AP Physics 1A-1B
-        { honors: 'AP_PHYSICS_0001', ap: 'AP_PHYSICS' },          // AP Physics C: Mechanics + AP Physics C: E&M
-        { honors: 'HON_SPANISH_0004', ap: 'AP_SPANISH_0004' }     // Honors Spanish 7-8 + AP Spanish Language
+        // AP Course Pairs
+        { base: 'HON_WORLD_0013', linked: 'AP_WORLD_0013' },           // Honors World History → AP World History
+        { base: 'PHYSICS_OF_0012', linked: 'AP_PHYSICS_0012' },        // Physics of the Universe → AP Physics 1A-1B
+        { base: 'AP_PHYSICS_0001', linked: 'AP_PHYSICS' },             // AP Physics C: Mechanics → AP Physics C: E&M
+        { base: 'HON_SPANISH_0004', linked: 'AP_SPANISH_0004' },       // Honors Spanish 7-8 → AP Spanish Language
+        { base: 'AP_PRECALCULUS_0010', linked: 'AP_CALCULUS_0010' },   // AP Pre-Calculus → AP Calculus AB
+        { base: 'BRITISH_LITERATURE_0003', linked: 'AP_ENGLISH' },     // British Literature → AP English Literature
+        { base: 'HON_AMERICAN_0003', linked: 'AP_UNITED' },            // Honors American Literature → AP US History
+        { base: 'CIVICS__0013', linked: 'AP_UNITED_0013' },            // Civics/Economics → AP US Government
+        { base: 'COMPUTER_SCIENCE_0009', linked: 'AP_COMPUTER_0010' }, // Computer Science → AP Computer Science A
+
+        // Studio Art Pairs
+        { base: 'STUDIO_ART', linked: 'AP_STUDIO_0001' },              // Studio Art Digital Photography → AP Studio 2D Design
+        { base: 'STUDIO_ART_0002', linked: 'AP_STUDIO_0002' },         // Studio Art Drawing & Painting → AP Studio Drawing
+        { base: 'STUDIO_ART_0001', linked: 'AP_STUDIO' },              // Studio Art Ceramics → AP Studio 3D Design
+
+        // AVID Program Pairs
+        { base: 'HIGH_SCHOOL_0003', linked: 'AVID_12_0015' },          // English 1-2 → AVID 1-2
+        { base: 'HIGH_SCHOOL', linked: 'AVID_34_0015' },               // English 3-4 → AVID 3-4
+        { base: 'UNITED_STATES_0013', linked: 'AVID_56_0015' },        // US History 1-2 → AVID 5-6
+
+        // Math Pair
+        { base: 'COLLEGE_ALGEBRA_0010', linked: 'STATISTICS_0010' }    // College Algebra → Statistics
       ];
 
       linkedCoursePairs.forEach(pair => {
-        const hasHonorsCourse = termSuggestions.some(s => s.courseId === pair.honors);
-        if (hasHonorsCourse) {
-          // Check if AP course doesn't already exist in this year
+        const hasBaseCourse = termSuggestions.some(s => s.courseId === pair.base);
+        if (hasBaseCourse) {
+          // Check if linked course doesn't already exist in this year
           const yearCourses = courses.filter(c => c.year === year);
-          const hasAPCourse = yearCourses.some(c => c.courseId === pair.ap);
+          const hasLinkedCourse = yearCourses.some(c => c.courseId === pair.linked);
 
-          if (!hasAPCourse) {
-            // Add AP course in the same term (both quarters since it's yearlong)
+          if (!hasLinkedCourse) {
+            // Add linked course in the same term (both quarters since it's yearlong)
             const firstQuarter = term === 'fall' ? 'Q1' : 'Q3';
             const secondQuarter = term === 'fall' ? 'Q2' : 'Q4';
 
             newCourses.push({
-              courseId: pair.ap,
+              courseId: pair.linked,
               id: Date.now() + newCourses.length * 2,
               year: year,
               quarter: firstQuarter
             });
             newCourses.push({
-              courseId: pair.ap,
+              courseId: pair.linked,
               id: Date.now() + newCourses.length * 2 + 1,
               year: year,
               quarter: secondQuarter
