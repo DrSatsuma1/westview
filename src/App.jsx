@@ -2714,32 +2714,42 @@ function App() {
         }
       });
 
-      // Check if Honors World History was suggested, and if so, also add AP World History
-      const hasHonorsWorldHistory = termSuggestions.some(s => s.courseId === 'HON_WORLD_0013');
-      if (hasHonorsWorldHistory) {
-        // Check if AP World History doesn't already exist in this year
-        const yearCourses = courses.filter(c => c.year === year);
-        const hasAPWorldHistory = yearCourses.some(c => c.courseId === 'AP_WORLD_0013');
+      // Check for linked course pairs and add the linked course automatically
+      // Format: [honors/regular course ID, AP course ID]
+      const linkedCoursePairs = [
+        { honors: 'HON_WORLD_0013', ap: 'AP_WORLD_0013' },       // Honors World History + AP World History
+        { honors: 'HON_CHEMISTRY_0012', ap: 'AP_CHEMISTRY_0012' }, // Honors Chemistry + AP Chemistry
+        { honors: 'PHYSICS_OF_0012', ap: 'AP_PHYSICS_0012' },      // Physics of the Universe + AP Physics 1A-1B
+        { honors: 'AP_PHYSICS_0001', ap: 'AP_PHYSICS' }           // AP Physics C: Mechanics + AP Physics C: E&M
+      ];
 
-        if (!hasAPWorldHistory) {
-          // Add AP World History in the same term (both quarters since it's yearlong)
-          const firstQuarter = term === 'fall' ? 'Q1' : 'Q3';
-          const secondQuarter = term === 'fall' ? 'Q2' : 'Q4';
+      linkedCoursePairs.forEach(pair => {
+        const hasHonorsCourse = termSuggestions.some(s => s.courseId === pair.honors);
+        if (hasHonorsCourse) {
+          // Check if AP course doesn't already exist in this year
+          const yearCourses = courses.filter(c => c.year === year);
+          const hasAPCourse = yearCourses.some(c => c.courseId === pair.ap);
 
-          newCourses.push({
-            courseId: 'AP_WORLD_0013',
-            id: Date.now() + newCourses.length * 2,
-            year: year,
-            quarter: firstQuarter
-          });
-          newCourses.push({
-            courseId: 'AP_WORLD_0013',
-            id: Date.now() + newCourses.length * 2 + 1,
-            year: year,
-            quarter: secondQuarter
-          });
+          if (!hasAPCourse) {
+            // Add AP course in the same term (both quarters since it's yearlong)
+            const firstQuarter = term === 'fall' ? 'Q1' : 'Q3';
+            const secondQuarter = term === 'fall' ? 'Q2' : 'Q4';
+
+            newCourses.push({
+              courseId: pair.ap,
+              id: Date.now() + newCourses.length * 2,
+              year: year,
+              quarter: firstQuarter
+            });
+            newCourses.push({
+              courseId: pair.ap,
+              id: Date.now() + newCourses.length * 2 + 1,
+              year: year,
+              quarter: secondQuarter
+            });
+          }
         }
-      }
+      });
 
       // Add all courses at once
       setCourses([...courses, ...newCourses]);
