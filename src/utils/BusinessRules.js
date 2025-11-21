@@ -91,50 +91,49 @@ export class BusinessRules {
   }
 
   /**
-   * RULE: Only one English course per semester
+   * RULE: Only one English course per YEAR (students take one English per year)
    * @param {Object} course
    * @returns {boolean}
    */
   checkEnglishLimit(course) {
     if (course.pathway !== 'English') return true;
 
-    const termCourses = this.courses.filter(c =>
-      c.year === this.year && this.termQuarters.includes(c.quarter)
-    );
+    // Check entire year - English is required once per year, not per semester
+    const yearCourses = this.courses.filter(c => c.year === this.year);
 
-    const hasEnglishInTerm = termCourses.some(c =>
+    const hasEnglishInYear = yearCourses.some(c =>
       this.catalog[c.courseId]?.pathway === 'English'
     );
 
-    const hasEnglishInSuggestions = this.suggestions.some(s =>
-      this.catalog[s.courseId]?.pathway === 'English'
+    // Check all suggestions for this year
+    const hasEnglishInYearSuggestions = this.suggestions.some(s =>
+      s.year === this.year && this.catalog[s.courseId]?.pathway === 'English'
     );
 
-    return !hasEnglishInTerm && !hasEnglishInSuggestions;
+    return !hasEnglishInYear && !hasEnglishInYearSuggestions;
   }
 
   /**
-   * RULE: Max 2 Math courses per year (1 per semester)
+   * RULE: Only one Math course per YEAR (students take one Math per year)
    * @param {Object} course
    * @returns {boolean}
    */
   checkMathLimit(course) {
     if (course.pathway !== 'Math') return true;
 
-    // Check current semester only
-    const termCourses = this.courses.filter(c =>
-      c.year === this.year && this.termQuarters.includes(c.quarter)
-    );
+    // Check entire year - Math is required once per year, not per semester
+    const yearCourses = this.courses.filter(c => c.year === this.year);
 
-    const hasMathInTerm = termCourses.some(c =>
+    const hasMathInYear = yearCourses.some(c =>
       this.catalog[c.courseId]?.pathway === 'Math'
     );
 
-    const hasMathInSuggestions = this.suggestions.some(s =>
-      this.catalog[s.courseId]?.pathway === 'Math'
+    // Check all suggestions for this year
+    const hasMathInYearSuggestions = this.suggestions.some(s =>
+      s.year === this.year && this.catalog[s.courseId]?.pathway === 'Math'
     );
 
-    return !hasMathInTerm && !hasMathInSuggestions;
+    return !hasMathInYear && !hasMathInYearSuggestions;
   }
 
   /**
