@@ -72,6 +72,17 @@ export class CandidateRanker {
 
     if (this.unmet.needsScience && course.pathway.includes('Science')) {
       score = 700;
+
+      // Grade 9: Biology is preferred, but Chemistry is also acceptable
+      if (this.year === 9) {
+        const nameUpper = course.full_name.toUpperCase();
+        if (nameUpper.includes('BIOLOGY') && !nameUpper.includes('AP')) {
+          score += 50; // Prefer Biology for Grade 9
+        } else if (nameUpper.includes('CHEMISTRY') && !nameUpper.includes('AP')) {
+          score += 30; // Chemistry is also acceptable
+        }
+      }
+
       score += this.gradeAppropriatenessBonus(course);
       return score;
     }
