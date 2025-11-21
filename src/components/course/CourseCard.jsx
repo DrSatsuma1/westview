@@ -42,7 +42,6 @@
  */
 
 import React from 'react';
-import { Award } from 'lucide-react';
 
 export function CourseCard({
   course,
@@ -95,7 +94,7 @@ export function CourseCard({
       onDragOver={(e) => onDragOver(e, year, quarter, slotIndex)}
       onDragLeave={onDragLeave}
       onDrop={(e) => onDrop(e, year, quarter, slotIndex)}
-      className={`rounded-lg p-3 min-h-[120px] transition-all border-l-4 border-r border-t border-b bg-gray-100 shadow-md cursor-move ${pathwayColor} ${
+      className={`rounded-lg p-3 min-h-[140px] transition-all border-l-4 border-r border-t border-b bg-gray-100 shadow-md cursor-move ${pathwayColor} ${
         isOptionalSlot ? 'border-gray-300' : 'border-gray-200'
       } ${
         isDragging ? 'opacity-50 border-blue-400' : 'hover:shadow-md'
@@ -106,14 +105,9 @@ export function CourseCard({
       <div className="flex items-start justify-between gap-2">
         {/* Left side: Course information */}
         <div className="flex-1 min-w-0">
-          {/* Course name with optional AP/Honors badge */}
-          <div className="flex items-center gap-1.5 mb-1">
-            {info.is_ap_or_honors_pair && (
-              <Award className="text-purple-600 flex-shrink-0" size={16} />
-            )}
-            <div className="font-bold text-base text-gray-900 break-words">
-              {info.full_name}
-            </div>
+          {/* Course name */}
+          <div className="font-bold text-base text-gray-900 break-words mb-1">
+            {info.full_name}
           </div>
 
           {/* Course number */}

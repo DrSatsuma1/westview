@@ -45,7 +45,8 @@ export class SuggestionEngine {
     westviewReqs,
     agReqs,
     checkEligibility = null,
-    targetCount = null
+    targetCount = null,
+    preferredLanguage = null
   }) {
     const yearInt = parseInt(year);
     // Target suggestions: 4 per semester (Years 1-3), 3 per semester (Year 4)
@@ -85,7 +86,8 @@ export class SuggestionEngine {
       suggestions,
       this.catalog,
       term,
-      year
+      year,
+      preferredLanguage
     );
 
     const termQuarters = term === 'fall' ? ['Q1', 'Q2'] : ['Q3', 'Q4'];

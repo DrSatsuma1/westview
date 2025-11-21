@@ -315,6 +315,12 @@ function App() {
     return saved ? JSON.parse(saved) : false;
   });
 
+  // Preferred foreign language for auto-suggestions
+  const [preferredLanguage, setPreferredLanguage] = useState(() => {
+    const saved = localStorage.getItem('westview-preferred-language');
+    return saved ? JSON.parse(saved) : null; // null means not set yet
+  });
+
   // Locked semesters - prevent auto-suggest from replacing courses
   const [lockedSemesters, setLockedSemesters] = useState(() => {
     const saved = localStorage.getItem('westview-locked-semesters');
@@ -380,6 +386,13 @@ function App() {
   React.useEffect(() => {
     localStorage.setItem('westview-locked-semesters', JSON.stringify(lockedSemesters));
   }, [lockedSemesters]);
+
+  // Save preferred language to localStorage
+  React.useEffect(() => {
+    if (preferredLanguage !== null) {
+      localStorage.setItem('westview-preferred-language', JSON.stringify(preferredLanguage));
+    }
+  }, [preferredLanguage]);
 
   // Calculate Westview graduation progress
   const westviewProgress = useMemo(() => {
@@ -2309,7 +2322,8 @@ function App() {
         term: term || 'fall', // Default to fall if no term specified
         westviewReqs: WESTVIEW_REQUIREMENTS,
         agReqs: AG_REQUIREMENTS,
-        checkEligibility: checkCourseEligibility // Pass prerequisite checker
+        checkEligibility: checkCourseEligibility, // Pass prerequisite checker
+        preferredLanguage // Pass user's preferred foreign language
       });
 
       allSuggestions.push(...yearSuggestions);
@@ -2614,6 +2628,21 @@ function App() {
                 <div className="flex-grow">
                   <h1 className="text-3xl font-bold text-[#1A202C]">Westview High School Course Planner</h1>
                   <p className="text-[#718096] mt-1">Plan your path through high school</p>
+                </div>
+                {/* Foreign Language Selector */}
+                <div className="flex items-center gap-2">
+                  <label className="text-sm font-medium text-gray-700 whitespace-nowrap">Language:</label>
+                  <select
+                    value={preferredLanguage || ''}
+                    onChange={(e) => setPreferredLanguage(e.target.value || null)}
+                    className="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white"
+                  >
+                    <option value="">Select...</option>
+                    <option value="Spanish">Spanish</option>
+                    <option value="Chinese">Chinese</option>
+                    <option value="French">French</option>
+                    <option value="Filipino">Filipino</option>
+                  </select>
                 </div>
                 <button
                   onClick={() => {
@@ -3458,70 +3487,78 @@ function App() {
         {/* AP/IB/CLEP/A-Level Test Scores Input Section */}
         {showTestScores && (
           <div id="test-scores-section" className="max-w-[1800px] mx-auto px-12 mt-12">
-            <TestScoreForm
-              testScores={testScores}
-              selectedTestType={selectedTestType}
-              testSubjects={TEST_SUBJECTS}
-              onAddScore={(type, subject, score, agCategory) => {
-                setTestScores([...testScores, { type, subject, score, agCategory }]);
-              }}
-              onRemoveScore={(idx) => {
-                const updated = testScores.filter((_, i) => i !== idx);
-                setTestScores(updated);
-              }}
-              onTestTypeChange={setSelectedTestType}
-              testScoresRef={testScoresRef}
-            />
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+              <div className="lg:col-span-3">
+                <TestScoreForm
+                  testScores={testScores}
+                  selectedTestType={selectedTestType}
+                  testSubjects={TEST_SUBJECTS}
+                  onAddScore={(type, subject, score, agCategory) => {
+                    setTestScores([...testScores, { type, subject, score, agCategory }]);
+                  }}
+                  onRemoveScore={(idx) => {
+                    const updated = testScores.filter((_, i) => i !== idx);
+                    setTestScores(updated);
+                  }}
+                  onTestTypeChange={setSelectedTestType}
+                  testScoresRef={testScoresRef}
+                />
+              </div>
+            </div>
           </div>
         )}
 
         {/* College Credits from Test Scores - Bottom Section */}
         {testScores.length > 0 && (
           <div className="max-w-[1800px] mx-auto px-12 pb-16 mt-12">
-            <div className="bg-white rounded-xl shadow-lg border-2 border-gray-200 overflow-hidden">
-              <div className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-4">
-                <h3 className="text-2xl font-bold">College Credits from Test Scores</h3>
-              </div>
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+              <div className="lg:col-span-3">
+                <div className="bg-white rounded-xl shadow-lg border-2 border-gray-200 overflow-hidden">
+                  <div className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-4">
+                    <h3 className="text-2xl font-bold">College Credits from Test Scores</h3>
+                  </div>
 
-              <div className="p-6">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b-2 border-gray-300">
-                      <th className="text-left py-3 px-4 font-bold text-[#1A202C]">Test</th>
-                      <th className="text-center py-3 px-4 font-bold text-[#1A202C]">Score</th>
-                      <th className="text-center py-3 px-4 font-bold text-[#1A202C]">CSU Units</th>
-                      <th className="text-center py-3 px-4 font-bold text-[#1A202C]">UC Units</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {collegeCredits.details.map((detail, idx) => (
-                      <tr key={idx} className="border-b border-gray-200 hover:bg-gray-50">
-                        <td className="py-3 px-4 text-[#1A202C]">{detail.exam}</td>
-                        <td className="py-3 px-4 text-center text-[#718096]">{detail.score}</td>
-                        <td className="py-3 px-4 text-center text-[#718096]">{detail.csu}</td>
-                        <td className="py-3 px-4 text-center text-[#718096]">{detail.uc}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                  <tfoot className="bg-gray-50 border-t-2 border-gray-300">
-                    <tr>
-                      <td colSpan="2" className="py-4 px-4 text-right font-bold text-[#1A202C]">Total CSU Credits:</td>
-                      <td className="py-4 px-4 text-center font-bold text-[#2B6CB0] text-xl">{collegeCredits.csu}</td>
-                      <td className="py-4 px-4"></td>
-                    </tr>
-                    <tr>
-                      <td colSpan="2" className="py-4 px-4 text-right font-bold text-[#1A202C]">Total UC Credits:</td>
-                      <td className="py-4 px-4"></td>
-                      <td className="py-4 px-4 text-center font-bold text-[#2B6CB0] text-xl">{collegeCredits.uc}</td>
-                    </tr>
-                  </tfoot>
-                </table>
+                  <div className="p-6">
+                    <table className="w-full">
+                      <thead>
+                        <tr className="border-b-2 border-gray-300">
+                          <th className="text-left py-3 px-4 font-bold text-[#1A202C]">Test</th>
+                          <th className="text-center py-3 px-4 font-bold text-[#1A202C]">Score</th>
+                          <th className="text-center py-3 px-4 font-bold text-[#1A202C]">CSU Units</th>
+                          <th className="text-center py-3 px-4 font-bold text-[#1A202C]">UC Units</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {collegeCredits.details.map((detail, idx) => (
+                          <tr key={idx} className="border-b border-gray-200 hover:bg-gray-50">
+                            <td className="py-3 px-4 text-[#1A202C]">{detail.exam}</td>
+                            <td className="py-3 px-4 text-center text-[#718096]">{detail.score}</td>
+                            <td className="py-3 px-4 text-center text-[#718096]">{detail.csu}</td>
+                            <td className="py-3 px-4 text-center text-[#718096]">{detail.uc}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                      <tfoot className="bg-gray-50 border-t-2 border-gray-300">
+                        <tr>
+                          <td colSpan="2" className="py-4 px-4 text-right font-bold text-[#1A202C]">Total CSU Credits:</td>
+                          <td className="py-4 px-4 text-center font-bold text-[#2B6CB0] text-xl">{collegeCredits.csu}</td>
+                          <td className="py-4 px-4"></td>
+                        </tr>
+                        <tr>
+                          <td colSpan="2" className="py-4 px-4 text-right font-bold text-[#1A202C]">Total UC Credits:</td>
+                          <td className="py-4 px-4"></td>
+                          <td className="py-4 px-4 text-center font-bold text-[#2B6CB0] text-xl">{collegeCredits.uc}</td>
+                        </tr>
+                      </tfoot>
+                    </table>
 
-                <div className="mt-6 pt-4 border-t border-gray-200">
-                  <p className="text-xs text-[#718096]">
-                    Note: Credit values are estimates based on typical CSU and UC policies. Actual credit awarded may vary by campus.
-                    UC credits shown are semester units for Berkeley/Merced (multiply by 1.5 for quarter units at other UCs).
-                  </p>
+                    <div className="mt-6 pt-4 border-t border-gray-200">
+                      <p className="text-xs text-[#718096]">
+                        Note: Credit values are estimates based on typical CSU and UC policies. Actual credit awarded may vary by campus.
+                        UC credits shown are semester units for Berkeley/Merced (multiply by 1.5 for quarter units at other UCs).
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

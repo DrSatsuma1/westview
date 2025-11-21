@@ -185,13 +185,16 @@ export class CandidateRanker {
     // Grade 10: prefer standard progression
     if (this.year === 10) {
       if (nameUpper.includes('ENGLISH 3-4')) return 40;
+      if (nameUpper.includes('INTEGRATED MATHEMATICS II')) return 50; // Math II in Grade 10
       if (nameUpper.includes('WORLD HISTORY')) return 40;
       if (nameUpper.includes('CHEMISTRY') && !nameUpper.includes('AP')) return 30;
-      if (nameUpper.includes('SPANISH 3-4') || nameUpper.includes('CHINESE 3-4')) return 25;
+      if (nameUpper.includes('SPANISH 3-4') || nameUpper.includes('CHINESE 3-4') ||
+          nameUpper.includes('FRENCH 3-4') || nameUpper.includes('FILIPINO 3-4')) return 25;
     }
 
-    // Grade 11: prefer college-prep courses
+    // Grade 11: prefer college-prep courses - Math III MUST be completed by end of Year 3
     if (this.year === 11) {
+      if (nameUpper.includes('INTEGRATED MATHEMATICS III')) return 50; // Math III critical in Grade 11
       if (nameUpper.includes('UNITED STATES HISTORY')) return 40;
       if (nameUpper.includes('ENGLISH 5-6')) return 40;
     }

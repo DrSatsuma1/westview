@@ -1,6 +1,7 @@
 {
   "name": "westview-ucag-planner",
   "version": "1.0.0",
+  "type": "module",
   "description": "UC/CSU A-G Course Planner for Westview High School - Poway Unified School District",
   "private": true,
   "dependencies": {

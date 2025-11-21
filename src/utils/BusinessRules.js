@@ -10,12 +10,13 @@
  */
 
 export class BusinessRules {
-  constructor(courses, suggestions, catalog, term, year) {
+  constructor(courses, suggestions, catalog, term, year, preferredLanguage = null) {
     this.courses = courses;
     this.suggestions = suggestions;
     this.catalog = catalog;
     this.term = term;
     this.year = year;
+    this.preferredLanguage = preferredLanguage;
     this.termQuarters = term === 'fall' ? ['Q1', 'Q2'] : ['Q3', 'Q4'];
   }
 
@@ -36,11 +37,31 @@ export class BusinessRules {
       this.checkScienceLimit(course) &&
       this.checkHistoryLimit(course) &&
       this.checkIntegratedMathLimit(course) &&
+      this.checkPreferredLanguage(course) &&
       this.checkForeignLanguageConsistency(course) &&
       this.checkYearlongTermPlacement(course) &&
       this.checkDuplicates(course) &&
       this.checkSameSemesterLanguageLimit(course)
     );
+  }
+
+  /**
+   * RULE: If user has set a preferred language, only suggest that language
+   * @param {Object} course
+   * @returns {boolean}
+   */
+  checkPreferredLanguage(course) {
+    // Only apply to Foreign Language courses
+    if (course.pathway !== 'Foreign Language') return true;
+
+    // If no preference set, allow all languages
+    if (!this.preferredLanguage) return true;
+
+    // Check if course name contains the preferred language
+    const courseNameUpper = course.full_name.toUpperCase();
+    const preferredUpper = this.preferredLanguage.toUpperCase();
+
+    return courseNameUpper.includes(preferredUpper);
   }
 
   /**
@@ -282,14 +303,21 @@ export class BusinessRules {
   checkForeignLanguageConsistency(course) {
     if (course.pathway !== 'Foreign Language') return true;
 
-    // Find any existing language course
-    const allLanguageCourses = this.courses.filter(c =>
+    // Find any existing language course in user's schedule
+    const existingLanguageCourses = this.courses.filter(c =>
       this.catalog[c.courseId]?.pathway === 'Foreign Language'
     );
 
+    // Also check already-suggested language courses
+    const suggestedLanguageCourses = this.suggestions.filter(s =>
+      this.catalog[s.courseId]?.pathway === 'Foreign Language'
+    );
+
+    const allLanguageCourses = [...existingLanguageCourses, ...suggestedLanguageCourses];
+
     if (allLanguageCourses.length === 0) return true; // No constraint yet
 
-    // Extract language from existing course
+    // Extract language from first existing/suggested course
     const existingLanguage = this.extractLanguage(
       this.catalog[allLanguageCourses[0].courseId].full_name
     );
