@@ -27,6 +27,7 @@ export class BusinessRules {
   canAddCourse(course) {
     return (
       this.checkFineArtsLimit(course) &&
+      this.checkPELimit(course) &&
       this.checkForeignLanguageConsistency(course) &&
       this.checkYearlongTermPlacement(course) &&
       this.checkDuplicates(course) &&
@@ -57,6 +58,31 @@ export class BusinessRules {
     );
 
     return !hasFineArtsInTerm && !hasFineArtsInSuggestions;
+  }
+
+  /**
+   * RULE: Never suggest two PE/ENS courses in the same term
+   * @param {Object} course
+   * @returns {boolean}
+   */
+  checkPELimit(course) {
+    if (course.pathway !== 'Physical Education') return true;
+
+    // Check existing courses in this term
+    const termCourses = this.courses.filter(c =>
+      c.year === this.year && this.termQuarters.includes(c.quarter)
+    );
+
+    const hasPEInTerm = termCourses.some(c =>
+      this.catalog[c.courseId]?.pathway === 'Physical Education'
+    );
+
+    // Check already suggested courses for this term
+    const hasPEInSuggestions = this.suggestions.some(s =>
+      this.catalog[s.courseId]?.pathway === 'Physical Education'
+    );
+
+    return !hasPEInTerm && !hasPEInSuggestions;
   }
 
   /**
