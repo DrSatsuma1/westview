@@ -91,49 +91,51 @@ export class BusinessRules {
   }
 
   /**
-   * RULE: Only one English course per semester
+   * RULE: Only one English course per YEAR (not per semester)
+   * English courses are typically yearlong, so only suggest once
    * @param {Object} course
    * @returns {boolean}
    */
   checkEnglishLimit(course) {
     if (course.pathway !== 'English') return true;
 
-    const termCourses = this.courses.filter(c =>
-      c.year === this.year && this.termQuarters.includes(c.quarter)
-    );
+    // Check entire year (all quarters), not just current term
+    const yearCourses = this.courses.filter(c => c.year === this.year);
 
-    const hasEnglishInTerm = termCourses.some(c =>
+    const hasEnglishInYear = yearCourses.some(c =>
       this.catalog[c.courseId]?.pathway === 'English'
     );
 
-    const hasEnglishInSuggestions = this.suggestions.some(s =>
-      this.catalog[s.courseId]?.pathway === 'English'
+    // Check ALL suggestions for this year, not just current term
+    const hasEnglishInYearSuggestions = this.suggestions.some(s =>
+      s.year === this.year && this.catalog[s.courseId]?.pathway === 'English'
     );
 
-    return !hasEnglishInTerm && !hasEnglishInSuggestions;
+    return !hasEnglishInYear && !hasEnglishInYearSuggestions;
   }
 
   /**
-   * RULE: Only one Math course per semester
+   * RULE: Only one Math course per YEAR (not per semester)
+   * Math courses are typically yearlong, so only suggest once
    * @param {Object} course
    * @returns {boolean}
    */
   checkMathLimit(course) {
     if (course.pathway !== 'Math') return true;
 
-    const termCourses = this.courses.filter(c =>
-      c.year === this.year && this.termQuarters.includes(c.quarter)
-    );
+    // Check entire year (all quarters), not just current term
+    const yearCourses = this.courses.filter(c => c.year === this.year);
 
-    const hasMathInTerm = termCourses.some(c =>
+    const hasMathInYear = yearCourses.some(c =>
       this.catalog[c.courseId]?.pathway === 'Math'
     );
 
-    const hasMathInSuggestions = this.suggestions.some(s =>
-      this.catalog[s.courseId]?.pathway === 'Math'
+    // Check ALL suggestions for this year, not just current term
+    const hasMathInYearSuggestions = this.suggestions.some(s =>
+      s.year === this.year && this.catalog[s.courseId]?.pathway === 'Math'
     );
 
-    return !hasMathInTerm && !hasMathInSuggestions;
+    return !hasMathInYear && !hasMathInYearSuggestions;
   }
 
   /**
