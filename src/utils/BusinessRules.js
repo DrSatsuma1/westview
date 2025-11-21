@@ -26,6 +26,7 @@ export class BusinessRules {
    */
   canAddCourse(course) {
     return (
+      this.checkAPGrade9Restriction(course) &&
       this.checkFineArtsLimit(course) &&
       this.checkPELimit(course) &&
       this.checkEnglishLimit(course) &&
@@ -38,6 +39,19 @@ export class BusinessRules {
       this.checkDuplicates(course) &&
       this.checkSameSemesterLanguageLimit(course)
     );
+  }
+
+  /**
+   * RULE: Never suggest AP courses in Grade 9
+   * @param {Object} course
+   * @returns {boolean}
+   */
+  checkAPGrade9Restriction(course) {
+    const yearInt = parseInt(this.year);
+    if (yearInt !== 9) return true; // Only restrict for Grade 9
+
+    const courseNameUpper = course.full_name.toUpperCase();
+    return !courseNameUpper.includes('AP');
   }
 
   /**
