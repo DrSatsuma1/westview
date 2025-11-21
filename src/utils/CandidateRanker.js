@@ -23,7 +23,7 @@ export class CandidateRanker {
   scoreCourse(course) {
     let score = 0;
 
-    // Tier 1: Required core courses (700-900 points)
+    // Tier 1: Required core courses (700-950 points)
     // These MUST be taken for graduation
     if (this.unmet.needsEnglish && course.pathway === 'English') {
       score = 900;
@@ -38,7 +38,29 @@ export class CandidateRanker {
     }
 
     if (this.unmet.needsPE && course.pathway === 'Physical Education') {
-      score = 800;
+      // Grade 9 PE is REQUIRED - highest priority
+      // ENS 3-4 in Fall, ENS 1-2 in Spring
+      const nameUpper = course.full_name.toUpperCase();
+
+      if (this.year === 9) {
+        // ENS 3-4 for Fall (Q1/Q2)
+        if (this.term === 'fall' && nameUpper.includes('ENS 3-4')) {
+          return 950; // Highest priority for Grade 9 Fall
+        }
+        // ENS 1-2 for Spring (Q3/Q4)
+        if (this.term === 'spring' && nameUpper.includes('ENS 1-2')) {
+          return 950; // Highest priority for Grade 9 Spring
+        }
+        // Other PE courses for Grade 9 get lower priority
+        score = 800;
+      } else if (this.year === 12) {
+        // Grade 12 needs one PE class for the year
+        score = 800;
+      } else {
+        // Grades 10-11 don't need PE, so very low priority
+        score = 100;
+      }
+
       return score;
     }
 

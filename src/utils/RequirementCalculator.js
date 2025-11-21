@@ -82,7 +82,7 @@ export class RequirementCalculator {
   checkPERequirement(year, yearCourses) {
     const yearInt = parseInt(year);
 
-    // Grade 9: Need PE in BOTH Fall and Spring
+    // Grade 9: REQUIRED - ENS 3-4 in Fall, ENS 1-2 in Spring
     if (yearInt === 9) {
       const fallCourses = yearCourses.filter(c => c.quarter === 'Q1' || c.quarter === 'Q2');
       const springCourses = yearCourses.filter(c => c.quarter === 'Q3' || c.quarter === 'Q4');
@@ -90,7 +90,7 @@ export class RequirementCalculator {
       const hasPEInFall = this.hasPathway(fallCourses, 'Physical Education');
       const hasPEInSpring = this.hasPathway(springCourses, 'Physical Education');
 
-      // Return true if EITHER term is missing PE
+      // Always return true if either term is missing PE (highest priority)
       return !hasPEInFall || !hasPEInSpring;
     }
 
