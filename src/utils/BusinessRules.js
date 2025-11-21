@@ -27,6 +27,7 @@ export class BusinessRules {
   canAddCourse(course) {
     return (
       this.checkAPGrade9Restriction(course) &&
+      this.checkOffRollYearRestriction(course) &&
       this.checkPETotalLimit(course) &&
       this.checkFineArtsLimit(course) &&
       this.checkPELimit(course) &&
@@ -53,6 +54,20 @@ export class BusinessRules {
 
     const courseNameUpper = course.full_name.toUpperCase();
     return !courseNameUpper.includes('AP');
+  }
+
+  /**
+   * RULE: Never suggest Off-Roll courses in Grades 9-11
+   * Off-Roll courses are only appropriate for Grade 12
+   * @param {Object} course
+   * @returns {boolean}
+   */
+  checkOffRollYearRestriction(course) {
+    if (course.pathway !== 'Off-Roll') return true;
+
+    const yearInt = parseInt(this.year);
+    // Only allow Off-Roll suggestions in Grade 12
+    return yearInt === 12;
   }
 
   /**

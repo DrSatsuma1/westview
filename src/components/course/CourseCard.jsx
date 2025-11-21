@@ -78,8 +78,10 @@ export function CourseCard({
                        dragOverSlot?.slot === slotIndex;
   const pathwayColor = pathwayColors[info.pathway] || 'bg-gray-400';
 
-  // Extract course number (first in array if available)
-  const courseNumber = info.course_numbers && info.course_numbers.length > 0
+  // Format course number as "xxxxxx-xxxxxx" (join semester 1 and 2 numbers)
+  const courseNumber = info.course_numbers && info.course_numbers.length >= 2
+    ? `${info.course_numbers[0]}-${info.course_numbers[1]}`
+    : info.course_numbers && info.course_numbers.length === 1
     ? info.course_numbers[0]
     : '';
 
