@@ -103,11 +103,16 @@ export class CandidateRanker {
       score = 300 + (priority * 50);
     }
 
-    // Tier 3: Electives (100-250 points)
+    // Tier 3: Electives (100-350 points)
     // Fill to target course count
     if (score === 0) {
       if (course.pathway === 'Foreign Language') {
-        score = 250; // High priority elective (needed for UC/CSU)
+        // Grade 9: Foreign Language is HIGH priority (recommend both semesters)
+        if (this.year === 9) {
+          score = 350; // Elevated priority for Grade 9 to ensure suggestion
+        } else {
+          score = 250; // High priority elective (needed for UC/CSU)
+        }
       } else if (course.pathway === 'Fine Arts') {
         score = 200; // Medium priority (UC/CSU requirement)
       } else if (course.pathway === 'CTE') {
