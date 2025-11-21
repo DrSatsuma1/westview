@@ -109,6 +109,8 @@ export class SuggestionEngine {
         quarter: targetQuarter,
         reason: this.generateReason(course, unmetRequirements),
         courseName: course.full_name,
+        courseNumber: course.course_id, // Full course ID/number
+        pathway: course.pathway, // Course category
         score // Keep for debugging/testing
       });
     }
