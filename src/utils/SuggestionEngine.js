@@ -151,6 +151,12 @@ export class SuggestionEngine {
         // Never suggest ROBOTICS (complex scheduling constraints)
         if (course.full_name.toUpperCase() === 'ROBOTICS') return false;
 
+        // Never suggest ROTC (user preference)
+        if (course.full_name.toUpperCase().includes('ROTC')) return false;
+
+        // Never suggest Newcomer Class (not appropriate for most students)
+        if (course.full_name.toUpperCase().includes('NEWCOMER')) return false;
+
         return true;
       })
       .map(([id, course]) => ({ id, ...course }));
