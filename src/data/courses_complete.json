@@ -864,7 +864,7 @@
       "credit_type": "standard",
       "uc_csu_category": "C",
       "pathway": "Math",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
