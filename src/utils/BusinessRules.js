@@ -41,8 +41,39 @@ export class BusinessRules {
       this.checkForeignLanguageConsistency(course) &&
       this.checkYearlongTermPlacement(course) &&
       this.checkDuplicates(course) &&
-      this.checkSameSemesterLanguageLimit(course)
+      this.checkSameSemesterLanguageLimit(course) &&
+      this.checkCalcBCReviewRequiresConcurrent(course)
     );
+  }
+
+  /**
+   * RULE: Calculus BC Review can only be suggested if AP Calc BC is also in this term
+   * BC Review is a 5th class that requires concurrent enrollment in AP Calc BC
+   * @param {Object} course
+   * @returns {boolean}
+   */
+  checkCalcBCReviewRequiresConcurrent(course) {
+    // Only apply to BC Review course
+    if (!course.full_name.toUpperCase().includes('CALCULUS BC REVIEW')) return true;
+
+    // BC Review is Fall only
+    if (this.term !== 'fall') return false;
+
+    // Check if AP Calculus BC is already in this term's courses OR in suggestions
+    const hasAPCalcBCInCourses = this.courses.some(c => {
+      const info = this.catalog[c.courseId];
+      if (!info) return false;
+      const inThisTerm = c.year === this.year && this.termQuarters.includes(c.quarter);
+      return inThisTerm && info.full_name.toUpperCase().includes('AP CALCULUS BC');
+    });
+
+    const hasAPCalcBCInSuggestions = this.suggestions.some(s => {
+      const info = this.catalog[s.courseId];
+      if (!info) return false;
+      return info.full_name.toUpperCase().includes('AP CALCULUS BC');
+    });
+
+    return hasAPCalcBCInCourses || hasAPCalcBCInSuggestions;
   }
 
   /**

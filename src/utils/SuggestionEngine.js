@@ -124,6 +124,43 @@ export class SuggestionEngine {
       });
     }
 
+    // Special case: If AP Calculus BC was suggested in Fall, also suggest BC Review as 5th class
+    if (term === 'fall') {
+      const hasAPCalcBC = suggestions.some(s =>
+        s.courseName.toUpperCase().includes('AP CALCULUS BC')
+      );
+
+      if (hasAPCalcBC) {
+        // Find BC Review course in catalog
+        const bcReview = Object.values(this.catalog).find(c =>
+          c.full_name.toUpperCase().includes('CALCULUS BC REVIEW')
+        );
+
+        if (bcReview) {
+          // Check it's not already in courses or suggestions
+          const alreadyHasBCReview = courses.some(c =>
+            this.catalog[c.courseId]?.full_name.toUpperCase().includes('CALCULUS BC REVIEW')
+          ) || suggestions.some(s =>
+            s.courseName.toUpperCase().includes('CALCULUS BC REVIEW')
+          );
+
+          if (!alreadyHasBCReview) {
+            suggestions.push({
+              courseId: bcReview.id,
+              year,
+              quarter: targetQuarter,
+              reason: 'Concurrent with AP Calculus BC (5th class, 2.5 credits)',
+              courseName: bcReview.full_name,
+              courseNumber: bcReview.course_id,
+              pathway: bcReview.pathway,
+              score: 100, // Lower score, but still suggested
+              isFifthClass: true // Mark as 5th class
+            });
+          }
+        }
+      }
+    }
+
     return suggestions;
   }
 

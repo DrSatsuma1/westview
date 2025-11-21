@@ -2626,7 +2626,8 @@ function App() {
             <div className="lg:col-span-3">
               <div className="flex items-center gap-4">
                 <div className="flex-grow">
-                  <h1 className="text-3xl font-bold text-[#1A202C]">Westview High School Course Planner</h1>
+                  <h1 className="text-3xl font-bold text-[#1A202C]">Westview High School</h1>
+                  <h2 className="text-2xl font-bold text-[#2D3748]">Course Planner</h2>
                   <p className="text-[#718096] mt-1">Plan your path through high school</p>
                 </div>
                 {/* Foreign Language Selector */}
@@ -2654,7 +2655,7 @@ function App() {
                       }
                     }, 100);
                   }}
-                  className="bg-[#2B6CB0] hover:bg-[#2C5282] text-white border-2 border-[#2B6CB0] rounded-lg px-4 py-3 transition-colors text-sm font-bold whitespace-nowrap"
+                  className="bg-[#2B6CB0] hover:bg-[#2C5282] text-white border-2 border-[#2B6CB0] rounded-lg px-4 py-3 transition-colors text-sm font-bold whitespace-nowrap min-w-[140px] text-center"
                 >
                   Track AP Exams
                 </button>
@@ -2674,9 +2675,9 @@ function App() {
                       setNewCourse({ courseId: '' });
                     }
                   }}
-                  className="bg-[#C53030] hover:bg-[#9B2C2C] text-white border-2 border-[#C53030] rounded-lg px-4 py-3 transition-colors text-sm font-bold"
+                  className="bg-[#C53030] hover:bg-[#9B2C2C] text-white border-2 border-[#C53030] rounded-lg px-4 py-3 transition-colors text-sm font-bold min-w-[140px] text-center"
                 >
-                  Clear All Courses
+                  Clear All
                 </button>
               </div>
             </div>

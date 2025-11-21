@@ -54,7 +54,7 @@ export function RequirementsSidebar({
   return (
     <div className="space-y-6">
       {/* Westview Graduation Requirements */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
+      <div className="bg-white rounded-xl border border-gray-200 p-4">
         <h3 className="text-lg font-bold text-gray-900 mb-2">Westview</h3>
 
         {/* Overall progress to 230 credits */}
@@ -92,7 +92,7 @@ export function RequirementsSidebar({
 
       {/* UC/CSU Requirements - Only show if not in Westview Graduation Only mode */}
       {!westviewGradOnly && (
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
+        <div className="bg-white rounded-xl border border-gray-200 p-4">
           <h3 className="text-lg font-bold text-gray-900 mb-2">UC/CSU Eligibility</h3>
           <p className="text-sm text-gray-600 mb-4">A-G Requirements</p>
 
@@ -200,7 +200,7 @@ export function RequirementsSidebar({
 
       {/* State Seal of Biliteracy */}
       {!westviewGradOnly && (
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
+        <div className="bg-white rounded-xl border border-gray-200 p-4">
           <h3 className="text-lg font-bold text-gray-900 mb-2">State Seal of Biliteracy</h3>
           <p className="text-sm text-gray-600 mb-4">California Recognition</p>
 

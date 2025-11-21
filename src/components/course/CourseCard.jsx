@@ -84,6 +84,13 @@ export function CourseCard({
     ? info.course_numbers[0]
     : '';
 
+  // Format display name: abbreviate for space, remove unnecessary text
+  const displayName = info.full_name
+    .replace(/ AND /g, ' & ')
+    .replace(/ \(PLTW\)/g, '')
+    .replace(/INTEGRATED MATHEMATICS/g, 'Integrated Math')
+    .replace(/INTRODUCTION/gi, 'Intro');
+
 
   return (
     <div
@@ -105,9 +112,9 @@ export function CourseCard({
       <div className="flex items-start justify-between gap-2">
         {/* Left side: Course information */}
         <div className="flex-1 min-w-0">
-          {/* Course name */}
-          <div className="font-bold text-base text-gray-900 break-words mb-1">
-            {info.full_name}
+          {/* Course name - reserve 2 lines (min-height) for alignment */}
+          <div className="font-bold text-base text-gray-900 break-words mb-1 min-h-[2.75rem] line-clamp-2 uppercase">
+            {displayName}
           </div>
 
           {/* Course number */}

@@ -977,19 +977,16 @@
         "091062"
       ],
       "grades_allowed": [
-        9,
-        10,
         11,
         12
       ],
       "credits": 2.5,
       "credit_type": "partial",
       "uc_csu_category": null,
-      "pathway": "Math",
+      "pathway": "Electives",
       "term_length": "semester",
       "offered_terms": [
-        "fall",
-        "spring"
+        "fall"
       ],
       "prerequisites_required": [
         "AP Calculus AB and concurrent enrollment in AP Calculus BC For students interested in: Deepening understanding of and background in calculus in preparation of the Advanced Placement exam This course i"
