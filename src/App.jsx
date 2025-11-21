@@ -2006,6 +2006,15 @@ function App() {
       return;
     }
 
+    // Check for duplicate course across all 4 years (unless repeat courses allowed)
+    if (!allowRepeatCourses) {
+      const alreadyHasCourseInSchedule = courses.some(c => c.courseId === newCourse.courseId);
+      if (alreadyHasCourseInSchedule) {
+        setError('This course is already in your 4-year schedule. Enable "Allow Repeat Courses" in settings to override.');
+        return;
+      }
+    }
+
     // Check PE credit cap (max 40 credits toward graduation)
     if (courseInfo.pathway === 'Physical Education') {
       const totalPECredits = courses
