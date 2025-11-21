@@ -28,6 +28,10 @@ export class BusinessRules {
     return (
       this.checkFineArtsLimit(course) &&
       this.checkPELimit(course) &&
+      this.checkEnglishLimit(course) &&
+      this.checkMathLimit(course) &&
+      this.checkScienceLimit(course) &&
+      this.checkHistoryLimit(course) &&
       this.checkIntegratedMathLimit(course) &&
       this.checkForeignLanguageConsistency(course) &&
       this.checkYearlongTermPlacement(course) &&
@@ -84,6 +88,101 @@ export class BusinessRules {
     );
 
     return !hasPEInTerm && !hasPEInSuggestions;
+  }
+
+  /**
+   * RULE: Only one English course per semester
+   * @param {Object} course
+   * @returns {boolean}
+   */
+  checkEnglishLimit(course) {
+    if (course.pathway !== 'English') return true;
+
+    const termCourses = this.courses.filter(c =>
+      c.year === this.year && this.termQuarters.includes(c.quarter)
+    );
+
+    const hasEnglishInTerm = termCourses.some(c =>
+      this.catalog[c.courseId]?.pathway === 'English'
+    );
+
+    const hasEnglishInSuggestions = this.suggestions.some(s =>
+      this.catalog[s.courseId]?.pathway === 'English'
+    );
+
+    return !hasEnglishInTerm && !hasEnglishInSuggestions;
+  }
+
+  /**
+   * RULE: Only one Math course per semester
+   * @param {Object} course
+   * @returns {boolean}
+   */
+  checkMathLimit(course) {
+    if (course.pathway !== 'Math') return true;
+
+    const termCourses = this.courses.filter(c =>
+      c.year === this.year && this.termQuarters.includes(c.quarter)
+    );
+
+    const hasMathInTerm = termCourses.some(c =>
+      this.catalog[c.courseId]?.pathway === 'Math'
+    );
+
+    const hasMathInSuggestions = this.suggestions.some(s =>
+      this.catalog[s.courseId]?.pathway === 'Math'
+    );
+
+    return !hasMathInTerm && !hasMathInSuggestions;
+  }
+
+  /**
+   * RULE: Only one Science course per semester
+   * @param {Object} course
+   * @returns {boolean}
+   */
+  checkScienceLimit(course) {
+    const isScience = course.pathway?.includes('Science');
+    if (!isScience) return true;
+
+    const termCourses = this.courses.filter(c =>
+      c.year === this.year && this.termQuarters.includes(c.quarter)
+    );
+
+    const hasScienceInTerm = termCourses.some(c => {
+      const info = this.catalog[c.courseId];
+      return info && info.pathway?.includes('Science');
+    });
+
+    const hasScienceInSuggestions = this.suggestions.some(s => {
+      const info = this.catalog[s.courseId];
+      return info && info.pathway?.includes('Science');
+    });
+
+    return !hasScienceInTerm && !hasScienceInSuggestions;
+  }
+
+  /**
+   * RULE: Only one History course per semester
+   * @param {Object} course
+   * @returns {boolean}
+   */
+  checkHistoryLimit(course) {
+    if (course.pathway !== 'History/Social Science') return true;
+
+    const termCourses = this.courses.filter(c =>
+      c.year === this.year && this.termQuarters.includes(c.quarter)
+    );
+
+    const hasHistoryInTerm = termCourses.some(c =>
+      this.catalog[c.courseId]?.pathway === 'History/Social Science'
+    );
+
+    const hasHistoryInSuggestions = this.suggestions.some(s =>
+      this.catalog[s.courseId]?.pathway === 'History/Social Science'
+    );
+
+    return !hasHistoryInTerm && !hasHistoryInSuggestions;
   }
 
   /**
