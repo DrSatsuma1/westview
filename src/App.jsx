@@ -1556,6 +1556,45 @@ function App() {
 
     // Get semester courses early for validation checks
     const quarterCourses = getCoursesForQuarter(year, quarter);
+    const yearCourses = courses.filter(c => c.year === year);
+
+    // Linked course validation - prevent adding courses that require linked pairs
+    const linkedRequirements = {
+      // AVID courses require English/History (but English/History can be alone)
+      'AVID_12_0015': { requires: 'HIGH_SCHOOL_0003', name: 'English 1-2' },
+      'AVID_34_0015': { requires: 'HIGH_SCHOOL', name: 'English 3-4' },
+      'AVID_56_0015': { requires: 'UNITED_STATES_0013', name: 'US History 1-2' },
+
+      // CS courses require AP CS A (but AP CS A can be alone)
+      'COMPUTER_SCIENCE_0009': { requires: 'AP_COMPUTER_0010', name: 'AP Computer Science A 1-2' },
+      'DATA_STRUCTURES_0010': { requires: 'AP_COMPUTER_0010', name: 'AP Computer Science A 1-2' },
+
+      // Bidirectional required pairs (neither can be alone)
+      'HON_SPANISH_0004': { requires: 'AP_SPANISH_0004', name: 'AP Spanish Language 1-2' },
+      'AP_SPANISH_0004': { requires: 'HON_SPANISH_0004', name: 'Honors Spanish 7-8' },
+
+      'AP_PRECALCULUS_0010': { requires: 'AP_CALCULUS_0010', name: 'AP Calculus AB 1-2' },
+      'AP_CALCULUS_0010': { requires: 'AP_PRECALCULUS_0010', name: 'AP Pre-Calculus 1-2' },
+
+      'BRITISH_LITERATURE_0003': { requires: 'AP_ENGLISH', name: 'AP English Literature 1-2' },
+      'AP_ENGLISH': { requires: 'BRITISH_LITERATURE_0003', name: 'British Literature 1-2' },
+
+      'HON_AMERICAN_0003': { requires: 'AP_UNITED', name: 'AP United States History 1-2' },
+      'AP_UNITED': { requires: 'HON_AMERICAN_0003', name: 'Honors American Literature 1-2' },
+
+      'AP_PHYSICS_0001': { requires: 'AP_PHYSICS', name: 'AP Physics C: Electricity & Magnetism 1-2' },
+      'AP_PHYSICS': { requires: 'AP_PHYSICS_0001', name: 'AP Physics C: Mechanics 1-2' },
+    };
+
+    if (linkedRequirements[newCourse.courseId]) {
+      const requirement = linkedRequirements[newCourse.courseId];
+      const hasRequiredCourse = yearCourses.some(c => c.courseId === requirement.requires);
+
+      if (!hasRequiredCourse) {
+        setError(`${courseInfo.full_name} must be taken with ${requirement.name}`);
+        return;
+      }
+    }
 
     // Early graduation mode validations
     if (earlyGradMode.enabled) {
@@ -2714,61 +2753,96 @@ function App() {
         }
       });
 
-      // Check for linked course pairs and add the linked course automatically
-      // Format: base course (can be taken alone) → linked course (added automatically)
-      const linkedCoursePairs = [
-        // AP Course Pairs
-        { base: 'HON_WORLD_0013', linked: 'AP_WORLD_0013' },           // Honors World History → AP World History
-        { base: 'PHYSICS_OF_0012', linked: 'AP_PHYSICS_0012' },        // Physics of the Universe → AP Physics 1A-1B
-        { base: 'AP_PHYSICS_0001', linked: 'AP_PHYSICS' },             // AP Physics C: Mechanics → AP Physics C: E&M
-        { base: 'HON_SPANISH_0004', linked: 'AP_SPANISH_0004' },       // Honors Spanish 7-8 → AP Spanish Language
-        { base: 'AP_PRECALCULUS_0010', linked: 'AP_CALCULUS_0010' },   // AP Pre-Calculus → AP Calculus AB
-        { base: 'BRITISH_LITERATURE_0003', linked: 'AP_ENGLISH' },     // British Literature → AP English Literature
-        { base: 'HON_AMERICAN_0003', linked: 'AP_UNITED' },            // Honors American Literature → AP US History
-        { base: 'CIVICS__0013', linked: 'AP_UNITED_0013' },            // Civics/Economics → AP US Government
-        { base: 'COMPUTER_SCIENCE_0009', linked: 'AP_COMPUTER_0010' }, // Computer Science → AP Computer Science A
+      // Complex linked course relationships
+      // BIDIRECTIONAL: Both courses trigger each other
+      // SEQUENTIAL: First course must trigger second
+      // ONE-WAY: First course can exist alone, triggers second
+      const linkedCourseRules = [
+        // AVID Program (bidirectional, but English/History CAN be standalone)
+        { type: 'bidirectional', courses: ['HIGH_SCHOOL_0003', 'AVID_12_0015'] }, // English 1-2 ↔ AVID 1-2
+        { type: 'bidirectional', courses: ['HIGH_SCHOOL', 'AVID_34_0015'] },      // English 3-4 ↔ AVID 3-4
+        { type: 'bidirectional', courses: ['UNITED_STATES_0013', 'AVID_56_0015'] }, // US History ↔ AVID 5-6
 
-        // Studio Art Pairs
-        { base: 'STUDIO_ART', linked: 'AP_STUDIO_0001' },              // Studio Art Digital Photography → AP Studio 2D Design
-        { base: 'STUDIO_ART_0002', linked: 'AP_STUDIO_0002' },         // Studio Art Drawing & Painting → AP Studio Drawing
-        { base: 'STUDIO_ART_0001', linked: 'AP_STUDIO' },              // Studio Art Ceramics → AP Studio 3D Design
+        // BIDIRECTIONAL REQUIRED (neither can be alone)
+        { type: 'bidirectional', courses: ['HON_SPANISH_0004', 'AP_SPANISH_0004'] },       // Honors Spanish 7-8 ↔ AP Spanish
+        { type: 'bidirectional', courses: ['AP_PRECALCULUS_0010', 'AP_CALCULUS_0010'] },   // AP Pre-Calc ↔ AP Calc AB
+        { type: 'bidirectional', courses: ['BRITISH_LITERATURE_0003', 'AP_ENGLISH'] },     // Brit Lit ↔ AP English Lit
+        { type: 'bidirectional', courses: ['HON_AMERICAN_0003', 'AP_UNITED'] },           // Hon Am Lit ↔ AP US History
 
-        // AVID Program Pairs
-        { base: 'HIGH_SCHOOL_0003', linked: 'AVID_12_0015' },          // English 1-2 → AVID 1-2
-        { base: 'HIGH_SCHOOL', linked: 'AVID_34_0015' },               // English 3-4 → AVID 3-4
-        { base: 'UNITED_STATES_0013', linked: 'AVID_56_0015' },        // US History 1-2 → AVID 5-6
+        // SEQUENTIAL REQUIRED (first triggers second, both required together)
+        { type: 'sequential', first: 'AP_PHYSICS_0001', second: 'AP_PHYSICS' },  // AP Physics C: Mechanics → E&M
 
-        // Math Pair
-        { base: 'COLLEGE_ALGEBRA_0010', linked: 'STATISTICS_0010' }    // College Algebra → Statistics
+        // BIDIRECTIONAL (Computer Science courses)
+        { type: 'bidirectional', courses: ['COMPUTER_SCIENCE_0009', 'AP_COMPUTER_0010'] }, // CS ↔ AP CS A
+        { type: 'bidirectional', courses: ['DATA_STRUCTURES_0010', 'AP_COMPUTER_0010'] },  // Data Struct ↔ AP CS A
+
+        // ONE-WAY TRIGGERS (first can be alone, optionally triggers second)
+        { type: 'one_way', trigger: 'AP_UNITED_0013', adds: 'CIVICS__0013' },      // AP US Gov → Civics (Civics can be solo)
+        { type: 'one_way', trigger: 'HON_WORLD_0013', adds: 'AP_WORLD_0013' },     // Hon World Hist → AP World
+        { type: 'one_way', trigger: 'PHYSICS_OF_0012', adds: 'AP_PHYSICS_0012' },  // Physics → AP Physics 1A-1B
+
+        // Studio Art (one-way)
+        { type: 'one_way', trigger: 'STUDIO_ART', adds: 'AP_STUDIO_0001' },        // Studio Art Digital → AP Studio 2D
+        { type: 'one_way', trigger: 'STUDIO_ART_0002', adds: 'AP_STUDIO_0002' },   // Studio Art Drawing → AP Studio Drawing
+        { type: 'one_way', trigger: 'STUDIO_ART_0001', adds: 'AP_STUDIO' },        // Studio Art Ceramics → AP Studio 3D
       ];
 
-      linkedCoursePairs.forEach(pair => {
-        const hasBaseCourse = termSuggestions.some(s => s.courseId === pair.base);
-        if (hasBaseCourse) {
-          // Check if linked course doesn't already exist in this year
+      // Process each rule
+      linkedCourseRules.forEach(rule => {
+        if (rule.type === 'bidirectional') {
+          // If either course exists, add the other
+          const [courseA, courseB] = rule.courses;
+          const hasA = termSuggestions.some(s => s.courseId === courseA);
+          const hasB = termSuggestions.some(s => s.courseId === courseB);
+
           const yearCourses = courses.filter(c => c.year === year);
-          const hasLinkedCourse = yearCourses.some(c => c.courseId === pair.linked);
+          const yearHasA = yearCourses.some(c => c.courseId === courseA);
+          const yearHasB = yearCourses.some(c => c.courseId === courseB);
 
-          if (!hasLinkedCourse) {
-            // Add linked course in the same term (both quarters since it's yearlong)
-            const firstQuarter = term === 'fall' ? 'Q1' : 'Q3';
-            const secondQuarter = term === 'fall' ? 'Q2' : 'Q4';
+          if (hasA && !yearHasB) {
+            addLinkedCourse(courseB);
+          } else if (hasB && !yearHasA) {
+            addLinkedCourse(courseA);
+          }
+        } else if (rule.type === 'sequential') {
+          // If first course exists, add second
+          const hasFirst = termSuggestions.some(s => s.courseId === rule.first);
+          const yearCourses = courses.filter(c => c.year === year);
+          const hasSecond = yearCourses.some(c => c.courseId === rule.second);
 
-            newCourses.push({
-              courseId: pair.linked,
-              id: Date.now() + newCourses.length * 2,
-              year: year,
-              quarter: firstQuarter
-            });
-            newCourses.push({
-              courseId: pair.linked,
-              id: Date.now() + newCourses.length * 2 + 1,
-              year: year,
-              quarter: secondQuarter
-            });
+          if (hasFirst && !hasSecond) {
+            addLinkedCourse(rule.second);
+          }
+        } else if (rule.type === 'one_way') {
+          // If trigger exists, optionally add linked course
+          const hasTrigger = termSuggestions.some(s => s.courseId === rule.trigger);
+          const yearCourses = courses.filter(c => c.year === year);
+          const hasLinked = yearCourses.some(c => c.courseId === rule.adds);
+
+          if (hasTrigger && !hasLinked) {
+            addLinkedCourse(rule.adds);
           }
         }
       });
+
+      // Helper function to add a linked course
+      function addLinkedCourse(courseId) {
+        const firstQuarter = term === 'fall' ? 'Q1' : 'Q3';
+        const secondQuarter = term === 'fall' ? 'Q2' : 'Q4';
+
+        newCourses.push({
+          courseId,
+          id: Date.now() + newCourses.length * 2,
+          year: year,
+          quarter: firstQuarter
+        });
+        newCourses.push({
+          courseId,
+          id: Date.now() + newCourses.length * 2 + 1,
+          year: year,
+          quarter: secondQuarter
+        });
+      }
 
       // Add all courses at once
       setCourses([...courses, ...newCourses]);
