@@ -49,7 +49,10 @@
         "001383"
       ],
       "grades_allowed": [
-        11
+        9,
+        10,
+        11,
+        12
       ],
       "credits": 10,
       "credit_type": "standard",
@@ -87,7 +90,10 @@
         "001308"
       ],
       "grades_allowed": [
-        10
+        9,
+        10,
+        11,
+        12
       ],
       "credits": 10,
       "credit_type": "standard",
@@ -163,7 +169,10 @@
         "001306"
       ],
       "grades_allowed": [
-        10
+        9,
+        10,
+        11,
+        12
       ],
       "credits": 10,
       "credit_type": "standard",
@@ -201,7 +210,10 @@
         "001377"
       ],
       "grades_allowed": [
-        11
+        9,
+        10,
+        11,
+        12
       ],
       "credits": 10,
       "credit_type": "standard",
@@ -239,7 +251,10 @@
         "001302"
       ],
       "grades_allowed": [
-        10
+        9,
+        10,
+        11,
+        12
       ],
       "credits": 10,
       "credit_type": "standard",
@@ -7282,7 +7297,10 @@
         "002051"
       ],
       "grades_allowed": [
-        11
+        9,
+        10,
+        11,
+        12
       ],
       "credits": 10,
       "credit_type": "standard",
@@ -7357,7 +7375,10 @@
         "002049"
       ],
       "grades_allowed": [
-        10
+        9,
+        10,
+        11,
+        12
       ],
       "credits": 10,
       "credit_type": "standard",
