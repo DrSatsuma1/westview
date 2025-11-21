@@ -19,6 +19,13 @@ const COURSE_CATALOG = courseCatalogData.courses.reduce((acc, course) => {
 // Initialize scheduling engine
 const schedulingEngine = new SchedulingEngine(courseCatalogData.courses);
 
+// Courses no longer offered (do not delete from catalog, just prevent selection/suggestion)
+const DEPRECATED_COURSES = [
+  'MOBILE_APP_0002',      // Mobile App Development 1-2
+  'WRITING_SEMINAR_0003', // Writing Seminar 1-2
+  'SPANISH_910_0004'      // Spanish 9-10
+];
+
 const WESTVIEW_REQUIREMENTS = {
   'English': { needed: 40, pathways: ['English'] },
   'Math': { needed: 30, pathways: ['Math'] },
@@ -2132,11 +2139,12 @@ function App() {
       if (!hasEnglish) {
         // Suggest grade-appropriate English course
         const englishCourses = Object.entries(COURSE_CATALOG)
-          .filter(([_, course]) =>
+          .filter(([id, course]) =>
             course.pathway === 'English' &&
             course.grades_allowed.includes(parseInt(year)) &&
             !course.full_name.toUpperCase().includes('AP') &&
-            !(year === '12' && isYearlongCourse(course)) // Grade 12: avoid yearlong courses
+            !(year === '12' && isYearlongCourse(course)) && // Grade 12: avoid yearlong courses
+            !DEPRECATED_COURSES.includes(id) // Exclude deprecated courses
           )
           .map(([id, course]) => ({ id, ...course }));
 
@@ -2185,9 +2193,10 @@ function App() {
       // Suggest ENS 3-4 in Fall
       if (!hasPEInFall) {
         const ens34 = Object.entries(COURSE_CATALOG)
-          .find(([_, course]) =>
+          .find(([id, course]) =>
             course.full_name.toUpperCase().includes('ENS 3-4') &&
-            course.grades_allowed.includes(9)
+            course.grades_allowed.includes(9) &&
+            !DEPRECATED_COURSES.includes(id)
           );
 
         if (ens34) {
@@ -2205,9 +2214,10 @@ function App() {
       // Suggest ENS 1-2 in Spring
       if (!hasPEInSpring) {
         const ens12 = Object.entries(COURSE_CATALOG)
-          .find(([_, course]) =>
+          .find(([id, course]) =>
             course.full_name.toUpperCase().includes('ENS 1-2') &&
-            course.grades_allowed.includes(9)
+            course.grades_allowed.includes(9) &&
+            !DEPRECATED_COURSES.includes(id)
           );
 
         if (ens12) {
@@ -2235,10 +2245,11 @@ function App() {
 
       if (!hasPE) {
         const peCourses = Object.entries(COURSE_CATALOG)
-          .filter(([_, course]) =>
+          .filter(([id, course]) =>
             course.pathway === 'Physical Education' &&
             course.grades_allowed.includes(12) &&
-            !course.full_name.toUpperCase().includes('ENS') // Not ENS courses
+            !course.full_name.toUpperCase().includes('ENS') && // Not ENS courses
+            !DEPRECATED_COURSES.includes(id)
           )
           .map(([id, course]) => ({ id, ...course }));
 
@@ -2266,7 +2277,7 @@ function App() {
       if (!hasMath) {
         // Suggest appropriate math course based on grade
         const mathCourses = Object.entries(COURSE_CATALOG)
-          .filter(([_, course]) => {
+          .filter(([id, course]) => {
             const courseName = course.full_name.toUpperCase();
             return (
               course.pathway === 'Math' &&
@@ -2275,7 +2286,8 @@ function App() {
               !courseName.includes('AP') &&
               !(year === '12' && isYearlongCourse(course)) && // Grade 12: avoid yearlong courses
               !(year === '12' && (courseName.includes('INTEGRATED MATHEMATICS I ') ||
-                                   courseName.includes('INTEGRATED MATHEMATICS II'))) // No Int Math I/II in Year 12
+                                   courseName.includes('INTEGRATED MATHEMATICS II'))) && // No Int Math I/II in Year 12
+              !DEPRECATED_COURSES.includes(id)
             );
           })
           .map(([id, course]) => ({ id, ...course }));
@@ -2307,10 +2319,11 @@ function App() {
       if (!hasScience && year === '9') {
         // Suggest Biology for grade 9
         const biologyCourses = Object.entries(COURSE_CATALOG)
-          .filter(([_, course]) =>
+          .filter(([id, course]) =>
             course.pathway === 'Science - Biological' &&
             course.grades_allowed.includes(9) &&
-            !course.full_name.toUpperCase().includes('AP')
+            !course.full_name.toUpperCase().includes('AP') &&
+            !DEPRECATED_COURSES.includes(id)
           )
           .map(([id, course]) => ({ id, ...course }));
 
@@ -2326,10 +2339,11 @@ function App() {
       } else if (!hasScience && year === '10') {
         // Suggest Chemistry for grade 10
         const chemistryCourses = Object.entries(COURSE_CATALOG)
-          .filter(([_, course]) =>
+          .filter(([id, course]) =>
             course.pathway === 'Science - Physical' &&
             course.grades_allowed.includes(10) &&
-            course.full_name.toUpperCase().includes('CHEMISTRY')
+            course.full_name.toUpperCase().includes('CHEMISTRY') &&
+            !DEPRECATED_COURSES.includes(id)
           )
           .map(([id, course]) => ({ id, ...course }));
 
@@ -2356,10 +2370,11 @@ function App() {
 
       if (!hasHistory && (year === '10' || year === '11' || year === '12')) {
         const historyCourses = Object.entries(COURSE_CATALOG)
-          .filter(([_, course]) =>
+          .filter(([id, course]) =>
             course.pathway === 'History/Social Science' &&
             course.grades_allowed.includes(parseInt(year)) &&
-            !course.full_name.toUpperCase().includes('AP')
+            !course.full_name.toUpperCase().includes('AP') &&
+            !DEPRECATED_COURSES.includes(id)
           )
           .map(([id, course]) => ({ id, ...course }));
 
@@ -2404,7 +2419,10 @@ function App() {
         // Suggest first concentrator course
         const cteCourse = concentratorCourses[0];
         const matchingCourse = Object.entries(COURSE_CATALOG)
-          .find(([_, course]) => course.full_name.toUpperCase().includes(cteCourse.name.toUpperCase()));
+          .find(([id, course]) =>
+            course.full_name.toUpperCase().includes(cteCourse.name.toUpperCase()) &&
+            !DEPRECATED_COURSES.includes(id)
+          );
 
         if (matchingCourse) {
           const [courseId, courseInfo] = matchingCourse;
@@ -2436,7 +2454,10 @@ function App() {
         // Suggest first capstone course (only if concentrator is present)
         const cteCourse = capstoneCourses[0];
         const matchingCourse = Object.entries(COURSE_CATALOG)
-          .find(([_, course]) => course.full_name.toUpperCase().includes(cteCourse.name.toUpperCase()));
+          .find(([id, course]) =>
+            course.full_name.toUpperCase().includes(cteCourse.name.toUpperCase()) &&
+            !DEPRECATED_COURSES.includes(id)
+          );
 
         if (matchingCourse) {
           const [courseId, courseInfo] = matchingCourse;
@@ -2547,12 +2568,13 @@ function App() {
 
             // Find all foreign language courses for this language that are allowed for this grade
             const languageCourses = Object.entries(COURSE_CATALOG)
-              .filter(([_, course]) =>
+              .filter(([id, course]) =>
                 course.pathway === 'Foreign Language' &&
                 course.grades_allowed.includes(parseInt(year)) &&
                 course.full_name.toUpperCase().startsWith(languageName) &&
                 !course.full_name.toUpperCase().includes('LITERATURE') && // Exclude literature courses
-                !course.full_name.toUpperCase().includes('AP') // Exclude AP courses for auto-suggestions
+                !course.full_name.toUpperCase().includes('AP') && // Exclude AP courses for auto-suggestions
+                !DEPRECATED_COURSES.includes(id)
               )
               .map(([id, course]) => ({ id, ...course, level: getLevelNumber(course.full_name) }))
               .sort((a, b) => a.level - b.level);
@@ -2581,11 +2603,12 @@ function App() {
           // Students can take multiple courses in Fine Arts/Foreign Language/CTE pathway
           if (updatedProjectedCount < targetCount) {
             const artsCourses = Object.entries(COURSE_CATALOG)
-              .filter(([_, course]) =>
+              .filter(([id, course]) =>
                 course.pathway === 'Fine Arts' &&
                 course.grades_allowed.includes(parseInt(year)) &&
                 !course.full_name.toUpperCase().includes('AP') &&
-                !isYearlongCourse(course) // Exclude yearlong courses from auto-fill
+                !isYearlongCourse(course) && // Exclude yearlong courses from auto-fill
+                !DEPRECATED_COURSES.includes(id)
               )
               .map(([id, course]) => ({ id, ...course }));
 
@@ -2621,11 +2644,12 @@ function App() {
 
             if (!hasHistory && !hasHistoryInSuggestions) {
               const historyCourses = Object.entries(COURSE_CATALOG)
-                .filter(([_, course]) =>
+                .filter(([id, course]) =>
                   course.pathway === 'History/Social Science' &&
                   course.grades_allowed.includes(parseInt(year)) &&
                   !course.full_name.toUpperCase().includes('AP') &&
-                  !(year === '12' && isYearlongCourse(course)) // Grade 12: avoid yearlong courses
+                  !(year === '12' && isYearlongCourse(course)) && // Grade 12: avoid yearlong courses
+                  !DEPRECATED_COURSES.includes(id)
                 )
                 .map(([id, course]) => ({ id, ...course }));
 
@@ -2688,7 +2712,8 @@ function App() {
                   (course.pathway === 'Fine Arts' ||
                    (!alreadySuggestedLanguage && course.pathway === 'Foreign Language') ||
                    course.pathway === 'CTE' ||
-                   course.pathway === 'Electives')
+                   course.pathway === 'Electives') &&
+                  !DEPRECATED_COURSES.includes(id)
                 );
               })
               .map(([id, course]) => ({ id, ...course }));
@@ -2963,7 +2988,10 @@ function App() {
   const coursesInPathway = useMemo(() => {
     if (!selectedCategory) return [];
     return Object.entries(COURSE_CATALOG)
-      .filter(([_, course]) => course.pathway === selectedCategory)
+      .filter(([id, course]) =>
+        course.pathway === selectedCategory &&
+        !DEPRECATED_COURSES.includes(id) // Exclude courses no longer offered
+      )
       .map(([id, course]) => ({ id, ...course }));
   }, [selectedCategory]);
 
