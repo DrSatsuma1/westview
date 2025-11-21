@@ -49,9 +49,9 @@ export class SuggestionEngine {
     preferredLanguage = null
   }) {
     const yearInt = parseInt(year);
-    // Target suggestions: 4 per semester (Years 1-3), 3 per semester (Year 4)
+    // Target suggestions: 4 per semester (all years)
     // Hard minimum: 3 per semester (Years 1-3), 2 per semester (Year 4)
-    const defaultTarget = yearInt <= 11 ? 4 : 3;
+    const defaultTarget = 4;
     const target = targetCount ?? defaultTarget;
 
     // Step 1: Compute unmet requirements
