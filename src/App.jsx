@@ -2714,6 +2714,33 @@ function App() {
         }
       });
 
+      // Check if Honors World History was suggested, and if so, also add AP World History
+      const hasHonorsWorldHistory = termSuggestions.some(s => s.courseId === 'HON_WORLD_0013');
+      if (hasHonorsWorldHistory) {
+        // Check if AP World History doesn't already exist in this year
+        const yearCourses = courses.filter(c => c.year === year);
+        const hasAPWorldHistory = yearCourses.some(c => c.courseId === 'AP_WORLD_0013');
+
+        if (!hasAPWorldHistory) {
+          // Add AP World History in the same term (both quarters since it's yearlong)
+          const firstQuarter = term === 'fall' ? 'Q1' : 'Q3';
+          const secondQuarter = term === 'fall' ? 'Q2' : 'Q4';
+
+          newCourses.push({
+            courseId: 'AP_WORLD_0013',
+            id: Date.now() + newCourses.length * 2,
+            year: year,
+            quarter: firstQuarter
+          });
+          newCourses.push({
+            courseId: 'AP_WORLD_0013',
+            id: Date.now() + newCourses.length * 2 + 1,
+            year: year,
+            quarter: secondQuarter
+          });
+        }
+      }
+
       // Add all courses at once
       setCourses([...courses, ...newCourses]);
     }
