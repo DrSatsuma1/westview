@@ -114,10 +114,16 @@ export function CourseCard({
             </div>
           </div>
 
-          {/* Course number and pathway */}
+          {/* Course number */}
+          {courseNumber && (
+            <div className="text-sm text-gray-600 font-mono">
+              {courseNumber}
+            </div>
+          )}
+
+          {/* Course category (pathway) */}
           <div className="text-sm text-gray-700 font-medium">
-            {courseNumber && <span className="text-gray-600">{courseNumber} | </span>}
-            <span>{info.pathway}</span>
+            {info.pathway}
           </div>
 
           {/* Year-long indicator */}
