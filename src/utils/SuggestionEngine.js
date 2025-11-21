@@ -196,6 +196,9 @@ export class SuggestionEngine {
         // Never suggest Newcomer Class (not appropriate for most students)
         if (course.full_name.toUpperCase().includes('NEWCOMER')) return false;
 
+        // Never suggest Academic Success (remedial course)
+        if (course.full_name.toUpperCase().includes('ACADEMIC SUCCESS')) return false;
+
         return true;
       })
       .map(([id, course]) => ({ id, ...course }));

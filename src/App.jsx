@@ -1387,6 +1387,14 @@ function App() {
 
   // Drag-and-drop handlers
   const handleDragStart = (e, course, year, quarter) => {
+    // Check if source semester is locked
+    const sourceSemester = ['Q1', 'Q2'].includes(quarter) ? 'fall' : 'spring';
+    const sourceSemesterKey = `${year}-${sourceSemester}`;
+    if (lockedSemesters[sourceSemesterKey]) {
+      e.preventDefault();
+      return; // Don't allow dragging from locked semester
+    }
+
     setDraggedCourse({ course, year, quarter });
     e.dataTransfer.effectAllowed = 'move';
     // Add semi-transparent effect
@@ -1416,6 +1424,15 @@ function App() {
 
     const { course, year: sourceYear, quarter: sourceQuarter } = draggedCourse;
     const courseInfo = getCourseInfo(course.courseId);
+
+    // Check if target semester is locked
+    const targetSemester = ['Q1', 'Q2'].includes(targetQuarter) ? 'fall' : 'spring';
+    const targetSemesterKey = `${targetYear}-${targetSemester}`;
+    if (lockedSemesters[targetSemesterKey]) {
+      setDraggedCourse(null);
+      setDragOverSlot(null);
+      return; // Don't allow dropping into locked semester
+    }
 
     // Don't do anything if dropping in the same location
     if (sourceYear === targetYear && sourceQuarter === targetQuarter) {
@@ -2395,9 +2412,28 @@ function App() {
     // Add all suggested courses silently (no popup)
     if (termSuggestions.length > 0) {
       const newCourses = [];
+
+      // Calculate existing credits in this term
+      const existingTermCredits = courses
+        .filter(c => c.year === year && termQuarters.includes(c.quarter))
+        .reduce((sum, c) => {
+          const info = COURSE_CATALOG[c.courseId];
+          return sum + (info ? info.credits : 0);
+        }, 0);
+
+      // Track credits being added (max 45 per semester, target 40)
+      const MAX_SEMESTER_CREDITS = 45;
+      let addedCredits = 0;
+
       termSuggestions.forEach(suggestion => {
         const courseInfo = COURSE_CATALOG[suggestion.courseId];
         if (!courseInfo) return;
+
+        // Check if adding this course would exceed credit limit
+        const totalAfterAdd = existingTermCredits + addedCredits + courseInfo.credits;
+        if (totalAfterAdd > MAX_SEMESTER_CREDITS) {
+          return; // Skip this course - would exceed credit limit
+        }
 
         const termReqs = schedulingEngine.getTermRequirements(suggestion.courseId);
         const needsBothQuarters = termReqs.requiresBothSemesters || termReqs.type === 'semester';
@@ -2433,6 +2469,9 @@ function App() {
             quarter: suggestion.quarter
           });
         }
+
+        // Track credits added
+        addedCredits += courseInfo.credits;
       });
 
       // Complex linked course relationships
@@ -2666,9 +2705,22 @@ function App() {
                 />
                 <button
                   onClick={() => {
-                    if (window.confirm('Are you sure you want to clear all courses from your schedule? This cannot be undone.')) {
-                      setCourses([]);
-                      setCompletedSemesters({});
+                    if (window.confirm('Are you sure you want to clear all courses from your schedule? Locked semesters will be preserved.')) {
+                      // Preserve courses in locked semesters
+                      const preservedCourses = courses.filter(c => {
+                        const semester = ['Q1', 'Q2'].includes(c.quarter) ? 'fall' : 'spring';
+                        const semesterKey = `${c.year}-${semester}`;
+                        return lockedSemesters[semesterKey];
+                      });
+                      setCourses(preservedCourses);
+                      // Clear completedSemesters for non-locked semesters only
+                      const preservedCompleted = {};
+                      Object.keys(completedSemesters).forEach(key => {
+                        if (lockedSemesters[key]) {
+                          preservedCompleted[key] = completedSemesters[key];
+                        }
+                      });
+                      setCompletedSemesters(preservedCompleted);
                       // Close add course dialog if open
                       setShowAddCourse(null);
                       setSelectedCategory('');
@@ -3063,10 +3115,18 @@ function App() {
                                                   <select
                                                     value={newCourse.courseId}
                                                     onChange={(e) => setNewCourse({ courseId: e.target.value })}
-                                                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm max-h-48 overflow-y-auto"
+                                                    onDoubleClick={(e) => {
+                                                      // Double-click to immediately add the selected course
+                                                      if (e.target.value) {
+                                                        setNewCourse({ courseId: e.target.value });
+                                                        setTimeout(() => addCourse(year, quarter), 0);
+                                                      }
+                                                    }}
+                                                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm max-h-48 overflow-y-auto cursor-pointer"
                                                     size={Math.min(searchResults.length + 1, 10)}
+                                                    title="Double-click to add course"
                                                   >
-                                                    <option value="">Select from {searchResults.length} results...</option>
+                                                    <option value="">Select from {searchResults.length} results... (double-click to add)</option>
                                                     {searchResults.map(course => (
                                                       <option key={course.id} value={course.id}>
                                                         {course.full_name} ({course.credits} cr{course.term_length === 'yearlong' ? ', Year-long' : ''})

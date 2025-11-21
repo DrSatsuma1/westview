@@ -90,9 +90,9 @@ export class CandidateRanker {
       return score;
     }
 
-    // Tier 2: UC/CSU A-G gaps (400-800 points)
+    // Tier 2: UC/CSU A-G gaps
     // CRITICAL: A-G must be completed by END OF YEAR 3 (Grade 11)
-    // Heavily prioritize in Years 9-11 to ensure UC eligibility
+    // In Years 10-11, A-G gaps are HIGHEST priority (above core requirements)
     if (this.unmet.agGaps && this.unmet.agGaps.includes(course.uc_csu_category)) {
       const agPriority = {
         'A': 5, // History
@@ -104,19 +104,17 @@ export class CandidateRanker {
         'G': 1  // Elective
       };
       const priority = agPriority[course.uc_csu_category] || 1;
-      score = 400 + (priority * 50);
 
-      // Year 12: A-G deadline passed - still suggest but lower priority
-      if (this.year === 12) {
-        score -= 100; // Lower priority but still suggest
-      }
-      // Years 9-11: CRITICAL - must complete A-G by end of Year 11
-      else if (this.year === 11) {
-        score += 200; // URGENT - last chance for A-G
+      // Years 10-11: A-G gaps are HIGHEST priority (deadline is end of Year 3)
+      if (this.year === 11) {
+        score = 950 + (priority * 5); // HIGHEST - last chance for A-G (950-980)
       } else if (this.year === 10) {
-        score += 150; // Important for A-G progress
+        score = 920 + (priority * 5); // Very high - must make progress (920-950)
       } else if (this.year === 9) {
-        score += 100; // Start A-G early
+        score = 400 + (priority * 50); // Normal priority in Year 1 (400-700)
+      } else {
+        // Year 12: A-G deadline passed - still suggest but lower priority
+        score = 300 + (priority * 50);
       }
     }
 

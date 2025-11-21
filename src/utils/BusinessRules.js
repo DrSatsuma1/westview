@@ -37,6 +37,7 @@ export class BusinessRules {
       this.checkScienceLimit(course) &&
       this.checkHistoryLimit(course) &&
       this.checkIntegratedMathLimit(course) &&
+      this.checkIntegratedMathSequence(course) &&
       this.checkPreferredLanguage(course) &&
       this.checkForeignLanguageConsistency(course) &&
       this.checkYearlongTermPlacement(course) &&
@@ -325,6 +326,71 @@ export class BusinessRules {
     });
 
     return !hasIntMathInTerm && !hasIntMathInSuggestions;
+  }
+
+  /**
+   * RULE: Don't suggest lower-level Integrated Math if higher level is already scheduled
+   * (If Math II is scheduled, don't suggest Math I; if Math III scheduled, don't suggest I or II)
+   * @param {Object} course
+   * @returns {boolean}
+   */
+  checkIntegratedMathSequence(course) {
+    const courseNameUpper = course.full_name.toUpperCase();
+
+    // Only apply to Integrated Math courses
+    if (!courseNameUpper.includes('INTEGRATED MATHEMATICS')) return true;
+
+    // Determine level of the course being suggested
+    let courseLevel = 0;
+    if (courseNameUpper.includes('IIIA') || courseNameUpper.includes('III')) {
+      courseLevel = 3;
+    } else if (courseNameUpper.includes('IIA') || courseNameUpper.match(/II[^I]/)) {
+      courseLevel = 2;
+    } else if (courseNameUpper.includes('IA') || courseNameUpper.match(/I[^I]/)) {
+      courseLevel = 1;
+    }
+
+    if (courseLevel === 0) return true; // Couldn't determine level
+
+    // Find highest level Integrated Math already scheduled
+    let highestScheduledLevel = 0;
+    this.courses.forEach(c => {
+      const info = this.catalog[c.courseId];
+      if (!info) return;
+      const name = info.full_name.toUpperCase();
+      if (!name.includes('INTEGRATED MATHEMATICS')) return;
+
+      if (name.includes('IIIA') || name.includes('III')) {
+        highestScheduledLevel = Math.max(highestScheduledLevel, 3);
+      } else if (name.includes('IIA') || name.match(/II[^I]/)) {
+        highestScheduledLevel = Math.max(highestScheduledLevel, 2);
+      } else if (name.includes('IA') || name.match(/I[^I]/)) {
+        highestScheduledLevel = Math.max(highestScheduledLevel, 1);
+      }
+    });
+
+    // Also check suggestions
+    this.suggestions.forEach(s => {
+      const info = this.catalog[s.courseId];
+      if (!info) return;
+      const name = info.full_name.toUpperCase();
+      if (!name.includes('INTEGRATED MATHEMATICS')) return;
+
+      if (name.includes('IIIA') || name.includes('III')) {
+        highestScheduledLevel = Math.max(highestScheduledLevel, 3);
+      } else if (name.includes('IIA') || name.match(/II[^I]/)) {
+        highestScheduledLevel = Math.max(highestScheduledLevel, 2);
+      } else if (name.includes('IA') || name.match(/I[^I]/)) {
+        highestScheduledLevel = Math.max(highestScheduledLevel, 1);
+      }
+    });
+
+    // Block if this course is a LOWER level than what's already scheduled
+    if (courseLevel < highestScheduledLevel) {
+      return false; // Block - don't suggest lower level when higher level exists
+    }
+
+    return true;
   }
 
   /**
