@@ -48,7 +48,8 @@ export class SuggestionEngine {
     targetCount = null
   }) {
     const yearInt = parseInt(year);
-    // Target: 4 courses per semester for grades 9-11, 3 for grade 12
+    // Target suggestions: 4 per semester (Years 1-3), 3 per semester (Year 4)
+    // Hard minimum: 3 per semester (Years 1-3), 2 per semester (Year 4)
     const defaultTarget = yearInt <= 11 ? 4 : 3;
     const target = targetCount ?? defaultTarget;
 
