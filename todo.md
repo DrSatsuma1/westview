@@ -3,6 +3,14 @@
 ## Active
 (none)
 
+## Completed (Nov 22, 2025 - Session 7)
+- [x] Fix Spring Year 3 only getting 3 courses instead of 4
+  - Root cause: Credit calculation double-counted yearlong courses (Q3 + Q4 entries)
+  - Fix: Use unique course IDs when calculating existing credits
+- [x] Don't suggest BAND in Year 3/4 if not taken before
+  - Added checkBandContinuation() in BusinessRules.js
+  - Blocks BAND suggestions in Grade 11/12 unless taken in Grade 9/10
+
 ## Completed (Nov 22, 2025 - Session 6)
 - [x] Fix yearlong courses in suggestion approval (approveSuggestion) - was only adding to 2 quarters
 - [x] Fix yearlong courses in Auto-fill (auto-fill Fall/Spring) - was only adding to 2 quarters

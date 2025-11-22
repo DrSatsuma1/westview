@@ -2684,12 +2684,16 @@ function App() {
       const newCourses = [];
 
       // Calculate existing credits in this term
-      const existingTermCredits = courses
-        .filter(c => c.year === year && termQuarters.includes(c.quarter))
-        .reduce((sum, c) => {
-          const info = COURSE_CATALOG[c.courseId];
-          return sum + (info ? info.credits : 0);
-        }, 0);
+      // Use unique course IDs to avoid double-counting yearlong courses (which have entries in both Q3 and Q4)
+      const uniqueTermCourseIds = [...new Set(
+        courses
+          .filter(c => c.year === year && termQuarters.includes(c.quarter))
+          .map(c => c.courseId)
+      )];
+      const existingTermCredits = uniqueTermCourseIds.reduce((sum, courseId) => {
+        const info = COURSE_CATALOG[courseId];
+        return sum + (info ? info.credits : 0);
+      }, 0);
 
       // Track credits being added (max 45 per semester, target 40)
       const MAX_SEMESTER_CREDITS = 45;

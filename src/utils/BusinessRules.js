@@ -45,7 +45,8 @@ export class BusinessRules {
       this.checkSameSemesterLanguageLimit(course) &&
       this.checkCalcBCReviewRequiresConcurrent(course) &&
       this.checkForeignLanguageSequence(course) &&
-      this.checkAPCalcBCPrerequisite(course)
+      this.checkAPCalcBCPrerequisite(course) &&
+      this.checkBandContinuation(course)
     );
   }
 
@@ -587,5 +588,39 @@ export class BusinessRules {
     });
 
     return hasAPCalcAB || hasAPCalcABInSuggestions;
+  }
+
+  /**
+   * RULE: Don't suggest BAND in Year 3 (Grade 11) or Year 4 (Grade 12)
+   * if the student hasn't taken BAND in Year 1 or Year 2.
+   * Rationale: If they didn't do band prior to year 3, they aren't interested.
+   * @param {Object} course
+   * @returns {boolean}
+   */
+  checkBandContinuation(course) {
+    const nameUpper = course.full_name.toUpperCase();
+
+    // Only apply to BAND courses
+    if (!nameUpper.includes('BAND')) return true;
+
+    const yearInt = parseInt(this.year);
+
+    // Allow BAND in Year 1 (Grade 9) and Year 2 (Grade 10) - no restriction
+    if (yearInt <= 10) return true;
+
+    // For Year 3 (Grade 11) and Year 4 (Grade 12), check if BAND was taken before
+    const hasBandInPriorYears = this.courses.some(c => {
+      const info = this.catalog[c.courseId];
+      if (!info) return false;
+
+      const cNameUpper = info.full_name.toUpperCase();
+      const cYearInt = parseInt(c.year);
+
+      // Check if this is a BAND course in Year 1 or Year 2
+      return cNameUpper.includes('BAND') && cYearInt < yearInt;
+    });
+
+    // Block BAND in Year 3/4 if not taken in prior years
+    return hasBandInPriorYears;
   }
 }
