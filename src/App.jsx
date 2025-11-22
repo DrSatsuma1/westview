@@ -11,6 +11,18 @@ import { RequirementsSidebar } from './components/progress/RequirementsSidebar.j
 import { TestScoreForm } from './components/test-scores/TestScoreForm.jsx';
 import { getNormalizedCatalog } from './utils/CatalogNormalizer.js';
 import { SuggestionEngine } from './utils/SuggestionEngine.js';
+import { getSemesterCredits, calculateSemesterTotal, calculateYearTotal } from './domain/creditCalculation.js';
+import {
+  WESTVIEW_REQUIREMENTS,
+  calculateWestviewProgress,
+  isGraduationReady
+} from './domain/progress/westview.js';
+import {
+  AG_REQUIREMENTS,
+  calculateAGProgress,
+  isUCSUEligible
+} from './domain/progress/ag.js';
+import { calculateUCGPA } from './domain/gpa.js';
 
 // Load course catalog from JSON
 const COURSE_CATALOG = courseCatalogData.courses.reduce((acc, course) => {
@@ -31,27 +43,7 @@ const DEPRECATED_COURSES = [
   'SPANISH_910_0004'      // Spanish 9-10
 ];
 
-const WESTVIEW_REQUIREMENTS = {
-  'English': { needed: 40, pathways: ['English'] },
-  'Math': { needed: 30, pathways: ['Math'] },
-  'Biological Science': { needed: 10, pathways: ['Science - Biological'] },
-  'Physical Science': { needed: 10, pathways: ['Science - Physical'] },
-  'History/Social Science': { needed: 30, pathways: ['History/Social Science'] },
-  'Fine Arts/Foreign Language/CTE': { needed: 10, pathways: ['Fine Arts', 'Foreign Language', 'CTE'] },
-  'Health Science': { needed: 5, pathways: ['Physical Education'], specialCourses: ['ENS 1-2'] },
-  'Physical Education': { needed: 20, pathways: ['Physical Education'] },
-  'Electives': { needed: 85, pathways: ['Electives', 'Clubs/Athletics'] }
-};
-
-const AG_REQUIREMENTS = {
-  'A': { name: 'History/Social Science', needed: 2, short: 'History', recommended: 2 },
-  'B': { name: 'English', needed: 4, short: 'English', recommended: 4 },
-  'C': { name: 'Mathematics (including Geometry)', needed: 3, short: 'Math (including Geometry)', recommended: 4 },
-  'D': { name: 'Laboratory Science', needed: 2, short: 'Science', recommended: 3 },
-  'E': { name: 'Language Other Than English', needed: 2, short: 'Foreign Language', recommended: 3 },
-  'F': { name: 'Visual & Performing Arts', needed: 1, short: 'Arts', recommended: 1 },
-  'G': { name: 'College Prep Elective', needed: 1, short: 'College Prep Elective', recommended: 1 }
-};
+// WESTVIEW_REQUIREMENTS and AG_REQUIREMENTS imported from domain modules
 
 const GRADE_OPTIONS = ['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D+', 'D', 'D-', 'F'];
 
@@ -2690,10 +2682,8 @@ function App() {
           .filter(c => c.year === year && termQuarters.includes(c.quarter))
           .map(c => c.courseId)
       )];
-      const existingTermCredits = uniqueTermCourseIds.reduce((sum, courseId) => {
-        const info = COURSE_CATALOG[courseId];
-        return sum + (info ? info.credits : 0);
-      }, 0);
+      // Use domain function that properly divides yearlong course credits
+      const existingTermCredits = calculateSemesterTotal(uniqueTermCourseIds, COURSE_CATALOG);
 
       // Track credits being added (max 45 per semester, target 40)
       const MAX_SEMESTER_CREDITS = 45;
@@ -2704,7 +2694,9 @@ function App() {
         if (!courseInfo) return;
 
         // Check if adding this course would exceed credit limit
-        const totalAfterAdd = existingTermCredits + addedCredits + courseInfo.credits;
+        // Use semester credits (yearlong courses count as half per semester)
+        const courseCreditsPerSemester = getSemesterCredits(courseInfo);
+        const totalAfterAdd = existingTermCredits + addedCredits + courseCreditsPerSemester;
         if (totalAfterAdd > MAX_SEMESTER_CREDITS) {
           return; // Skip this course - would exceed credit limit
         }
@@ -2769,8 +2761,8 @@ function App() {
           });
         }
 
-        // Track credits added
-        addedCredits += courseInfo.credits;
+        // Track credits added (use semester credits for yearlong courses)
+        addedCredits += courseCreditsPerSemester;
       });
 
       // Complex linked course relationships
@@ -3798,10 +3790,8 @@ function App() {
                               const semesterCourses = semesterQuarters.flatMap(q => getCoursesForQuarter(year, q));
                               // Use unique course IDs to avoid double-counting yearlong courses
                               const uniqueCourseIds = [...new Set(semesterCourses.map(c => c.courseId))];
-                              const semesterTotal = uniqueCourseIds.reduce((sum, courseId) => {
-                                const info = COURSE_CATALOG[courseId];
-                                return sum + (info ? info.credits : 0);
-                              }, 0);
+                              // Use domain function that handles yearlong course credit division
+                              const semesterTotal = calculateSemesterTotal(uniqueCourseIds, COURSE_CATALOG);
 
                               return semesterCourses.length > 0 ? (
                                 <div className="mt-3 pt-3 border-t border-gray-300">
@@ -3825,10 +3815,8 @@ function App() {
                       // Use unique course IDs to avoid double-counting yearlong courses
                       const allYearCourses = [...fallCourses, ...springCourses];
                       const uniqueYearCourseIds = [...new Set(allYearCourses.map(c => c.courseId))];
-                      const yearCredits = uniqueYearCourseIds.reduce((sum, courseId) => {
-                        const info = COURSE_CATALOG[courseId];
-                        return sum + (info ? info.credits : 0);
-                      }, 0);
+                      // Use domain function for year total (full credits for yearlong courses)
+                      const yearCredits = calculateYearTotal(uniqueYearCourseIds, COURSE_CATALOG);
 
                       if (fallCourses.length > 0 || springCourses.length > 0) {
                         return (

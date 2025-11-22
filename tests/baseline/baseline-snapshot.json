@@ -1,0 +1,198 @@
+{
+  "empty_schedule": {
+    "westviewProgress": {
+      "English": {
+        "earned": 0,
+        "needed": 40,
+        "met": false
+      },
+      "Math": {
+        "earned": 0,
+        "needed": 30,
+        "met": false
+      },
+      "Biological Science": {
+        "earned": 0,
+        "needed": 10,
+        "met": false
+      },
+      "Physical Science": {
+        "earned": 0,
+        "needed": 10,
+        "met": false
+      },
+      "History/Social Science": {
+        "earned": 0,
+        "needed": 30,
+        "met": false
+      },
+      "Fine Arts/Foreign Language/CTE": {
+        "earned": 0,
+        "needed": 10,
+        "met": false
+      },
+      "Health Science": {
+        "earned": 0,
+        "needed": 5,
+        "met": false
+      },
+      "Physical Education": {
+        "earned": 0,
+        "needed": 20,
+        "met": false
+      },
+      "Electives": {
+        "earned": 0,
+        "needed": 85,
+        "met": false
+      }
+    }
+  },
+  "freshman_basic": {
+    "westviewProgress": {
+      "English": {
+        "earned": 10,
+        "needed": 40,
+        "met": false
+      },
+      "Math": {
+        "earned": 0,
+        "needed": 30,
+        "met": false
+      },
+      "Biological Science": {
+        "earned": 10,
+        "needed": 10,
+        "met": true
+      },
+      "Physical Science": {
+        "earned": 0,
+        "needed": 10,
+        "met": false
+      },
+      "History/Social Science": {
+        "earned": 0,
+        "needed": 30,
+        "met": false
+      },
+      "Fine Arts/Foreign Language/CTE": {
+        "earned": 0,
+        "needed": 10,
+        "met": false
+      },
+      "Health Science": {
+        "earned": 5,
+        "needed": 5,
+        "met": true
+      },
+      "Physical Education": {
+        "earned": 5,
+        "needed": 20,
+        "met": false
+      },
+      "Electives": {
+        "earned": 0,
+        "needed": 85,
+        "met": false
+      }
+    }
+  },
+  "naval_science": {
+    "westviewProgress": {
+      "English": {
+        "earned": 0,
+        "needed": 40,
+        "met": false
+      },
+      "Math": {
+        "earned": 0,
+        "needed": 30,
+        "met": false
+      },
+      "Biological Science": {
+        "earned": 0,
+        "needed": 10,
+        "met": false
+      },
+      "Physical Science": {
+        "earned": 10,
+        "needed": 10,
+        "met": true
+      },
+      "History/Social Science": {
+        "earned": 0,
+        "needed": 30,
+        "met": false
+      },
+      "Fine Arts/Foreign Language/CTE": {
+        "earned": 0,
+        "needed": 10,
+        "met": false
+      },
+      "Health Science": {
+        "earned": 0,
+        "needed": 5,
+        "met": false
+      },
+      "Physical Education": {
+        "earned": 10,
+        "needed": 20,
+        "met": false
+      },
+      "Electives": {
+        "earned": 10,
+        "needed": 85,
+        "met": false
+      }
+    }
+  },
+  "ens_only": {
+    "westviewProgress": {
+      "English": {
+        "earned": 0,
+        "needed": 40,
+        "met": false
+      },
+      "Math": {
+        "earned": 0,
+        "needed": 30,
+        "met": false
+      },
+      "Biological Science": {
+        "earned": 0,
+        "needed": 10,
+        "met": false
+      },
+      "Physical Science": {
+        "earned": 0,
+        "needed": 10,
+        "met": false
+      },
+      "History/Social Science": {
+        "earned": 0,
+        "needed": 30,
+        "met": false
+      },
+      "Fine Arts/Foreign Language/CTE": {
+        "earned": 0,
+        "needed": 10,
+        "met": false
+      },
+      "Health Science": {
+        "earned": 5,
+        "needed": 5,
+        "met": true
+      },
+      "Physical Education": {
+        "earned": 5,
+        "needed": 20,
+        "met": false
+      },
+      "Electives": {
+        "earned": 0,
+        "needed": 85,
+        "met": false
+      }
+    }
+  }
+}
