@@ -35,3 +35,16 @@ export {
   calculateUCGPA,
   calculatePathwayGPA
 } from './gpa.js';
+
+// Graduation eligibility
+export {
+  calculateTotalCreditsWithCap,
+  calculateEarlyGradEligibility,
+  isWestviewGraduationReady
+} from './graduation.js';
+
+// CTE Pathways
+export { calculateCTEPathwayProgress } from './cte.js';
+
+// Biliteracy Seal
+export { calculateBiliteracyEligibility } from './biliteracy.js';

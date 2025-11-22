@@ -23,6 +23,12 @@ import {
   isUCSUEligible
 } from './domain/progress/ag.js';
 import { calculateUCGPA } from './domain/gpa.js';
+import {
+  calculateTotalCreditsWithCap,
+  calculateEarlyGradEligibility
+} from './domain/graduation.js';
+import { calculateCTEPathwayProgress } from './domain/cte.js';
+import { calculateBiliteracyEligibility } from './domain/biliteracy.js';
 
 // Load course catalog from JSON
 const COURSE_CATALOG = courseCatalogData.courses.reduce((acc, course) => {
@@ -430,174 +436,21 @@ function App() {
     return calculateWestviewProgress(courses, COURSE_CATALOG);
   }, [courses]);
 
-  // Calculate total credits toward graduation with 80 credit/year cap
-  // Maximum 80 credits count per year, regardless of how many courses are taken
+  // Calculate total credits (extracted to domain/graduation.js)
   const totalCredits = useMemo(() => {
-    // Deduplicate courses by courseId + year
-    const uniqueCourses = [];
-    const seen = new Set();
-    courses.forEach(c => {
-      const key = `${c.courseId}-${c.year}`;
-      if (!seen.has(key)) {
-        seen.add(key);
-        uniqueCourses.push(c);
-      }
-    });
-
-    // Calculate credits per year, capped at 80 each
-    const yearsCredits = {};
-    ['9', '10', '11', '12'].forEach(year => {
-      const yearCourses = uniqueCourses.filter(c => c.year === year);
-      const rawCredits = yearCourses.reduce((sum, c) => {
-        const info = COURSE_CATALOG[c.courseId];
-        return sum + (info ? info.credits : 0);
-      }, 0);
-      yearsCredits[year] = Math.min(rawCredits, 80); // Cap at 80 per year
-    });
-
-    return Object.values(yearsCredits).reduce((sum, credits) => sum + credits, 0);
+    return calculateTotalCreditsWithCap(courses, COURSE_CATALOG);
   }, [courses]);
 
   const westviewGraduationReady = totalCredits >= 230 && Object.values(westviewProgress).every(p => p.met);
 
-  // Calculate early graduation eligibility and requirements
+  // Calculate early graduation eligibility (extracted to domain/graduation.js)
   const earlyGradEligibility = useMemo(() => {
-    // Deduplicate courses by courseId + year
-    const uniqueCoursesForEarlyGrad = [];
-    const seen = new Set();
-    courses.forEach(c => {
-      const key = `${c.courseId}-${c.year}`;
-      if (!seen.has(key)) {
-        seen.add(key);
-        uniqueCoursesForEarlyGrad.push(c);
-      }
-    });
-
-    const grade11Courses = uniqueCoursesForEarlyGrad.filter(c => c.year === '11');
-    const grade11Credits = grade11Courses.reduce((sum, c) => {
-      const info = COURSE_CATALOG[c.courseId];
-      return sum + (info ? info.credits : 0);
-    }, 0);
-
-    const creditsThrough11 = uniqueCoursesForEarlyGrad
-      .filter(c => ['9', '10', '11'].includes(c.year))
-      .reduce((sum, c) => {
-        const info = COURSE_CATALOG[c.courseId];
-        return sum + (info ? info.credits : 0);
-      }, 0);
-
-    const hasSeniorEnglish = grade11Courses.some(c => {
-      const info = COURSE_CATALOG[c.courseId];
-      if (!info || info.pathway !== 'English') return false;
-      const name = info.full_name.toUpperCase();
-      return name.includes('AMERICAN LIT') || name.includes('ETHNIC LIT') ||
-             name.includes('EXPOSITORY') || name.includes('WORLD LIT') ||
-             name.includes('AP ENGLISH');
-    });
-
-    const hasCivicsEcon = grade11Courses.some(c => {
-      const info = COURSE_CATALOG[c.courseId];
-      if (!info) return false;
-      const name = info.full_name.toUpperCase();
-      return name.includes('CIVICS') && name.includes('ECONOMICS');
-    });
-
-    return {
-      eligible3Year: creditsThrough11 >= 170 && hasSeniorEnglish && hasCivicsEcon,
-      eligible3_5Year: creditsThrough11 >= 170,
-      creditsThrough11,
-      hasSeniorEnglish,
-      hasCivicsEcon
-    };
+    return calculateEarlyGradEligibility(courses, COURSE_CATALOG);
   }, [courses]);
 
-  // Calculate CTE Pathway Progress
-  // CTE Pathway Completion Requirements:
-  // - (Concentrator + Capstone) OR (2 Capstones)
+  // Calculate CTE Pathway Progress (extracted to domain/cte.js)
   const ctePathwayProgress = useMemo(() => {
-    if (!ctePathwayMode.enabled || !ctePathwayMode.pathway) {
-      return {
-        completed: [],
-        missing: [],
-        totalRequired: 0,
-        totalCompleted: 0,
-        hasConcentrator: false,
-        capstoneCount: 0,
-        isPathwayCompleter: false,
-        completionStatus: ''
-      };
-    }
-
-    const pathway = CTE_PATHWAYS[ctePathwayMode.pathway];
-    if (!pathway) {
-      return {
-        completed: [],
-        missing: [],
-        totalRequired: 0,
-        totalCompleted: 0,
-        hasConcentrator: false,
-        capstoneCount: 0,
-        isPathwayCompleter: false,
-        completionStatus: ''
-      };
-    }
-
-    const completed = [];
-    const missing = [];
-    let hasConcentrator = false;
-    let capstoneCount = 0;
-
-    pathway.courses.forEach(requiredCourse => {
-      const hasCourse = courses.some(c => {
-        const info = COURSE_CATALOG[c.courseId];
-        if (!info) return false;
-        const courseName = info.full_name.toUpperCase();
-        return courseName.includes(requiredCourse.name);
-      });
-
-      if (hasCourse) {
-        completed.push(requiredCourse);
-
-        // Track level completion
-        if (requiredCourse.level.includes('Concentrator')) {
-          hasConcentrator = true;
-        }
-        if (requiredCourse.level.includes('Capstone')) {
-          capstoneCount++;
-        }
-      } else {
-        missing.push(requiredCourse);
-      }
-    });
-
-    // Determine pathway completion status
-    // Complete if: (has Concentrator AND has Capstone) OR (has 2+ Capstones)
-    const isPathwayCompleter = (hasConcentrator && capstoneCount >= 1) || (capstoneCount >= 2);
-
-    let completionStatus = '';
-    if (isPathwayCompleter) {
-      completionStatus = 'Pathway Completer! Certificate, transcript notation, and diploma seal earned.';
-    } else if (hasConcentrator && capstoneCount === 0) {
-      completionStatus = 'Need 1 Capstone course to complete pathway';
-    } else if (capstoneCount === 1 && !hasConcentrator) {
-      completionStatus = 'Need 1 more Capstone OR 1 Concentrator to complete pathway';
-    } else if (hasConcentrator || capstoneCount > 0) {
-      completionStatus = `Progress: ${hasConcentrator ? 'Concentrator ✓' : ''} ${capstoneCount > 0 ? `${capstoneCount} Capstone${capstoneCount > 1 ? 's' : ''} ✓` : ''}`;
-    } else {
-      completionStatus = 'Need Concentrator + Capstone OR 2 Capstones';
-    }
-
-    return {
-      completed,
-      missing,
-      totalRequired: pathway.courses.length,
-      totalCompleted: completed.length,
-      pathwayName: pathway.name,
-      hasConcentrator,
-      capstoneCount,
-      isPathwayCompleter,
-      completionStatus
-    };
+    return calculateCTEPathwayProgress(courses, COURSE_CATALOG, ctePathwayMode, CTE_PATHWAYS);
   }, [courses, ctePathwayMode]);
 
   // Get courses for a specific semester (defined before useMemo that uses it)
@@ -618,113 +471,9 @@ function App() {
     return calculateUCGPA(courses, COURSE_CATALOG);
   }, [courses, gpaMode]);
 
-  // Calculate State Seal of Biliteracy eligibility
+  // Calculate State Seal of Biliteracy eligibility (extracted to domain/biliteracy.js)
   const biliteracySealEligibility = useMemo(() => {
-    // Check English requirement: 4 years of English with 3.0 GPA (if in GPA mode)
-    const englishCourses = courses.filter(c => {
-      const info = COURSE_CATALOG[c.courseId];
-      return info && info.pathway === 'English';
-    });
-
-    // Group by year to check 4-year requirement
-    const englishYears = new Set(englishCourses.map(c => c.year));
-    const has4YearsEnglish = englishYears.size >= 4;
-
-    let englishGPAMet = true; // Assume met if not in GPA mode
-    if (gpaMode) {
-      const englishWithGrades = englishCourses.filter(c => c.grade && c.grade !== '');
-      if (englishWithGrades.length > 0) {
-        const getBasePoints = (grade) => {
-          const letter = grade.replace('+', '').replace('-', '');
-          const points = { 'A': 4, 'B': 3, 'C': 2, 'D': 1, 'F': 0 };
-          return points[letter] || 0;
-        };
-        const totalPoints = englishWithGrades.reduce((sum, c) => sum + getBasePoints(c.grade), 0);
-        const englishGPA = totalPoints / englishWithGrades.length;
-        englishGPAMet = englishGPA >= 3.0;
-      } else {
-        englishGPAMet = false; // No grades entered yet
-      }
-    }
-
-    // Check world language requirement: 4 years with 3.0 GPA (if in GPA mode)
-    const worldLangCourses = courses.filter(c => {
-      const info = COURSE_CATALOG[c.courseId];
-      return info && info.pathway === 'Foreign Language';
-    });
-
-    // Find the language with the most years
-    const languageYears = {};
-    worldLangCourses.forEach(c => {
-      const info = COURSE_CATALOG[c.courseId];
-      const name = info.full_name.toUpperCase();
-      let lang = 'Other';
-      if (name.includes('SPANISH')) lang = 'Spanish';
-      else if (name.includes('CHINESE')) lang = 'Chinese';
-      else if (name.includes('FRENCH')) lang = 'French';
-      else if (name.includes('JAPANESE')) lang = 'Japanese';
-      else if (name.includes('GERMAN')) lang = 'German';
-      else if (name.includes('ASL') || name.includes('SIGN LANGUAGE')) lang = 'ASL';
-
-      if (!languageYears[lang]) {
-        languageYears[lang] = new Set();
-      }
-      languageYears[lang].add(c.year);
-    });
-
-    let primaryLanguage = null;
-    let maxYears = 0;
-    Object.entries(languageYears).forEach(([lang, years]) => {
-      if (years.size > maxYears) {
-        maxYears = years.size;
-        primaryLanguage = lang;
-      }
-    });
-
-    const has4YearsLanguage = maxYears >= 4;
-
-    let languageGPAMet = true; // Assume met if not in GPA mode
-    if (gpaMode && primaryLanguage) {
-      const langCoursesWithGrades = worldLangCourses.filter(c => {
-        const info = COURSE_CATALOG[c.courseId];
-        const name = info.full_name.toUpperCase();
-        let lang = 'Other';
-        if (name.includes('SPANISH')) lang = 'Spanish';
-        else if (name.includes('CHINESE')) lang = 'Chinese';
-        else if (name.includes('FRENCH')) lang = 'French';
-        else if (name.includes('JAPANESE')) lang = 'Japanese';
-        else if (name.includes('GERMAN')) lang = 'German';
-        else if (name.includes('ASL') || name.includes('SIGN LANGUAGE')) lang = 'ASL';
-
-        return lang === primaryLanguage && c.grade && c.grade !== '';
-      });
-
-      if (langCoursesWithGrades.length > 0) {
-        const getBasePoints = (grade) => {
-          const letter = grade.replace('+', '').replace('-', '');
-          const points = { 'A': 4, 'B': 3, 'C': 2, 'D': 1, 'F': 0 };
-          return points[letter] || 0;
-        };
-        const totalPoints = langCoursesWithGrades.reduce((sum, c) => sum + getBasePoints(c.grade), 0);
-        const langGPA = totalPoints / langCoursesWithGrades.length;
-        languageGPAMet = langGPA >= 3.0;
-      } else {
-        languageGPAMet = false; // No grades entered yet
-      }
-    }
-
-    const isEligible = has4YearsEnglish && englishGPAMet && has4YearsLanguage && languageGPAMet;
-
-    return {
-      eligible: isEligible,
-      has4YearsEnglish,
-      englishGPAMet,
-      has4YearsLanguage,
-      languageGPAMet,
-      primaryLanguage,
-      languageYears: maxYears,
-      englishYears: englishYears.size
-    };
+    return calculateBiliteracyEligibility(courses, COURSE_CATALOG, gpaMode);
   }, [courses, gpaMode]);
 
   // Calculate College Credits from test scores
