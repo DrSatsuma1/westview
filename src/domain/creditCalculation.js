@@ -5,18 +5,16 @@
 
 /**
  * Get credits for a course in a single semester context.
- * Yearlong courses are divided by 2 (half per semester).
- * Semester and quarter courses return full credits.
+ * The credits field already represents per-semester credits for all course types:
+ * - Yearlong: credits = per-semester (e.g., 10 = 10 Fall + 10 Spring = 20 total/year)
+ * - Semester: credits = for that semester
  *
  * @param {Object} courseInfo - Course info from catalog
  * @returns {number} Credits for one semester
  */
 export function getSemesterCredits(courseInfo) {
   if (!courseInfo) return 0;
-  if (courseInfo.term_length === 'yearlong') {
-    return courseInfo.credits / 2;
-  }
-  return courseInfo.credits;
+  return courseInfo.credits; // credits is already per-semester for all course types
 }
 
 /**

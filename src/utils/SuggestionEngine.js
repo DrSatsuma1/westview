@@ -49,10 +49,10 @@ export class SuggestionEngine {
     preferredLanguage = null
   }) {
     const yearInt = parseInt(year);
-    // Target suggestions: 4 per semester (all years)
-    // Hard minimum: 3 per semester (Years 1-3), 2 per semester (Year 4)
-    const defaultTarget = 4;
-    const target = targetCount ?? defaultTarget;
+    // Credit targets per semester:
+    // - Target: 40 credits (max earnable per semester)
+    // - Min Years 1-3: 30 credits, Year 4: 20 credits
+    const TARGET_CREDITS = 40;
 
     // Step 1: Compute unmet requirements
     const reqCalc = new RequirementCalculator(
@@ -93,8 +93,28 @@ export class SuggestionEngine {
     const termQuarters = term === 'fall' ? ['Q1', 'Q2'] : ['Q3', 'Q4'];
     const targetQuarter = termQuarters[0]; // Q1 for fall, Q3 for spring
 
+    // Calculate existing credits in this term (including yearlong courses that flowed from Fall to Spring)
+    const existingCoursesInTerm = courses.filter(c =>
+      c.year === year && termQuarters.includes(c.quarter)
+    );
+    // Use unique course IDs to avoid double-counting yearlong (Q1+Q2 or Q3+Q4)
+    const uniqueExistingCourseIds = [...new Set(existingCoursesInTerm.map(c => c.courseId))];
+
+    // Calculate existing credits (credits field = per-semester credits for both yearlong and semester)
+    let existingCredits = 0;
+    for (const courseId of uniqueExistingCourseIds) {
+      const courseInfo = this.catalog[courseId];
+      if (courseInfo) {
+        existingCredits += courseInfo.credits; // credits is per-semester value
+      }
+    }
+
+    // Track credits as we add suggestions
+    let suggestedCredits = 0;
+
     for (const { course, score } of scored) {
-      if (suggestions.length >= target) break;
+      // Stop if we've reached the credit target
+      if (existingCredits + suggestedCredits >= TARGET_CREDITS) break;
 
       // Check prerequisites (if checker provided)
       if (checkEligibility) {
@@ -118,6 +138,12 @@ export class SuggestionEngine {
       // Check if this course passes business rules
       if (!businessRules.canAddCourse(course)) continue;
 
+      // Calculate credits this course would add
+      const courseCredits = course.credits;
+
+      // Don't exceed credit target
+      if (existingCredits + suggestedCredits + courseCredits > TARGET_CREDITS) continue;
+
       suggestions.push({
         courseId: course.id,
         year,
@@ -128,6 +154,8 @@ export class SuggestionEngine {
         pathway: course.pathway, // Course category
         score // Keep for debugging/testing
       });
+
+      suggestedCredits += courseCredits;
     }
 
     // Special case: If AP Calculus BC was suggested in Fall, also suggest BC Review as 5th class
@@ -207,6 +235,12 @@ export class SuggestionEngine {
 
         // Never suggest Academic Success (remedial course)
         if (course.full_name.toUpperCase().includes('ACADEMIC SUCCESS')) return false;
+
+        // Never suggest Yearbook (user preference)
+        if (course.full_name.toUpperCase().includes('YEARBOOK')) return false;
+
+        // Never suggest Band courses (user preference)
+        if (course.full_name.toUpperCase().includes('BAND')) return false;
 
         return true;
       })

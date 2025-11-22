@@ -1,7 +1,20 @@
 # Westview Planner - Todo List
 
 ## Active
-(none)
+- [ ] Suggest should also be able to remove courses
+- [ ] Add "debug" as trigger word for systematic-debugging skill
+- [ ] Research: Is there a better option than Playwright for testing?
+- [ ] Add CTE logic to suggestion engine
+- [ ] Audit: Is JSON course catalog data correct? (term_length, etc.)
+
+## Completed (Nov 22, 2025 - Session 8)
+- [x] Fix credit-based auto-fill targeting (40 credits/semester instead of course count)
+  - Changed from 4-8 course target to 40 credit target in SuggestionEngine.js
+  - Properly accounts for existing courses when calculating credits to add
+- [x] Fix yearlong credit calculation
+  - Root cause: getSemesterCredits was dividing yearlong credits by 2
+  - Fix: credits field is already per-semester for ALL course types (removed /2)
+- [x] Verified: All semesters now show correct 35-40 credit totals
 
 ## Completed (Nov 22, 2025 - Session 7)
 - [x] Fix Spring Year 3 only getting 3 courses instead of 4
