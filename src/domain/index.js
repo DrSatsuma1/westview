@@ -48,3 +48,9 @@ export { calculateCTEPathwayProgress } from './cte.js';
 
 // Biliteracy Seal
 export { calculateBiliteracyEligibility } from './biliteracy.js';
+
+// College Credits from test scores
+export { calculateCollegeCredits } from './collegeCredits.js';
+
+// Schedule Validation
+export { validateSchedule, extractWarningsByType } from './scheduleValidation.js';
