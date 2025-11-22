@@ -54,3 +54,10 @@ export { calculateCollegeCredits } from './collegeCredits.js';
 
 // Schedule Validation
 export { validateSchedule, extractWarningsByType } from './scheduleValidation.js';
+
+// Course Eligibility
+export {
+  checkCourseEligibility,
+  checkForeignLanguagePrereqs,
+  LINKED_REQUIREMENTS
+} from './courseEligibility.js';
