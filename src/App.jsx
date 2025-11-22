@@ -53,6 +53,7 @@ import {
   checkForeignLanguagePrereqs as checkFLPrereqsLogic,
   LINKED_REQUIREMENTS
 } from './domain/courseEligibility.js';
+import { validateCourseAddition } from './domain/courseValidation.js';
 
 // Load course catalog from JSON
 const COURSE_CATALOG = courseCatalogData.courses.reduce((acc, course) => {
@@ -454,472 +455,39 @@ function App() {
     const quarterCourses = getCoursesForQuarter(year, quarter);
     const yearCourses = courses.filter(c => c.year === year);
 
-    // Linked course validation - uses LINKED_REQUIREMENTS from domain/courseEligibility.js
-    // Note: Sequential prerequisites are handled by checkCourseEligibility function
+    // Validate course addition using domain logic
+    const validation = validateCourseAddition({
+      courseId: newCourse.courseId,
+      year,
+      quarter,
+      courseInfo,
+      allCourses: courses,
+      quarterCourses,
+      yearCourses,
+      courseCatalog: COURSE_CATALOG,
+      earlyGradMode,
+      earlyGradEligibility,
+      ctePathwayMode,
+      ctePathwayProgress,
+      ctePathways: CTE_PATHWAYS,
+      currentSlot: showAddCourse?.slot,
+      allowRepeatCourses,
+      getTermRequirements: (id) => schedulingEngine.getTermRequirements(id),
+      canScheduleInSemester: (id, sem) => schedulingEngine.canScheduleInSemester(id, sem),
+      getCoursesForQuarter,
+      checkCourseEligibility
+    });
 
-    if (LINKED_REQUIREMENTS[newCourse.courseId]) {
-      const requirement = LINKED_REQUIREMENTS[newCourse.courseId];
-
-      // Handle "requires one of" (e.g., AP CS A needs CS OR Data Structures OR Studio Art)
-      if (requirement.requiresOneOf) {
-        const hasAnyPartner = requirement.requiresOneOf.some(partnerId =>
-          yearCourses.some(c => c.courseId === partnerId)
-        );
-
-        if (!hasAnyPartner) {
-          const partnerNames = requirement.names.join(', or ');
-          setError(`${courseInfo.full_name} must be taken with one of: ${partnerNames}`);
-          return;
-        }
-      }
-      // Handle standard single requirement
-      else if (requirement.requires) {
-        const hasRequiredCourse = yearCourses.some(c => c.courseId === requirement.requires);
-
-        if (!hasRequiredCourse) {
-          setError(`${courseInfo.full_name} must be taken with ${requirement.name}`);
-          return;
-        }
-      }
-    }
-
-    // Early graduation mode validations
-    if (earlyGradMode.enabled) {
-      if (earlyGradMode.targetYear === '3year') {
-        // 3-year plan: Can only add courses to grades 9, 10, 11
-        if (year === '12') {
-          setError('Early Graduation (3 years): Cannot add courses to Grade 12');
-          return;
-        }
-
-        // In grade 11, must include Senior English and Civics/Economics
-        if (year === '11') {
-          const courseName = courseInfo.full_name.toUpperCase();
-          const isSeniorEnglish = courseInfo.pathway === 'English' && (
-            courseName.includes('AMERICAN LIT') || courseName.includes('ETHNIC LIT') ||
-            courseName.includes('EXPOSITORY') || courseName.includes('WORLD LIT') ||
-            courseName.includes('AP ENGLISH')
-          );
-          const isCivicsEcon = courseName.includes('CIVICS') && courseName.includes('ECONOMICS');
-
-          // Show warning if they haven't added these yet (check in Q1 of grade 11)
-          if (!earlyGradEligibility.hasSeniorEnglish && !isSeniorEnglish && (quarter === 'Q1' || quarter === 'Q2')) {
-            setWarning('Early Graduation: Remember to add a Senior English course in Grade 11');
-          }
-          if (!earlyGradEligibility.hasCivicsEcon && !isCivicsEcon && (quarter === 'Q1' || quarter === 'Q2')) {
-            setWarning('Early Graduation: Remember to add Civics/Economics in Grade 11');
-          }
-        }
-      } else if (earlyGradMode.targetYear === '3.5year') {
-        // 3.5-year plan: Can add courses to grade 12 Fall (Q1/Q2) only
-        if (year === '12' && (quarter === 'Q3' || quarter === 'Q4')) {
-          setError('Early Graduation (3.5 years): Cannot add courses to Grade 12 Spring (Q3/Q4)');
-          return;
-        }
-      }
-    }
-
-    // CTE Pathway mode validations and guidance
-    if (ctePathwayMode.enabled && ctePathwayMode.pathway) {
-      const pathway = CTE_PATHWAYS[ctePathwayMode.pathway];
-      const courseName = courseInfo.full_name.toUpperCase();
-
-      // Check if this course is part of the selected pathway
-      const isPathwayCourse = pathway.courses.some(pathwayCourse =>
-        courseName.includes(pathwayCourse.name)
-      );
-
-      // Check if this course is from the pathway and meets grade requirements
-      if (isPathwayCourse) {
-        const pathwayCourse = pathway.courses.find(pc => courseName.includes(pc.name));
-        const currentGrade = parseInt(year);
-
-        if (pathwayCourse && !pathwayCourse.grades.includes(currentGrade)) {
-          setWarning(`CTE Pathway: ${pathwayCourse.name} is recommended for grades ${pathwayCourse.grades.join(', ')}`);
-        }
-      }
-
-      // Provide helpful guidance on pathway progress
-      if (ctePathwayProgress.totalCompleted < ctePathwayProgress.totalRequired) {
-        const nextMissing = ctePathwayProgress.missing[0];
-        if (nextMissing && !courseName.includes(nextMissing.name)) {
-          // Only show this as a gentle reminder, not a blocker
-          const currentGrade = parseInt(year);
-          if (nextMissing.grades.includes(currentGrade)) {
-            setWarning(`CTE Pathway: Consider adding ${nextMissing.name} (${nextMissing.level})`);
-          }
-        }
-      }
-    }
-
-    // Check for AP Calculus AB/BC conflict (blocks adding)
-    const courseName = courseInfo.full_name.toUpperCase();
-    if (courseName.includes('AP CALCULUS')) {
-      const allCourses = courses.map(c => ({
-        info: COURSE_CATALOG[c.courseId],
-        year: c.year
-      }));
-
-      // Check if trying to add AP Calc AB when they have BC (or vice versa)
-      if (courseName.includes('CALCULUS AB')) {
-        const hasBC = allCourses.some(c =>
-          c.info && c.info.full_name.toUpperCase().includes('AP CALCULUS BC')
-        );
-        if (hasBC) {
-          setError('Cannot take AP Calculus AB and BC - choose one');
-          return;
-        }
-      } else if (courseName.includes('CALCULUS BC')) {
-        const hasAB = allCourses.some(c =>
-          c.info && c.info.full_name.toUpperCase().includes('AP CALCULUS AB')
-        );
-        if (hasAB) {
-          setError('Cannot take AP Calculus AB and BC - choose one');
-          return;
-        }
-      }
-    }
-
-    // Check for English course sequence violations (blocks adding)
-    if (courseInfo.pathway === 'English') {
-      const allCourses = courses.map(c => COURSE_CATALOG[c.courseId]);
-
-      // Check if trying to add English 1-2 when they already have 3-4
-      // Only check for regular ENGLISH 1-2, not HIGH SCHOOL ENGLISH 1-2
-      const isRegularEnglish12 = (courseName === 'ENGLISH 1-2' || courseName === 'ENGLISH IA-IB' ||
-                                   courseName.startsWith('H. ENGLISH 1-2') || courseName.startsWith('HONORS ENGLISH 1-2'));
-
-      if (isRegularEnglish12) {
-        const hasHigherEnglish = allCourses.some(c =>
-          c && c.pathway === 'English' &&
-          (c.full_name.toUpperCase().includes('ENGLISH 3-4') ||
-           c.full_name.toUpperCase().includes('ENGLISH IIA-IIB') ||
-           c.full_name.toUpperCase().includes('ENGLISH 5-6') ||
-           c.full_name.toUpperCase().includes('ENGLISH 7-8'))
-        );
-        if (hasHigherEnglish) {
-          setError('Cannot add English 1-2 after completing higher-level English courses');
-          return;
-        }
-      }
-
-      // Check if trying to add English 3-4 when they already have 5-6 or higher
-      // Only check for regular ENGLISH 3-4, not HIGH SCHOOL ENGLISH 3-4
-      const isRegularEnglish34 = (courseName === 'ENGLISH 3-4' || courseName === 'ENGLISH IIA-IIB' ||
-                                   courseName.startsWith('H. ENGLISH 3-4') || courseName.startsWith('HONORS ENGLISH 3-4'));
-
-      if (isRegularEnglish34) {
-        const hasHigherEnglish = allCourses.some(c =>
-          c && c.pathway === 'English' &&
-          (c.full_name.toUpperCase().includes('ENGLISH 5-6') ||
-           c.full_name.toUpperCase().includes('ENGLISH 7-8'))
-        );
-        if (hasHigherEnglish) {
-          setError('Cannot add English 3-4 after completing higher-level English courses');
-          return;
-        }
-      }
-
-      // Prevent taking ENGLISH 1-2 and ENGLISH 3-4 simultaneously in the same year
-      if (isRegularEnglish12) {
-        const hasEnglish34SameYear = courses.some(c =>
-          c.year === year &&
-          COURSE_CATALOG[c.courseId] &&
-          (COURSE_CATALOG[c.courseId].full_name.toUpperCase() === 'ENGLISH 3-4' ||
-           COURSE_CATALOG[c.courseId].full_name.toUpperCase() === 'H. ENGLISH 3-4' ||
-           COURSE_CATALOG[c.courseId].full_name.toUpperCase() === 'HONORS ENGLISH 3-4')
-        );
-        if (hasEnglish34SameYear) {
-          setError('Cannot take ENGLISH 1-2 and ENGLISH 3-4 in the same year');
-          return;
-        }
-      }
-
-      if (isRegularEnglish34) {
-        const hasEnglish12SameYear = courses.some(c =>
-          c.year === year &&
-          COURSE_CATALOG[c.courseId] &&
-          (COURSE_CATALOG[c.courseId].full_name.toUpperCase() === 'ENGLISH 1-2' ||
-           COURSE_CATALOG[c.courseId].full_name.toUpperCase() === 'H. ENGLISH 1-2' ||
-           COURSE_CATALOG[c.courseId].full_name.toUpperCase() === 'HONORS ENGLISH 1-2')
-        );
-        if (hasEnglish12SameYear) {
-          setError('Cannot take ENGLISH 3-4 and ENGLISH 1-2 in the same year');
-          return;
-        }
-      }
-    }
-
-    // Check course prerequisites and eligibility (warning for non-blocking, error for blocking)
-    const eligibility = checkCourseEligibility(newCourse.courseId, year);
-    if (eligibility.warning && !eligibility.blocking) {
-      // Show warning but allow addition (e.g., Foreign Language prerequisites)
-      setWarning(`${eligibility.warning}. Have you met the prerequisites?`);
-    }
-
-    // PLTW Biomedical sequence warning
-    const pltwBiomedicalCourses = ['PRINCIPLES_OF_0012', 'HUMAN_BODY_0012', 'HON_MEDICAL_0012'];
-    if (pltwBiomedicalCourses.includes(newCourse.courseId)) {
-      const sequenceInfo = {
-        'PRINCIPLES_OF_0012': 'This is the entry point to the PLTW Biomedical pathway.',
-        'HUMAN_BODY_0012': 'This is the 2nd course in the PLTW Biomedical pathway. Recommended sequence: Principles of Biomedical Science → Human Body Systems.',
-        'HON_MEDICAL_0012': 'This is the 3rd course in the PLTW Biomedical pathway. Recommended sequence: Principles of Biomedical Science → Human Body Systems → Medical Interventions.'
-      };
-      // Only show if no other warning is already set
-      if (!eligibility.warning) {
-        setWarning(`PLTW Biomedical: ${sequenceInfo[newCourse.courseId]}`);
-      }
-    }
-
-    // Check for Off-Roll restrictions
-    if (courseInfo.pathway === 'Off-Roll') {
-      // Off-Roll can only be in slots 0 (1st class) or 3 (4th class)
-      const currentSlot = showAddCourse?.slot;
-      if (currentSlot !== undefined && currentSlot !== 0 && currentSlot !== 3) {
-        setError('Off-Roll courses can only be selected as the 1st or 4th class of the day (not 2nd, 3rd, 5th, or 6th)');
-        return;
-      }
-
-      // Off-Roll allowed in grades 9, 11, 12 (not 10)
-      if (year === '10') {
-        setError('Off-Roll courses are not allowed in Grade 10');
-        return;
-      }
-
-      // Count existing Off-Roll courses in this semester
-      const semesterOffRollCount = quarterCourses.filter(c => {
-        const info = COURSE_CATALOG[c.courseId];
-        return info && info.pathway === 'Off-Roll';
-      }).length;
-
-      // Grade 12: Maximum 2 Off-Roll per semester
-      // Grades 9, 11: Maximum 1 Off-Roll per semester
-      const maxPerSemester = year === '12' ? 2 : 1;
-
-      if (semesterOffRollCount >= maxPerSemester) {
-        if (year === '12') {
-          setError('Maximum 2 Off-Roll courses allowed per semester in Grade 12');
-        } else {
-          setError(`Maximum 1 Off-Roll course allowed per semester in Grade ${year}`);
-        }
-        return;
-      }
-    }
-
-    // Check for duplicate course in same semester
-    const alreadyHasCourse = quarterCourses.some(c => c.courseId === newCourse.courseId);
-    if (alreadyHasCourse) {
-      setError('This course is already in this semester');
+    if (!validation.valid) {
+      setError(validation.error);
       return;
     }
-
-    // Check for duplicate course across all 4 years (unless repeat courses allowed)
-    if (!allowRepeatCourses) {
-      const alreadyHasCourseInSchedule = courses.some(c => c.courseId === newCourse.courseId);
-      if (alreadyHasCourseInSchedule) {
-        setError('This course is already in your 4-year schedule. Enable "Allow Repeat Courses" in settings to override.');
-        return;
-      }
+    if (validation.warning) {
+      setWarning(validation.warning);
     }
 
-    // Check PE credit cap (max 40 credits toward graduation)
-    if (courseInfo.pathway === 'Physical Education') {
-      const totalPECredits = courses
-        .filter(c => {
-          const info = COURSE_CATALOG[c.courseId];
-          return info && info.pathway === 'Physical Education';
-        })
-        .reduce((sum, c) => sum + COURSE_CATALOG[c.courseId].credits, 0);
-
-      if (totalPECredits + courseInfo.credits > 40) {
-        setError('Maximum 40 credits of Physical Education may be applied toward graduation');
-        return;
-      }
-    }
-
-    // Check Academic Tutor / Library TA credit cap (max 10 credits)
-    const isAcademicTutorOrLibrary = courseName.includes('ACADEMIC TUTOR') ||
-                                      courseName.includes('LIBRARY') && courseName.includes('ASSISTANT');
-
-    if (isAcademicTutorOrLibrary) {
-      const totalTutorCredits = courses
-        .filter(c => {
-          const info = COURSE_CATALOG[c.courseId];
-          if (!info) return false;
-          const name = info.full_name.toUpperCase();
-          return name.includes('ACADEMIC TUTOR') || (name.includes('LIBRARY') && name.includes('ASSISTANT'));
-        })
-        .reduce((sum, c) => sum + COURSE_CATALOG[c.courseId].credits, 0);
-
-      if (totalTutorCredits + courseInfo.credits > 10) {
-        setError('Maximum 10 credits from Academic Tutor or Library & Information Science TA');
-        return;
-      }
-    }
-
-    // Check school service course limit (max 1 per quarter)
-    const isSchoolService = courseName.includes('ACADEMIC TUTOR') ||
-                            (courseName.includes('LIBRARY') && courseName.includes('ASSISTANT')) ||
-                            courseName.includes('WORK EXPERIENCE') ||
-                            courseName.includes('TEACHER') && courseName.includes('ASSISTANT');
-
-    if (isSchoolService) {
-      const hasSchoolService = quarterCourses.some(c => {
-        const info = COURSE_CATALOG[c.courseId];
-        if (!info) return false;
-        const name = info.full_name.toUpperCase();
-        return name.includes('ACADEMIC TUTOR') ||
-               (name.includes('LIBRARY') && name.includes('ASSISTANT')) ||
-               name.includes('WORK EXPERIENCE') ||
-               (name.includes('TEACHER') && name.includes('ASSISTANT'));
-      });
-
-      if (hasSchoolService) {
-        setError('No more than one school service course per semester');
-        return;
-      }
-    }
-
-    // Check Work Experience restrictions
-    if (courseName.includes('WORK EXPERIENCE')) {
-      // Max 10 credits per term
-      if (courseInfo.credits > 10) {
-        setError('Maximum 10 credits in Work Experience may be earned in one term');
-        return;
-      }
-
-      // Cannot combine with other school service courses
-      const hasOtherSchoolService = quarterCourses.some(c => {
-        const info = COURSE_CATALOG[c.courseId];
-        if (!info) return false;
-        const name = info.full_name.toUpperCase();
-        // Check for other school service courses (not Work Experience)
-        return !name.includes('WORK EXPERIENCE') && (
-          name.includes('ACADEMIC TUTOR') ||
-          (name.includes('LIBRARY') && name.includes('ASSISTANT')) ||
-          (name.includes('TEACHER') && name.includes('ASSISTANT'))
-        );
-      });
-
-      if (hasOtherSchoolService) {
-        setError('Other school service classes may not be taken by students enrolled in Work Experience');
-        return;
-      }
-    }
-
-    // Check for multiple courses of same foreign language in same semester
-    if (courseInfo.pathway === 'Foreign Language') {
-      const isLiteratureCourse = courseName.includes('LITERATURE') || courseName.includes('LIT');
-
-      if (!isLiteratureCourse) {
-        // Detect which language
-        let language = null;
-        if (courseName.includes('SPANISH')) language = 'Spanish';
-        else if (courseName.includes('CHINESE')) language = 'Chinese';
-        else if (courseName.includes('FRENCH')) language = 'French';
-        else if (courseName.includes('FILIPINO')) language = 'Filipino';
-        else if (courseName.includes('GERMAN')) language = 'German';
-        else if (courseName.includes('JAPANESE')) language = 'Japanese';
-        else if (courseName.includes('LATIN')) language = 'Latin';
-
-        if (language) {
-          const hasSameLanguage = quarterCourses.some(c => {
-            const cInfo = COURSE_CATALOG[c.courseId];
-            if (!cInfo || cInfo.pathway !== 'Foreign Language') return false;
-            const cName = cInfo.full_name.toUpperCase();
-            const isLit = cName.includes('LITERATURE') || cName.includes('LIT');
-            // Check if same language and not literature
-            return !isLit && cName.includes(language.toUpperCase());
-          });
-
-          if (hasSameLanguage) {
-            setError(`Cannot take two ${language} courses in the same semester`);
-            return;
-          }
-        }
-      }
-    }
-
-    // Special validation for ROBOTICS club - must be consecutive quarters starting from Q1
-    if (courseName === 'ROBOTICS') {
-      const yearCourses = courses.filter(c => c.year === year);
-      const roboticsCourses = yearCourses.filter(c => {
-        const info = COURSE_CATALOG[c.courseId];
-        return info && info.full_name === 'ROBOTICS';
-      });
-
-      const roboticsQuarters = roboticsCourses.map(c => c.quarter).sort();
-
-      // If adding to a quarter other than Q1 and Q1 doesn't exist, block it
-      if (quarter !== 'Q1' && !roboticsQuarters.includes('Q1')) {
-        setError('ROBOTICS must start in Q1. You can take it for 1-4 consecutive quarters.');
-        return;
-      }
-
-      // Check for consecutive quarters: must be Q1, Q1+Q2, Q1+Q2+Q3, or Q1+Q2+Q3+Q4
-      if (roboticsQuarters.length > 0) {
-        const allQuarters = [...roboticsQuarters, quarter].sort();
-        const expectedSequence = ['Q1', 'Q2', 'Q3', 'Q4'].slice(0, allQuarters.length);
-
-        const isConsecutive = allQuarters.every((q, i) => q === expectedSequence[i]);
-
-        if (!isConsecutive) {
-          setError('ROBOTICS must be taken in consecutive quarters starting from Q1 (e.g., Q1 only, Q1+Q2, Q1+Q2+Q3, or Q1+Q2+Q3+Q4)');
-          return;
-        }
-      }
-    }
-
-    // Use scheduling engine to get term requirements
+    // Get term requirements for course addition
     const termReqs = schedulingEngine.getTermRequirements(newCourse.courseId);
-
-    // Year-long validation - must start in Fall term (Q1 or Q2)
-    // Note: semester courses can be taken in either Fall or Spring, so only check for yearlong
-    if (termReqs.type === 'yearlong' && (quarter === 'Q3' || quarter === 'Q4')) {
-      setError('Year-long courses must start in Fall term (Q1 or Q2)');
-      return;
-    }
-
-    // Check if year-long course would duplicate in opposite term
-    if (termReqs.type === 'yearlong') {
-      if (quarter === 'Q1' || quarter === 'Q2') {
-        // Adding to Fall, check if already in Spring
-        const springQ3Courses = getCoursesForQuarter(year, 'Q3');
-        const springQ4Courses = getCoursesForQuarter(year, 'Q4');
-        const alreadyInSpring = [...springQ3Courses, ...springQ4Courses].some(c => c.courseId === newCourse.courseId);
-        if (alreadyInSpring) {
-          setError('This year-long course is already in Spring term');
-          return;
-        }
-      }
-    }
-
-    // Check if semester course would duplicate in same term
-    if (termReqs.type === 'semester') {
-      const allQuarters = ['Q1', 'Q2', 'Q3', 'Q4'];
-      const currentTermQuarters = (quarter === 'Q1' || quarter === 'Q2') ? ['Q1', 'Q2'] : ['Q3', 'Q4'];
-      const alreadyInTerm = currentTermQuarters.some(q => {
-        const qCourses = getCoursesForQuarter(year, q);
-        return qCourses.some(c => c.courseId === newCourse.courseId);
-      });
-      if (alreadyInTerm) {
-        const termName = (quarter === 'Q1' || quarter === 'Q2') ? 'Fall' : 'Spring';
-        setError(`This course is already scheduled in ${termName} term`);
-        return;
-      }
-    }
-
-    // Check if course can be scheduled in this semester
-    // Map quarters to semesters for scheduling engine: Q1/Q2 = fall, Q3/Q4 = spring
-    const semesterName = (quarter === 'Q1' || quarter === 'Q2') ? 'fall' : 'spring';
-    if (!schedulingEngine.canScheduleInSemester(newCourse.courseId, semesterName)) {
-      const termName = (quarter === 'Q1' || quarter === 'Q2') ? 'Fall' : 'Spring';
-      setError(`This course is not offered in ${termName} term (${quarter})`);
-      return;
-    }
-
-    // Add course(s) - yearlong and semester courses automatically add to appropriate quarters
-    // In 4x4 block schedule: yearlong = all 4 quarters, semester = both quarters of one term
     const isYearlong = termReqs.type === 'yearlong';
     const isSemester = termReqs.type === 'semester';
 
@@ -934,11 +502,9 @@ function App() {
       // Semester courses add to both quarters of the current term only
       let firstQuarter, secondQuarter;
       if (quarter === 'Q1' || quarter === 'Q2') {
-        // Fall term - add to both Q1 and Q2
         firstQuarter = 'Q1';
         secondQuarter = 'Q2';
       } else {
-        // Spring term - add to both Q3 and Q4
         firstQuarter = 'Q3';
         secondQuarter = 'Q4';
       }
