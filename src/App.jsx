@@ -280,6 +280,10 @@ function App() {
     const saved = localStorage.getItem('westview-gpa-mode');
     return saved ? JSON.parse(saved) : false;
   });
+  const [isCaliforniaResident, setIsCaliforniaResident] = useState(() => {
+    const saved = localStorage.getItem('westview-ca-resident');
+    return saved ? JSON.parse(saved) : true; // Default to California resident
+  });
   const [showTestScores, setShowTestScores] = useState(false);
   const [allowRepeatCourses, setAllowRepeatCourses] = useState(false);
   const [testScores, setTestScores] = useState(() => {
@@ -401,6 +405,11 @@ function App() {
   React.useEffect(() => {
     localStorage.setItem('westview-gpa-mode', JSON.stringify(gpaMode));
   }, [gpaMode]);
+
+  // Save California resident preference to localStorage
+  React.useEffect(() => {
+    localStorage.setItem('westview-ca-resident', JSON.stringify(isCaliforniaResident));
+  }, [isCaliforniaResident]);
 
   // Save test scores to localStorage
   React.useEffect(() => {
@@ -2697,10 +2706,35 @@ function App() {
         }
 
         const termReqs = schedulingEngine.getTermRequirements(suggestion.courseId);
-        const needsBothQuarters = termReqs.requiresBothSemesters || termReqs.type === 'semester';
 
-        if (needsBothQuarters) {
-          // Add to both quarters of the term
+        if (termReqs.type === 'yearlong') {
+          // Yearlong courses need ALL 4 quarters (Q1, Q2, Q3, Q4)
+          newCourses.push({
+            courseId: suggestion.courseId,
+            id: Date.now() + newCourses.length * 4,
+            year: suggestion.year,
+            quarter: 'Q1'
+          });
+          newCourses.push({
+            courseId: suggestion.courseId,
+            id: Date.now() + newCourses.length * 4 + 1,
+            year: suggestion.year,
+            quarter: 'Q2'
+          });
+          newCourses.push({
+            courseId: suggestion.courseId,
+            id: Date.now() + newCourses.length * 4 + 2,
+            year: suggestion.year,
+            quarter: 'Q3'
+          });
+          newCourses.push({
+            courseId: suggestion.courseId,
+            id: Date.now() + newCourses.length * 4 + 3,
+            year: suggestion.year,
+            quarter: 'Q4'
+          });
+        } else if (termReqs.type === 'semester') {
+          // Semester courses need both quarters of ONE term (Q1+Q2 OR Q3+Q4)
           let firstQuarter, secondQuarter;
           if (suggestion.quarter === 'Q1' || suggestion.quarter === 'Q2') {
             firstQuarter = 'Q1';
@@ -2722,7 +2756,7 @@ function App() {
             quarter: secondQuarter
           });
         } else {
-          // Only quarter-length course
+          // Quarter-length courses - add only to the suggested quarter
           newCourses.push({
             courseId: suggestion.courseId,
             id: Date.now() + newCourses.length,
@@ -2873,11 +2907,15 @@ function App() {
 
     const termReqs = schedulingEngine.getTermRequirements(suggestion.courseId);
 
-    // Yearlong and semester courses need both quarters of the term
-    const needsBothQuarters = termReqs.requiresBothSemesters || termReqs.type === 'semester';
-
-    if (needsBothQuarters) {
-      // Determine the quarter pair based on which quarter was suggested
+    if (termReqs.type === 'yearlong') {
+      // Yearlong courses need ALL 4 quarters (Q1, Q2, Q3, Q4)
+      const q1Course = { courseId: suggestion.courseId, id: Date.now(), year: suggestion.year, quarter: 'Q1' };
+      const q2Course = { courseId: suggestion.courseId, id: Date.now() + 1, year: suggestion.year, quarter: 'Q2' };
+      const q3Course = { courseId: suggestion.courseId, id: Date.now() + 2, year: suggestion.year, quarter: 'Q3' };
+      const q4Course = { courseId: suggestion.courseId, id: Date.now() + 3, year: suggestion.year, quarter: 'Q4' };
+      updateCourses([...courses, q1Course, q2Course, q3Course, q4Course]);
+    } else if (termReqs.type === 'semester') {
+      // Semester courses need both quarters of ONE term (Q1+Q2 OR Q3+Q4)
       let firstQuarter, secondQuarter;
       if (suggestion.quarter === 'Q1' || suggestion.quarter === 'Q2') {
         // Fall term - add to both Q1 and Q2
@@ -2892,7 +2930,7 @@ function App() {
       const q2Course = { courseId: suggestion.courseId, id: Date.now() + 1, year: suggestion.year, quarter: secondQuarter };
       updateCourses([...courses, q1Course, q2Course]);
     } else {
-      // Only quarter-length courses
+      // Quarter-length courses - add only to the suggested quarter
       updateCourses([...courses, { courseId: suggestion.courseId, id: Date.now(), year: suggestion.year, quarter: suggestion.quarter }]);
     }
   };
@@ -3024,6 +3062,8 @@ function App() {
                 testScoresRef={testScoresRef}
                 allowRepeatCourses={allowRepeatCourses}
                 setAllowRepeatCourses={setAllowRepeatCourses}
+                isCaliforniaResident={isCaliforniaResident}
+                setIsCaliforniaResident={setIsCaliforniaResident}
               />
             </div>
           </div>
@@ -3808,6 +3848,7 @@ function App() {
             biliteracySealEligibility={biliteracySealEligibility}
             westviewGradOnly={westviewGradOnly}
             gpaMode={gpaMode}
+            isCaliforniaResident={isCaliforniaResident}
             metForeignLanguageIn78={metForeignLanguageIn78}
             setMetForeignLanguageIn78={setMetForeignLanguageIn78}
           />

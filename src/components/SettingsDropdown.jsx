@@ -17,7 +17,9 @@ export function SettingsDropdown({
   ctePathways,
   testScoresRef,
   allowRepeatCourses,
-  setAllowRepeatCourses
+  setAllowRepeatCourses,
+  isCaliforniaResident,
+  setIsCaliforniaResident
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -83,6 +85,17 @@ export function SettingsDropdown({
                   className="w-4 h-4"
                 />
               </label>
+              {gpaMode && (
+                <label className="flex items-center justify-between p-2 hover:bg-gray-50 rounded cursor-pointer ml-4 border-l-2 border-blue-200">
+                  <span className="text-sm text-gray-900">California Resident</span>
+                  <input
+                    type="checkbox"
+                    checked={isCaliforniaResident}
+                    onChange={(e) => setIsCaliforniaResident(e.target.checked)}
+                    className="w-4 h-4"
+                  />
+                </label>
+              )}
               <label className="flex items-center justify-between p-2 hover:bg-gray-50 rounded cursor-pointer">
                 <span className="text-sm text-gray-900">Ignore UC/CSU Requirements</span>
                 <input
@@ -178,6 +191,7 @@ export function SettingsDropdown({
                   setHideSpecialEdClasses(false);
                   setCtePathwayMode({ enabled: false, pathway: null });
                   setAllowRepeatCourses(false);
+                  setIsCaliforniaResident(true);
                 }
               }}
               className="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded text-sm font-medium transition-colors border border-slate-300"

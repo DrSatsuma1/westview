@@ -214,7 +214,6 @@
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None For students interested in: College level in depth exploration of European Civilization Length of Course: Year-long , linked w/AP World History Honors World History 1-2 is designed to help more students to be successful in AP World History. The course will prepare students to read non-fiction thoroughly and critically, to take notes from content-rich lectures, and to write concisely. Students will study the first third of the AP World History curriculum, adding, f",
       "homework_hours_per_week": 2,
-      "uc_honors_weight": "A=5, B=4, C=3",
       "prerequisites_recommended_ids": []
     },
     {
@@ -705,8 +704,7 @@
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None For students interested in: Students who enjoy and are successful in Language Arts. Students will read novels, short stories, drama, poetry, and an array of short non-fiction texts. They will write argument, narrative, and informative/explanatory essays. In addition to analyzing literature, they will also apply critical thinking to study art and the media. This course may be used to meet the UC/CSU “B” requirement.",
       "homework_hours_per_week": 3.5,
-      "prerequisites_recommended_ids": [],
-      "uc_honors_weight": "A=5, B=4, C=3"
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "HON_HUMANITIES_0003",
@@ -747,8 +745,7 @@
       "homework_hours_per_week": 4.75,
       "prerequisites_recommended_ids": [
         "HIGH_SCHOOL_0003"
-      ],
-      "uc_honors_weight": "A=5, B=4, C=3"
+      ]
     },
     {
       "course_id": "WORLD_LITERATURE_0003",
@@ -1498,8 +1495,7 @@
       "notes": "Recommended Prerequisites: Chemistry and Integrated Math II or higher For students interested in: Pursue a rigorous exploration of the biological sciences and their applications to real world Length of Course: Year-Long, linked w/AP Biology Honors Biology 1-2 is a rigorous, accelerated laboratory science course which focuses on investigating major biological concepts. In addition, emphasis will be placed on the study of chemistry, physics, and statistical analysis as applied to biological system",
       "homework_hours_per_week": 2.5,
       "prerequisites_required_ids": [],
-      "prerequisites_recommended_ids": [],
-      "uc_honors_weight": "A=5, B=4, C=3"
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "HON_MEDICAL_0012",
@@ -1998,8 +1994,7 @@
       "prerequisites_recommended_ids": [
         "PHYSICS_OF_0012",
         "INTEGRATED_MATHEMATICS"
-      ],
-      "uc_honors_weight": "A=5, B=4, C=3"
+      ]
     },
     {
       "course_id": "MARINE_SCIENCE_0012",
@@ -2807,8 +2802,7 @@
       "prerequisites_required_ids": [],
       "prerequisites_recommended_ids": [
         "FRENCH_56_0004"
-      ],
-      "uc_honors_weight": "A=5, B=4, C=3"
+      ]
     },
     {
       "course_id": "HON_SPANISH_0004",
@@ -2853,8 +2847,7 @@
       "prerequisites_required_ids": [],
       "prerequisites_recommended_ids": [
         "SPANISH_56_0004"
-      ],
-      "uc_honors_weight": "A=5, B=4, C=3"
+      ]
     },
     {
       "course_id": "SPANISH_12_0004",

@@ -1,11 +1,24 @@
 # Westview Planner - Todo List
 
 ## Active
-- [ ] Implement GPA calculation using `uc_honors_weight` field
-  - Grading scale: A=4, B=3, C=2, D=1, F=0 (weighted: A=5, B=4, C=3 for AP/Honors)
-  - UC GPA uses 10th-11th grade only, max 8 semesters of honors weight
+(none)
+
+## Completed (Nov 22, 2025 - Session 6)
+- [x] Fix yearlong courses in suggestion approval (approveSuggestion) - was only adding to 2 quarters
+- [x] Fix yearlong courses in Auto-fill (auto-fill Fall/Spring) - was only adding to 2 quarters
+- [x] Verified fix with playwright tests: BAND, YEARBOOK now appear in all 4 quarters
+
+## Completed (Nov 22, 2025 - Session 5)
+- [x] Add California Resident toggle in Settings (default: CA)
+- [x] Update GPA threshold (3.0 for CA, 3.4 for non-residents)
+- [x] Fix uc_honors_weight to match official UC A-G list (31 courses)
+  - Removed from: HONORS WORLD HISTORY, BIOLOGY, CHEMISTRY, ENGLISH, HUMANITIES, FRENCH 7-8, SPANISH 7-8
+  - Kept on: All AP courses + HONORS AMERICAN LITERATURE + HONORS FILIPINO 7-8 + HONORS PLTW (Medical/Engineering)
 
 ## Completed (Nov 22, 2025 - Session 4)
+- [x] GPA calculation already implemented (discovered existing)
+  - Grading scale: A=4, B=3, C=2, D=1, F=0 (weighted: A=5, B=4, C=3 for AP/Honors)
+  - UC GPA uses 10th-11th grade only, max 8 semesters of honors weight
 - [x] Fill in prerequisites_recommended_ids for all 700+ courses
 - [x] Add course descriptions (3-line) to CourseCard from notes field
 - [x] Add PLTW Biomedical sequence warning
@@ -43,12 +56,16 @@
 - [x] Auto-fill 45 credit limit
 
 ## Backlog
+- [ ] Westview Gmail login for free access (Google OAuth with @powayusd.com domain verification)
+- [ ] Westview GPA calculation (separate from UC GPA, uses different weighting)
+- [ ] GPA Optimizer mode - prioritize UC Honors courses to maximize weighted GPA
+- [ ] Make UI more teen-friendly (toggle for casual vs formal language)
 - [ ] Transcript PDF parsing
 - [ ] Backend/persistence
 - [ ] PLTW Engineering sequence warning (IED → POE/CIM/Civil Engineering)
 
 ## Technical Notes
-- `uc_honors_weight: "A=5, B=4, C=3"` on 38 AP/Honors courses
+- `uc_honors_weight: "A=5, B=4, C=3"` on 31 UC-certified honors courses (per UC A-G list)
 - `never_suggest: true` on Honors POE
 - Course hierarchies in SuggestionEngine.js (higher courses satisfy lower prereqs)
 - Equivalent courses mapping (Honors ≈ Regular at same level)

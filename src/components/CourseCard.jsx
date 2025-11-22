@@ -131,7 +131,7 @@ export function CourseCard({
         <div className="flex-1 min-w-0 pr-6">
           <div className="flex items-start gap-1.5 mb-1">
             {courseInfo.is_ap_or_honors_pair && <Award className="text-purple-600 flex-shrink-0 mt-0.5" size={16} />}
-            <div className="font-bold text-sm text-gray-900 line-clamp-2 leading-tight">{courseInfo.full_name}</div>
+            <div className="font-bold text-sm text-gray-900 line-clamp-3 leading-tight">{courseInfo.full_name}</div>
           </div>
           <div className="text-xs text-gray-500">
             {courseNumber && <span>{courseNumber} | </span>}

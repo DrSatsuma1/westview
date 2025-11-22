@@ -48,9 +48,12 @@ export function RequirementsSidebar({
   biliteracySealEligibility,
   westviewGradOnly,
   gpaMode,
+  isCaliforniaResident = true,
   metForeignLanguageIn78,
   setMetForeignLanguageIn78
 }) {
+  // GPA threshold: 3.0 for CA residents, 3.4 for non-residents
+  const minGPA = isCaliforniaResident ? 3.0 : 3.4;
   return (
     <div className="space-y-6">
       {/* Westview Graduation Requirements */}
@@ -182,16 +185,16 @@ export function RequirementsSidebar({
                 </div>
               </div>
 
-              {/* GPA requirement status (3.4 minimum) */}
-              {ucGPA.weightedCapped >= 3.4 ? (
+              {/* GPA requirement status */}
+              {ucGPA.weightedCapped >= minGPA ? (
                 <div className="mt-3 bg-green-50 border border-green-200 rounded-lg p-2 flex items-center gap-2">
                   <CheckCircle2 className="text-green-600" size={16} />
-                  <span className="text-xs font-medium text-green-800">Meets 3.4 minimum GPA</span>
+                  <span className="text-xs font-medium text-green-800">Meets {minGPA} minimum GPA {!isCaliforniaResident && '(non-CA)'}</span>
                 </div>
               ) : ucGPA.totalGrades > 0 ? (
                 <div className="mt-3 bg-orange-50 border border-orange-200 rounded-lg p-2 flex items-center gap-2">
                   <AlertCircle className="text-orange-600" size={16} />
-                  <span className="text-xs font-medium text-orange-800">Below 3.4 minimum GPA</span>
+                  <span className="text-xs font-medium text-orange-800">Below {minGPA} minimum GPA {!isCaliforniaResident && '(non-CA)'}</span>
                 </div>
               ) : null}
             </div>
