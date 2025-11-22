@@ -109,6 +109,12 @@ export class SuggestionEngine {
         continue; // Skip this course - prerequisite is not completed yet
       }
 
+      // Check recommended prerequisites
+      // Don't suggest courses where recommended prereqs aren't completed
+      if (this.hasMissingRecommendedPrereqs(course, courses, year, targetQuarter)) {
+        continue; // Skip - user can still manually add with warning
+      }
+
       // Check if this course passes business rules
       if (!businessRules.canAddCourse(course)) continue;
 
@@ -195,6 +201,9 @@ export class SuggestionEngine {
 
         // Never suggest Newcomer Class (not appropriate for most students)
         if (course.full_name.toUpperCase().includes('NEWCOMER')) return false;
+
+        // Never suggest courses marked with never_suggest flag
+        if (course.never_suggest) return false;
 
         // Never suggest Academic Success (remedial course)
         if (course.full_name.toUpperCase().includes('ACADEMIC SUCCESS')) return false;
@@ -373,6 +382,138 @@ export class SuggestionEngine {
     }
 
     return false; // No blocking prerequisite found
+  }
+
+  /**
+   * Check if a course has recommended prerequisites that haven't been completed
+   * (either in prior years or in earlier quarters of the same year)
+   *
+   * @param {Object} course - Course to check
+   * @param {Array} courses - All scheduled courses
+   * @param {string} year - Year we're suggesting for
+   * @param {string} targetQuarter - Quarter we're suggesting for (Q1, Q2, Q3, Q4)
+   * @returns {boolean} - true if missing recommended prereqs, false otherwise
+   */
+  hasMissingRecommendedPrereqs(course, courses, year, targetQuarter) {
+    // Get recommended prerequisites from course data
+    const recommendedPrereqs = course.prerequisites_recommended_ids || [];
+
+    // No recommended prereqs = no issue
+    if (recommendedPrereqs.length === 0) return false;
+
+    // Define quarter chronology for same-year checks
+    const QUARTER_ORDER = ['Q1', 'Q2', 'Q3', 'Q4'];
+    const targetQuarterIndex = QUARTER_ORDER.indexOf(targetQuarter);
+    const yearInt = parseInt(year);
+
+    // Get all courses scheduled BEFORE this slot
+    // (previous years OR earlier quarters in the same year)
+    const scheduledCourseIds = new Set();
+
+    for (const c of courses) {
+      const cYearInt = parseInt(c.year);
+
+      // Courses from previous years count as completed
+      if (cYearInt < yearInt) {
+        scheduledCourseIds.add(c.courseId);
+        continue;
+      }
+
+      // Courses from same year, earlier quarters count as completed
+      if (cYearInt === yearInt) {
+        const cQuarterIndex = QUARTER_ORDER.indexOf(c.quarter);
+        if (cQuarterIndex < targetQuarterIndex) {
+          scheduledCourseIds.add(c.courseId);
+        }
+      }
+    }
+
+    // Check if ALL recommended prereqs are satisfied
+    // A higher-level course always satisfies a lower-level prereq
+    for (const prereqId of recommendedPrereqs) {
+      if (!this.isPrereqSatisfied(prereqId, scheduledCourseIds)) {
+        return true; // Missing at least one recommended prereq
+      }
+    }
+
+    return false; // All recommended prereqs are satisfied
+  }
+
+  /**
+   * Check if a prerequisite is satisfied by scheduled courses
+   * A higher-level course satisfies a lower-level prereq
+   * @param {string} prereqId - The prerequisite course ID
+   * @param {Set} scheduledCourseIds - Set of scheduled course IDs
+   * @returns {boolean} - true if prereq is satisfied
+   */
+  isPrereqSatisfied(prereqId, scheduledCourseIds) {
+    // Direct match
+    if (scheduledCourseIds.has(prereqId)) return true;
+
+    // Define course hierarchies where higher courses satisfy lower prereqs
+    const mathHierarchy = [
+      'INTEGRATED_MATHEMATICS_0010',  // Math I
+      'INTEGRATED_MATHEMATICS',       // Math II
+      'INTEGRATED_MATHEMATICS_0001',  // Math III
+      'AP_PRECALCULUS_0010',          // Pre-Calc
+      'AP_CALCULUS_0010',             // Calc AB
+      'AP_CALCULUS',                  // Calc BC
+    ];
+
+    const physicsHierarchy = [
+      'PHYSICS_OF_0012',              // Physics
+      'AP_PHYSICS_0012',              // AP Physics 1
+      'AP_PHYSICS_0001',              // AP Physics C: Mechanics
+      'AP_PHYSICS',                   // AP Physics C: E&M
+    ];
+
+    const chemistryHierarchy = [
+      'CHEMISTRY_IN_0012',            // Chemistry
+      'HON_CHEMISTRY_0012',           // Honors Chemistry
+      'AP_CHEMISTRY_0012',            // AP Chemistry
+    ];
+
+    const biologyHierarchy = [
+      'BIOLOGY_OF_0012',              // Biology
+      'HON_BIOLOGY_0012',             // Honors Biology
+      'AP_BIOLOGY_0012',              // AP Biology
+    ];
+
+    // English hierarchy (Honors is equivalent to regular at same level)
+    const englishHierarchy = [
+      'HIGH_SCHOOL_0003',             // English 1-2
+      'HIGH_SCHOOL',                  // English 3-4
+    ];
+
+    // Equivalent courses (either satisfies the prereq)
+    const equivalentCourses = {
+      'HIGH_SCHOOL_0003': ['HON_HIGH_0003'],  // English 1-2 ≈ Honors English 1-2
+      'HIGH_SCHOOL': ['HON_HUMANITIES_0003'], // English 3-4 ≈ Honors Humanities
+      'AMERICAN_LITERATURE_0003': ['HON_AMERICAN_0003'], // Am Lit ≈ Honors Am Lit
+      'BIOLOGY_OF_0012': ['HON_BIOLOGY_0012'], // Biology ≈ Honors Biology
+    };
+
+    // Check if an equivalent course is scheduled
+    if (equivalentCourses[prereqId]) {
+      for (const equivId of equivalentCourses[prereqId]) {
+        if (scheduledCourseIds.has(equivId)) return true;
+      }
+    }
+
+    // Check each hierarchy
+    for (const hierarchy of [mathHierarchy, physicsHierarchy, chemistryHierarchy, biologyHierarchy, englishHierarchy]) {
+      const prereqIndex = hierarchy.indexOf(prereqId);
+      if (prereqIndex === -1) continue; // prereq not in this hierarchy
+
+      // Check if any higher-level course is scheduled
+      for (let i = prereqIndex + 1; i < hierarchy.length; i++) {
+        if (scheduledCourseIds.has(hierarchy[i])) {
+          return true; // Higher course satisfies this prereq
+        }
+      }
+    }
+
+    return false; // Prereq not satisfied
   }
 
   /**

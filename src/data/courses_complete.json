@@ -39,7 +39,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: U.S. History or AP United States History (APUSH) For students interested in: College level in depth exploration of U.S. Government and its practices Length of Course: Year-Long, linked w/Civics & Economics U.S. Government & Politics (Advanced Placement) is designed to give students a critical perspective on government, politics and economics in the United States. The class involves both the study of general concepts used to interpret American governmental, political an",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "uc_honors_weight": "A=5, B=4, C=3",
+      "prerequisites_recommended_ids": [
+        "AP_UNITED"
+      ]
     },
     {
       "course_id": "AP_UNITED",
@@ -80,7 +84,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: World History 1-2 or AP European History (APEH) For students interested in: College level in depth exploration of United States History Length of Course: Year-Long, linked w/Honors American Literature U.S. History (Advanced Placement) 1-2 is an advanced course taught at the college level. It is designed for students who wish to take the Advanced Placement examination, administered by Educational Testing Service, in the spring. Those passing the AP exam at a high level ",
-      "homework_hours_per_week": 5
+      "homework_hours_per_week": 5,
+      "uc_honors_weight": "A=5, B=4, C=3",
+      "prerequisites_recommended_ids": [
+        "AP_WORLD_0013"
+      ]
     },
     {
       "course_id": "AP_WORLD_0013",
@@ -121,7 +129,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None For students interested in: College level in depth exploration of World History Length of Course: Year-Long, linked w/Honors World History 1-2 The purpose of the AP World History course is to develop greater understanding of the evolution of global processes and contacts, in interaction with different types of human societies. This understanding is advanced through a combination of selective factual knowledge and appropriate analytical skills. The course highlight",
-      "homework_hours_per_week": 2
+      "homework_hours_per_week": 2,
+      "uc_honors_weight": "A=5, B=4, C=3",
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "CIVICS__0013",
@@ -159,7 +169,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: U.S. History or AP United States History (APUSH) Alternate Course ID Numbers: Civics/Economics (yearlong with AP US Government) 091393-091398, or Civics/Economics (Hybrid - Online & In Person) 811393-811398 Civics surveys the origins of our federal, state and local governments and studies their structure, function, theory and process. It promotes citizenship skill building by serving the community in an “outside project” and prepares students for the political and soci",
-      "homework_hours_per_week": 2
+      "homework_hours_per_week": 2,
+      "prerequisites_recommended_ids": [
+        "AP_UNITED"
+      ]
     },
     {
       "course_id": "HON_WORLD_0013",
@@ -200,7 +213,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None For students interested in: College level in depth exploration of European Civilization Length of Course: Year-long , linked w/AP World History Honors World History 1-2 is designed to help more students to be successful in AP World History. The course will prepare students to read non-fiction thoroughly and critically, to take notes from content-rich lectures, and to write concisely. Students will study the first third of the AP World History curriculum, adding, f",
-      "homework_hours_per_week": 2
+      "homework_hours_per_week": 2,
+      "uc_honors_weight": "A=5, B=4, C=3",
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "UNITED_STATES_0013",
@@ -241,7 +256,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: World History 1-2 or AP World History For students interested in: Traditional United States History Course Alternate Course ID Number: US History 1-2 (Hybrid - Online & In Person) 801376 - 801377, US History 1-2 (with AVID 5-6) 091376-091377 U.S. History 1-2 is a course in which students examine the economic, social and political development of the United States, concentrating primarily on the twentieth century. During the year certain themes will be emphasized: the ex",
-      "homework_hours_per_week": 5
+      "homework_hours_per_week": 5,
+      "prerequisites_recommended_ids": [
+        "AP_WORLD_0013"
+      ]
     },
     {
       "course_id": "WORLD_HISTORY_0013",
@@ -282,7 +300,8 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None For students interested in: Traditional World History course Alternate Course ID Number: World History 1-2 (Hybrid - Online & In Person) 801301 - 801302 World History 1-2 is a course where students will examine major turning points in the shaping of the modern world, from the late eighteenth century to the present. The year begins with an introduction to current world issues and then continues with a focus on the expansion of the west and the growing interdependen",
-      "homework_hours_per_week": 2
+      "homework_hours_per_week": 2,
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "AMERICAN_LITERATURE_0003",
@@ -320,7 +339,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: High School English 3-4 or Honors Humanities For students interested in: Traditional 11th grade English course American Literature 1-2 includes the study of the historical, cultural, and philosophical significance of famous American works from various literary movements. Examples of authors studied include Emerson, Hawthorn, Douglas, Twain, Fitzgerald, Hughes, Steinbeck, Salinger, Plath, Miller and Angelou. Students read and respond to numerous non-fiction texts as wel",
-      "homework_hours_per_week": 1.5
+      "homework_hours_per_week": 1.5,
+      "prerequisites_recommended_ids": [
+        "HIGH_SCHOOL"
+      ]
     },
     {
       "course_id": "AP_ENGLISH_0003",
@@ -359,7 +381,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Honors Humanities 1-2 or High School English 3-4 For students interested in: Advanced reading and composition In this class students will read, discuss, and write about non-fiction texts, focusing on text analysis, rhetorical strategies, and vocabulary development to prepare them for the AP Language Exam. As an advanced reading and composition course, students should be interested in advancing their skills in writing and rhetoric. Students will study the techniques tha",
-      "homework_hours_per_week": 3.5
+      "homework_hours_per_week": 3.5,
+      "prerequisites_recommended_ids": [
+        "HIGH_SCHOOL"
+      ],
+      "uc_honors_weight": "A=5, B=4, C=3"
     },
     {
       "course_id": "AP_ENGLISH",
@@ -397,7 +423,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: American Literature, Honors American Literature For students interested in: College level in-depth exploration of Western literacy development Length of Course: Year-Long, linked w/British Literature 1-2 Advanced Placement English Literature 1-2 (combined with British Literature 1-2) is a year-long college-level course designed to prepare students to take the Advanced Placement English Literature examination and possibly to earn college credits. The course presents exa",
-      "homework_hours_per_week": 3.3
+      "homework_hours_per_week": 3.3,
+      "prerequisites_recommended_ids": [
+        "AMERICAN_LITERATURE_0003"
+      ],
+      "uc_honors_weight": "A=5, B=4, C=3"
     },
     {
       "course_id": "BRITISH_LITERATURE_0003",
@@ -435,7 +465,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: American Literature, Honors American Literature For students interested in: Seek exposure to British Literature Length of Course: Year-Long, linked w/AP English Literature 1-2 British Literature 1-2 is a course that acquaints students with various genres and themes of literature produced by Irish, English, and Scottish writers. The course will develop students’ techniques in reading, writing, speaking, and presenting. While individual courses may vary, students will ge",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": [
+        "AMERICAN_LITERATURE_0003"
+      ]
     },
     {
       "course_id": "ETHNIC_LITERATURE_0003",
@@ -473,7 +506,8 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None This course will focus on the foundational disciplines of ethnic studies: African American Studies, Asian American Studies, Chicano Latino Studies, and Native American and Indigenous Studies. This course will promote cultural understanding and empathy through a deep analysis and examination of how systems of power in the United States have affected these groups. The course will also examine the intersectionality of gender and sexual orientation. This senior level ",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "EXPOSITORY_READING_0003",
@@ -511,7 +545,8 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None For students interested in: Interest in more advanced and in depth creative writing Expository Reading and Writing prepares college-bound seniors for the literacy demands of higher education. Students in this rhetoric-based course will become more proficient in expository, analytical, and argumentative reading and writing, increasing their awareness of the rhetorical strategies employed by authors and applying those same strategies to their own writing. This cours",
-      "homework_hours_per_week": 2.2
+      "homework_hours_per_week": 2.2,
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "HIGH_SCHOOL_0003",
@@ -549,7 +584,8 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None For students interested in: Traditional 9th grade English course Alternate Course ID Numbers: High School English 1-2 (with AVID 1-2) 099301-099302 HS English 1-2 builds on knowledge and skills developed in middle school. Students will continue to develop their thinking-in-writing by practicing a variety of writing modes including description, narration, and literary analysis. Students will learn the basics of the academic essay, developing their understanding of ",
-      "homework_hours_per_week": 3.5
+      "homework_hours_per_week": 3.5,
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "HIGH_SCHOOL",
@@ -587,7 +623,8 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None For students interested in: Traditional 10th grade English course Alternate Course ID Numbers: High School English 3-4 (with AVID 3-4) 090310-090311 Through a thematic approach to the study of literature and written composition, students in High School English 3-4 will broaden their knowledge of literature and its cultural elements. They will improve their ability to understand their connection to literature, develop writing and thinking skills, master punctuation",
-      "homework_hours_per_week": 3.5
+      "homework_hours_per_week": 3.5,
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "HON_AMERICAN_0003",
@@ -625,7 +662,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: High School English 3-4 or Honors Humanities For students interested in: Seek a more rigorous Language Arts experience and is a good preparation for AP English Length of Course: Offered as both a single term course or linked with AP U.S. History 1-2 Alternate Course ID Numbers: Honors American Literature (single term) 090382-090383 Honors Survey of American Literature 1-2 is taught at a faster pace and in greater depth than the regular American Literature 1-2 course. H",
-      "homework_hours_per_week": 3.25
+      "homework_hours_per_week": 3.25,
+      "prerequisites_recommended_ids": [
+        "HIGH_SCHOOL"
+      ],
+      "uc_honors_weight": "A=5, B=4, C=3"
     },
     {
       "course_id": "HON_HIGH_0003",
@@ -663,7 +704,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None For students interested in: Students who enjoy and are successful in Language Arts. Students will read novels, short stories, drama, poetry, and an array of short non-fiction texts. They will write argument, narrative, and informative/explanatory essays. In addition to analyzing literature, they will also apply critical thinking to study art and the media. This course may be used to meet the UC/CSU “B” requirement.",
-      "homework_hours_per_week": 3.5
+      "homework_hours_per_week": 3.5,
+      "prerequisites_recommended_ids": [],
+      "uc_honors_weight": "A=5, B=4, C=3"
     },
     {
       "course_id": "HON_HUMANITIES_0003",
@@ -701,7 +744,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: High School English 1-2 or Honors High School English 1-2 For students interested in: Preparing for more rigorous Language Arts Honors Humanities is an academically challenging and rigorous study of the arts and literature throughout history. The course studies man’s relationship with society, nature and himself. Students write in a variety of essay modes including: informative/explanatory, argumentative, narrative, and research. The course involves library research, o",
-      "homework_hours_per_week": 4.75
+      "homework_hours_per_week": 4.75,
+      "prerequisites_recommended_ids": [
+        "HIGH_SCHOOL_0003"
+      ],
+      "uc_honors_weight": "A=5, B=4, C=3"
     },
     {
       "course_id": "WORLD_LITERATURE_0003",
@@ -739,7 +786,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: American Literature or Honors American Literature For students interested in: Seek exposure to World Literature and cultures Students will develop their own voices and values on a journey of self-discovery through classic and contemporary World Literature. The course will expose them to literary works from a variety of cultures where they can experience the works of writers who view the world from perspectives different from their own. By visiting distant places and ti",
-      "homework_hours_per_week": 2.8
+      "homework_hours_per_week": 2.8,
+      "prerequisites_recommended_ids": [
+        "AMERICAN_LITERATURE_0003"
+      ]
     },
     {
       "course_id": "WRITING_SEMINAR_0003",
@@ -778,7 +828,8 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None For students interested in: For students with an interest in exploring creative writing Writing Seminar 1-2 is a creative writing course for 11th & 12th graders that emphasizes poetry, prose, personal narrative and creative non-fiction. Students will explore published works in those genres and will work on developing their own voices as writers. Students will study the craft of writers and incorporate their learnings into their own works. This course may be used t",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "ADVANCED_FUNCTIONS_0010",
@@ -819,7 +870,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Integrated Math III For students interested in: Pursue a rigorous exploration of math applications in science and business This course is designed for the advanced math student who is preparing to take Honors Pre-Calculus or college mathematics. Second year algebra topics will be reviewed and extended to include pre-calculus concepts. Students will leave this course with a strong analytical foundation that will allow them to be successful in a calculus or statistics co",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "INTEGRATED_MATHEMATICS_0001"
+      ]
     },
     {
       "course_id": "AP_CALCULUS_0010",
@@ -860,7 +915,12 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Advanced Functions Analysis or Integrated Math III For students interested in: Pursue a rigorous exploration of math applications in science and business Length of Course: Year-Long, linked w/AP Pre-Calculus 1-2 This course is a college-level class for students who have completed the equivalent of four years of college preparatory mathematics. Topics include derivatives, differentials, integrations, and applications. Many problems are atypical and require students to s",
-      "homework_hours_per_week": 5
+      "homework_hours_per_week": 5,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "AP_PRECALCULUS_0010"
+      ],
+      "uc_honors_weight": "A=5, B=4, C=3"
     },
     {
       "course_id": "AP_CALCULUS",
@@ -901,7 +961,12 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: AP Calculus AB For students interested in: Pursue a rigorous exploration of math theory and applications This course is for students who have completed four years of college preparatory math including Calculus AB. Students will receive little or no review of Calculus AB material. Students are strongly encouraged to take “Calculus BC Review 4.5” for review of Calculus AB content. New topics covered include parametric equations, vector functions, indeterminate forms of l",
-      "homework_hours_per_week": 3.5
+      "homework_hours_per_week": 3.5,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "AP_CALCULUS_0010"
+      ],
+      "uc_honors_weight": "A=5, B=4, C=3"
     },
     {
       "course_id": "AP_PRECALCULUS_0010",
@@ -942,7 +1007,12 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Integrated Math III Length of Course: Year-Long, linked w/AP Calculus AB 1-2 OR Single Term for 11th or 12th graders only Alternate Course ID Numbers: AP Pre-Calculus (yearlong with AP Calculus AB) 091085-091086 In this course, students study a broad spectrum of function types that are foundational for careers in mathematics, physics, biology, health science, business, social science, and data science.Throughout this course, students develop and hone symbolic manipulat",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "INTEGRATED_MATHEMATICS_0001"
+      ],
+      "uc_honors_weight": "A=5, B=4, C=3"
     },
     {
       "course_id": "AP_STATISTICS_0010",
@@ -983,7 +1053,12 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Advanced Functions Analysis or Integrated Math III For students interested in: Pursue a rigorous exploration of math applications in science, business, psychology, and Length of Course: Year-Long, linked w/Statistics and College Algebra 1 The multidisciplinary aspects and applications of statistics make it one of the most rewarding classes to take. The study blends the rigor, calculations, and deductive thinking of mathematics, the real-world examples and problems of s",
-      "homework_hours_per_week": 3.5
+      "homework_hours_per_week": 3.5,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "INTEGRATED_MATHEMATICS_0001"
+      ],
+      "uc_honors_weight": "A=5, B=4, C=3"
     },
     {
       "course_id": "CALCULUS_BC_0910",
@@ -1020,7 +1095,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: AP Calculus AB and concurrent enrollment in AP Calculus BC For students interested in: Deepening understanding of and background in calculus in preparation of the Advanced Placement exam This course is offered in the fall semester, outside of the regular 4 period day for 2.5 elective credits. It is designed to help students review Calculus AB topics in preparation for the AP Calculus BC course which is offered in the Spring semester only.",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "AP_CALCULUS"
+      ]
     },
     {
       "course_id": "COLLEGE_ALGEBRA_0010",
@@ -1060,7 +1139,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Integrated Math III Length of Course: Year-Long, linked w/Statistics and AP Statistics 1-2 College Algebra is a college preparatory course which will focus on a variety of mathematical topics. These topics include, but are not limited to, advanced algebra, advanced geometry, trigonometry, and mathematical modeling. This will strengthen conceptual understanding needed for successful transition and completion of a four-year college or university mathematics academic prog",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "INTEGRATED_MATHEMATICS_0001"
+      ]
     },
     {
       "course_id": "INTRODUCTION_TO_0010",
@@ -1101,7 +1184,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Integrated Math III Alternate Course ID Number: Introduction to Data Science 1-2 (Hybrid - Online & In Person) 801080 - 801081 In this course students will learn to understand, ask questions of, and represent data through project-based units. The units will give students opportunities to be data explorers through active engagement, developing their understanding of data analysis, sampling, correlation/causation, bias and uncertainty, modeling with data, making and eval",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "INTEGRATED_MATHEMATICS"
+      ]
     },
     {
       "course_id": "INTEGRATED_MATHEMATICS_0010",
@@ -1142,7 +1229,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None Alternate Course ID Numbers: Integrated Math Ia-Ib (with Academic Success) 801012-801013 The fundamental purpose of Integrated Mathematics I is to formalize and extend the mathematics that students learned in the middle grades. The critical areas, organized into units, deepen and extend understanding of linear relationships, in part by contrasting them with exponential phenomena, and in part by applying linear models to data that exhibit a linear trend. Integrated",
-      "homework_hours_per_week": 2.5
+      "homework_hours_per_week": 2.5,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "INTEGRATED_MATHEMATICS",
@@ -1183,7 +1272,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Integrated Mathematics Ia-Ib Alternate Course ID Numbers: Integrated Math IIa-IIb (with Academic Success) 051016-051017 The focus of Integrated Mathematics II is on quadratic expressions, equations, and functions; comparing their characteristics and behavior to those of linear and exponential relationships from Integrated Mathematics I as organized into 6 critical areas, or units. The need for extending the set of rational numbers arises and real and complex numbers ar",
-      "homework_hours_per_week": 2.5
+      "homework_hours_per_week": 2.5,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "INTEGRATED_MATHEMATICS_0010"
+      ]
     },
     {
       "course_id": "INTEGRATED_MATHEMATICS_0001",
@@ -1224,7 +1317,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Integrated Mathematics IIa-IIb In Integrated Mathematics III students apply the accumulation of learning from previous courses, with content grouped into four critical areas. They apply methods from probability and statistics to draw inferences and conclusions from data. Students expand their repertoire of functions to include polynomial, rational, and radical functions. They expand their study of right triangle trigonometry to include general triangles. Students bring",
-      "homework_hours_per_week": 2.5
+      "homework_hours_per_week": 2.5,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "INTEGRATED_MATHEMATICS"
+      ]
     },
     {
       "course_id": "STATISTICS_0010",
@@ -1264,7 +1361,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Advanced Functions Analysis or Integrated Math III For students interested in: Exposure to and application of statistical analysis and trigonometric functions Length of Course: Year-Long, linked w/AP Statistics 1-2 and College Algebra 1 Statistics is a college preparatory course which will introduce students to the major concepts and tools for collecting, analyzing, and drawing conclusions from data. Probability and counting methods are included. Students will apply de",
-      "homework_hours_per_week": 3.5
+      "homework_hours_per_week": 3.5,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "INTEGRATED_MATHEMATICS_0001"
+      ]
     },
     {
       "course_id": "AP_BIOLOGY_0012",
@@ -1305,7 +1406,13 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Chemistry and Integrated Math II or higher For students interested in: Pursue a rigorous exploration of the biological sciences and their applications to real world Length of Course: Year-Long, linked w/Honors Biology Advanced Placement Biology 3-4 is planned to meet the objectives of a general biology course on the college level. Topics covered include the chemical basis of biology, cells, their specialization and reproduction, energy transformation, heredity and gene",
-      "homework_hours_per_week": 4.6
+      "homework_hours_per_week": 4.6,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "CHEMISTRY_IN_0012",
+        "INTEGRATED_MATHEMATICS"
+      ],
+      "uc_honors_weight": "A=5, B=4, C=3"
     },
     {
       "course_id": "BIOLOGY_OF_0012",
@@ -1346,7 +1453,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Concurrent enrollment in Integrated Math I Biology: The Living Earth 1-2 is a laboratory based college preparatory course that integrates the high school Life Science (LS), Earth and Space Science (ESS), and Engineering, Technology, and Applications of Science (ETS) Performance Expectations (PE) from the California Next Generation Science Standards (NGSS). The fundamental concepts necessary to understand Biology have been selected from the Disciplinary Core Ideas (DCIs",
-      "homework_hours_per_week": 2.5
+      "homework_hours_per_week": 2.5,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "HON_BIOLOGY_0012",
@@ -1387,7 +1496,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Chemistry and Integrated Math II or higher For students interested in: Pursue a rigorous exploration of the biological sciences and their applications to real world Length of Course: Year-Long, linked w/AP Biology Honors Biology 1-2 is a rigorous, accelerated laboratory science course which focuses on investigating major biological concepts. In addition, emphasis will be placed on the study of chemistry, physics, and statistical analysis as applied to biological system",
-      "homework_hours_per_week": 2.5
+      "homework_hours_per_week": 2.5,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [],
+      "uc_honors_weight": "A=5, B=4, C=3"
     },
     {
       "course_id": "HON_MEDICAL_0012",
@@ -1426,7 +1538,12 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Biology of the Living Earth 1-2 & Human Body Systems 1-2 Medical Interventions is the third course in a four-year sequence of courses comprising the Project Lead the Way (PLTW) Biomedical Sciences Program. Students in this course are introduced to a wide range of medical interventions related to immunology, genetics, pharmacology, surgery, medical devices and diagnostics. Interventions range from simple diagnostic tests to the treatment of complex diseases and disorder",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": [
+        "BIOLOGY_OF_0012",
+        "HUMAN_BODY_0012"
+      ],
+      "uc_honors_weight": "A=5, B=4, C=3"
     },
     {
       "course_id": "HUMAN_BODY_0012",
@@ -1467,7 +1584,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Biology of the Living Earth 1-2 This course will offer students the opportunity to examine the interactions of body systems as they explore identity, communication, power, movement, protection, and homeostasis. Students design experiments, investigate the structures and functions of the human body, and use data acquisition software to monitor body functions such as muscle movement, reflex and voluntary action, and respiration. Exploring science in action, students buil",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": [
+        "BIOLOGY_OF_0012"
+      ]
     },
     {
       "course_id": "PRINCIPLES_OF_0012",
@@ -1508,7 +1628,8 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None This rigorous course serves to provide foundational knowledge and skills in fields such as biology, anatomy and physiology, genetics, microbiology, and epidemiology, as well as engage students in how they can apply this content to real-world situations, cases, and problems such as solving a medical mystery case, diagnosing, and treating a patient, or responding to a medical outbreak. The pace and complexity of this course is geared for highly motivated students th",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "ZOOLOGY_12_0012",
@@ -1549,7 +1670,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Concurrent enrollment in Integrated Math I Zoology 1-2 is a more in-depth study of the animal kingdom than is possible in Biology 1-2. Major animal groups will be studied emphasizing many aspects of their anatomy/physiology, evolution, distribution, animal diversity, and ecology. The course includes facilitated discussions, weekly laboratory activities, field studies, projects, field trips, and guest speakers. This course may be used to meet the UC/CSU “D” requirement.",
-      "homework_hours_per_week": 2
+      "homework_hours_per_week": 2,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "INTEGRATED_MATHEMATICS_0010"
+      ]
     },
     {
       "course_id": "AP_CHEMISTRY_0012",
@@ -1590,7 +1715,13 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Physics 1-2 and Integrated Math II or higher For students interested in: Pursue a rigorous, quantitative exploration of the atomic world and its application to many branches of science Length of Course: Year-Long, linked w/Honors Chemistry The course is a rigorous investigation of the principles of chemistry. Emphasis is placed on qualitative and quantitative understanding of thermodynamics, stoichiometry, kinetics and equilibrium. The laboratory component stresses a h",
-      "homework_hours_per_week": 3.5
+      "homework_hours_per_week": 3.5,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "PHYSICS_OF_0012",
+        "INTEGRATED_MATHEMATICS"
+      ],
+      "uc_honors_weight": "A=5, B=4, C=3"
     },
     {
       "course_id": "AP_ENVIRONMENTAL_0012",
@@ -1631,7 +1762,13 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Biology 1-2 and Integrated Math II or higher For students interested in: How their livelihood is sustained and concerned about the future of the planetf Advanced Placement Environmental Science is a rigorous, college-level course covering the full range of curriculum required as preparation for the AP Exam. With sustainability as a theme, selected topics include Ecosystems, Biodiversity, Human Ecology, Pollution, Resource Management and Energy Use. A 4.5 review class i",
-      "homework_hours_per_week": 5.3
+      "homework_hours_per_week": 5.3,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "BIOLOGY_OF_0012",
+        "INTEGRATED_MATHEMATICS"
+      ],
+      "uc_honors_weight": "A=5, B=4, C=3"
     },
     {
       "course_id": "AP_PHYSICS_0012",
@@ -1672,7 +1809,12 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Concurrent enrollment in Honors Pre-Calculus or Advanced Functions Analysis For students interested in: Further study of physics Length of Course: Year-Long, linked w/Physics of the Universe 1-2 AP Physics 1 is an algebra-based, introductory college-level physics course. Students cultivate their understanding of Physics through inquiry-based investigations as they explore topics such as Newtonian mechanics (including rotational motion); work, energy, and power; mechani",
-      "homework_hours_per_week": 3.5
+      "homework_hours_per_week": 3.5,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "INTEGRATED_MATHEMATICS_0001"
+      ],
+      "uc_honors_weight": "A=5, B=4, C=3"
     },
     {
       "course_id": "AP_PHYSICS",
@@ -1713,7 +1855,12 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Completion of AP Physics C: Mechanics For students interested in: A rigorous calculus based course that studies the laws of electricity and magnetism Length of Course: Year-Long, linked w/AP Physics C: Mechanics The Advanced Placement Physics C 2A-2B course forms the second part of the college sequence that serves as the foundation in physics for college physics students. The topics of electricity and magnetism will be the emphasis of the course; however, other related",
-      "homework_hours_per_week": 3.5
+      "homework_hours_per_week": 3.5,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "AP_PHYSICS_0001"
+      ],
+      "uc_honors_weight": "A=5, B=4, C=3"
     },
     {
       "course_id": "AP_PHYSICS_0001",
@@ -1754,7 +1901,13 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Completion of Calculus AB, and AP Physics 1A-1B or Physics 1-2 For students interested in: A rigorous calculus based course that studies the laws of motion Length of Course: Year-Long, linked w/AP Physics C: Electricity & Magnetism Advanced Placement Physics C 1A-1B course forms the first part of the college sequence that serves as the foundation in physics for college physics students. The topic of mechanics will be the emphasis of the course; however, other related t",
-      "homework_hours_per_week": 3.5
+      "homework_hours_per_week": 3.5,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "AP_CALCULUS_0010",
+        "PHYSICS_OF_0012"
+      ],
+      "uc_honors_weight": "A=5, B=4, C=3"
     },
     {
       "course_id": "CHEMISTRY_IN_0012",
@@ -1795,7 +1948,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Concurrent enrollment in Integrated Math II For students interested in: An exploration of the atomic world and its application to many branches of science Chemistry in the Earth System 1-2 is a laboratory-based college preparatory science course, which will focus on major principles and concepts of chemistry. This course integrates the High School Physical Science (PS), Earth and Space Science (ESS), and Engineering, Technology, and Applications of Science (ETS) Perfor",
-      "homework_hours_per_week": 3
+      "homework_hours_per_week": 3,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "INTEGRATED_MATHEMATICS_0010"
+      ]
     },
     {
       "course_id": "HON_CHEMISTRY_0012",
@@ -1836,7 +1993,13 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Physics 1-2 and Integrated Math II or higher For students interested in: Pursue a rigorous, quantitative exploration of the atomic world and its application to many branches of science Length of Course: Year-Long, linked w/AP Chemistry Honors Chemistry 1-2 is a rigorous, accelerated laboratory science course which will focus on major principles and concepts of chemistry. In addition, emphasis will be placed on the study of physical chemistry, thermodynamics, equilibriu",
-      "homework_hours_per_week": 3
+      "homework_hours_per_week": 3,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "PHYSICS_OF_0012",
+        "INTEGRATED_MATHEMATICS"
+      ],
+      "uc_honors_weight": "A=5, B=4, C=3"
     },
     {
       "course_id": "MARINE_SCIENCE_0012",
@@ -1877,7 +2040,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Concurrent enrollment in Integrated Math I For students interested in: An exploration of the ocean both its physical features and organisms that live in it Marine Science 1-2 will cover the basic physical, geological and chemical aspects of Marine Science. The major topics will include oceanographic history, geomorphology of the ocean floor, marine sediments, oceanographic instrumentation, chemistry of seawater, the heat balance of the ocean, sea level changes, surface",
-      "homework_hours_per_week": 2
+      "homework_hours_per_week": 2,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "INTEGRATED_MATHEMATICS_0010"
+      ]
     },
     {
       "course_id": "PHYSICS_OF_0012",
@@ -1918,7 +2085,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Completion of Integrated Math I For students interested in: Pursue a rigorous, quantitative exploration of the physical world Alternate Course ID Numbers: Physics of the Universe 1-2 (with AP Physics 1a-1b) 801248-801249 Physics 1-2 is a laboratory-based college preparatory course that integrates the high school Physical Science (PS), Earth and Space Science (ESS), and Engineering, Technology, and Applications of Science (ETS) Performance Expectations (PE) from the Cal",
-      "homework_hours_per_week": 3.5
+      "homework_hours_per_week": 3.5,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "INTEGRATED_MATHEMATICS_0010"
+      ]
     },
     {
       "course_id": "AP_CHINESE_0004",
@@ -1959,7 +2130,12 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Chinese 7-8 For students interested in: Rigorous college level Chinese course that serves to prepare for the AP test Advanced Placement (AP) Chinese Language 1-2 refines the skills required for advanced work equivalent to a third year, college level course and for the AP Language examination. Extensive reading, writing, and speaking practice will increase a student’s competency level to that required on the AP examination. Selected literary works will be analyzed. This",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "CHINESE_78_0004"
+      ],
+      "uc_honors_weight": "A=5, B=4, C=3"
     },
     {
       "course_id": "AP_FRENCH_0004",
@@ -2000,7 +2176,12 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Honors French 7-8 For students interested in: Continuing development and mastery of French language and culture AP French Language is a course in which the skills developed in French 1-8 are refined through extensive reading, writing, and speaking. The goal should be to prepare to take the AP French Language Examination. This course may be used to meet the UC/CSU “E” requirement. UC approved for extra honors credit (A=5, B=4, C=3).",
-      "homework_hours_per_week": 3
+      "homework_hours_per_week": 3,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "HON_FRENCH_0004"
+      ],
+      "uc_honors_weight": "A=5, B=4, C=3"
     },
     {
       "course_id": "AP_SPANISH_0004",
@@ -2041,7 +2222,12 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Spanish 7-8 For students interested in: Rigorous college level Spanish course that serves to prepare for the AP test Length of Course: Year-Long, linked w/Honors Spanish 7-8 Advanced Placement Spanish Language refines the skills required for advanced work equivalent to a third year college level course and for the AP Language examination. Extensive reading, writing and speaking practice increases the competency level to that required on the AP examination. Selected lit",
-      "homework_hours_per_week": 2
+      "homework_hours_per_week": 2,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "HON_SPANISH_0004"
+      ],
+      "uc_honors_weight": "A=5, B=4, C=3"
     },
     {
       "course_id": "CHINESE_12_0004",
@@ -2082,7 +2268,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Basic reading and writing skills For students interested in: The exploration of the Chinese language and its culture rich heritage. Pending approval toward fulfilling the UC requirement in foreign language. Introduced to Chinese 1-2 (Mandarin) introduces students to the Chinese language. The course will help students develop the skills required to conduct basic conversations such as common greetings, naming objects, places, and people, and identifying persons and occup",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "CHINESE_34_0004",
@@ -2123,7 +2311,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Chinese 1-2 For students interested in: The exploration of the Chinese language and its culture rich heritage. Pending approval toward fulfilling the UC requirement in foreign language. This course is designed to further enhance foreign language skills acquired in Chinese 1-2 and to prepare students for living in a global society. Classroom instruction will be designed to increase the ability to communicate in Chinese by involving students in communicative tasks. The i",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "CHINESE_12_0004"
+      ]
     },
     {
       "course_id": "CHINESE_56_0004",
@@ -2164,7 +2356,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Chinese 3-4 For students interested in: Continuing development and mastery of Chinese language and culture This course is designed to further enhance world language skills acquired in Chinese 3-4 and to prepare students for living in a global society. Classroom instruction will promote students’ ability to communicate in Mandarin Chinese by involving them in increasingly complex communicative tasks. The instruction will include listening, speaking, reading, writing, an",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "CHINESE_34_0004"
+      ]
     },
     {
       "course_id": "CHINESE_78_0004",
@@ -2205,7 +2401,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Chinese 5-6 For students interested in: Continuing development and mastery of Chinese language and culture This course is designed to further develop and refine knowledge, skills, and attitudes related to specific themes, including, but not limited to travelers’ survival, Chinese in America, and history-geography. Within this context, appropriate emphasis will be placed on students’ competency in the areas of listening, speaking, reading, and writing. This course may b",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "CHINESE_56_0004"
+      ]
     },
     {
       "course_id": "FILIPINO_12_0004",
@@ -2246,7 +2446,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Basic reading and writing skills For students interested in: The exploration of the Tagalog language and its culture rich heritage. Applies toward fulfilling the UC requirement in foreign language. Filipino 1-2 introduces students to the Filipino language. The course will help students develop the skills required to conduct basic conversations such as common greetings, naming objects, places and people, and identifying persons and occupations. Conversational skills wil",
-      "homework_hours_per_week": 3
+      "homework_hours_per_week": 3,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "FILIPINO_34_0004",
@@ -2287,7 +2489,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Filipino 1-2 For students interested in: The deeper exploration into the Tagalog language, culture, and rich heritage. Completes minimum UC requirement in foreign language. Filipino 3-4 enhances the four communication skills of listening, speaking, reading and writing learned from Filipino 1-2. Students will progressively use more vocabulary words and construct longer and complicated sentences by combining learned phrases, previous grammatical skills, new vocabulary wo",
-      "homework_hours_per_week": 3
+      "homework_hours_per_week": 3,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "FILIPINO_12_0004"
+      ]
     },
     {
       "course_id": "FILIPINO_56_0004",
@@ -2328,7 +2534,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Filipino 3-4 For students interested in: Continuing development and mastery of Tagalog language and culture Filipino 5-6 enhances the four communication skills of listening, speaking, reading, and writing learned from Filipino 3-4. Students will progressively use more vocabulary words and construct longer and more complicated sentences by combining learned phrases, previous grammatical skills, new vocabulary words and grammatical skills. In addition, students will cont",
-      "homework_hours_per_week": 3
+      "homework_hours_per_week": 3,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "FILIPINO_34_0004"
+      ]
     },
     {
       "course_id": "FILIPINO_78_0004",
@@ -2369,7 +2579,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Filipino 5-6 For students interested in: Continuing development and mastery of Tagalog language and culture Filipino 7-8 will further develop and refine knowledge, skills, and attitudes related to specific themes, including, but not limited to, traveler's survival, Filipinos in the United States, and history-geography. Within this context, appropriate emphasis will be placed on student competency in the areas of reading, writing, listening, and speaking. This course ma",
-      "homework_hours_per_week": 3
+      "homework_hours_per_week": 3,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "FILIPINO_56_0004"
+      ]
     },
     {
       "course_id": "FRENCH_12_0004",
@@ -2410,7 +2624,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None For students interested in: The exploration of the French language and its culture rich heritage. Applies toward fulfilling the UC requirement in foreign language. French 1-2 is a beginning course which develops the four communication skills of listening, speaking, reading and writing with basic vocabulary, grammar and idiomatic expressions. Oral and written exercises, both individually and in groups, provide practice to develop these skills. This course may be us",
-      "homework_hours_per_week": 2
+      "homework_hours_per_week": 2,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "FRENCH_34_0004",
@@ -2451,7 +2667,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: French 1-2 For students interested in: The deeper exploration into the French language, culture, and rich heritage. Applies toward fulfilling the UC requirement in foreign language. French 3-4 is an intermediate course designed to further develop the four communication skills of listening, speaking, reading and writing with an increased vocabulary, more complicated grammatical structures and idiomatic expressions. This course may be used to meet the UC/CSU “E” requirem",
-      "homework_hours_per_week": 2
+      "homework_hours_per_week": 2,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "FRENCH_12_0004"
+      ]
     },
     {
       "course_id": "FRENCH_56_0004",
@@ -2492,7 +2712,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: French 3-4 For students interested in: Continuing development and mastery of French language and culture French 5-6 prepares the student for the more advanced structures and communication activities required at the college level. Reading and writing practice is more extensive. The creative ability to use the language orally and in writing is stressed. This course may be used to meet the UC/CSU “E” requirement.",
-      "homework_hours_per_week": 2
+      "homework_hours_per_week": 2,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "FRENCH_34_0004"
+      ]
     },
     {
       "course_id": "HON_FILIPINO_0004",
@@ -2533,7 +2757,12 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Filipino 5-6 For students interested in: Continuing development and mastery of Filipino language and culture Filipino 7-8 Honors is designed for students who have successfully completed Filipino 5-6 and for students who are heritage speakers of the Filipino Language. It is a rigorous course that focuses on the continued development of communicative competence in the target language and understanding of the culture(s) of the people who speak the language. Students will ",
-      "homework_hours_per_week": 3
+      "homework_hours_per_week": 3,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "FILIPINO_56_0004"
+      ],
+      "uc_honors_weight": "A=5, B=4, C=3"
     },
     {
       "course_id": "HON_FRENCH_0004",
@@ -2574,7 +2803,12 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: French 5-6 For students interested in: Continuing development and mastery of French language and culture Honors French 7-8 continues developing and refining oral and written communication skills. Activities are divided among listening, speaking, reading, and writing. Students will work in small groups, whole class and individual settings as appropriate. Vocabulary development continues in a thematic context as students expand the range of expression. Students also cont",
-      "homework_hours_per_week": 2
+      "homework_hours_per_week": 2,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "FRENCH_56_0004"
+      ],
+      "uc_honors_weight": "A=5, B=4, C=3"
     },
     {
       "course_id": "HON_SPANISH_0004",
@@ -2615,7 +2849,12 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Spanish 7-8 For students interested in: Ongoing mastery of language as well as beginning exposure to Spanish literature Length of Course: Year-Long, linked w/AP Spanish Language 1-2 Honors Spanish 7-8 will further develop and refine knowledge, skills, and attitudes related to specific themes. Grammar instruction will be in-depth with sufficient preparation to continue on to Advanced Placement Spanish. Within this context, appropriate emphasis will be placed on student ",
-      "homework_hours_per_week": 1.5
+      "homework_hours_per_week": 1.5,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "SPANISH_56_0004"
+      ],
+      "uc_honors_weight": "A=5, B=4, C=3"
     },
     {
       "course_id": "SPANISH_12_0004",
@@ -2656,7 +2895,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None For students interested in: The exploration of the Spanish language and its culture rich heritage. Applies toward fulfilling the UC requirement in foreign language. Spanish 1-2 is a beginning course which develops the four communication skills of listening, speaking, reading and writing with basic vocabulary, grammar, and idiomatic expressions. Oral and written activities, both individually and in groups, provide practice to develop these skills. Some of the vocab",
-      "homework_hours_per_week": 1.5
+      "homework_hours_per_week": 1.5,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "SPANISH_34_0004",
@@ -2697,7 +2938,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Spanish 1-2 For students interested in: The deeper exploration of the Spanish language, culture, and rich heritage. Applies toward fulfilling the UC requirement in foreign language. Spanish 3-4 is designed to further develop the four communication skills of listening, speaking, reading, and writing with basic vocabulary, grammar, and idiomatic expressions. Students will increase their vocabulary and ability to use it in progressively more complicated structures, reinfo",
-      "homework_hours_per_week": 1.5
+      "homework_hours_per_week": 1.5,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "SPANISH_12_0004"
+      ]
     },
     {
       "course_id": "SPANISH_56_0004",
@@ -2738,7 +2983,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Spanish 3-4 For students interested in: Continuing development and mastery of the Spanish language and culture Spanish 5-6 prepares the student for the more advanced structures and communication activities required at the college level. Reading and writing is more extensive, and the emphasis is on activities that encourage creative use of the language orally and in writing. The essential learnings of grammar focus on narration in the past with refinement of the use of ",
-      "homework_hours_per_week": 1.5
+      "homework_hours_per_week": 1.5,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "SPANISH_34_0004"
+      ]
     },
     {
       "course_id": "SPANISH_78_0004",
@@ -2779,7 +3028,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Spanish 5-6 For students interested in: Ongoing mastery of language as well as beginning exposure to Spanish literature. Spanish 7-8 continues to expand the creative ability to use the language orally and in writing. Emphasis is on improving competency in listening, speaking, reading and writing. Listening comprehension exercises and tests focus on unrestricted language, that is, language not tailored specifically to the textbook. Particularly in Spanish 7, new convent",
-      "homework_hours_per_week": 1.5
+      "homework_hours_per_week": 1.5,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "SPANISH_56_0004"
+      ]
     },
     {
       "course_id": "SPANISH_910_0004",
@@ -2820,7 +3073,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Honors Spanish 7-8/AP Spanish Language 1-2 For students interested in: Rigorous college level Spanish course Spanish 9-10 will refine the knowledge, skills and attitudes toward the Spanish-speaking world. Speaking, listening, reading, and writing practice will be conducted in the target language. Selected literary works will be analyzed through student discussion and theme-based writing. Topics will include: politics, current events, entertainment, sports, environment,",
-      "homework_hours_per_week": 1.5
+      "homework_hours_per_week": 1.5,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "SPANISH_78_0004"
+      ]
     },
     {
       "course_id": "AP_MUSIC_0011",
@@ -2861,7 +3118,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Teacher approval Advanced Placement Music Theory is a course designed for the study of Musical Structure. The ultimate goal is to develop a student's ability to recognize and understand the basic materials and processes of music that is heard or read in the score. The course will provide a solid foundation in intervals, scales, metric/rhythmic patterns, and the terms used to describe these elements of music. This course will serve to prepare the student for the Advance",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "uc_honors_weight": "A=5, B=4, C=3",
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "BAND_WITH_0911",
@@ -2902,7 +3162,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Ability to read and perform music is a requirement. Limited to standard band instruments (no guitar). For students interested in: Marching band activities through November and then development of a high level of musicianship, including participating in concerts as well as solo and ensemble festivals. Band with Competitive Marching is a yearlong performance class, and students are required to participate in all band activities. Marching Band activities begin with band c",
-      "homework_hours_per_week": 4.6
+      "homework_hours_per_week": 4.6,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "BAND_WITH_1911",
@@ -2943,7 +3205,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Ability to read and perform music is a requirement. Limited to standard band instruments (no guitar). For students interested in: Development of musical skills, activities limited to ensemble performances. Marching Band not included. Band with Non-Competitive Marching is a yearlong performance class, and students are required to participate in all band activities. During the Marching Band season, students enrolled in this class are required to march at all home footbal",
-      "homework_hours_per_week": 4.6
+      "homework_hours_per_week": 4.6,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "DANCE_PROP_0011",
@@ -2984,7 +3248,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Audition. Students auditioning must demonstrate technical dance skills at a minimum of an intermediate dance level and an ability to choreograph and learn quickly For students interested in: Marching band and field performances/competition Length of Course: Year-Long, linked w/Marching Tall Flags (Dance Prop) Alternate Course ID Numbers: Marching PE Tall Flags 001199-001193 The course provides a means to develop an awareness and understanding of the styles, idioms, per",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "DRAMA_12_0003",
@@ -3025,7 +3291,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None For students interested in: Understanding of and background to theater. This course is a beginning study of theater with an in-depth look at the structure of theater and plays. Included are basic storytelling, voice and diction, reader's theater, play analysis, and improvisational exercises. Students will be requested to attend performances of school, community or professional plays and movies and then write a critique of them. At least one basic scene and/or seri",
-      "homework_hours_per_week": 1
+      "homework_hours_per_week": 1,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "DRAMA_34_0003",
@@ -3066,7 +3334,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Drama 1-2 For students interested in: Deepening understanding of and background to acting styles as well as technical aspects of production. This course includes a study of the history of acting styles. Students are expected to perform scenes or plays from classical literature. Students will study the technical side of theater including costume and set design, makeup, directing and production. This course may be used to meet the UC/CSU “F” requirement and PUSD Fine Art",
-      "homework_hours_per_week": 1
+      "homework_hours_per_week": 1,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "DRAMA_12_0003"
+      ]
     },
     {
       "course_id": "DRAMA_56_0003",
@@ -3107,7 +3379,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Drama 3-4 For students interested in: Participating in all the areas and techniques involved in putting on a full play production. Drama 5-6 continues the application of the play direction techniques introduced in Drama 4. Students are expected to select a term project and carry it to culmination in presentation and evaluation by an audience. In addition, students are expected to perform in scenes from classic, modern British, and modern American dramatic literature, a",
-      "homework_hours_per_week": 1
+      "homework_hours_per_week": 1,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "DRAMA_34_0003"
+      ]
     },
     {
       "course_id": "ORCHESTRA_12_0011",
@@ -3148,7 +3424,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: The ability to read and perform music. Instruments limited to violin, viola, cello and string bass. For students interested in: For the stringed-instrument student who wants to develop their musical skills and participate in concerts as well as solo and ensemble festivals. Orchestra is a yearlong performance class and is designed for the stringed-instrument student who wants to perform in an orchestral music organization. The group will play a variety of string orchest",
-      "homework_hours_per_week": 2.9
+      "homework_hours_per_week": 2.9,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "TECHNICAL_PRODUCTION_0003",
@@ -3189,7 +3467,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None For students interested in: Exploring and participating in all the technical areas involved in putting on a full play production. Technical Production for Theater 1-2 is a course which covers the basics of set design and construction, lighting, costuming, sound, makeup and stage management. Specifically, students will be expected to design, construct, and paint flats, to plan and draw a lighting plot for a play, to operate a lighting board and to choose costume de",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "TECHNICAL_PRODUCTION",
@@ -3230,7 +3510,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Technical Production for Theater 1-2 For students interested in: Exploring and participating in all the technical areas involved in putting on a full play production. Technical Production for the Theater 3-4 is a practical theater class which continues to build on knowledge, experience and interest acquired in 1-2. Students will be able to perform the varied \"behind the scenes\" tasks at a level of expertness which would make them eligible for theater employment. This c",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "TECHNICAL_PRODUCTION_0003"
+      ]
     },
     {
       "course_id": "THEATRE_STUDY_0003",
@@ -3271,7 +3555,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Teacher approval For students interested in: Participating in all the areas and techniques involved in putting on a full play production. This course is intended for those students who are ready to make an in depth commitment to the study and performance of theatre. Students will continue to hone and expand their skills in performance, design, stagecraft and theatre management through the process of selecting and producing plays from a variety of theatre genres for pub",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "DRAMA_56_0003"
+      ]
     },
     {
       "course_id": "3D_COMPUTER_0008",
@@ -3312,7 +3600,8 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None 3D Computer Animation 1-2 is an in-depth, hands-on course that allows students to learn transferable skills and concepts used in the workforce and in the fields of computer design and virtual reality. Students will concentrate on the principles and elements of design, using the theories behind art and design to broaden their own creativity and cultural awareness and to develop innovative and creative computer-aided graphics/design and virtual reality. This course ",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "AP_ART_0001",
@@ -3352,7 +3641,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Honors Humanities This course is offered to provide the same benefits to secondary students as those provided by the introductory college course in art history: an understanding and appreciation of architecture, sculpture, painting, and other art forms within historical and cultural contexts. Students who pass the Advanced Placement Exam in Art History may receive advanced placement and/or credit at many colleges and universities. This course is designed to meet colleg",
-      "homework_hours_per_week": 3.5
+      "homework_hours_per_week": 3.5,
+      "prerequisites_recommended_ids": [
+        "HON_HUMANITIES_0003"
+      ],
+      "uc_honors_weight": "A=5, B=4, C=3"
     },
     {
       "course_id": "AP_STUDIO_0001",
@@ -3393,7 +3686,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Studio Art For students interested in: An assembly of art projects completed previously into a portfolio and submission for evaluation on rigorous standards Length of Course: Year-Long, linked w/Studio Art Advanced Placement Studio Art: 2D Design provides instruction for the highly skilled exceptional students in two-dimensional design. The course assists these students in the preparation of a 2D Portfolio. It is designed to address a very broad interpretation of two-d",
-      "homework_hours_per_week": 3.5
+      "homework_hours_per_week": 3.5,
+      "prerequisites_recommended_ids": [
+        "STUDIO_ART"
+      ],
+      "uc_honors_weight": "A=5, B=4, C=3"
     },
     {
       "course_id": "AP_STUDIO",
@@ -3434,7 +3731,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Studio Art For students interested in: Assembly of art projects completed previously into a portfolio and submission for evaluation on rigorous standards Length of Course: Year-Long, linked w/Studio Art Advanced Placement Studio Art: 3D Design provides instruction for the highly skilled exceptional students in 3D Design. The course assists these students in the preparation of a Three-Dimensional Design Portfolio. It is designed to address a very broad interpretation of",
-      "homework_hours_per_week": 1.2
+      "homework_hours_per_week": 1.2,
+      "uc_honors_weight": "A=5, B=4, C=3",
+      "prerequisites_recommended_ids": [
+        "STUDIO_ART_0001"
+      ]
     },
     {
       "course_id": "AP_STUDIO_0002",
@@ -3475,7 +3776,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Studio Art For students interested in: An assembly of art projects completed previously into a portfolio and submission for evaluation on rigorous standards Length of Course: Year-Long, linked w/Studio Art Advanced Placement Studio Art: Drawing provides instruction for the highly skilled exceptional students in drawing, painting, and three dimensional design. The course assists these students in the preparation of a portfolio for the Advanced Placement program in Studi",
-      "homework_hours_per_week": 1.6
+      "homework_hours_per_week": 1.6,
+      "uc_honors_weight": "A=5, B=4, C=3",
+      "prerequisites_recommended_ids": [
+        "STUDIO_ART_0002"
+      ]
     },
     {
       "course_id": "BROADCAST_JOURNALISMTV_0010",
@@ -3514,7 +3819,8 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Broadcast Journalism/TV Production 1-2 Broadcast Journalism 3-4 follows Broadcast Journalism & Television 1-2 in the sequence of courses in the Poway Unified School District’s Digital Media Production program. Broadcast Journalism 3-4 builds on all of the techniques, artistic skills, journalistic skills, and academic understanding learned in Broadcast Journalism & Television Production 1-2 to create complex and meaningful works of art and journalism. Students will cont",
-      "homework_hours_per_week": 1
+      "homework_hours_per_week": 1,
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "BROADCAST_JOURNALISM_0010",
@@ -3553,7 +3859,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Broadcast Journalism 1-2, Broadcast Journalism 3-4 Broadcast Journalism Advanced is a Capstone model broadcast journalism course for advanced students who have successfully completed Broadcast Journalism 1-2 and Broadcast Journalism 3-4. Students will continue to develop advanced writing and reporting skills while working on high-profile assignments for national distribution within the PBS NewsHour Student Reporting Labs program. Students in Broadcast Journalism Advanc",
-      "homework_hours_per_week": 1
+      "homework_hours_per_week": 1,
+      "prerequisites_recommended_ids": [
+        "BROADCAST_JOURNALISMTV_0010"
+      ]
     },
     {
       "course_id": "CERAMICS_12_0001",
@@ -3594,7 +3903,8 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None For students interested in: Understanding of and background to ceramics and clay techniques both free hand and the In Ceramics 1-2 a variety of projects will be completed using clay. Students will be introduced to art theory concepts and will construct projects using the methods of pinch, coil, slab, with an introduction to the wheel. Students will develop their ability to communicate visually with an emphasis on craftsmanship. This course may be used to meet the ",
-      "homework_hours_per_week": 1.2
+      "homework_hours_per_week": 1.2,
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "CERAMICS_34_0001",
@@ -3635,7 +3945,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Ceramics 1-2 For students interested in: Deepening understanding of and background ceramic techniques. Ceramics 3-4 is designed for students who have mastered basic hand building and decorative techniques. This course will stress design, craftsmanship, and evaluation of ceramic art at an increased level of difficulty. Studio projects will involve construction in hand-built and wheel-thrown methods. This course may be used to meet the UC/CSU “F” requirement and the PUSD",
-      "homework_hours_per_week": 1.2
+      "homework_hours_per_week": 1.2,
+      "prerequisites_recommended_ids": [
+        "CERAMICS_12_0001"
+      ]
     },
     {
       "course_id": "DESIGN_AND_0001",
@@ -3676,7 +3989,8 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None Students enrolled in Design and Mixed Media 1-2 (Sculpture & Design) will be introduced to the elements of art and principles of design through exploration in various 2-Dimensional and 3-Dimensional art materials, including sculpture, printmaking, drawing, painting, and mixed media. This course will provide opportunities for the student through art production, discussion, and explorations that emphasize art criticism, art history and art philosophy. This course ma",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "DESIGN_AND",
@@ -3717,7 +4031,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Design and Mixed Media 1-2 Students enrolled in Design and Mixed Media 3-4 (Sculpture & Design) will further their exploration of the elements of art and principles of design through various art media, including sculpture, printmaking, drawing, painting, and mixed media. This course will provide more advanced activities for the student through guided experiences in art production, classroom discussions and explorations that emphasize art criticism, art history, and art",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": [
+        "DESIGN_AND_0001"
+      ]
     },
     {
       "course_id": "DIGITAL_MEDIA_0009",
@@ -3758,7 +4075,8 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None For students interested in: Introduction to video editing and learning the basics of iMovie and Final CutPro The course concentrates on developing competency across the breadth of film and video production positions, from script creation to presentation of the finished product. Students will focus on: writing, directing, acting, producing, storyboarding, scheduling, cinematography, audio engineering, and editing. Students will be challenged with group assignments ",
-      "homework_hours_per_week": 1.3
+      "homework_hours_per_week": 1.3,
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "DIGITAL_MEDIA",
@@ -3799,7 +4117,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Digital Media Production 1-2 For students interested in: Develop advanced skills in pre and post production Advanced Digital Media Production will provide students an opportunity to continue developing their pre & post productions skills in film and video. Students will be challenged with advanced group assignments that will give them an opportunity to explore and showcase their ideas. Students will also study the impact of film and television on society from its socia",
-      "homework_hours_per_week": 1.3
+      "homework_hours_per_week": 1.3,
+      "prerequisites_recommended_ids": [
+        "DIGITAL_MEDIA_0009"
+      ]
     },
     {
       "course_id": "DIGITAL_MEDIA_0010",
@@ -3839,7 +4160,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Digital Media Production 3-4 For students interested in: Develop advanced skills in pre and post production This course concentrates on developing competencies across the breadth of film and video production, from script creation to presentation of the finished product. The course, a continuation from Digital Media Production 3-4, will continue to develop students’ skills in writing, directing, acting, producing, storyboarding, scheduling, cinematography, lighting desi",
-      "homework_hours_per_week": 1.3
+      "homework_hours_per_week": 1.3,
+      "prerequisites_recommended_ids": [
+        "DIGITAL_MEDIA"
+      ]
     },
     {
       "course_id": "DIGITAL_PHOTOGRAPHY_0010",
@@ -3880,7 +4204,8 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None For students interested in: Understanding of and background to photography Digital Photography 1-2 is a course that focuses on understanding the basic operations and functions of a digital camera and the use of its settings to achieve a specific result. Students will learn about photographic elements of art and principles of design, composition, and lighting. They will explore the history of photography, artistic movements, important innovators in the field, and r",
-      "homework_hours_per_week": 3.5
+      "homework_hours_per_week": 3.5,
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "DIGITAL_PHOTOGRAPHY",
@@ -3921,7 +4246,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Digital Photography 1-2 For students interested in: Deepening understanding of and background to photography Digital Photography 3-4 is the capstone course for the Arts, Media and Entertainment industry sector and Design, Visual and Media Arts pathway. This course is designed for advanced photography students who wish to push their creative potential by exploring and experimenting with the ideas and practices of 21st-century art. Students will master the operations and",
-      "homework_hours_per_week": 3.5
+      "homework_hours_per_week": 3.5,
+      "prerequisites_recommended_ids": [
+        "DIGITAL_PHOTOGRAPHY_0010"
+      ]
     },
     {
       "course_id": "DRAWING__0001",
@@ -3962,7 +4290,8 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None For students interested in: An introduction to drawing and painting which can lead to 2-D, 3-D and electronic visual This course is designed for students to develop their drawing and painting skills. Students will have an opportunity to create and evaluate a wide variety of artworks in drawing and painting media. The class will explore design elements including line, color, form, space, and texture. Composition and technical skills will also be covered. This cours",
-      "homework_hours_per_week": 1.6
+      "homework_hours_per_week": 1.6,
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "DRAWING_PAINTING",
@@ -4003,7 +4332,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Drawing & Painting 1-2 For students interested in: Deepening understanding of and background to drawing and painting techniques. This course is designed for students who have both the interest and talent to further develop their drawing and painting skills. Students will produce, view, discuss, and analyze a wide variety of drawings and paintings. These classes will be conducted in a studio environment which combines communication of ideas, symbols, moods, or feelings ",
-      "homework_hours_per_week": 1.6
+      "homework_hours_per_week": 1.6,
+      "prerequisites_recommended_ids": [
+        "DRAWING__0001"
+      ]
     },
     {
       "course_id": "GRAPHIC_DESIGN_0001",
@@ -4044,7 +4376,8 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None For students interested in: Introduction to Graphic Design and learning the basics of Adobe Illustrator and Photoshop Graphic Design 1-2 equips students of all skill levels with essential graphic design proficiency for diverse professional opportunities. Through hands-on experience with industry-standard software, students tackle print media projects like personal logos, packaging, typography, and posters. Both individual and collaborative projects refine skills a",
-      "homework_hours_per_week": 1.3
+      "homework_hours_per_week": 1.3,
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "GRAPHIC_DESIGN",
@@ -4085,7 +4418,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Graphic Design 1-2 For students interested in: Advanced skills in Graphic Design and knowledge of Adobe Illustrator, Photoshop, and learning Adobe InDesign. Graphic Design 3-4 immerses students in an enriching journey toward mastering graphic design concepts. Cultivating a culture of limitless creativity, students are encouraged to express ideas with originality and flair. Projects range from skateboard graphics, a concert poster, mini button series, to digital magazin",
-      "homework_hours_per_week": 1.3
+      "homework_hours_per_week": 1.3,
+      "prerequisites_recommended_ids": [
+        "GRAPHIC_DESIGN_0001"
+      ]
     },
     {
       "course_id": "GRAPHIC_DESIGN_0002",
@@ -4126,7 +4462,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Graphic Design 3-4 For students interested in: An opportunity to unleash their creativity and explore the vast potential of Graphic Design and digital arts through the development of their own personalized projects. Graphic Design 5-6 is tailored for students seeking to advance their graphic design and digital arts skills with a focus on creativity. Through individual or group projects, students will explore various aspects of design throughout the term. The course equ",
-      "homework_hours_per_week": 1.3
+      "homework_hours_per_week": 1.3,
+      "prerequisites_recommended_ids": [
+        "GRAPHIC_DESIGN"
+      ]
     },
     {
       "course_id": "STUDIO_ART_0001",
@@ -4166,7 +4505,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Ceramics 3-4 For students interested in: An assembly of art projects completed previously into a portfolio. Length of Course: Year-Long, linked w/AP Studio Art Alternate Course ID Numbers: Studio Art 1-2: Ceramics 190150-190151 Studio Art is for those students who have advanced skills. The course is for students who have completed all other courses in one of the following areas or wish to pursue further study in that area: Drawing and Painting, Design and Mixed Media, ",
-      "homework_hours_per_week": 1.2
+      "homework_hours_per_week": 1.2,
+      "prerequisites_recommended_ids": [
+        "CERAMICS_34_0001"
+      ]
     },
     {
       "course_id": "STUDIO_ART",
@@ -4206,7 +4548,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Digital Photography 3-4 For students interested in: An assembly of art projects completed previously into a portfolio. Length of Course: Year-Long, linked w/AP Studio Art Alternate Course ID Numbers: Studio Art 1-2: Digital Photography 390150-390151 Studio Art is for those students who have advanced skills. The course is for students who have completed all other courses in one of the following areas or wish to pursue further study in that area: Drawing and Painting, De",
-      "homework_hours_per_week": 3.5
+      "homework_hours_per_week": 3.5,
+      "prerequisites_recommended_ids": [
+        "DIGITAL_PHOTOGRAPHY"
+      ]
     },
     {
       "course_id": "STUDIO_ART_0002",
@@ -4246,7 +4591,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Drawing & Painting 3-4 For students interested in: An assembly of art projects completed previously into a portfolio. Length of Course: Year-Long, linked w/AP Studio Art Alternate Course ID Numbers: Studio Art 1-2: Drawing & Painting 090150-090151 Studio Art is for those students who have advanced skills. The course is for students who have completed all other courses in one of the following areas or wish to pursue further study in that area: Drawing and Painting, Desi",
-      "homework_hours_per_week": 1.6
+      "homework_hours_per_week": 1.6,
+      "prerequisites_recommended_ids": [
+        "DRAWING_PAINTING"
+      ]
     },
     {
       "course_id": "STUDIO_ART_0003",
@@ -4286,7 +4634,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Graphic Design 5-6 For students interested in: An assembly of art projects completed previously into a portfolio. Alternate Course ID Numbers: Studio Art 1-2: Graphic Design 490150-490151 Studio Art is for those students who have advanced skills. The course is for students who have completed all other courses in one of the following areas or wish to pursue further study in that area: Drawing and Painting, Design and Mixed Media, Digital Photography or Ceramics. Student",
-      "homework_hours_per_week": 1.3
+      "homework_hours_per_week": 1.3,
+      "prerequisites_recommended_ids": [
+        "GRAPHIC_DESIGN_0002"
+      ]
     },
     {
       "course_id": "AEROBICSWEIGHTS_YOGA_0914",
@@ -4324,7 +4675,8 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None For students interested in: Experiencing the world of aerobics while developing increased cardiovascular fitness Aerobic Fitness is a course that exposes students to a variety of exercise movements. This course emphasizes the development and improvement of physical and mental health through daily exercise. Activities include yoga, walking, Zumba, weights, Pilates, kickboxing, step aerobics, toning exercises, flexibility and other forms of movement. You do not need",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "COURT_SPORTS_0014",
@@ -4363,7 +4715,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: ENS 3-4 Students will understand, participate and teach the advanced principles of training and competition for Court Sports that include basketball, volleyball and badminton. Areas of study will include: understanding and execution of advanced offensive and defensive strategies, development of appropriate training practices, and application of dynamic scientific principles, sports psychology, optimal nutritional habits, application and modification of rules of the gam",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": [
+        "ENS_34_0014"
+      ]
     },
     {
       "course_id": "ENS_12_0014",
@@ -4401,7 +4756,8 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None For students interested in: Required Course ENS 1-2 provides students the opportunity to learn and apply core concepts of Health Science and Physical Education. ENS is designed to provide students with the knowledge and ability to attain and maintain an active, healthy lifestyle. There is a strong emphasis on individual fitness, exercise physiology, biomechanics, motor learning and anatomy/physiology. Satisfies the 5 unit Health Science requirement and 5 credits o",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "ENS_12_0914",
@@ -4440,7 +4796,8 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None For students interested in: Students who have an impacted schedule, participate in athletics, or need flexibility in their schedule. This course is designed in coordination with the ENS 1/2 course. Students will receive the same credit and complete the same standards as the ENS 1/2 classes (5 PE credits and 5 Health credits). Please read the ENS 1-2 course description for more curriculum details. This course is open to all students and might be suitable for those ",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "ENS_34_0014",
@@ -4478,7 +4835,8 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None For students interested in: Required Course ENS 3-4 is designed to provide students with the knowledge and ability necessary to attain and maintain a healthy lifestyle. The emphasis of this class revolves around five key curricular components: Exercise Science, Cardiovascular Fitness, Rhythm and Movement, Lifetime Activities and Strength and Fitness Building. The objective of this class is to give students a hands-on exposure to key health and fitness concepts tha",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "MARCHING_PE_0011",
@@ -4519,7 +4877,8 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Audition. Students auditioning must demonstrate technical dance skills at a minimum of an intermediate dance level and an ability to choreograph and learn quickly For students interested in: Marching band and field performances/competition Length of Course: Year-Long, linked w/(Dance Prop) The Marching PE Flags/Tall Flags (Dance Prop) class is a yearlong performance class and provides students with the opportunity to develop musical/visual concepts, skills, and interpr",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "OCISPE_0014",
@@ -4559,7 +4918,8 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Application and administrative approval required: district established timelines For students interested in: Fulfills P.E. requirement Off Campus Independent Study/Physical Education is available to students who are participating in an approved preparation program for national amateur competition in swimming, ice skating, gymnastics, tennis or dance. Students must be training at least 15 hours a week under the direct supervision of a certified coach and must be partici",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "RACQUET_SPORTS_0014",
@@ -4598,7 +4958,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: ENS 3-4 Students will understand, participate and teach the advanced principles of training and competition for Racquet Sports that include tennis, racquetball and badminton. Areas of study will include: understanding and execution of advanced offensive and defensive strategies, development of appropriate training practices, and application of dynamic scientific principles, sports psychology, optimal nutritional habits, application and modification of rules of the game",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": [
+        "ENS_34_0014"
+      ]
     },
     {
       "course_id": "TEAM_ATHLETICSWEIGHTS_8914",
@@ -4637,7 +5000,8 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Teacher approval Athletic Weights is designed to help prepare students with sports specific strength and conditioning practices to help them succeed at a competitive level. Students will be involved in advanced isotonic weight lifting exercises, speed training drills, competitive exercises, and cardiovascular endurance training. Satisfies 10 credits of PUSD Physical Education requirement.",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "UNIFIED_PE_0014",
@@ -4676,7 +5040,8 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None This course combines both students with and without disabilities to participate in physical fitness activities and sports. Students will work together to increase competence and confidence in a variety of physical activities. Through ongoing leadership opportunities, members of this course will be empowered to help create a more inclusive and accepting school environment for all students. Physical activities and sports selected may vary based on students' needs to",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "WEIGHT_TRAINING_0014",
@@ -4715,7 +5080,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: ENS 3-4 For students interested in: Experiencing world of weight training while developing increased strength and muscle Weight Training is a course in which students are involved in the isotonic type of weight training, running, plyometrics, stretching and cross training. The isotonic weight lifting will be performed both on the universal weight machine and free weights. Students will participate in fitness activities, testing and a variety of fun activities. Satisfie",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": [
+        "ENS_34_0014"
+      ]
     },
     {
       "course_id": "NAVAL_SCIENCE_0016",
@@ -4756,7 +5124,8 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None The NJROTC curriculum emphasizes teamwork, leadership development, citizenship, self-discipline and a sense of belonging to a unit/team. Academics consist of a basic introduction to the Navy - its customs, traditions and way of life. This is augmented throughout the year by community service activities, military drill competitions, physical fitness training, academic competitions, marksmanship and visits to military installations. These elements are pursued at a f",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "NAVAL_SCIENCE",
@@ -4797,7 +5166,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Naval Science 1A-D This course builds on the general introduction provided in Naval Science 1 and further develops the traits of citizenship and leadership/followership in cadets. Academics include the role of the US Navy from the Revolutionary War to present day. Other topics include maritime geography, meteorology, astronomy and physical sciences. Classroom instruction is augmented throughout the year by community service activities, military drill competitions, phys",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": [
+        "NAVAL_SCIENCE_0016"
+      ]
     },
     {
       "course_id": "NAVAL_SCIENCE_0001",
@@ -4838,7 +5210,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Naval Science 2A-D This course broadens the understanding of cadets in the operative principles of everyday leadership, the concept and significance of teamwork, the intrinsic value of good order and discipline in the accomplishment of objectives, the fundamentals of American democracy and expands their understanding of naval academic subjects. Cadets are expected to fulfill leadership roles as Platoon Commanders, Platoon Chief Petty Officers and/or Drill Team Captains",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": [
+        "NAVAL_SCIENCE"
+      ]
     },
     {
       "course_id": "NAVAL_SCIENCE_0002",
@@ -4879,7 +5254,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Naval Science 3A-D This course focuses on practical leadership. The intent is to assist senior students in understanding leadership and improving their leadership skills by putting them in positions of unit leadership (under supervision), then helping them analyze the reasons for their varying degrees of success through the year. Cadets are expected to take charge of planning unit activities including the unit weekly schedule, community service, field meets, marksmansh",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": [
+        "NAVAL_SCIENCE_0001"
+      ]
     },
     {
       "course_id": "ACADEMIC_SUCCESS_2257",
@@ -4920,7 +5298,8 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "GRADE 10: 225801 - 225802 GRADE 11: 225803 - 225804 GRADE 12: 225810 - 225811 Recommended Prerequisites: Permission of Instructor For students interested in: Focus on organization, study skills, and self-advocacy The mission of the class is to effectively reconnect our kids to the student experience. We hope to do so through building trust, setting expectations and continually providing them with the support they need. Students in Academic Success will learn the basic skills of organization and ",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "ACADEMIC_SUCCESS_0380",
@@ -4961,7 +5340,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "MATH II SUPPORT 225808 MATH III SUPPORT 225809 Recommended Prerequisites: None The mission of the class is to support study and organizational skills while students are concurrently enrolled in an in-person Integrated Ia-Ib, Integrated IIa-IIb or Integrated IIIa-IIIb class at Westview High School. Completing coursework and studying for the current classes are among the student responsibilities with a focus on the concurrent math class so that the math teacher in the Academic Success class can in",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "AVID_12_0015",
@@ -4999,7 +5380,8 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Pass interview process Length of Course: Year-Long, linked w/High School English 1-2 AVID is a program designed to aid students who have college potential and strong work ethic by providing additional support. Students commit to completing the University of California “A”-“G” requirements, repeating in summer school any class in which they earn a “D” or an “F”, and taking an AVID class each term in combination with a core class. The elective class has college tutors wh",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "AVID_34_0015",
@@ -5037,7 +5419,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: AVID 1-2 Length of Course: Year-Long, linked w/High School English 3-4 AVID 3-4 is a continuation of the AVID program for promotion of students with college potential. This course may be used to meet the UC/CSU “G” requirement.",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": [
+        "AVID_12_0015"
+      ]
     },
     {
       "course_id": "AVID_56_0015",
@@ -5075,7 +5460,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: AVID 3-4 Length of Course: Year-Long, linked w/ US History 1-2 The 11th grade AVID course is an elective class for students who are college bound. To ensure continued success in college-prep course work, students work individually, as well as in tutor-led collaborative groups, to develop stronger academic skills in a variety of content areas. Note taking, outlining, writing, speaking, reading and test taking strategies are stressed. In addition, the course includes col",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": [
+        "AVID_34_0015"
+      ]
     },
     {
       "course_id": "AVID_SENIOR_0016",
@@ -5113,7 +5501,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: AVID 5-6 The AVID Senior Seminar 1-2 follows the weekly structure of all AVID classes, with two days of teacher-led curriculum per week, two days of tutorials, and a day allocated for guest speakers, mini-courses taught by college instructors, and visits to colleges, museums, art galleries, or drama productions. The course involves substantial critical reading and writing, preparation for external exams such as the Advanced Placement and Subject A examinations, and Soc",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "BUSINESS_PRINCIPLES_0002",
@@ -5154,7 +5544,8 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None For students interested in: Exposure to and exploring the business world Business Principles and Strategies 1-2 is an introductory course that identifies skills and content related to becoming a successful entrepreneur or employee in any business field. Students taking this course are introduced to basic economic principles and business practices, including business management and operations, entrepreneurship, marketing, and finances. Career opportunities and prep",
-      "homework_hours_per_week": 2
+      "homework_hours_per_week": 2,
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "INTERNSHIP_0016",
@@ -5190,7 +5581,8 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Teacher recommendation required For students interested in: Exposure to and exploring the business world A structured off-campus learning experience that offers college-bound students an opportunity to work with professionals in various business, industry, and civic organizations. CE 110 college credit. ● Students may receive up to 2-3 college credits This course is offered through the Poway Virtual School.",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "INTRODUCTION_TO_0002",
@@ -5231,7 +5623,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Integrated Math III For students interested in: Exposure to and understanding finances Students will develop the skills needed to make sound financial decisions. Topics will include: payroll and taxes, banking, credit, budgeting, purchasing, economics, an introduction to stats and business ethics. All of these topics will be taught through a lens of fiscal and ethical responsibility. While enhancing real world skills and business knowledge for the future, students will",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "INTEGRATED_MATHEMATICS_0001"
+      ]
     },
     {
       "course_id": "MARKETING_ECONOMICS_0009",
@@ -5270,7 +5666,8 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None; Computer Information Systems and CIS ADV. preferred For students interested in: Exposure to and exploring the business world Marketing Economics 1-2 provides students an excellent starting point to the advanced programs that are offered through the business department. Marketing Economics presents commonplace functions of business that everyone will experience. Units of study include Career/Academic Planning, Leadership Skills, Business Communications, Personal F",
-      "homework_hours_per_week": 2
+      "homework_hours_per_week": 2,
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "CIVIL_ENGINEERING_0009",
@@ -5309,7 +5706,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Completion of Introduction to Engineering Design and/or Honors Principles of Engineering AND Completion of Integrated Math 1a-1b Civil Engineering and Architecture is a specialization course in the sequence of Project Lead the Way Engineering courses. This course provides an overview of the fields of Civil Engineering and Architecture, while emphasizing the interrelationship and dependence of both fields upon each other. Students use state of the art software to solve ",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": [
+        "INTRODUCTION_TO_0008",
+        "INTEGRATED_MATHEMATICS_0010"
+      ]
     },
     {
       "course_id": "COMPUTER_INTEGRATED_0008",
@@ -5347,7 +5748,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Concurrent enrollment in a Math and Science course AND Completion of Introduction to Engineering Design or Honors Principles of Engineering Computer Integrated Manufacturing is a high school level course for 10th, 11th, or 12th grade students who are interested in manufacturing and automation. It is recommended for students who have successfully completed the Introduction to Engineering Design (IED) course or Principles of Engineering course (POE). Computer Integrated ",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": [
+        "INTRODUCTION_TO_0008"
+      ]
     },
     {
       "course_id": "DIGITAL_ELECTRONICS_0016",
@@ -5388,7 +5792,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Completion of Integrated Math II Digital Electronics (DE) Digital electronics is the study of electronic circuits that are used to process and control digital signals. In contrast to analog electronics, where information is represented by a continuously varying voltage, digital signals are represented by two discrete voltages or logic levels. This distinction allows for greater signal speed and storage capabilities and has revolutionized the world of electronics. The m",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": [
+        "INTEGRATED_MATHEMATICS"
+      ]
     },
     {
       "course_id": "HON_PRINCIPLES_0008",
@@ -5428,8 +5835,13 @@
       "is_graduation_requirement": false,
       "semester_restrictions": null,
       "alternate_ids": [],
-      "notes": "Recommended Prerequisites: Concurrent enrollment in Integrated Math II Honors Principles of Engineering (POE) 1-2 is a high school-level survey course of engineering and physics topics exposing students to many core concepts encountered in a postsecondary engineering program, including kinematics, energy, power, materials, structures, control systems, and statistics. Projects include a solar and fuel cell powered car, an autonomous sorting machine, a projectile launcher and much more. Students d",
-      "homework_hours_per_week": 1
+      "notes": "Teacher recommends Math III concurrent enrollment (official prereq is Math II). High homework load.",
+      "homework_hours_per_week": 6,
+      "prerequisites_recommended_ids": [
+        "INTEGRATED_MATHEMATICS_0001"
+      ],
+      "never_suggest": true,
+      "uc_honors_weight": "A=5, B=4, C=3"
     },
     {
       "course_id": "INTRODUCTION_TO_0008",
@@ -5470,7 +5882,8 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None Students dig deep into the engineering design process, applying math, science, and engineering standards to hands-on projects. They work both individually and in teams to design solutions to a variety of problems. This project-based course concentrates on industrial design/technology and is divided into four units: 1) Design and problem solving 2) assembly design 3) thoughtful product design and 4) making things move. Students learn how to use 3-D modeling softwar",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "AP_COMPUTER_0010",
@@ -5511,7 +5924,12 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Completion of Integrated Math I or II with “C” or better; concurrently enrolled in or completed Integrated III For students interested in: Computer technology and software Length of Course: Year-Long, linked w/ Computer Science & Software Engineering 1-2 or Data Structures 1-2 This course is designed to build upon the fundamentals of computer programming. The emphasis is on object-oriented programming methodology, problem solving and algorithm development, and is equiv",
-      "homework_hours_per_week": 1.4
+      "homework_hours_per_week": 1.4,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "INTEGRATED_MATHEMATICS"
+      ],
+      "uc_honors_weight": "A=5, B=4, C=3"
     },
     {
       "course_id": "AP_COMPUTER_0012",
@@ -5552,7 +5970,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Integrated Math I (or Algebra 1-2) For students interested in: Computer science Alternate Course ID Number: AP Computer Science Principles 1-2 (Hybrid - Online & In Person) 091258 - 091259 Computer Science Principles is designed as a college-level introduction to a computer science course for non-computer science majors. The Advanced Placement (AP) course focuses on computational thinking and fluency. In order to gain a basic understanding of computers and computation,",
-      "homework_hours_per_week": 1.1
+      "homework_hours_per_week": 1.1,
+      "uc_honors_weight": "A=5, B=4, C=3",
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "COMPUTER_INFORMATION_0009",
@@ -5593,7 +6014,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None For students interested in: Obtaining basic computer skills required by colleges and industry Computer Information Systems and Advanced CIS are designed to provide students with up-to-date computer skills required by colleges as well as business/industry in order to compete in today’s technological environment. Instruction implements exploration of software and programs to incorporate curriculum that supports a high level of technical competency and program litera",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "COMPUTER_SCIENCE_0009",
@@ -5634,7 +6057,8 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None For students interested in: Computer science Length of Course: Year-Long, linked w/AP Computer Science A 1-2 Computer Science & Software Engineering 1-2 aims to develop computational thinking, to introduce computational tools that foster creativity, and to gain exposure to program code and design. Additionally, the course aims to build students’ awareness of the tremendous workplace demand for computer specialists and for professionals in all fields who have compu",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "DATA_STRUCTURES_0010",
@@ -5674,7 +6098,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Concurrently enrolled in or completed AP Calculus or AFA; or teacher recommendation For students interested in: Computer technology and software development Length of Course: Year-Long, linked w/AP Computer Science A 1-2 This course follows AP Computer Science A. It covers a more formal and in-depth study of algorithms, data structures, design and abstraction. The topics include Big-O analysis, exceptions, and advanced data structures (such as linked lists, stacks, que",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "AP_COMPUTER_0012"
+      ]
     },
     {
       "course_id": "MOBILE_APP_0002",
@@ -5713,7 +6141,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: AP Computer Science A For students interested in: Computer technology and software In this course, students learn the fundamentals of writing mobile applications. Through group projects and individual work, students will explore the unique capabilities of modern mobile devices, including the accelerometer, GPS, and camera. These projects will include games, simulations, and multi-view applications designed to build technical skills and teach problem-solving. This cours",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "AP_COMPUTER_0012"
+      ]
     },
     {
       "course_id": "WEB_DESIGN_0010",
@@ -5754,7 +6186,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Computer Information Systems/Advanced CIS For students interested in: Acquiring design and technical skills needed for writing, editing, producing websites, and graphic design. Web Design 1-2 provides students with an exploration of the history and current trends in the area of design for the web. With up-to-date web design skills focused on using industry software standards, the students will experience a smooth transition into the competitive workplace. Instruction i",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "BROADCAST_JOURNALISMTV_0009",
@@ -5795,7 +6229,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Digital Media Production 1-2 Broadcast Journalism/Television Production is an advanced level course in a coordinated sequence of courses in the Arts, Media and Entertainment pathway of courses in the Poway Unified School District. The course provides instruction in news reporting and editing for both on-air video broadcast and print media. Students refine their analytical reading, expository writing and oral communication skills and are provided with experiences that m",
-      "homework_hours_per_week": 1
+      "homework_hours_per_week": 1,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "JOURNALISM_2_0003",
@@ -5835,7 +6271,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Teacher Approval For students interested in: Writing, editing, producing the school newspaper In the year-long Journalism 2 course, students design and produce the school newspaper. They develop their news, feature, review, editorial and sports writing skills. They choose all content and design the pages. Students also familiarize themselves with the business aspects of newspaper production by handling advertising accounts. Students in this course will officially meet ",
-      "homework_hours_per_week": 4.5
+      "homework_hours_per_week": 4.5,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "YEARBOOK_0016",
@@ -5876,7 +6314,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None For students interested in: Designing, editing, producing the school yearbook Students in the Yearbook class create the school yearbook. They learn copywriting, interviewing, photography, layout and design skills. The Yearbook welcomes responsible students who take the initiative to tackle long-term assignments that ultimately comprise the award-winning yearbook. Students are asked to commit to a full year of the course. This course may be used to meet the UC/CSU ",
-      "homework_hours_per_week": 3
+      "homework_hours_per_week": 3,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "ACADEMIC_TUTOR_0018",
@@ -5916,7 +6356,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Teacher approval This course will provide students with improved communication and organizational skills in addition to increased mastery of academic content area skills. Under the supervision of a classroom teacher, tutors will provide individual or small group facilitation designed to increase students’ ability to think, read, write and communicate critically. The design of the course provides tutors with necessary tools and processes to work most effectively with st",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "ACADEMIC_TUTOR",
@@ -5956,7 +6398,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Teacher approval Academic Tutor/Science is designed for students seeking to further their knowledge in a science course while serving in a leadership position to assist in the daily activities of a science classroom. Responsibilities in the classroom will prepare the student for career pathways such as lab tech, science educator, and research scientist. This course reinforces many of the NGSS Science and Engineering Practices (SEPs). Students will be involved with the ",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "ASB__0018",
@@ -5996,7 +6440,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Teacher recommendation required For students interested in: Student government ASB is a planning and leadership class in which students experience and gain skills in leadership, parliamentary procedures, group processes, event planning, organization, goal setting, communication strategies, community service, and school-wide involvement through the planning of events and activities on campus. ASB oversees school clubs, budgets, staff and student recognition, publicity, ",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "LIBRARY__0018",
@@ -6037,7 +6483,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Teacher approval This course is designed to create independent learners who can thrive in an information based society and who will enter adulthood with the abilities to fulfill their academic, personal and professional needs. Using both the standards for the American Association of School Librarians and the California Literacy Standards, our students will be prepared for any postsecondary education or training experience. The focus of the course will be on developing ",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "PEER_COUNSELING_0973",
@@ -6077,7 +6525,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Teacher approval Peer Counselors are trained students who work with Counseling & Student Support Services to extend counseling services to the entire student body. Peer Counselors help peers in need of help and support. Duties include tutoring, mentoring, mediation, facilitating, providing awareness events, and informing Westview’s campus on important issues that affect students. Peer Counselors must attend weekly meetings, actively take part in peer counseling events ",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "VOCATIONAL_LEARNING_0018",
@@ -6117,7 +6567,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Teacher approval Vocational Learning Assistant is a course that functions much like cross-age tutoring. It is a vocational course concerned with developing employable skills and concepts for students interested in working with handicapped and learning-disabled children, preschool through grade 12. Students select or are assigned a workstation such as LHM, RSP, aphasic, or other learning-disability group, where they can work on a tutorial basis with students. Students m",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "AP_HUMAN_0013",
@@ -6158,7 +6610,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None For students interested in: College level in depth exploration of European Civilization Length of Course: One Term This course is designed to be a one term course that will be completed in 18 weeks. The AP Human Geography course introduces students to the systematic study of patterns and processes that have shaped human understanding, use, and alteration of the Earth’s surface. Students learn to employ spatial concepts and landscape analysis to examine human socio",
-      "homework_hours_per_week": 4.3
+      "homework_hours_per_week": 4.3,
+      "uc_honors_weight": "A=5, B=4, C=3",
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "AP_PSYCHOLOGY_0013",
@@ -6199,7 +6654,10 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None For students interested in: Further study of the human mind and human behavior in a social setting Length of Course: One Term The AP Psychology course is designed to introduce students to the systematic and scientific study of the behavior and mental process of human beings and other animals. Students are exposed to the psychological facts, principles, and phenomena associated with each of the major subfields within psychology. They also learn about the ethics and",
-      "homework_hours_per_week": 4.2
+      "homework_hours_per_week": 4.2,
+      "uc_honors_weight": "A=5, B=4, C=3",
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "ETHNIC_STUDIES_0013",
@@ -6240,7 +6698,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None This course is designed to further students' development and understanding of how values and perceptions placed on race, ethnicity, nationality, and culture have shaped and continue to influence individuals and society in the United States. The course will be rooted in the four foundational disciplines of ethnic studies: African American Studies, Asian American Studies, Chicano Latino Studies, and Native American and Indigenous Studies. It will also examine other ",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "FILM_STUDIES_0008",
@@ -6279,7 +6739,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Successful completion of High School English 1-2 and 3-4 Film Studies is designed to provide students with a foundation of knowledge and understanding of film, and an appreciation for film—its history, composition, structure, and relationship to literature. This course will emphasize the film experience as a critical discipline that promotes serious reflection on movies and the role of film in culture, as students explore their physical, emotional, and intellectual res",
-      "homework_hours_per_week": 1
+      "homework_hours_per_week": 1,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "PSYCHOLOGY_12_0013",
@@ -6320,7 +6782,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None Psychology 1-2 is a course which deals with the factors which help to shape an individual's personality and behavior. Topics include biological bases of behavior, physical maturation, the psychological development of the individual through various stages from infancy to adulthood, and perception. Other topics included are motivation, intelligence and behavior disorders. Various strategies are discussed which can help people attain healthy, normal relationships and",
-      "homework_hours_per_week": 1
+      "homework_hours_per_week": 1,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "SOCIOLOGYLAW_IN_0013",
@@ -6361,7 +6825,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: None For students interested in: Study of human relationships, structures, dynamics and functions of groups. The practical application of law as it relates to survival in our society. This course is a student centered interactive class involving resource persons from the community. Lawyers, judges, consumer advocates, law students, police officers and detectives, and government officials will be guests to enrich the student’s experience. Curriculum will include the stu",
-      "homework_hours_per_week": 1
+      "homework_hours_per_week": 1,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "ACADEMIC_LITERACY_0018",
@@ -6402,7 +6868,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Placement based on testing Through the use of consistent instructional routines, explicit academic vocabulary instruction, structured peer interactions, verbal and written models of academic English, and consistent feedback on language production, students will gain increased confidence and skill with the academic language needed to succeed in school and careers. The curriculum uses nonfiction articles on high interest topics to help improve students’ comprehension of ",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "ACADEMIC_LITERACY",
@@ -6443,7 +6911,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Placement based on testing Academic Literacy 3-4 strengthens high school English learners’ ability to read deeply and analytically, write lengthy, well-supported arguments, and deliver substantial oral arguments that are driven by research in order to prepare students for advanced high school work and higher education. Because this course is designed to advance students’ academic literacy, a heavy emphasis is placed on verbal communication as it relates to academic dis",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "ACADEMIC_LITERACY_0018"
+      ]
     },
     {
       "course_id": "ELD_EXPLORATIONS_0003",
@@ -6484,7 +6956,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Placement based on testing ELD Explorations A/B and C/D is a course designed to support English learner students at an Expanding to Bridging level of English fluency who are concurrently enrolled in ELD 3-4. The purpose of this course is to allow the students extra time each day to develop their proficiency in English and to practice the skills learned in ELD 3-4. The curriculum is based on the ELD standards and focuses on developing students’ listening, speaking, read",
-      "homework_hours_per_week": 3.5
+      "homework_hours_per_week": 3.5,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "ELD_READINGWRITING_0003",
@@ -6525,7 +6999,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Placement based on testing ELD Reading/Writing 3-4 is an optional course designed for English learners who are almost proficient in English but who need an extra year of ELD support before taking the Sheltered High School English 1-2 class. The focus of the course is developing students’ competency in reading narrative, expository, and functional texts, as well as developing their writing skills in the various CAHSEE genres. The course is taken for English credit.",
-      "homework_hours_per_week": 3.5
+      "homework_hours_per_week": 3.5,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "ELD_EXPLORATIONS_0003"
+      ]
     },
     {
       "course_id": "ELL_12_0003",
@@ -6566,7 +7044,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Placement based on testing English Language Learner (ELL) 1-2 is a comprehensive course which takes students who are Emerging to Expanding English speakers and develops a foundation in basic English language skills needed to survive in the school community, both socially and academically. Based on language acquisition theory, instruction focuses initially on listening and speaking and builds reading and writing skills. The underlying goal of the course is to develop a ",
-      "homework_hours_per_week": 3.5
+      "homework_hours_per_week": 3.5,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "ELL_34_0003",
@@ -6607,7 +7087,11 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Placement based on testing English Language Learner (ELL) 3-4 is a comprehensive course which takes students with Expanding English proficiency or literacy and develops their functional literacy and language arts skills to a level of proficiency which enables them to be successful in regular academic classes. Based on language acquisition theory, instruction utilizes an integrated approach which blends listening, speaking, reading, and writing. Ultimately, the course d",
-      "homework_hours_per_week": 3.5
+      "homework_hours_per_week": 3.5,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": [
+        "ELL_12_0003"
+      ]
     },
     {
       "course_id": "ELL_READINGWRITING_0003",
@@ -6648,7 +7132,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Placement based on testing English Language Learner Reading/Writing 1-2 is a supplementary English course designed to provide Expanding to Bridging English language learners with additional support in English language development. Students who score in the Expanding to Bridging level as determined by the ELPAC test (English Language Proficiency Assessments for California) can enroll concurrently in ELL 3/4 and ELL Reading and Writing to develop their language arts skil",
-      "homework_hours_per_week": 3.5
+      "homework_hours_per_week": 3.5,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "NEWCOMER_CLASS_0003",
@@ -6689,7 +7175,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Placement based on testing The Newcomer Class is designed to acquaint newly immigrated students to the culture of the United States and the Poway Unified School District. In addition, students are introduced to early American history, customs, holidays, as well as geography of the United States. The primary purpose of the class is to provide intensive practice in English and additionally teach basic academic skills, promote higher-order thinking skills, and further dev",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "LBASIC_MATH_0020",
@@ -6729,7 +7217,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Enrollment in Critical Skills program; teacher recommendation L/Basic Math 1-8 is designed to introduce students enrolled in Special Education courses to basic math skills. The focus of the course will be to study operations with whole numbers, fractions, decimals, and percents. In addition, measurement, graphs, and scale drawing will be addressed. This course is designed for students in the Critical Skills",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "LBIOLOGY_12_0020",
@@ -6769,7 +7259,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Enrollment in Critical Skills program; teacher recommendation L/Biology 1-2 is a one-year laboratory science course designed to meet the needs of those students who are unable to achieve success in a mainstream course. Enrollment is recommended for those reading and writing below grade level. The focus is on the diversity and interdependence of organisms as applied to biological systems, genetics, evolution, ecology, and physiological processes. Lab skills will be emph",
-      "homework_hours_per_week": 2.5
+      "homework_hours_per_week": 2.5,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "LCIVICS_0020",
@@ -7188,7 +7680,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Enrollment in special education; teacher recommendation Integrated Mathematics 1 uses properties and theorems involving congruent figures to deepen and extend understanding of geometric knowledge from prior grades. The critical areas organized into units deepen and extend understanding of linear relationships. The Mathematical Practice Standards together with the content standards prescribe that students experience mathematics as a coherent, useful, and logical subject",
-      "homework_hours_per_week": 2.5
+      "homework_hours_per_week": 2.5,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "SPECIAL_ED",
@@ -7228,7 +7722,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Enrollment in special education; teacher recommendation The focus of Integrated Mathematics 2 is on quadratic expressions, equations, and functions. The link between probability and data is explored through conditional probability and counting methods, including their use in making and evaluating decisions. The study of similarity leads to an understanding of right triangle trigonometry and connects to quadratics through Pythagorean relationships. Circles with their qu",
-      "homework_hours_per_week": 2.5
+      "homework_hours_per_week": 2.5,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "LJOB_SKILLS_0020",
@@ -7348,7 +7844,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Enrollment in special education; teacher recommendation This course is a special education course designed to follow the basic principles behind the current general education Marine Science class at Westview. The course will cover the basic physical, geological and chemical aspects of marine science. The major topics will include oceanography, geomorphology of the ocean flow, marine sediments, oceanographic instrumentation, chemistry of sea waters, heat balance of the ",
-      "homework_hours_per_week": 2
+      "homework_hours_per_week": 2,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "LMATH_ACCELERATION_0010",
@@ -7388,7 +7886,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Recommended Prerequisites: Enrollment in special education; teacher recommendation The intent of this course is to help build confidence in mathematics skills. Math Accel is taught in collaboration with Integrated. Math 1 & 2. Teachers provide support in building skills and moving from a ‘fixed mindset’ about their math ability to a ‘growth mindset’ wherein they believe that they can improve.",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "LRECREATIONLEISURE_DOMAIN_0019",
@@ -7622,7 +8122,9 @@
       "semester_restrictions": null,
       "alternate_ids": [],
       "notes": "Select this option when the student is not taking courses at Westview during this semester (e.g., attending another school, independent study, etc.)",
-      "homework_hours_per_week": null
+      "homework_hours_per_week": null,
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     },
     {
       "course_id": "CLUB_ROBOTICS",
@@ -7643,7 +8145,9 @@
       ],
       "is_ap_or_honors_pair": false,
       "semester_restrictions": null,
-      "notes": "Club - Can be taken any number of quarters. 1.25 credits per quarter. Pass/Fail grading."
+      "notes": "Club - Can be taken any number of quarters. 1.25 credits per quarter. Pass/Fail grading.",
+      "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
     }
   ]
 }

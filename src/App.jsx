@@ -1359,6 +1359,82 @@ function App() {
       }
     }
 
+    // Check recommended prerequisites (warning only, not blocking)
+    // This uses the new prerequisites_recommended_ids field in course data
+    const recommendedPrereqs = courseInfo.prerequisites_recommended_ids || [];
+    if (recommendedPrereqs.length > 0) {
+      // Get all courses scheduled before this slot
+      const completedCourseIds = new Set();
+      const targetYearInt = parseInt(targetYear);
+
+      for (const c of allCourses) {
+        const cYearInt = parseInt(c.year);
+        // Courses from previous years count as completed
+        if (cYearInt < targetYearInt) {
+          completedCourseIds.add(c.courseId);
+        }
+        // Note: Don't count same-year courses as "completed" for prereq check
+        // since we're checking at course-add time, not suggestion time
+      }
+
+      // Helper to check if prereq is satisfied (higher course satisfies lower prereq)
+      const isPrereqSatisfied = (prereqId) => {
+        if (completedCourseIds.has(prereqId)) return true;
+
+        // Course hierarchies where higher courses satisfy lower prereqs
+        const hierarchies = [
+          // Math
+          ['INTEGRATED_MATHEMATICS_0010', 'INTEGRATED_MATHEMATICS', 'INTEGRATED_MATHEMATICS_0001',
+           'AP_PRECALCULUS_0010', 'AP_CALCULUS_0010', 'AP_CALCULUS'],
+          // Physics
+          ['PHYSICS_OF_0012', 'AP_PHYSICS_0012', 'AP_PHYSICS_0001', 'AP_PHYSICS'],
+          // Chemistry
+          ['CHEMISTRY_IN_0012', 'HON_CHEMISTRY_0012', 'AP_CHEMISTRY_0012'],
+          // Biology
+          ['BIOLOGY_OF_0012', 'HON_BIOLOGY_0012', 'AP_BIOLOGY_0012'],
+          // English
+          ['HIGH_SCHOOL_0003', 'HIGH_SCHOOL'],
+        ];
+
+        // Equivalent courses (either satisfies the prereq)
+        const equivalentCourses = {
+          'HIGH_SCHOOL_0003': ['HON_HIGH_0003'],  // English 1-2 ≈ Honors English 1-2
+          'HIGH_SCHOOL': ['HON_HUMANITIES_0003'], // English 3-4 ≈ Honors Humanities
+          'AMERICAN_LITERATURE_0003': ['HON_AMERICAN_0003'], // Am Lit ≈ Honors Am Lit
+          'BIOLOGY_OF_0012': ['HON_BIOLOGY_0012'], // Biology ≈ Honors Biology
+        };
+
+        // Check equivalents first
+        if (equivalentCourses[prereqId]) {
+          for (const equivId of equivalentCourses[prereqId]) {
+            if (completedCourseIds.has(equivId)) return true;
+          }
+        }
+
+        for (const hierarchy of hierarchies) {
+          const prereqIndex = hierarchy.indexOf(prereqId);
+          if (prereqIndex === -1) continue;
+          // Check if any higher-level course is completed
+          for (let i = prereqIndex + 1; i < hierarchy.length; i++) {
+            if (completedCourseIds.has(hierarchy[i])) return true;
+          }
+        }
+        return false;
+      };
+
+      const missingPrereqs = recommendedPrereqs.filter(id => !isPrereqSatisfied(id));
+      if (missingPrereqs.length > 0) {
+        const missingNames = missingPrereqs
+          .map(id => COURSE_CATALOG[id]?.full_name || id)
+          .join(', ');
+        return {
+          eligible: true, // Don't block, but warn
+          warning: `${courseInfo.full_name} typically requires: ${missingNames}`,
+          blocking: false
+        };
+      }
+    }
+
     // Check linked course requirements (these ARE blocking)
     const linkedRequirementsCheck = {
       // AVID courses require English/History (but English/History can be alone)
@@ -2168,6 +2244,20 @@ function App() {
       setWarning(`${eligibility.warning}. Have you met the prerequisites?`);
     }
 
+    // PLTW Biomedical sequence warning
+    const pltwBiomedicalCourses = ['PRINCIPLES_OF_0012', 'HUMAN_BODY_0012', 'HON_MEDICAL_0012'];
+    if (pltwBiomedicalCourses.includes(newCourse.courseId)) {
+      const sequenceInfo = {
+        'PRINCIPLES_OF_0012': 'This is the entry point to the PLTW Biomedical pathway.',
+        'HUMAN_BODY_0012': 'This is the 2nd course in the PLTW Biomedical pathway. Recommended sequence: Principles of Biomedical Science → Human Body Systems.',
+        'HON_MEDICAL_0012': 'This is the 3rd course in the PLTW Biomedical pathway. Recommended sequence: Principles of Biomedical Science → Human Body Systems → Medical Interventions.'
+      };
+      // Only show if no other warning is already set
+      if (!eligibility.warning) {
+        setWarning(`PLTW Biomedical: ${sequenceInfo[newCourse.courseId]}`);
+      }
+    }
+
     // Check for Off-Roll restrictions
     if (courseInfo.pathway === 'Off-Roll') {
       // Off-Roll can only be in slots 0 (1st class) or 3 (4th class)
@@ -2415,12 +2505,20 @@ function App() {
       return;
     }
 
-    // Add course(s) - yearlong and semester courses automatically add to both quarters of the term
+    // Add course(s) - yearlong and semester courses automatically add to appropriate quarters
     // In 4x4 block schedule: yearlong = all 4 quarters, semester = both quarters of one term
-    const needsBothQuarters = termReqs.requiresBothSemesters || termReqs.type === 'semester';
+    const isYearlong = termReqs.type === 'yearlong';
+    const isSemester = termReqs.type === 'semester';
 
-    if (needsBothQuarters) {
-      // Determine the quarter pair based on which quarter was selected
+    if (isYearlong) {
+      // Yearlong courses must be added to ALL 4 quarters (Fall AND Spring)
+      const q1Course = { ...newCourse, id: Date.now(), year, quarter: 'Q1' };
+      const q2Course = { ...newCourse, id: Date.now() + 1, year, quarter: 'Q2' };
+      const q3Course = { ...newCourse, id: Date.now() + 2, year, quarter: 'Q3' };
+      const q4Course = { ...newCourse, id: Date.now() + 3, year, quarter: 'Q4' };
+      updateCourses([...courses, q1Course, q2Course, q3Course, q4Course]);
+    } else if (isSemester) {
+      // Semester courses add to both quarters of the current term only
       let firstQuarter, secondQuarter;
       if (quarter === 'Q1' || quarter === 'Q2') {
         // Fall term - add to both Q1 and Q2
@@ -2457,13 +2555,13 @@ function App() {
       return;
     }
 
-    // Check if this is a yearlong or semester course (needs both quarters)
+    // Check if this is a yearlong or semester course
     const termReqs = schedulingEngine.getTermRequirements(courseToRemove.courseId);
-    const needsBothQuarters = termReqs.requiresBothSemesters || termReqs.type === 'semester';
+    const isYearlongOrSemester = termReqs.type === 'yearlong' || termReqs.type === 'semester';
 
-    if (needsBothQuarters) {
+    if (isYearlongOrSemester) {
       // Remove ALL instances of this courseId in the same year
-      // (both quarters of the semester)
+      // (all 4 quarters for yearlong, both quarters of term for semester)
       updateCourses(courses.filter(c =>
         !(c.courseId === courseToRemove.courseId && c.year === courseToRemove.year)
       ));

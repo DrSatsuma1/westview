@@ -137,6 +137,11 @@ export function CourseCard({
             {courseNumber && <span>{courseNumber} | </span>}
             <span>{courseInfo.pathway}</span>
           </div>
+          {courseInfo.notes && (
+            <div className="text-xs text-gray-600 mt-1 line-clamp-3 leading-relaxed">
+              {courseInfo.notes}
+            </div>
+          )}
           <div className="text-xs text-gray-400 mt-0.5 flex items-center gap-2">
             {/* Show linked course with link icon if exists */}
             {linkedCourse ? (

@@ -112,8 +112,8 @@ export class BusinessRules {
   }
 
   /**
-   * RULE: Never suggest Off-Roll courses in Grades 9-11
-   * Off-Roll courses are only appropriate for Grade 12
+   * RULE: Never suggest Off-Roll courses in Grade 10
+   * Off-Roll courses are allowed in Grades 9, 11, 12 but NOT Grade 10
    * @param {Object} course
    * @returns {boolean}
    */
@@ -121,8 +121,8 @@ export class BusinessRules {
     if (course.pathway !== 'Off-Roll') return true;
 
     const yearInt = parseInt(this.year);
-    // Only allow Off-Roll suggestions in Grade 12
-    return yearInt === 12;
+    // Off-Roll NOT allowed in Grade 10
+    return yearInt !== 10;
   }
 
   /**
@@ -484,7 +484,7 @@ export class BusinessRules {
    */
   checkDuplicates(course) {
     const yearCourses = this.courses.filter(c => c.year === this.year);
-    return !yearCourses.some(c => c.courseId === course.id);
+    return !yearCourses.some(c => c.courseId === course.course_id);
   }
 
   /**
