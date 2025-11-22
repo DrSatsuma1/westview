@@ -27,23 +27,9 @@ import {
   AVID_COURSES,
   MAX_SEMESTER_CREDITS
 } from './config';
-import {
-  WESTVIEW_REQUIREMENTS,
-  calculateWestviewProgress
-} from './domain/progress/westview.js';
-import {
-  AG_REQUIREMENTS,
-  calculateAGProgress
-} from './domain/progress/ag.js';
-import { calculateUCGPA } from './domain/gpa.js';
-import {
-  calculateTotalCreditsWithCap,
-  calculateEarlyGradEligibility
-} from './domain/graduation.js';
-import { calculateCTEPathwayProgress } from './domain/cte.js';
-import { calculateBiliteracyEligibility } from './domain/biliteracy.js';
-import { calculateCollegeCredits } from './domain/collegeCredits.js';
-import { validateSchedule as validateScheduleLogic } from './domain/scheduleValidation.js';
+// Progress calculations moved to useCourseProgress hook
+import { WESTVIEW_REQUIREMENTS } from './domain/progress/westview.js';
+import { AG_REQUIREMENTS } from './domain/progress/ag.js';
 import { validateSemesterCompletion as validateSemesterCompletionLogic } from './domain/semesterValidation.js';
 import {
   checkCourseEligibility as checkCourseEligibilityLogic,
@@ -56,6 +42,9 @@ import {
   buildCoursesFromSuggestions,
   processLinkedCourseRules
 } from './hooks/useSuggestionEngine.js';
+import { useCourseProgress } from './hooks/useCourseProgress.js';
+import { useCourseSchedule } from './hooks/useCourseSchedule.js';
+import { useDragAndDrop } from './hooks/useDragAndDrop.js';
 
 // Load course catalog from JSON
 const COURSE_CATALOG = courseCatalogData.courses.reduce((acc, course) => {
@@ -73,26 +62,16 @@ const schedulingEngine = new SchedulingEngine(courseCatalogData.courses);
 // Config constants (GRADE_OPTIONS, PATHWAY_COLORS, etc.) imported from ./config
 
 function App() {
-  // Load courses from localStorage on initial render
-  const [courses, setCourses] = useState(() => {
-    const saved = localStorage.getItem('westview-courses');
-    if (!saved) return [];
-
-    const parsed = JSON.parse(saved);
-
-    // Migration: Check if data is from old semester-based system
-    // If any course has a 'semester' field instead of 'quarter', clear the data
-    const hasOldData = parsed.some(c => c.semester !== undefined);
-    if (hasOldData) {
-      console.log('Detected old semester-based data. Clearing localStorage for quarter system migration.');
-      localStorage.removeItem('westview-courses');
-      localStorage.removeItem('westview-completed-semesters');
-      return [];
-    }
-
-    return parsed;
-  });
-  const [courseHistory, setCourseHistory] = useState([]); // Undo history (max 5 states)
+  // Course schedule state management (extracted to hooks/useCourseSchedule.js)
+  const {
+    courses,
+    courseHistory,
+    canUndo,
+    updateCourses,
+    undo: handleUndo,
+    clearAll: clearAllCourses,
+    getCoursesForQuarter
+  } = useCourseSchedule();
   const [showAddCourse, setShowAddCourse] = useState(null); // null or { year, quarter, slot }
   const [selectedCategory, setSelectedCategory] = useState(''); // Track selected category
   const [newCourse, setNewCourse] = useState({ courseId: '' });
@@ -115,9 +94,8 @@ function App() {
   const [testScores, setTestScores] = useLocalStorage('westview-test-scores', []);
   const [selectedTestType, setSelectedTestType] = useState('');
 
-  // Drag and drop state
-  const [draggedCourse, setDraggedCourse] = useState(null);
-  const [dragOverSlot, setDragOverSlot] = useState(null);
+  // Drag and drop state and handlers (extracted to hooks/useDragAndDrop.js)
+  // Note: useDragAndDrop needs getCourseInfo, which is defined below, so we initialize it after getCourseInfo
 
   // Ref for scrolling to test scores section
   const testScoresRef = useRef(null);
@@ -143,28 +121,6 @@ function App() {
   // Locked semesters - prevent auto-suggest from replacing courses
   const [lockedSemesters, setLockedSemesters] = useLocalStorage('westview-locked-semesters', {});
 
-  // Save courses to localStorage whenever they change
-  React.useEffect(() => {
-    localStorage.setItem('westview-courses', JSON.stringify(courses));
-  }, [courses]);
-
-  // Helper to update courses and track history for undo (max 5 states)
-  const updateCourses = (newCoursesOrUpdater) => {
-    setCourseHistory(prev => {
-      const updated = [...prev, courses];
-      return updated.slice(-5); // Keep last 5 states
-    });
-    setCourses(newCoursesOrUpdater);
-  };
-
-  // Undo last course change
-  const handleUndo = () => {
-    if (courseHistory.length === 0) return;
-    const previousState = courseHistory[courseHistory.length - 1];
-    setCourseHistory(prev => prev.slice(0, -1));
-    setCourses(previousState); // Direct set, no history push
-  };
-
   // Keyboard shortcut for undo (Ctrl+Z / Cmd+Z)
   React.useEffect(() => {
     const handleKeyDown = (e) => {
@@ -175,18 +131,14 @@ function App() {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [courseHistory, courses]);
+  }, [handleUndo]);
 
   // Clear all courses (except locked semesters)
   const handleClearAll = () => {
     if (window.confirm('Are you sure you want to clear all courses from your schedule? Locked semesters will be preserved.')) {
-      // Preserve courses in locked semesters
-      const preservedCourses = courses.filter(c => {
-        const semester = ['Q1', 'Q2'].includes(c.quarter) ? 'fall' : 'spring';
-        const semesterKey = `${c.year}-${semester}`;
-        return lockedSemesters[semesterKey];
-      });
-      updateCourses(preservedCourses);
+      // Use hook's clearAll with locked semesters
+      clearAllCourses({ lockedSemesters });
+
       // Clear completedSemesters for non-locked semesters only
       const preservedCompleted = {};
       Object.keys(completedSemesters).forEach(key => {
@@ -195,6 +147,7 @@ function App() {
         }
       });
       setCompletedSemesters(preservedCompleted);
+
       // Close add course dialog if open
       setShowAddCourse(null);
       setSelectedCategory('');
@@ -206,72 +159,28 @@ function App() {
   // The following state variables are auto-persisted: earlyGradMode, ctePathwayMode, concurrentCourses,
   // hideAPClasses, hideSpecialEdClasses, westviewGradOnly, gpaMode, isCaliforniaResident, testScores,
   // completedSemesters, metForeignLanguageIn78, preferredLanguage, lockedSemesters
+  // getCoursesForQuarter is now provided by useCourseSchedule hook
 
-  // Calculate Westview graduation progress (extracted to domain/progress/westview.js)
-  const westviewProgress = useMemo(() => {
-    return calculateWestviewProgress(courses, COURSE_CATALOG);
-  }, [courses]);
-
-  // Calculate total credits (extracted to domain/graduation.js)
-  const totalCredits = useMemo(() => {
-    return calculateTotalCreditsWithCap(courses, COURSE_CATALOG);
-  }, [courses]);
-
-  const westviewGraduationReady = totalCredits >= 230 && Object.values(westviewProgress).every(p => p.met);
-
-  // Calculate early graduation eligibility (extracted to domain/graduation.js)
-  const earlyGradEligibility = useMemo(() => {
-    return calculateEarlyGradEligibility(courses, COURSE_CATALOG);
-  }, [courses]);
-
-  // Calculate CTE Pathway Progress (extracted to domain/cte.js)
-  const ctePathwayProgress = useMemo(() => {
-    return calculateCTEPathwayProgress(courses, COURSE_CATALOG, ctePathwayMode, CTE_PATHWAYS);
-  }, [courses, ctePathwayMode]);
-
-  // Get courses for a specific semester (defined before useMemo that uses it)
-  const getCoursesForQuarter = (year, quarter) => {
-    return courses.filter(c => c.year === year && c.quarter === quarter);
-  };
-
-  // Calculate UC/CSU A-G progress (extracted to domain/progress/ag.js)
-  const agProgress = useMemo(() => {
-    return calculateAGProgress(courses, COURSE_CATALOG, metForeignLanguageIn78);
-  }, [courses, metForeignLanguageIn78]);
-
-  const ucsuEligible = Object.values(agProgress).every(p => p.met);
-
-  // Calculate UC GPA (extracted to domain/gpa.js)
-  const ucGPA = useMemo(() => {
-    if (!gpaMode) return null;
-    return calculateUCGPA(courses, COURSE_CATALOG);
-  }, [courses, gpaMode]);
-
-  // Calculate State Seal of Biliteracy eligibility (extracted to domain/biliteracy.js)
-  const biliteracySealEligibility = useMemo(() => {
-    return calculateBiliteracyEligibility(courses, COURSE_CATALOG, gpaMode);
-  }, [courses, gpaMode]);
-
-  // Calculate College Credits from test scores (extracted to domain/collegeCredits.js)
-  const collegeCredits = useMemo(() => {
-    return calculateCollegeCredits(testScores);
-  }, [testScores]);
-
-  // Validate schedule using SchedulingEngine (extracted to domain/scheduleValidation.js)
-  const scheduleValidation = useMemo(() => {
-    return validateScheduleLogic(courses, COURSE_CATALOG, getCoursesForQuarter, schedulingEngine);
-  }, [courses]);
-
-  const englishWarnings = scheduleValidation.warnings
-    .filter(w => w.type === 'missing_english')
-    .map(w => w.year);
-
-  const peWarnings = scheduleValidation.warnings
-    .filter(w => w.type === 'missing_pe')
-    .map(w => w.year);
-
-  const prereqWarnings = scheduleValidation.warnings
-    .filter(w => w.type === 'missing_prerequisites');
+  // All progress, GPA, and validation calculations (extracted to hooks/useCourseProgress.js)
+  const {
+    westviewProgress,
+    totalCredits,
+    westviewGraduationReady,
+    earlyGradEligibility,
+    ctePathwayProgress,
+    agProgress,
+    ucsuEligible,
+    ucGPA,
+    biliteracySealEligibility,
+    collegeCredits,
+    scheduleValidation,
+    warnings: { english: englishWarnings, pe: peWarnings, prereq: prereqWarnings }
+  } = useCourseProgress({
+    courses,
+    courseCatalog: COURSE_CATALOG,
+    schedulingEngine,
+    settings: { ctePathwayMode, gpaMode, metForeignLanguageIn78, testScores }
+  });
 
   // Helper function to check if student is eligible for a course (extracted to domain/courseEligibility.js)
   const checkCourseEligibility = (courseId, targetYear) => {
@@ -320,101 +229,21 @@ function App() {
     return COURSE_CATALOG[courseId] || null;
   };
 
-  // Drag-and-drop handlers
-  const handleDragStart = (e, course, year, quarter) => {
-    // Check if source semester is locked
-    const sourceSemester = ['Q1', 'Q2'].includes(quarter) ? 'fall' : 'spring';
-    const sourceSemesterKey = `${year}-${sourceSemester}`;
-    if (lockedSemesters[sourceSemesterKey]) {
-      e.preventDefault();
-      return; // Don't allow dragging from locked semester
-    }
-
-    setDraggedCourse({ course, year, quarter });
-    e.dataTransfer.effectAllowed = 'move';
-    // Add semi-transparent effect
-    e.currentTarget.style.opacity = '0.5';
-  };
-
-  const handleDragEnd = (e) => {
-    setDraggedCourse(null);
-    setDragOverSlot(null);
-    e.currentTarget.style.opacity = '1';
-  };
-
-  const handleDragOver = (e, targetYear, targetQuarter, slotIndex) => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
-    setDragOverSlot({ year: targetYear, quarter: targetQuarter, slot: slotIndex });
-  };
-
-  const handleDragLeave = () => {
-    setDragOverSlot(null);
-  };
-
-  const handleDrop = (e, targetYear, targetQuarter, slotIndex) => {
-    e.preventDefault();
-
-    if (!draggedCourse) return;
-
-    const { course, year: sourceYear, quarter: sourceQuarter } = draggedCourse;
-    const courseInfo = getCourseInfo(course.courseId);
-
-    // Check if target semester is locked
-    const targetSemester = ['Q1', 'Q2'].includes(targetQuarter) ? 'fall' : 'spring';
-    const targetSemesterKey = `${targetYear}-${targetSemester}`;
-    if (lockedSemesters[targetSemesterKey]) {
-      setDraggedCourse(null);
-      setDragOverSlot(null);
-      return; // Don't allow dropping into locked semester
-    }
-
-    // Don't do anything if dropping in the same location
-    if (sourceYear === targetYear && sourceQuarter === targetQuarter) {
-      setDraggedCourse(null);
-      setDragOverSlot(null);
-      return;
-    }
-
-    // Check if course is yearlong or semester (both span 2 quarters of a term)
-    if (courseInfo.term_length === 'yearlong' || courseInfo.term_length === 'semester') {
-      // For yearlong/semester courses, we need to move both quarters of the term
-      // Determine quarter pairs
-      const getQuarterPair = (q) => {
-        if (q === 'Q1' || q === 'Q2') return ['Q1', 'Q2'];
-        return ['Q3', 'Q4'];
-      };
-
-      const targetPair = getQuarterPair(targetQuarter);
-      const [targetQ1, targetQ2] = targetPair;
-
-      // Update courses by removing from both source quarters and adding to both target quarters
-      updateCourses(prev => {
-        // Remove from both source quarters (all instances of this course in source year)
-        const withoutSource = prev.filter(c =>
-          !(c.courseId === course.courseId && c.year === sourceYear)
-        );
-
-        // Add to both target quarters
-        return [
-          ...withoutSource,
-          { ...course, year: targetYear, quarter: targetQ1, id: `${course.courseId}-${targetYear}-${targetQ1}` },
-          { ...course, year: targetYear, quarter: targetQ2, id: `${course.courseId}-${targetYear}-${targetQ2}` }
-        ];
-      });
-    } else {
-      // For semester courses, just move to the target semester
-      updateCourses(prev => prev.map(c => {
-        if (c.id === course.id) {
-          return { ...c, year: targetYear, quarter: targetQuarter, id: `${c.courseId}-${targetYear}-${targetQuarter}` };
-        }
-        return c;
-      }));
-    }
-
-    setDraggedCourse(null);
-    setDragOverSlot(null);
-  };
+  // Drag-and-drop state and handlers (extracted to hooks/useDragAndDrop.js)
+  const {
+    draggedCourse,
+    dragOverSlot,
+    handleDragStart,
+    handleDragEnd,
+    handleDragOver,
+    handleDragLeave,
+    handleDrop
+  } = useDragAndDrop({
+    courses,
+    updateCourses,
+    lockedSemesters,
+    getCourseInfo
+  });
 
   // Validate semester completion (extracted to domain/semesterValidation.js)
   const validateSemesterCompletion = (year, quarter) => {
