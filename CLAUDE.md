@@ -48,6 +48,18 @@ Westview UC/CSU A-G Course Planner - A web application for Westview High School 
 
 **Tech Stack:** React 18 + Vite + Tailwind CSS (client-side only, no backend)
 
+## Code Modularity Guidelines
+
+When adding new features or changes, follow these guidelines:
+
+1. **BIAS TOWARDS MODULARITY**: If a new feature requires significant logic (>20 lines), prefer extracting it into a custom hook or utility function rather than adding more state to the component.
+
+2. **CHECK FOR BLOAT**: Before outputting code, briefly evaluate if the current file is becoming hard to read. If it is, propose a quick refactor (like moving sub-components or constants out) alongside the feature implementation.
+
+3. **KEEP IT RUNNABLE**: Don't over-fragment. Only split files when there is a clear "Separation of Concerns." Avoid creating new files for trivial logic.
+
+4. **CONTEXT AWARE**: If you extract code, explicitly tell me where to put it and how to import it.
+
 ## Mandatory Workflow: Superpowers Debugging Skills
 
 **CRITICAL:** When working on this codebase, you MUST use the superpowers debugging skills. This is not optional.
