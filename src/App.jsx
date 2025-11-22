@@ -5,9 +5,7 @@ import courseCatalogData from './data/courses_complete.json';
 import { SchedulingEngine } from './scheduling/SchedulingEngine.js';
 import { SettingsDropdown } from './components/SettingsDropdown.jsx';
 import { EarlyGradButton } from './components/EarlyGradButton.jsx';
-import { CourseCard } from './components/course/CourseCard.jsx';
-import { AddCourseForm } from './components/course/AddCourseForm.jsx';
-import { EmptySlot } from './components/course/EmptySlot.jsx';
+import { QuarterColumn } from './components/course/QuarterColumn.jsx';
 import { WarningBanner } from './components/ui/WarningBanner.jsx';
 import { RequirementsSidebar } from './components/progress/RequirementsSidebar.jsx';
 import { TestScoreForm } from './components/test-scores/TestScoreForm.jsx';
@@ -866,152 +864,62 @@ function App() {
 
                     <div className="grid grid-cols-4 divide-x divide-gray-200">
                       {['Q1', 'Q2', 'Q3', 'Q4'].map(quarter => {
-                        const quarterCourses = getCoursesForQuarter(year, quarter);
-                        const slots = Array.from({ length: 6 }, (_, i) => quarterCourses[i] || null);
-                        // Q1 and Q2 are Fall term, Q3 and Q4 are Spring term
                         const displayYear = (quarter === 'Q1' || quarter === 'Q2') ? fallYear : springYear;
-
-                        // Calculate quarter credits
-                        const quarterCredits = quarterCourses.reduce((sum, c) => {
-                          const info = COURSE_CATALOG[c.courseId];
-                          return sum + (info ? info.credits : 0);
-                        }, 0);
-
-                        const isCompleted = completedSemesters[`${year}-${quarter}`];
-
                         return (
-                          <div key={quarter} className="p-5">
-                            <div className="mb-4">
-                              <h4 className="font-bold text-[#718096] text-base">
-                                {quarter} {displayYear}
-                              </h4>
-                            </div>
-
-                          {/* 4 Course Slots */}
-                          <div className="space-y-2">
-                            {slots.map((course, slotIndex) => {
-                              const isAddingHere = showAddCourse?.year === year && showAddCourse?.quarter === quarter && showAddCourse?.slot === slotIndex;
-                              const isOptionalSlot = slotIndex >= 4; // Slots 5 and 6 (indices 4 and 5)
-
-                              if (course) {
-                                // Filled slot with course - render using CourseCard component
-                                return (
-                                  <CourseCard
-                                    key={course.id}
-                                    course={course}
-                                    year={year}
-                                    quarter={quarter}
-                                    slotIndex={slotIndex}
-                                    isOptionalSlot={isOptionalSlot}
-                                    gpaMode={gpaMode}
-                                    draggedCourse={draggedCourse}
-                                    dragOverSlot={dragOverSlot}
-                                    courseCatalog={COURSE_CATALOG}
-                                    pathwayColors={PATHWAY_COLORS}
-                                    agRequirements={AG_REQUIREMENTS}
-                                    gradeOptions={GRADE_OPTIONS}
-                                    ctePathways={CTE_PATHWAYS}
-                                    ctePathwayIcons={CTE_PATHWAY_ICONS}
-                                    onDragStart={handleDragStart}
-                                    onDragEnd={handleDragEnd}
-                                    onDragOver={handleDragOver}
-                                    onDragLeave={handleDragLeave}
-                                    onDrop={handleDrop}
-                                    onRemove={removeCourse}
-                                    onGradeChange={(courseId, grade) => {
-                                      const updatedCourses = courses.map(c =>
-                                        c.id === courseId ? { ...c, grade } : c
-                                      );
-                                      updateCourses(updatedCourses);
-                                    }}
-                                  />
-                                );
-                              } else if (isAddingHere) {
-                                // Empty slot with form open - using AddCourseForm component
-                                return (
-                                  <AddCourseForm
-                                    key={`slot-${slotIndex}`}
-                                    year={year}
-                                    quarter={quarter}
-                                    error={error}
-                                    warning={warning}
-                                    selectedCategory={selectedCategory}
-                                    setSelectedCategory={setSelectedCategory}
-                                    newCourse={newCourse}
-                                    setNewCourse={setNewCourse}
-                                    coursesInPathway={coursesInPathway}
-                                    pathways={pathways}
-                                    hideAPClasses={hideAPClasses}
-                                    hideSpecialEdClasses={hideSpecialEdClasses}
-                                    searchQuery={courseSearchQuery}
-                                    setSearchQuery={setCourseSearchQuery}
-                                    searchResults={searchResults}
-                                    onAdd={addCourse}
-                                    onCancel={() => {
-                                      setShowAddCourse(null);
-                                      setSelectedCategory('');
-                                      setNewCourse({ courseId: '' });
-                                      setCourseSearchQuery('');
-                                      setError(null);
-                                      setWarning(null);
-                                    }}
-                                    concurrentCourses={concurrentCourses}
-                                    setConcurrentCourses={setConcurrentCourses}
-                                    showConcurrentForm={showConcurrentForm}
-                                    setShowConcurrentForm={setShowConcurrentForm}
-                                    newConcurrentCourse={newConcurrentCourse}
-                                    setNewConcurrentCourse={setNewConcurrentCourse}
-                                    convertCollegeUnitsToHSCredits={convertCollegeUnitsToHSCredits}
-                                  />
-                                );
-                              } else {
-                                // Empty slot
-                                const isDropTarget = dragOverSlot?.year === year && dragOverSlot?.quarter === quarter && dragOverSlot?.slot === slotIndex;
-                                return (
-                                  <EmptySlot
-                                    key={`slot-${slotIndex}`}
-                                    year={year}
-                                    quarter={quarter}
-                                    slotIndex={slotIndex}
-                                    isOptionalSlot={isOptionalSlot}
-                                    isDropTarget={isDropTarget}
-                                    onSlotClick={() => {
-                                      setShowAddCourse({ year, quarter, slot: slotIndex });
-                                      setSelectedCategory('');
-                                      setNewCourse({ courseId: '' });
-                                      setError(null);
-                                      setWarning(null);
-                                    }}
-                                    onDragOver={(e) => handleDragOver(e, year, quarter, slotIndex)}
-                                    onDragLeave={handleDragLeave}
-                                    onDrop={(e) => handleDrop(e, year, quarter, slotIndex)}
-                                  />
-                                );
-                              }
-                            })}
-                          </div>
-
-                          {/* Semester Credit Total - only show on Q2 and Q4 */}
-                          {(quarter === 'Q2' || quarter === 'Q4') && (
-                            (() => {
-                              // Calculate semester total (Q1+Q2 for Fall, Q3+Q4 for Spring)
-                              const semesterQuarters = quarter === 'Q2' ? ['Q1', 'Q2'] : ['Q3', 'Q4'];
-                              const semesterCourses = semesterQuarters.flatMap(q => getCoursesForQuarter(year, q));
-                              // Use unique course IDs to avoid double-counting yearlong courses
-                              const uniqueCourseIds = [...new Set(semesterCourses.map(c => c.courseId))];
-                              // Use domain function that handles yearlong course credit division
-                              const semesterTotal = calculateSemesterTotal(uniqueCourseIds, COURSE_CATALOG);
-
-                              return semesterCourses.length > 0 ? (
-                                <div className="mt-3 pt-3 border-t border-gray-300">
-                                  <div className="text-sm font-semibold text-[#718096]">
-                                    Semester Total: {semesterTotal} credits
-                                  </div>
-                                </div>
-                              ) : null;
-                            })()
-                          )}
-                        </div>
+                          <QuarterColumn
+                            key={quarter}
+                            year={year}
+                            quarter={quarter}
+                            displayYear={displayYear}
+                            quarterCourses={getCoursesForQuarter(year, quarter)}
+                            showAddCourse={showAddCourse}
+                            setShowAddCourse={setShowAddCourse}
+                            courseCatalog={COURSE_CATALOG}
+                            pathwayColors={PATHWAY_COLORS}
+                            agRequirements={AG_REQUIREMENTS}
+                            gradeOptions={GRADE_OPTIONS}
+                            ctePathways={CTE_PATHWAYS}
+                            ctePathwayIcons={CTE_PATHWAY_ICONS}
+                            gpaMode={gpaMode}
+                            draggedCourse={draggedCourse}
+                            dragOverSlot={dragOverSlot}
+                            onDragStart={handleDragStart}
+                            onDragEnd={handleDragEnd}
+                            onDragOver={handleDragOver}
+                            onDragLeave={handleDragLeave}
+                            onDrop={handleDrop}
+                            onRemoveCourse={removeCourse}
+                            onGradeChange={(courseId, grade) => {
+                              const updatedCourses = courses.map(c =>
+                                c.id === courseId ? { ...c, grade } : c
+                              );
+                              updateCourses(updatedCourses);
+                            }}
+                            error={error}
+                            warning={warning}
+                            selectedCategory={selectedCategory}
+                            setSelectedCategory={setSelectedCategory}
+                            newCourse={newCourse}
+                            setNewCourse={setNewCourse}
+                            coursesInPathway={coursesInPathway}
+                            pathways={pathways}
+                            hideAPClasses={hideAPClasses}
+                            hideSpecialEdClasses={hideSpecialEdClasses}
+                            courseSearchQuery={courseSearchQuery}
+                            setCourseSearchQuery={setCourseSearchQuery}
+                            searchResults={searchResults}
+                            onAddCourse={addCourse}
+                            concurrentCourses={concurrentCourses}
+                            setConcurrentCourses={setConcurrentCourses}
+                            showConcurrentForm={showConcurrentForm}
+                            setShowConcurrentForm={setShowConcurrentForm}
+                            newConcurrentCourse={newConcurrentCourse}
+                            setNewConcurrentCourse={setNewConcurrentCourse}
+                            convertCollegeUnitsToHSCredits={convertCollegeUnitsToHSCredits}
+                            getCoursesForQuarter={getCoursesForQuarter}
+                            setError={setError}
+                            setWarning={setWarning}
+                          />
                         );
                       })}
                     </div>
