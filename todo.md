@@ -1,12 +1,19 @@
 # Westview Planner - Todo List
 
 ## Active
-- [ ] Add Undo Button (track course history, Ctrl+Z / Cmd+Z support, limit 10-20 actions)
 - [ ] Code Review - BusinessRules edge cases, check other subject sequences
 
-## Needs Verification (visual check required)
-- [ ] Remove AP Award Icon from Course Cards (may already be removed - check UI)
-- [ ] Fix AP Test Scores Section Alignment (check left padding matches other sections)
+## Completed (Nov 21, 2025 - Session 3)
+- [x] Add Undo Button (5-state history, Ctrl+Z / Cmd+Z support)
+- [x] Fix AP Human Geography (yearlong → semester, pathway → History/Social Science)
+- [x] Fix Internship (yearlong → semester, grades_allowed → [12] only)
+- [x] Fix Statistics (yearlong → semester, 10 → 5 credits)
+- [x] Fix College Algebra (yearlong → semester, 10 → 5 credits)
+- [x] Fix AP/IB/CLEP Test Scores box alignment with course cards
+- [x] Suggest 4 courses per semester in Year 4 (was 3, minimum still 2)
+- [x] Show specific schedule validation errors instead of generic "Grade X" message
+- [x] Verify AP Award Icon removal from Course Cards
+- [x] Verify AP Test Scores Section Alignment
 
 ## Completed (Nov 21, 2025 - Session 2)
 - [x] Fix Course Card Heights (140px → 160px uniform)
@@ -32,6 +39,38 @@
 - [x] Lock prevents drag/drop
 - [x] Double-click course selection
 - [x] American Literature pathway fix (History → English)
+
+## Test Plan - Course Suggestions (to implement)
+### 1. A-G Requirement Gap Tests
+- Empty schedule → suggest English, Math, Science, History, FL, Arts, PE
+- Partial A-G → suggest remaining categories
+- Complete A-G → suggest electives/advanced courses
+
+### 2. Grade-Level Restriction Tests
+- Grade 9: No upperclassmen AP courses
+- Grade 10: PE required, Geometry/Math II
+- Grade 11: US History priority, 3rd year Math/Science
+- Grade 12: Civics/Econ, Off-Roll allowed, Internship
+
+### 3. Prerequisite Validation Tests
+- Math: Calc requires Pre-Calc, Math III requires II
+- Foreign Language: 3-4 requires 1-2, etc.
+- Science: AP Bio requires Honors Bio
+
+### 4. Course Exclusion Tests
+- ROTC: never suggested
+- Newcomer English: never suggested
+- Special Ed: only with setting enabled
+
+### 5. Yearlong vs Semester Tests
+- Yearlong → auto-add both semesters
+- Semester → single quarter only
+- AP Human Geography: single semester
+- Statistics/College Algebra: single semester each
+
+## Notes
+- Yearbook: Defaults yearlong, user can manually take 1 semester
+- Robotics: Defaults 4 quarters, user can drop early (Q1, Q1/Q2, Q1/Q2/Q3)
 
 ## Backlog
 - [ ] Transcript PDF parsing
