@@ -64,3 +64,6 @@ export {
   checkForeignLanguagePrereqs,
   LINKED_REQUIREMENTS
 } from './courseEligibility.js';
+
+// Course Validation
+export { validateCourseAddition } from './courseValidation.js';
