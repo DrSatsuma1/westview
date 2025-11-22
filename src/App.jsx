@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef } from 'react';
-import { Plus, CheckCircle2, AlertCircle, Circle, GraduationCap, Award, Briefcase, Beaker, Palette, Wrench, Laptop, Music, Video } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { useLocalStorage, useLocalStorageNullable } from './hooks/useLocalStorage';
 import courseCatalogData from './data/courses_complete.json';
 import { SchedulingEngine } from './scheduling/SchedulingEngine.js';
@@ -7,7 +7,6 @@ import { SettingsDropdown } from './components/SettingsDropdown.jsx';
 import { EarlyGradButton } from './components/EarlyGradButton.jsx';
 import { CourseCard } from './components/course/CourseCard.jsx';
 import { AddCourseForm } from './components/course/AddCourseForm.jsx';
-import { ProgressBar } from './components/progress/ProgressBar.jsx';
 import { WarningBanner } from './components/ui/WarningBanner.jsx';
 import { RequirementsSidebar } from './components/progress/RequirementsSidebar.jsx';
 import { TestScoreForm } from './components/test-scores/TestScoreForm.jsx';
@@ -30,13 +29,11 @@ import {
 } from './config';
 import {
   WESTVIEW_REQUIREMENTS,
-  calculateWestviewProgress,
-  isGraduationReady
+  calculateWestviewProgress
 } from './domain/progress/westview.js';
 import {
   AG_REQUIREMENTS,
-  calculateAGProgress,
-  isUCSUEligible
+  calculateAGProgress
 } from './domain/progress/ag.js';
 import { calculateUCGPA } from './domain/gpa.js';
 import {
@@ -54,6 +51,11 @@ import {
   LINKED_REQUIREMENTS
 } from './domain/courseEligibility.js';
 import { validateCourseAddition } from './domain/courseValidation.js';
+import {
+  filterSuggestionsForTerm,
+  buildCoursesFromSuggestions,
+  processLinkedCourseRules
+} from './hooks/useSuggestionEngine.js';
 
 // Load course catalog from JSON
 const COURSE_CATALOG = courseCatalogData.courses.reduce((acc, course) => {
@@ -596,216 +598,37 @@ function App() {
     const semesterKey = `${year}-${term}`;
     if (lockedSemesters[semesterKey]) {
       console.log(`Semester ${year} ${term} is locked - skipping auto-suggest`);
-      return; // Exit early if locked
+      return;
     }
 
-    // Generate all suggestions and get them directly, passing term to check requirements per term
+    // Generate suggestions
     const allSuggestions = generateCourseSuggestions(term);
 
-    // Filter suggestions for this specific year and term
-    // Fall term = Q1, Q2; Spring term = Q3, Q4
-    const termQuarters = term === 'fall' ? ['Q1', 'Q2'] : ['Q3', 'Q4'];
-    const targetQuarter = term === 'fall' ? 'Q1' : 'Q3';
+    // Filter for this term
+    const termSuggestions = filterSuggestionsForTerm(
+      allSuggestions, year, term, courses, COURSE_CATALOG
+    );
 
-    // For each suggestion, check if the course already exists in THIS term
-    // If not, add it to the target quarter for this term
-    const termSuggestions = allSuggestions
-      .filter(s => s.year === year)
-      // FIRST: Filter to only include suggestions that are for THIS term
-      // null quarter means flexible - can be scheduled in any term
-      .filter(s => s.quarter === null || termQuarters.includes(s.quarter))
-      .map(s => {
-        // Check if this course (or its pathway) already exists
-        const yearCourses = courses.filter(c => c.year === year);
-        const suggestedCourseInfo = COURSE_CATALOG[s.courseId];
-
-        // For semester courses, check only this term (allows same course in both semesters if needed)
-        // For other courses, check only this term
-        const isSemesterCourse = suggestedCourseInfo.term_length === 'semester';
-        const coursesToCheck = yearCourses.filter(c => termQuarters.includes(c.quarter));
-
-        const hasInTerm = coursesToCheck.some(c => {
-          // For semester courses: only block if SAME course already exists in THIS TERM
-          // (allows different English courses like literature in same semester)
-          // For other courses: check same course OR same pathway
-          if (isSemesterCourse) {
-            return c.courseId === s.courseId;
-          } else {
-            const info = COURSE_CATALOG[c.courseId];
-            return info && (c.courseId === s.courseId || info.pathway === suggestedCourseInfo.pathway);
-          }
-        });
-
-        // Special check for ENS/PE courses: block if same course exists ANYWHERE in year
-        // (prevents ENS 3-4 in both Fall and Spring)
-        const isPECourse = suggestedCourseInfo.pathway === 'Physical Education';
-        const hasInYear = isPECourse && yearCourses.some(c => c.courseId === s.courseId);
-
-        // Only suggest if not already in this term (or anywhere in year for PE courses)
-        if (!hasInTerm && !hasInYear) {
-          return { ...s, quarter: targetQuarter };
-        }
-        return null;
-      })
-      .filter(s => s !== null);
-
-    // Add all suggested courses silently (no popup)
     if (termSuggestions.length > 0) {
-      const newCourses = [];
-
-      // Calculate existing credits in this term
-      // Use unique course IDs to avoid double-counting yearlong courses (which have entries in both Q3 and Q4)
-      const uniqueTermCourseIds = [...new Set(
-        courses
-          .filter(c => c.year === year && termQuarters.includes(c.quarter))
-          .map(c => c.courseId)
-      )];
-      // Use domain function that properly divides yearlong course credits
-      const existingTermCredits = calculateSemesterTotal(uniqueTermCourseIds, COURSE_CATALOG);
-
-      // Track credits being added (max 45 per semester, target 40)
-      const MAX_SEMESTER_CREDITS = 45;
-      let addedCredits = 0;
-
-      termSuggestions.forEach(suggestion => {
-        const courseInfo = COURSE_CATALOG[suggestion.courseId];
-        if (!courseInfo) return;
-
-        // Check if adding this course would exceed credit limit
-        // Use semester credits (yearlong courses count as half per semester)
-        const courseCreditsPerSemester = getSemesterCredits(courseInfo);
-        const totalAfterAdd = existingTermCredits + addedCredits + courseCreditsPerSemester;
-        if (totalAfterAdd > MAX_SEMESTER_CREDITS) {
-          return; // Skip this course - would exceed credit limit
-        }
-
-        const termReqs = schedulingEngine.getTermRequirements(suggestion.courseId);
-
-        if (termReqs.type === 'yearlong') {
-          // Yearlong courses need ALL 4 quarters (Q1, Q2, Q3, Q4)
-          newCourses.push({
-            courseId: suggestion.courseId,
-            id: Date.now() + newCourses.length * 4,
-            year: suggestion.year,
-            quarter: 'Q1'
-          });
-          newCourses.push({
-            courseId: suggestion.courseId,
-            id: Date.now() + newCourses.length * 4 + 1,
-            year: suggestion.year,
-            quarter: 'Q2'
-          });
-          newCourses.push({
-            courseId: suggestion.courseId,
-            id: Date.now() + newCourses.length * 4 + 2,
-            year: suggestion.year,
-            quarter: 'Q3'
-          });
-          newCourses.push({
-            courseId: suggestion.courseId,
-            id: Date.now() + newCourses.length * 4 + 3,
-            year: suggestion.year,
-            quarter: 'Q4'
-          });
-        } else if (termReqs.type === 'semester') {
-          // Semester courses need both quarters of ONE term (Q1+Q2 OR Q3+Q4)
-          let firstQuarter, secondQuarter;
-          if (suggestion.quarter === 'Q1' || suggestion.quarter === 'Q2') {
-            firstQuarter = 'Q1';
-            secondQuarter = 'Q2';
-          } else {
-            firstQuarter = 'Q3';
-            secondQuarter = 'Q4';
-          }
-          newCourses.push({
-            courseId: suggestion.courseId,
-            id: Date.now() + newCourses.length * 2,
-            year: suggestion.year,
-            quarter: firstQuarter
-          });
-          newCourses.push({
-            courseId: suggestion.courseId,
-            id: Date.now() + newCourses.length * 2 + 1,
-            year: suggestion.year,
-            quarter: secondQuarter
-          });
-        } else {
-          // Quarter-length courses - add only to the suggested quarter
-          newCourses.push({
-            courseId: suggestion.courseId,
-            id: Date.now() + newCourses.length,
-            year: suggestion.year,
-            quarter: suggestion.quarter
-          });
-        }
-
-        // Track credits added (use semester credits for yearlong courses)
-        addedCredits += courseCreditsPerSemester;
+      // Build course entries from suggestions
+      const newCourses = buildCoursesFromSuggestions({
+        termSuggestions,
+        year,
+        term,
+        courses,
+        courseCatalog: COURSE_CATALOG,
+        schedulingEngine,
+        maxCredits: MAX_SEMESTER_CREDITS
       });
 
-      // Process linked course rules (from config/constants.js)
-      LINKED_COURSE_RULES.forEach(rule => {
-        if (rule.type === 'bidirectional') {
-          // If either course exists, add the other
-          const [courseA, courseB] = rule.courses;
-          const hasA = termSuggestions.some(s => s.courseId === courseA);
-          const hasB = termSuggestions.some(s => s.courseId === courseB);
-
-          const yearCourses = courses.filter(c => c.year === year);
-          const yearHasA = yearCourses.some(c => c.courseId === courseA);
-          const yearHasB = yearCourses.some(c => c.courseId === courseB);
-
-          if (hasA && !yearHasB) {
-            addLinkedCourse(courseB);
-          } else if (hasB && !yearHasA) {
-            addLinkedCourse(courseA);
-          }
-        } else if (rule.type === 'sequential') {
-          // If first course exists, add second
-          const hasFirst = termSuggestions.some(s => s.courseId === rule.first);
-          const yearCourses = courses.filter(c => c.year === year);
-          const hasSecond = yearCourses.some(c => c.courseId === rule.second);
-
-          if (hasFirst && !hasSecond) {
-            addLinkedCourse(rule.second);
-          }
-        } else if (rule.type === 'one_way') {
-          // If trigger exists, optionally add linked course
-          const hasTrigger = termSuggestions.some(s => s.courseId === rule.trigger);
-          const yearCourses = courses.filter(c => c.year === year);
-          const hasLinked = yearCourses.some(c => c.courseId === rule.adds);
-
-          if (hasTrigger && !hasLinked) {
-            addLinkedCourse(rule.adds);
-          }
-        }
+      // Process linked course rules
+      processLinkedCourseRules({
+        termSuggestions,
+        year,
+        term,
+        courses,
+        newCourses
       });
-
-      // Helper function to add a linked course
-      function addLinkedCourse(courseId) {
-        // NEVER auto-suggest AVID courses - they are student choice only (from config/constants.js)
-        if (AVID_COURSES.includes(courseId)) {
-          return; // Skip AVID courses during auto-suggest
-        }
-
-        // For Honors/AP pairs, place linked course in OPPOSITE semester
-        // Example: If auto-filling Fall and suggesting Honors Chem, AP Chem goes in Spring
-        const firstQuarter = term === 'fall' ? 'Q3' : 'Q1';  // Opposite semester
-        const secondQuarter = term === 'fall' ? 'Q4' : 'Q2'; // Opposite semester
-
-        newCourses.push({
-          courseId,
-          id: Date.now() + newCourses.length * 2,
-          year: year,
-          quarter: firstQuarter
-        });
-        newCourses.push({
-          courseId,
-          id: Date.now() + newCourses.length * 2 + 1,
-          year: year,
-          quarter: secondQuarter
-        });
-      }
 
       // Add all courses at once
       updateCourses([...courses, ...newCourses]);
