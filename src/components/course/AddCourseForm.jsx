@@ -10,11 +10,14 @@ import { RECOMMENDED_9TH_GRADE } from '../../config';
 
 /**
  * Check if a course is recommended for 9th grade
+ * RECOMMENDED_9TH_GRADE is an object with category keys and arrays of course names
  */
 function isRecommended9thGrade(courseName) {
   if (!courseName) return false;
   const upper = courseName.toUpperCase();
-  return RECOMMENDED_9TH_GRADE.some(rec =>
+  // Flatten all recommended courses from all categories
+  const allRecommended = Object.values(RECOMMENDED_9TH_GRADE).flat();
+  return allRecommended.some(rec =>
     upper.includes(rec.toUpperCase())
   );
 }
@@ -36,7 +39,15 @@ export function AddCourseForm({
   setSearchQuery,
   searchResults,
   onAdd,
-  onCancel
+  onCancel,
+  // Concurrent Enrollment props (optional)
+  concurrentCourses = [],
+  setConcurrentCourses,
+  showConcurrentForm = false,
+  setShowConcurrentForm,
+  newConcurrentCourse = { name: '', collegeUnits: 3 },
+  setNewConcurrentCourse,
+  convertCollegeUnitsToHSCredits
 }) {
   return (
     <div className="bg-blue-50 rounded-lg p-3 border-2 border-blue-300">
@@ -150,6 +161,102 @@ export function AddCourseForm({
                 </div>
               )}
             </>
+          ) : selectedCategory === 'Concurrent Enrollment' && setConcurrentCourses ? (
+            // Concurrent Enrollment special UI
+            <div className="space-y-3">
+              {!showConcurrentForm ? (
+                <>
+                  {concurrentCourses.length > 0 && (
+                    <div>
+                      <p className="text-xs text-[#718096] mb-2 font-medium">Previously entered courses:</p>
+                      <select
+                        value={newCourse.courseId}
+                        onChange={(e) => setNewCourse({ courseId: e.target.value })}
+                        className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+                      >
+                        <option value="">Select a previous course...</option>
+                        {concurrentCourses.map(course => (
+                          <option key={course.id} value={course.id}>
+                            {course.name} ({course.collegeUnits} college units = {course.credits} HS credits)
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+                  <button
+                    onClick={() => {
+                      setShowConcurrentForm(true);
+                      setNewConcurrentCourse({ name: '', collegeUnits: 3 });
+                    }}
+                    className="w-full bg-purple-600 text-white px-3 py-2 rounded hover:bg-purple-700 text-sm font-medium"
+                  >
+                    + Enter New College Course
+                  </button>
+                </>
+              ) : (
+                <div className="space-y-2">
+                  <p className="text-xs text-[#718096] font-medium">Enter college course details:</p>
+                  <input
+                    type="text"
+                    placeholder="Course name (e.g., BIO 101)"
+                    value={newConcurrentCourse.name}
+                    onChange={(e) => setNewConcurrentCourse({ ...newConcurrentCourse, name: e.target.value })}
+                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+                    autoFocus
+                  />
+                  <div>
+                    <label className="block text-xs text-[#718096] mb-1">College Semester Units</label>
+                    <input
+                      type="number"
+                      placeholder="Units (e.g., 3)"
+                      value={newConcurrentCourse.collegeUnits}
+                      onChange={(e) => setNewConcurrentCourse({ ...newConcurrentCourse, collegeUnits: parseFloat(e.target.value) || 0 })}
+                      className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+                      min="0"
+                      max="10"
+                      step="0.5"
+                    />
+                    {newConcurrentCourse.collegeUnits > 0 && convertCollegeUnitsToHSCredits && (
+                      <p className="text-xs text-gray-500 mt-1">
+                        = {convertCollegeUnitsToHSCredits(newConcurrentCourse.collegeUnits)} high school credits
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => {
+                        if (newConcurrentCourse.name && newConcurrentCourse.collegeUnits > 0) {
+                          const courseId = `CONCURRENT_${Date.now()}`;
+                          const hsCredits = convertCollegeUnitsToHSCredits(newConcurrentCourse.collegeUnits);
+                          const exists = concurrentCourses.find(c => c.name === newConcurrentCourse.name);
+                          if (!exists) {
+                            setConcurrentCourses([...concurrentCourses, {
+                              id: courseId,
+                              name: newConcurrentCourse.name,
+                              collegeUnits: newConcurrentCourse.collegeUnits,
+                              credits: hsCredits
+                            }]);
+                          }
+                          setNewCourse({ courseId: exists ? exists.id : courseId });
+                          setShowConcurrentForm(false);
+                          setTimeout(() => onAdd(year, quarter), 0);
+                        }
+                      }}
+                      disabled={!newConcurrentCourse.name || newConcurrentCourse.collegeUnits <= 0}
+                      className="flex-1 bg-[#2B6CB0] text-white px-3 py-2 rounded hover:bg-[#1E4E8C] text-sm font-medium disabled:bg-gray-300"
+                    >
+                      Add Course
+                    </button>
+                    <button
+                      onClick={() => setShowConcurrentForm(false)}
+                      className="px-3 py-2 border border-gray-300 rounded hover:bg-gray-50 text-sm font-medium"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           ) : (
             // Dropdown mode with grouped options
             <select
