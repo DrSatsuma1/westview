@@ -190,6 +190,23 @@ export function calculateWestviewProgress(courses, courseCatalog, requirements =
     };
   });
 
+  // SECOND PASS: Add excess credits from other categories to Electives
+  // Westview-specific rule: credits above category minimums count toward Electives
+  // This is required to meet the 230-credit total + 85 Elective requirement in practice
+  if (progress['Electives']) {
+    let excessCredits = 0;
+    Object.entries(progress).forEach(([name, data]) => {
+      if (name !== 'Electives') {
+        const excess = data.earned - data.needed;
+        if (excess > 0) {
+          excessCredits += excess;
+        }
+      }
+    });
+    progress['Electives'].earned += excessCredits;
+    progress['Electives'].met = progress['Electives'].earned >= progress['Electives'].needed;
+  }
+
   return progress;
 }
 
