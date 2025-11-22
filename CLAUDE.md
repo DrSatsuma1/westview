@@ -4,27 +4,40 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## ENFORCEMENT: Non-Negotiable Rules
 
-If Claude sees any error → MUST use superpowers:systematic-debugging FIRST
-If Claude reads JSON → MUST verify structure with `cat file.json | head -20` FIRST
-If Claude edits files → MUST check branch with `git branch --show-current` FIRST
+**BEFORE making ANY code changes:**
+1. Run `git branch --show-current` to check current branch
+2. If on `main` → STOP and create a branch FIRST (`git checkout -b fix/descriptive-name`)
+3. NEVER edit code while on main. No exceptions.
+
+**Other mandatory rules:**
+- If Claude sees any error → MUST use superpowers:systematic-debugging FIRST
+- If Claude reads JSON → MUST verify structure with `cat file.json | head -20` FIRST
 
 Violations of these rules = Claude is not following instructions
 
 ## Git Workflow
 
-**CRITICAL: Always create a new branch for major changes.**
+**ABSOLUTE RULE: NEVER commit to main. ALWAYS use a branch.**
 
-Before any refactoring, feature work, or significant modifications:
-1. Use `superpowers:using-git-worktrees` skill to create isolated workspace
-2. Branch naming: `refactor/`, `feature/`, `fix/` prefixes
-3. Never commit major changes directly to `main`
+This is not optional. This is not "for major changes only." This is for ALL changes.
 
-**Major changes include:**
-- Component extraction/refactoring
-- New features or UI sections
-- Schema migrations
-- Validation logic changes
-- Changes affecting >50 lines
+**Before ANY code edit (even 1 line):**
+```bash
+git branch --show-current  # If this says "main", STOP
+git checkout -b fix/short-description  # Create branch FIRST
+```
+
+**Branch naming:**
+- `fix/` - Bug fixes
+- `feature/` - New features
+- `refactor/` - Code restructuring
+
+**Workflow:**
+1. Check branch (`git branch --show-current`)
+2. If on main, create branch
+3. Make changes
+4. Commit to branch
+5. User decides when to merge
 
 ## Project Overview
 
