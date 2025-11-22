@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef } from 'react';
-import { Plus } from 'lucide-react';
+// lucide-react icons now in EmptySlot component
 import { useLocalStorage, useLocalStorageNullable } from './hooks/useLocalStorage';
 import courseCatalogData from './data/courses_complete.json';
 import { SchedulingEngine } from './scheduling/SchedulingEngine.js';
@@ -7,6 +7,7 @@ import { SettingsDropdown } from './components/SettingsDropdown.jsx';
 import { EarlyGradButton } from './components/EarlyGradButton.jsx';
 import { CourseCard } from './components/course/CourseCard.jsx';
 import { AddCourseForm } from './components/course/AddCourseForm.jsx';
+import { EmptySlot } from './components/course/EmptySlot.jsx';
 import { WarningBanner } from './components/ui/WarningBanner.jsx';
 import { RequirementsSidebar } from './components/progress/RequirementsSidebar.jsx';
 import { TestScoreForm } from './components/test-scores/TestScoreForm.jsx';
@@ -704,6 +705,21 @@ function App() {
       .map(([id, course]) => ({ id, ...course }));
   }, [selectedCategory]);
 
+  // Search results for course search
+  const searchResults = useMemo(() => {
+    if (!courseSearchQuery || courseSearchQuery.length < 2) return [];
+    const query = courseSearchQuery.toLowerCase();
+    return Object.entries(COURSE_CATALOG)
+      .filter(([id, course]) =>
+        !DEPRECATED_COURSES.includes(id) &&
+        (course.full_name.toLowerCase().includes(query) ||
+         course.pathway.toLowerCase().includes(query) ||
+         id.toLowerCase().includes(query))
+      )
+      .map(([id, course]) => ({ id, ...course }))
+      .slice(0, 30);
+  }, [courseSearchQuery]);
+
   return (
     <div className="min-h-screen bg-[#F4F7FA]">
       <Header
@@ -929,19 +945,7 @@ function App() {
                                     hideSpecialEdClasses={hideSpecialEdClasses}
                                     searchQuery={courseSearchQuery}
                                     setSearchQuery={setCourseSearchQuery}
-                                    searchResults={(() => {
-                                      if (!courseSearchQuery || courseSearchQuery.length < 2) return [];
-                                      const query = courseSearchQuery.toLowerCase();
-                                      return Object.entries(COURSE_CATALOG)
-                                        .filter(([id, course]) =>
-                                          !DEPRECATED_COURSES.includes(id) &&
-                                          (course.full_name.toLowerCase().includes(query) ||
-                                           course.pathway.toLowerCase().includes(query) ||
-                                           id.toLowerCase().includes(query))
-                                        )
-                                        .map(([id, course]) => ({ id, ...course }))
-                                        .slice(0, 30);
-                                    })()}
+                                    searchResults={searchResults}
                                     onAdd={addCourse}
                                     onCancel={() => {
                                       setShowAddCourse(null);
@@ -963,11 +967,15 @@ function App() {
                               } else {
                                 // Empty slot
                                 const isDropTarget = dragOverSlot?.year === year && dragOverSlot?.quarter === quarter && dragOverSlot?.slot === slotIndex;
-
                                 return (
-                                  <div
+                                  <EmptySlot
                                     key={`slot-${slotIndex}`}
-                                    onClick={() => {
+                                    year={year}
+                                    quarter={quarter}
+                                    slotIndex={slotIndex}
+                                    isOptionalSlot={isOptionalSlot}
+                                    isDropTarget={isDropTarget}
+                                    onSlotClick={() => {
                                       setShowAddCourse({ year, quarter, slot: slotIndex });
                                       setSelectedCategory('');
                                       setNewCourse({ courseId: '' });
@@ -977,17 +985,7 @@ function App() {
                                     onDragOver={(e) => handleDragOver(e, year, quarter, slotIndex)}
                                     onDragLeave={handleDragLeave}
                                     onDrop={(e) => handleDrop(e, year, quarter, slotIndex)}
-                                    className={`w-full rounded-lg p-3 border-2 border-dashed transition-all text-sm font-medium flex items-center justify-center min-h-[56px] cursor-pointer ${
-                                      isOptionalSlot
-                                        ? 'bg-gray-100 border-gray-300 text-gray-400 opacity-50 hover:opacity-70'
-                                        : isDropTarget
-                                        ? 'border-blue-400 bg-blue-50 text-blue-600 ring-2 ring-blue-400'
-                                        : 'bg-white border-gray-300 hover:border-blue-400 hover:bg-blue-50 text-gray-400 hover:text-blue-600'
-                                    }`}
-                                  >
-                                    <Plus size={18} className="mr-1" />
-                                    {isOptionalSlot ? 'Add Course (Optional)' : 'Add Course'}
-                                  </div>
+                                  />
                                 );
                               }
                             })}
