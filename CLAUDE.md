@@ -12,6 +12,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **Other mandatory rules:**
 - If Claude sees any error → MUST use superpowers:systematic-debugging FIRST
 - If Claude reads JSON → MUST verify structure with `cat file.json | head -20` FIRST
+- When adding dependencies → ONLY use permissive licenses (MIT, Apache 2.0, BSD, ISC)
+- NEVER use GPL/AGPL or revenue-sharing licenses (this is a commercial product)
+- Prefer existing npm packages over writing code from scratch (saves tokens)
 
 Violations of these rules = Claude is not following instructions
 
