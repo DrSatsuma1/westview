@@ -46,7 +46,8 @@ export class BusinessRules {
       this.checkCalcBCReviewRequiresConcurrent(course) &&
       this.checkForeignLanguageSequence(course) &&
       this.checkAPCalcBCPrerequisite(course) &&
-      this.checkBandContinuation(course)
+      this.checkBandContinuation(course) &&
+      this.checkBandYearbookMutualExclusion(course)
     );
   }
 
@@ -622,5 +623,37 @@ export class BusinessRules {
 
     // Block BAND in Year 3/4 if not taken in prior years
     return hasBandInPriorYears;
+  }
+
+  /**
+   * RULE: Band, Yearbook, Robotics, and ROTC are mutually exclusive
+   * Students typically commit to ONE of these activities, not multiple
+   * @param {Object} course
+   * @returns {boolean}
+   */
+  checkBandYearbookMutualExclusion(course) {
+    const nameUpper = course.full_name.toUpperCase();
+
+    // Define mutually exclusive activity types
+    const activityTypes = ['BAND', 'YEARBOOK', 'ROBOTICS', 'ROTC'];
+
+    // Check if this course is one of the mutually exclusive types
+    const courseActivityType = activityTypes.find(type => nameUpper.includes(type));
+    if (!courseActivityType) return true; // Not a mutually exclusive course
+
+    // Check if ANY OTHER mutually exclusive activity exists in schedule
+    const hasConflictingActivity = this.courses.some(c => {
+      const info = this.catalog[c.courseId];
+      if (!info) return false;
+      const cNameUpper = info.full_name.toUpperCase();
+
+      // Check if this scheduled course is a DIFFERENT activity type
+      return activityTypes.some(type =>
+        type !== courseActivityType && cNameUpper.includes(type)
+      );
+    });
+
+    // Block if a conflicting activity exists
+    return !hasConflictingActivity;
   }
 }

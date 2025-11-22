@@ -3796,8 +3796,10 @@ function App() {
                               // Calculate semester total (Q1+Q2 for Fall, Q3+Q4 for Spring)
                               const semesterQuarters = quarter === 'Q2' ? ['Q1', 'Q2'] : ['Q3', 'Q4'];
                               const semesterCourses = semesterQuarters.flatMap(q => getCoursesForQuarter(year, q));
-                              const semesterTotal = semesterCourses.reduce((sum, c) => {
-                                const info = COURSE_CATALOG[c.courseId];
+                              // Use unique course IDs to avoid double-counting yearlong courses
+                              const uniqueCourseIds = [...new Set(semesterCourses.map(c => c.courseId))];
+                              const semesterTotal = uniqueCourseIds.reduce((sum, courseId) => {
+                                const info = COURSE_CATALOG[courseId];
                                 return sum + (info ? info.credits : 0);
                               }, 0);
 
@@ -3820,8 +3822,11 @@ function App() {
                     {(() => {
                       const fallCourses = getCoursesForQuarter(year, 'Fall');
                       const springCourses = getCoursesForQuarter(year, 'Spring');
-                      const yearCredits = [...fallCourses, ...springCourses].reduce((sum, c) => {
-                        const info = COURSE_CATALOG[c.courseId];
+                      // Use unique course IDs to avoid double-counting yearlong courses
+                      const allYearCourses = [...fallCourses, ...springCourses];
+                      const uniqueYearCourseIds = [...new Set(allYearCourses.map(c => c.courseId))];
+                      const yearCredits = uniqueYearCourseIds.reduce((sum, courseId) => {
+                        const info = COURSE_CATALOG[courseId];
                         return sum + (info ? info.credits : 0);
                       }, 0);
 
