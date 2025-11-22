@@ -2,6 +2,14 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## ENFORCEMENT: Non-Negotiable Rules
+
+If Claude sees any error → MUST use superpowers:systematic-debugging FIRST
+If Claude reads JSON → MUST verify structure with `cat file.json | head -20` FIRST
+If Claude edits files → MUST check branch with `git branch --show-current` FIRST
+
+Violations of these rules = Claude is not following instructions
+
 ## Git Workflow
 
 **CRITICAL: Always create a new branch for major changes.**
