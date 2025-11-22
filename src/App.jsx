@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useRef } from 'react';
 import { Plus, CheckCircle2, AlertCircle, Circle, GraduationCap, Award, Briefcase, Beaker, Palette, Wrench, Laptop, Music, Video } from 'lucide-react';
+import { useLocalStorage, useLocalStorageNullable } from './hooks/useLocalStorage';
 import courseCatalogData from './data/courses_complete.json';
 import { SchedulingEngine } from './scheduling/SchedulingEngine.js';
 import { SettingsDropdown } from './components/SettingsDropdown.jsx';
@@ -12,6 +13,18 @@ import { TestScoreForm } from './components/test-scores/TestScoreForm.jsx';
 import { getNormalizedCatalog } from './utils/CatalogNormalizer.js';
 import { SuggestionEngine } from './utils/SuggestionEngine.js';
 import { getSemesterCredits, calculateSemesterTotal, calculateYearTotal } from './domain/creditCalculation.js';
+import {
+  GRADE_OPTIONS,
+  PATHWAY_COLORS,
+  CTE_PATHWAY_ICONS,
+  TEST_SUBJECTS,
+  CTE_PATHWAYS,
+  RECOMMENDED_9TH_GRADE,
+  DEPRECATED_COURSES,
+  LINKED_COURSE_RULES,
+  AVID_COURSES,
+  MAX_SEMESTER_CREDITS
+} from './config';
 import {
   WESTVIEW_REQUIREMENTS,
   calculateWestviewProgress,
@@ -31,6 +44,7 @@ import { calculateCTEPathwayProgress } from './domain/cte.js';
 import { calculateBiliteracyEligibility } from './domain/biliteracy.js';
 import { calculateCollegeCredits } from './domain/collegeCredits.js';
 import { validateSchedule as validateScheduleLogic } from './domain/scheduleValidation.js';
+import { validateSemesterCompletion as validateSemesterCompletionLogic } from './domain/semesterValidation.js';
 import {
   checkCourseEligibility as checkCourseEligibilityLogic,
   checkForeignLanguagePrereqs as checkFLPrereqsLogic
@@ -48,184 +62,8 @@ const NORMALIZED_CATALOG = getNormalizedCatalog(COURSE_CATALOG);
 // Initialize scheduling engine
 const schedulingEngine = new SchedulingEngine(courseCatalogData.courses);
 
-// Courses no longer offered (do not delete from catalog, just prevent selection/suggestion)
-const DEPRECATED_COURSES = [
-  'MOBILE_APP_0002',      // Mobile App Development 1-2
-  'WRITING_SEMINAR_0003', // Writing Seminar 1-2
-  'SPANISH_910_0004'      // Spanish 9-10
-];
-
 // WESTVIEW_REQUIREMENTS and AG_REQUIREMENTS imported from domain modules
-
-const GRADE_OPTIONS = ['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D+', 'D', 'D-', 'F'];
-
-// Pathway Color Mapping (for left border stripe on course cards) - Pastel Rainbow Theme
-const PATHWAY_COLORS = {
-  'English': 'border-l-[#E53E3E]',           // Classic Red
-  'Math': 'border-l-[#3182CE]',              // Strong Blue
-  'Physical Education': 'border-l-[#ED8936]', // Orange
-  'History/Social Science': 'border-l-[#805AD5]', // Purple
-  'Science - Biological': 'border-l-[#D69E2E]',   // Gold/Yellow
-  'Science - Physical': 'border-l-[#D69E2E]',     // Gold/Yellow
-  'Foreign Language': 'border-l-[#38A169]',  // Kelly Green
-  'Fine Arts': 'border-l-[#38A169]',         // Kelly Green
-  'CTE': 'border-l-[#38A169]',               // Kelly Green
-  'Electives': 'border-l-[#D53F8C]',         // Pink/Magenta
-  'Off-Roll': 'border-l-[#D53F8C]',          // Pink/Magenta
-  'Clubs/Athletics': 'border-l-[#D53F8C]',   // Pink/Magenta (same as Electives)
-  'Health': 'border-l-[#00B5D8]'             // Cyan/Teal
-};
-
-// CTE Pathway Icon Mapping (for course cards)
-const CTE_PATHWAY_ICONS = {
-  'business': { icon: Briefcase, color: 'text-blue-600' },
-  'biotech': { icon: Beaker, color: 'text-purple-600' },
-  'design': { icon: Palette, color: 'text-pink-600' },
-  'engineering': { icon: Wrench, color: 'text-orange-600' },
-  'ict': { icon: Laptop, color: 'text-green-600' },
-  'performingArts': { icon: Music, color: 'text-red-600' },
-  'productionArts': { icon: Video, color: 'text-indigo-600' }
-};
-
-// Test Subjects by Type
-const TEST_SUBJECTS = {
-  'AP': [
-    'AP Biology', 'AP Calculus AB', 'AP Calculus BC', 'AP Chemistry', 'AP Physics 1',
-    'AP Physics 2', 'AP Physics C: Mechanics', 'AP Physics C: Electricity and Magnetism',
-    'AP English Language and Composition', 'AP English Literature and Composition',
-    'AP United States History', 'AP World History', 'AP European History',
-    'AP United States Government & Politics', 'AP Comparative Government & Politics',
-    'AP Human Geography', 'AP Psychology', 'AP Economics (Macro)', 'AP Economics (Micro)',
-    'AP Statistics', 'AP Computer Science A', 'AP Computer Science Principles',
-    'AP Environmental Science', 'AP Spanish Language', 'AP Spanish Literature',
-    'AP French Language', 'AP German Language', 'AP Chinese Language', 'AP Japanese Language',
-    'AP Latin', 'AP Art History', 'AP Music Theory', 'AP Studio Art'
-  ],
-  'IB': [
-    'IB Biology HL', 'IB Chemistry HL', 'IB Physics HL', 'IB Mathematics HL',
-    'IB English A: Literature HL', 'IB English A: Language and Literature HL',
-    'IB History HL', 'IB Geography HL', 'IB Economics HL', 'IB Psychology HL',
-    'IB Spanish HL', 'IB French HL', 'IB German HL', 'IB Chinese HL',
-    'IB Theatre HL', 'IB Visual Arts HL', 'IB Music HL'
-  ],
-  'CLEP': [
-    'CLEP Biology', 'CLEP Chemistry', 'CLEP Calculus', 'CLEP College Algebra',
-    'CLEP Precalculus', 'CLEP College Mathematics', 'CLEP American Literature',
-    'CLEP English Literature', 'CLEP College Composition', 'CLEP Humanities',
-    'CLEP United States History I', 'CLEP United States History II', 'CLEP Western Civilization I',
-    'CLEP Western Civilization II', 'CLEP American Government', 'CLEP Psychology',
-    'CLEP Sociology', 'CLEP Economics (Macro)', 'CLEP Economics (Micro)',
-    'CLEP Spanish Language (Level 1)', 'CLEP Spanish Language (Level 2)',
-    'CLEP French Language (Level 1)', 'CLEP French Language (Level 2)',
-    'CLEP German Language (Level 1)', 'CLEP German Language (Level 2)'
-  ],
-  'A-Level': [
-    'A-Level Biology', 'A-Level Chemistry', 'A-Level Physics', 'A-Level Mathematics',
-    'A-Level Further Mathematics', 'A-Level English Literature', 'A-Level History',
-    'A-Level Geography', 'A-Level Economics', 'A-Level Psychology', 'A-Level Sociology',
-    'A-Level French', 'A-Level Spanish', 'A-Level German', 'A-Level Chinese',
-    'A-Level Computer Science', 'A-Level Art and Design', 'A-Level Music'
-  ]
-};
-
-// CTE Pathway Requirements
-const CTE_PATHWAYS = {
-  business: {
-    name: 'Business & Finance',
-    courses: [
-      { name: 'BUSINESS PRINCIPLES', level: 'Capstone', grades: [9, 10] },
-      { name: 'INTRO TO FINANCE', level: 'Concentrator', grades: [9, 10] },
-      { name: 'MARKETING ECONOMICS', level: 'Capstone', grades: [10, 11] },
-      { name: 'ECONOMICS OF BUSINESS OWNERSHIP', level: 'Capstone', grades: [10, 11] },
-      { name: 'INTERNSHIP', level: 'Capstone', grades: [12] }
-    ]
-  },
-  biotech: {
-    name: 'Biotechnology',
-    courses: [
-      { name: 'PRINCIPLES OF BIOMEDICAL SCIENCE', level: 'Concentrator', grades: [9, 10] },
-      { name: 'HUMAN BODY SYSTEMS', level: 'Concentrator', grades: [9, 10] },
-      { name: 'MEDICAL INTERVENTIONS', level: 'Capstone', grades: [10, 11, 12] }
-    ]
-  },
-  design: {
-    name: 'Design, Visual, and Media Arts',
-    courses: [
-      { name: '3D COMPUTER ANIMATION', level: 'Concentrator', grades: [9, 10, 11, 12] },
-      { name: 'DIGITAL PHOTOGRAPHY', level: 'Concentrator/Capstone', grades: [9, 10, 11, 12] },
-      { name: 'GRAPHIC DESIGN', level: 'Concentrator/Capstone', grades: [9, 10, 11, 12] },
-      { name: 'STUDIO ART', level: 'Capstone', grades: [9, 10, 11, 12] }
-    ]
-  },
-  engineering: {
-    name: 'Engineering & Architecture',
-    courses: [
-      { name: 'INTRODUCTION TO ENGINEERING DESIGN', level: 'Concentrator', grades: [9, 10] },
-      { name: 'PRINCIPLES OF ENGINEERING', level: 'Capstone', grades: [9, 10] },
-      { name: 'CIVIL ENGINEERING AND ARCHITECTURE', level: 'Capstone', grades: [10, 11] },
-      { name: 'COMPUTER INTEGRATED MANUFACTURING', level: 'Capstone', grades: [10, 11] },
-      { name: 'DIGITAL ELECTRONICS', level: 'Capstone', grades: [11, 12] }
-    ]
-  },
-  ict: {
-    name: 'Information & Communication Technology',
-    courses: [
-      { name: 'COMPUTER INFORMATION SYSTEMS', level: 'Concentrator', grades: [9, 10, 11, 12] },
-      { name: 'WEB DESIGN', level: 'Capstone', grades: [9, 10, 11, 12] },
-      { name: 'AP COMPUTER SCIENCE PRINCIPLES', level: 'Capstone', grades: [10, 11] },
-      { name: 'AP COMPUTER SCIENCE A', level: 'Capstone', grades: [10, 11] },
-      { name: 'MOBILE APP DEVELOPMENT', level: 'Capstone', grades: [11, 12] }
-    ]
-  },
-  performingArts: {
-    name: 'Performing Arts',
-    courses: [
-      { name: 'DRAMA 1-2', level: 'Concentrator', grades: [9, 10, 11, 12] },
-      { name: 'DRAMA 3-4', level: 'Capstone', grades: [9, 10, 11, 12] },
-      { name: 'DRAMA 5-6', level: 'Capstone', grades: [9, 10, 11, 12] },
-      { name: 'THEATER ARTS STUDY', level: 'Capstone', grades: [9, 10, 11, 12] }
-    ]
-  },
-  productionArts: {
-    name: 'Production & Managerial Arts',
-    courses: [
-      { name: 'DIGITAL MEDIA PRODUCTION 1-2', level: 'Concentrator', grades: [9, 10] },
-      { name: 'DIGITAL MEDIA PRODUCTION', level: 'Capstone', grades: [9, 10, 11, 12] },
-      { name: 'BROADCAST JOURNALISM', level: 'Capstone', grades: [10, 11, 12] },
-      { name: 'TECHNICAL PRODUCTION FOR THEATER', level: 'Concentrator', grades: [9, 10, 11, 12] }
-    ]
-  }
-};
-
-// Recommended Electives for 9th Grade
-const RECOMMENDED_9TH_GRADE = {
-  'World Language': [
-    'CHINESE 1-2', 'CHINESE 3-4', 'CHINESE 5-6',
-    'FILIPINO 1-2', 'FILIPINO 3-4', 'FILIPINO 5-6',
-    'FRENCH 1-2', 'FRENCH 3-4', 'FRENCH 5-6',
-    'SPANISH 1-2', 'SPANISH 3-4', 'SPANISH 5-6'
-  ],
-  'Business': ['BUSINESS PRINCIPLES'],
-  'Computer Science': ['COMPUTER INFORMATION SYSTEMS', 'WEB DESIGN 1-2'],
-  'Engineering': ['INTRODUCTION TO ENGINEERING DESIGN', 'HONORS PLTW PRINCIPLES OF ENGINEERING'],
-  'Fine Arts': [
-    '3D COMPUTER ANIMATION 1-2',
-    'BAND WITH COMPETITIVE MARCHING',
-    'BAND WITH NON-COMPETITIVE MARCHING',
-    'CERAMICS 1-2',
-    'DESIGN AND MIXED MEDIA 1-2',
-    'DIGITAL MEDIA PRODUCTION 1-2',
-    'DIGITAL PHOTOGRAPHY 1-2',
-    'DRAMA 1-2',
-    'DRAWING AND PAINTING 1-2',
-    'DRAWING & PAINTING 1-2',
-    'GRAPHIC DESIGN 1-2',
-    'ORCHESTRA 1-2',
-    'ORCHESTRA/STRING ENSEMBLE 1-2',
-    'TECHNICAL PRODUCTION FOR THEATER 1-',
-    'DANCE PROP'
-  ]
-};
+// Config constants (GRADE_OPTIONS, PATHWAY_COLORS, etc.) imported from ./config
 
 function App() {
   // Load courses from localStorage on initial render
@@ -254,46 +92,20 @@ function App() {
   const [courseSearchQuery, setCourseSearchQuery] = useState(''); // For searching all courses
   const [error, setError] = useState(null);
   const [warning, setWarning] = useState(null);
-  const [earlyGradMode, setEarlyGradMode] = useState(() => {
-    const saved = localStorage.getItem('westview-early-grad-mode');
-    return saved ? JSON.parse(saved) : { enabled: false, targetYear: null }; // null, '3year', or '3.5year'
-  });
-  const [ctePathwayMode, setCtePathwayMode] = useState(() => {
-    const saved = localStorage.getItem('westview-cte-pathway');
-    return saved ? JSON.parse(saved) : { enabled: false, pathway: null }; // null, 'business', 'biotech', 'design', 'engineering'
-  });
-  const [concurrentCourses, setConcurrentCourses] = useState(() => {
-    const saved = localStorage.getItem('westview-concurrent-courses');
-    return saved ? JSON.parse(saved) : []; // Array of {id, name, collegeUnits, credits} for custom concurrent enrollment courses
-  });
+  // Persisted settings (auto-saved to localStorage)
+  const [earlyGradMode, setEarlyGradMode] = useLocalStorage('westview-early-grad-mode', { enabled: false, targetYear: null });
+  const [ctePathwayMode, setCtePathwayMode] = useLocalStorage('westview-cte-pathway', { enabled: false, pathway: null });
+  const [concurrentCourses, setConcurrentCourses] = useLocalStorage('westview-concurrent-courses', []);
   const [showConcurrentForm, setShowConcurrentForm] = useState(false);
   const [newConcurrentCourse, setNewConcurrentCourse] = useState({ name: '', collegeUnits: 3 });
-  const [hideAPClasses, setHideAPClasses] = useState(() => {
-    const saved = localStorage.getItem('westview-hide-ap-classes');
-    return saved ? JSON.parse(saved) : false;
-  });
-  const [hideSpecialEdClasses, setHideSpecialEdClasses] = useState(() => {
-    const saved = localStorage.getItem('westview-hide-special-ed-classes');
-    return saved ? JSON.parse(saved) : false;
-  });
-  const [westviewGradOnly, setWestviewGradOnly] = useState(() => {
-    const saved = localStorage.getItem('westview-grad-only');
-    return saved ? JSON.parse(saved) : false;
-  });
-  const [gpaMode, setGpaMode] = useState(() => {
-    const saved = localStorage.getItem('westview-gpa-mode');
-    return saved ? JSON.parse(saved) : false;
-  });
-  const [isCaliforniaResident, setIsCaliforniaResident] = useState(() => {
-    const saved = localStorage.getItem('westview-ca-resident');
-    return saved ? JSON.parse(saved) : true; // Default to California resident
-  });
+  const [hideAPClasses, setHideAPClasses] = useLocalStorage('westview-hide-ap-classes', false);
+  const [hideSpecialEdClasses, setHideSpecialEdClasses] = useLocalStorage('westview-hide-special-ed-classes', false);
+  const [westviewGradOnly, setWestviewGradOnly] = useLocalStorage('westview-grad-only', false);
+  const [gpaMode, setGpaMode] = useLocalStorage('westview-gpa-mode', false);
+  const [isCaliforniaResident, setIsCaliforniaResident] = useLocalStorage('westview-ca-resident', true);
   const [showTestScores, setShowTestScores] = useState(false);
   const [allowRepeatCourses, setAllowRepeatCourses] = useState(false);
-  const [testScores, setTestScores] = useState(() => {
-    const saved = localStorage.getItem('westview-test-scores');
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [testScores, setTestScores] = useLocalStorage('westview-test-scores', []);
   const [selectedTestType, setSelectedTestType] = useState('');
 
   // Drag and drop state
@@ -304,10 +116,7 @@ function App() {
   const testScoresRef = useRef(null);
 
   // Semester completion tracking
-  const [completedSemesters, setCompletedSemesters] = useState(() => {
-    const saved = localStorage.getItem('westview-completed-semesters');
-    return saved ? JSON.parse(saved) : {};
-  });
+  const [completedSemesters, setCompletedSemesters] = useLocalStorage('westview-completed-semesters', {});
   const [semesterValidation, setSemesterValidation] = useState(null);
 
   // Course suggestions
@@ -319,22 +128,13 @@ function App() {
   });
 
   // Track if student met Foreign Language requirement in grades 7/8
-  const [metForeignLanguageIn78, setMetForeignLanguageIn78] = useState(() => {
-    const saved = localStorage.getItem('westview-met-fl-in-78');
-    return saved ? JSON.parse(saved) : false;
-  });
+  const [metForeignLanguageIn78, setMetForeignLanguageIn78] = useLocalStorage('westview-met-fl-in-78', false);
 
   // Preferred foreign language for auto-suggestions
-  const [preferredLanguage, setPreferredLanguage] = useState(() => {
-    const saved = localStorage.getItem('westview-preferred-language');
-    return saved ? JSON.parse(saved) : null; // null means not set yet
-  });
+  const [preferredLanguage, setPreferredLanguage] = useLocalStorageNullable('westview-preferred-language', null);
 
   // Locked semesters - prevent auto-suggest from replacing courses
-  const [lockedSemesters, setLockedSemesters] = useState(() => {
-    const saved = localStorage.getItem('westview-locked-semesters');
-    return saved ? JSON.parse(saved) : {};
-  });
+  const [lockedSemesters, setLockedSemesters] = useLocalStorage('westview-locked-semesters', {});
 
   // Save courses to localStorage whenever they change
   React.useEffect(() => {
@@ -370,72 +170,10 @@ function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [courseHistory, courses]);
 
-  // Save completed semesters to localStorage
-  React.useEffect(() => {
-    localStorage.setItem('westview-completed-semesters', JSON.stringify(completedSemesters));
-  }, [completedSemesters]);
-
-  // Save early grad mode to localStorage
-  React.useEffect(() => {
-    localStorage.setItem('westview-early-grad-mode', JSON.stringify(earlyGradMode));
-  }, [earlyGradMode]);
-
-  // Save CTE pathway mode to localStorage
-  React.useEffect(() => {
-    localStorage.setItem('westview-cte-pathway', JSON.stringify(ctePathwayMode));
-  }, [ctePathwayMode]);
-
-  // Save concurrent courses to localStorage
-  React.useEffect(() => {
-    localStorage.setItem('westview-concurrent-courses', JSON.stringify(concurrentCourses));
-  }, [concurrentCourses]);
-
-  // Save Westview Grad Only mode to localStorage
-  React.useEffect(() => {
-    localStorage.setItem('westview-grad-only', JSON.stringify(westviewGradOnly));
-  }, [westviewGradOnly]);
-
-  // Save hide AP classes preference to localStorage
-  React.useEffect(() => {
-    localStorage.setItem('westview-hide-ap-classes', JSON.stringify(hideAPClasses));
-  }, [hideAPClasses]);
-
-  // Save hide Special Ed classes preference to localStorage
-  React.useEffect(() => {
-    localStorage.setItem('westview-hide-special-ed-classes', JSON.stringify(hideSpecialEdClasses));
-  }, [hideSpecialEdClasses]);
-
-  // Save GPA mode preference to localStorage
-  React.useEffect(() => {
-    localStorage.setItem('westview-gpa-mode', JSON.stringify(gpaMode));
-  }, [gpaMode]);
-
-  // Save California resident preference to localStorage
-  React.useEffect(() => {
-    localStorage.setItem('westview-ca-resident', JSON.stringify(isCaliforniaResident));
-  }, [isCaliforniaResident]);
-
-  // Save test scores to localStorage
-  React.useEffect(() => {
-    localStorage.setItem('westview-test-scores', JSON.stringify(testScores));
-  }, [testScores]);
-
-  // Save Foreign Language met in 7/8 grade flag to localStorage
-  React.useEffect(() => {
-    localStorage.setItem('westview-met-fl-in-78', JSON.stringify(metForeignLanguageIn78));
-  }, [metForeignLanguageIn78]);
-
-  // Save locked semesters to localStorage
-  React.useEffect(() => {
-    localStorage.setItem('westview-locked-semesters', JSON.stringify(lockedSemesters));
-  }, [lockedSemesters]);
-
-  // Save preferred language to localStorage
-  React.useEffect(() => {
-    if (preferredLanguage !== null) {
-      localStorage.setItem('westview-preferred-language', JSON.stringify(preferredLanguage));
-    }
-  }, [preferredLanguage]);
+  // Note: localStorage persistence for settings is now handled automatically by useLocalStorage hook
+  // The following state variables are auto-persisted: earlyGradMode, ctePathwayMode, concurrentCourses,
+  // hideAPClasses, hideSpecialEdClasses, westviewGradOnly, gpaMode, isCaliforniaResident, testScores,
+  // completedSemesters, metForeignLanguageIn78, preferredLanguage, lockedSemesters
 
   // Calculate Westview graduation progress (extracted to domain/progress/westview.js)
   const westviewProgress = useMemo(() => {
@@ -646,209 +384,9 @@ function App() {
     setDragOverSlot(null);
   };
 
-  // Validate semester completion
+  // Validate semester completion (extracted to domain/semesterValidation.js)
   const validateSemesterCompletion = (year, quarter) => {
-    const quarterCourses = getCoursesForQuarter(year, quarter);
-    const issues = [];
-    const warnings = [];
-    const info = [];
-
-    // Check if quarter has any courses
-    if (quarterCourses.length === 0) {
-      issues.push('No courses scheduled for this semester');
-      return { valid: false, issues, warnings, info };
-    }
-
-    // Check minimum course count for the term (both quarters combined)
-    // Determine which term this quarter belongs to
-    const termQuarters = (quarter === 'Q1' || quarter === 'Q2') ? ['Q1', 'Q2'] : ['Q3', 'Q4'];
-    const termCourses = courses.filter(c =>
-      c.year === year && termQuarters.includes(c.quarter)
-    );
-
-    // Minimum 3 courses per term for grades 9-11, minimum 2 for grade 12
-    const yearInt = parseInt(year);
-    const minCourses = yearInt === 12 ? 2 : 3;
-
-    if (termCourses.length < minCourses) {
-      issues.push(`Minimum ${minCourses} courses required per semester (currently ${termCourses.length} in this term)`);
-      return { valid: false, issues, warnings, info };
-    }
-
-    // Check for required courses based on grade
-
-    // Check for English (required all 4 years)
-    const hasEnglish = quarterCourses.some(c => {
-      const info = getCourseInfo(c.courseId);
-      return info?.pathway === 'English';
-    });
-
-    if (!hasEnglish) {
-      // Check if English is in ANY other quarter of this year (for year-long courses)
-      const allQuarters = ['Q1', 'Q2', 'Q3', 'Q4'];
-      const otherQuarters = allQuarters.filter(q => q !== quarter);
-      const hasEnglishElsewhere = otherQuarters.some(q => {
-        const otherCourses = getCoursesForQuarter(year, q);
-        return otherCourses.some(c => {
-          const info = getCourseInfo(c.courseId);
-          return info?.pathway === 'English';
-        });
-      });
-
-      if (!hasEnglishElsewhere) {
-        issues.push('Missing English course - required all 4 years');
-      }
-    }
-
-    // Check for PE (required grades 9-10)
-    if (yearInt === 9 || yearInt === 10) {
-      const hasPE = quarterCourses.some(c => {
-        const info = getCourseInfo(c.courseId);
-        return info?.pathway === 'Physical Education';
-      });
-
-      if (!hasPE) {
-        // Check if PE is in ANY other quarter of this year
-        const allQuarters = ['Q1', 'Q2', 'Q3', 'Q4'];
-        const otherQuarters = allQuarters.filter(q => q !== quarter);
-        const hasPEElsewhere = otherQuarters.some(q => {
-          const otherCourses = getCoursesForQuarter(year, q);
-          return otherCourses.some(c => {
-            const info = getCourseInfo(c.courseId);
-            return info?.pathway === 'Physical Education';
-          });
-        });
-
-        if (!hasPEElsewhere) {
-          issues.push(`PE required for Grade ${year}`);
-        }
-      }
-    }
-
-    // Check for Integrated Math I requirement (or higher level math)
-    // All students must pass Integrated Math I, OR start at a higher level (Math II, III, etc.)
-    if (yearInt === 12 && quarter === 'Q4') {
-      // Only check at graduation (end of senior year - Q4 of grade 12)
-      const allCourses = courses.filter(c => parseInt(c.year) <= 12);
-      const hasMathI = allCourses.some(c => {
-        const info = getCourseInfo(c.courseId);
-        return info && /INTEGRATED MATHEMATICS I[^I]/i.test(info.full_name);
-      });
-      const hasHigherMath = allCourses.some(c => {
-        const info = getCourseInfo(c.courseId);
-        return info && /INTEGRATED MATHEMATICS (II|III)/i.test(info.full_name);
-      });
-
-      if (!hasMathI && !hasHigherMath) {
-        warnings.push('Integrated Math I (or higher) is required for graduation');
-      }
-    }
-
-    // Check for yearlong courses that should be in both quarters of the term
-    quarterCourses.forEach(course => {
-      const courseInfo = getCourseInfo(course.courseId);
-      if (courseInfo?.term_length === 'yearlong') {
-        // Determine the opposite quarter in the same term
-        let oppositeQuarter;
-        if (quarter === 'Q1') oppositeQuarter = 'Q2';
-        else if (quarter === 'Q2') oppositeQuarter = 'Q1';
-        else if (quarter === 'Q3') oppositeQuarter = 'Q4';
-        else oppositeQuarter = 'Q3';
-
-        const oppositeCourses = getCoursesForQuarter(year, oppositeQuarter);
-        const hasOpposite = oppositeCourses.some(c => c.courseId === course.courseId);
-
-        if (!hasOpposite) {
-          const termName = (quarter === 'Q1' || quarter === 'Q2') ? 'Fall' : 'Spring';
-          issues.push(`Year-long course "${courseInfo.full_name}" must be in both quarters of ${termName} term`);
-        }
-      }
-
-      // Check for UNIFIED PE and O.C.I.S./P.E. courses that require counselor consultation
-      if (courseInfo?.full_name && (courseInfo.full_name.toUpperCase().includes('UNIFIED PE') || courseInfo.full_name.toUpperCase().includes('O.C.I.S./P.E.'))) {
-        warnings.push(`⚠️ ${courseInfo.full_name} credit allocation varies - consult your counselor to determine how many credits count toward PE vs. Electives`);
-      }
-    });
-
-    // Check semester capacity
-    // Standard load is 3 courses per semester
-    if (quarterCourses.length > 8) {
-      issues.push(`Overloaded schedule (${quarterCourses.length} courses). Maximum is 8 courses per quarter.`);
-    } else if (quarterCourses.length >= 5) {
-      warnings.push(`Above standard load (${quarterCourses.length} courses). Standard is 3 courses per quarter. Consider your workload carefully.`);
-    }
-
-    // Check UC A-G progress for juniors and seniors
-    if (yearInt >= 11) {
-      // Count total UC A-G courses completed up to this point
-      const yearsToCheck = yearInt === 11 ? ['9', '10', '11'] : ['9', '10', '11', '12'];
-      let agCoursesCompleted = 0;
-
-      const quarterOrder = ['Q1', 'Q2', 'Q3', 'Q4'];
-      const currentQuarterIndex = quarterOrder.indexOf(quarter);
-
-      yearsToCheck.forEach(checkYear => {
-        quarterOrder.forEach((checkQuarter, qIndex) => {
-          // Only count if we're checking up to the current quarter
-          if (parseInt(checkYear) < yearInt ||
-              (parseInt(checkYear) === yearInt && qIndex <= currentQuarterIndex)) {
-
-            const quarterCourses = getCoursesForQuarter(checkYear, checkQuarter);
-            quarterCourses.forEach(c => {
-              const info = getCourseInfo(c.courseId);
-              if (info?.uc_csu_category) {
-                agCoursesCompleted++;
-              }
-            });
-          }
-        });
-      });
-
-      // Remove duplicates (yearlong courses counted multiple times)
-      const uniqueAGCourses = new Set();
-      yearsToCheck.forEach(checkYear => {
-        quarterOrder.forEach((checkQuarter, qIndex) => {
-          if (parseInt(checkYear) < yearInt ||
-              (parseInt(checkYear) === yearInt && qIndex <= currentQuarterIndex)) {
-
-            const quarterCourses = getCoursesForQuarter(checkYear, checkQuarter);
-            quarterCourses.forEach(c => {
-              const info = getCourseInfo(c.courseId);
-              if (info?.uc_csu_category) {
-                uniqueAGCourses.add(c.courseId);
-              }
-            });
-          }
-        });
-      });
-
-      const uniqueCount = uniqueAGCourses.size;
-
-      // UC requirement: 11 A-G courses by end of junior year
-      if (yearInt === 11 && quarter === 'Q4') {
-        if (uniqueCount < 11) {
-          issues.push(`UC requirement: Need 11 A-G courses by end of junior year. Currently have ${uniqueCount}.`);
-        } else {
-          info.push(`✓ UC requirement met: ${uniqueCount} A-G courses by end of junior year`);
-        }
-      }
-
-      // Total requirement: 15 A-G courses by graduation
-      if (yearInt === 12 && quarter === 'Q4') {
-        if (uniqueCount < 15) {
-          issues.push(`UC requirement: Need 15 A-G courses total for graduation. Currently have ${uniqueCount}.`);
-        } else {
-          info.push(`✓ UC requirement met: ${uniqueCount} A-G courses completed`);
-        }
-      }
-    }
-
-    return {
-      valid: issues.length === 0,
-      issues,
-      warnings,
-      info
-    };
+    return validateSemesterCompletionLogic(year, quarter, courses, getCourseInfo);
   };
 
   // Handle marking semester as complete
