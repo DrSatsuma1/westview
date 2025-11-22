@@ -1,5 +1,23 @@
 # Session Notes - Architecture Cleanup Refactor
 
+## IMPORTANT: Use Superpowers Skills
+
+**Before doing ANY work, check available skills with the Skill tool:**
+- `superpowers:systematic-debugging` - MANDATORY for any bug/error
+- `superpowers:verification-before-completion` - Before claiming anything is fixed
+- `superpowers:brainstorming` - Before implementing new features
+
+## Refactoring Approach
+
+We are using **domain-driven design** to break up a god component:
+
+1. **Extract business logic to `/src/domain/`** - validation, calculations, eligibility checks
+2. **Extract reusable UI to `/src/components/`** - organized by feature (course/, layout/, progress/, test-scores/, ui/)
+3. **Extract stateful logic to `/src/hooks/`** - useLocalStorage, useSuggestionEngine
+4. **Keep App.jsx as orchestrator** - state management, event handlers, component composition
+
+**Goal:** App.jsx under 1,000 lines while maintaining functionality. NOT sacrificing code quality for line count.
+
 ## Current State (Nov 21, 2025)
 
 **Branch:** `refactor/architecture-cleanup`
