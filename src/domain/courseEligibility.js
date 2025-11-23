@@ -10,50 +10,50 @@
  */
 const LINKED_REQUIREMENTS = {
   // AVID courses require English/History
-  'AVID_12_0015': { requires: 'HIGH_SCHOOL_0003', name: 'English 1-2' },
-  'AVID_34_0015': { requires: 'HIGH_SCHOOL', name: 'English 3-4' },
-  'AVID_56_0015': { requires: 'UNITED_STATES_0013', name: 'US History 1-2' },
+  '001595-001596': { requires: '000301-000302', name: 'English 1-2' },
+  '001597-001598': { requires: '000310-000311', name: 'English 3-4' },
+  '001599-001600': { requires: '001376-001377', name: 'US History 1-2' },
 
   // AP CS A group - must have at least one partner
-  'AP_COMPUTER_0010': {
-    requiresOneOf: ['COMPUTER_SCIENCE_0009', 'DATA_STRUCTURES_0010', 'STUDIO_ART_0003'],
+  '001056-001057': {
+    requiresOneOf: ['000971-000972', '001072-001073', '000150'],
     names: ['Computer Science & Software Engineering 1-2', 'Data Structures 1-2', 'Studio Art 1-2: Graphic Design']
   },
-  'COMPUTER_SCIENCE_0009': { requires: 'AP_COMPUTER_0010', name: 'AP Computer Science A 1-2' },
-  'DATA_STRUCTURES_0010': { requires: 'AP_COMPUTER_0010', name: 'AP Computer Science A 1-2' },
-  'STUDIO_ART_0003': { requires: 'AP_COMPUTER_0010', name: 'AP Computer Science A 1-2' },
+  '000971-000972': { requires: '001056-001057', name: 'AP Computer Science A 1-2' },
+  '001072-001073': { requires: '001056-001057', name: 'AP Computer Science A 1-2' },
+  '000150': { requires: '001056-001057', name: 'AP Computer Science A 1-2' },
 
   // Bidirectional required pairs
-  'HON_SPANISH_0004': { requires: 'AP_SPANISH_0004', name: 'AP Spanish Language 1-2' },
-  'AP_SPANISH_0004': { requires: 'HON_SPANISH_0004', name: 'Honors Spanish 7-8' },
-  'AP_PRECALCULUS_0010': { requires: 'AP_CALCULUS_0010', name: 'AP Calculus AB 1-2' },
-  'AP_CALCULUS_0010': { requires: 'AP_PRECALCULUS_0010', name: 'AP Pre-Calculus 1-2' },
-  'BRITISH_LITERATURE_0003': { requires: 'AP_ENGLISH', name: 'AP English Literature 1-2' },
-  'AP_ENGLISH': { requires: 'BRITISH_LITERATURE_0003', name: 'British Literature 1-2' },
-  'HON_AMERICAN_0003': { requires: 'AP_UNITED', name: 'AP United States History 1-2' },
-  'AP_UNITED': { requires: 'HON_AMERICAN_0003', name: 'Honors American Literature 1-2' },
-  'AP_PHYSICS_0001': { requires: 'AP_PHYSICS', name: 'AP Physics C: Electricity & Magnetism 1-2' },
-  'AP_PHYSICS': { requires: 'AP_PHYSICS_0001', name: 'AP Physics C: Mechanics 1-2' },
-  'HON_BIOLOGY_0012': { requires: 'AP_BIOLOGY_0012', name: 'AP Biology 3-4' },
-  'AP_BIOLOGY_0012': { requires: 'HON_BIOLOGY_0012', name: 'Honors Biology 1-2' },
-  'HON_CHEMISTRY_0012': { requires: 'AP_CHEMISTRY_0012', name: 'AP Chemistry 3-4' },
-  'AP_CHEMISTRY_0012': { requires: 'HON_CHEMISTRY_0012', name: 'Honors Chemistry 1-2' },
-  'HON_WORLD_0013': { requires: 'AP_WORLD_0013', name: 'AP World History 1-2' },
-  'AP_WORLD_0013': { requires: 'HON_WORLD_0013', name: 'Honors World History 1-2' },
-  'COLLEGE_ALGEBRA_0010': { requires: 'AP_STATISTICS_0010', name: 'AP Statistics 1-2' },
-  'STATISTICS_0010': { requires: 'AP_STATISTICS_0010', name: 'AP Statistics 1-2' },
-  'AP_STATISTICS_0010': {
-    requiresOneOf: ['COLLEGE_ALGEBRA_0010', 'STATISTICS_0010'],
+  '000496-000497': { requires: '000484-000485', name: 'AP Spanish Language 1-2' },
+  '000484-000485': { requires: '000496-000497', name: 'Honors Spanish 7-8' },
+  '001085-001086': { requires: '001060-001061', name: 'AP Calculus AB 1-2' },
+  '001060-001061': { requires: '001085-001086', name: 'AP Pre-Calculus 1-2' },
+  '000384-000385': { requires: '000370-000371', name: 'AP English Literature 1-2' },
+  '000370-000371': { requires: '000384-000385', name: 'British Literature 1-2' },
+  '000382-000383': { requires: '001382-001383', name: 'AP United States History 1-2' },
+  '001382-001383': { requires: '000382-000383', name: 'Honors American Literature 1-2' },
+  '001262-001263': { requires: '001264-001265', name: 'AP Physics C: Electricity & Magnetism 1-2' },
+  '001264-001265': { requires: '001262-001263', name: 'AP Physics C: Mechanics 1-2' },
+  '001228-001229': { requires: '001232-001233', name: 'AP Biology 3-4' },
+  '001232-001233': { requires: '001228-001229', name: 'Honors Biology 1-2' },
+  '001238-001239': { requires: '001242-001243', name: 'AP Chemistry 3-4' },
+  '001242-001243': { requires: '001238-001239', name: 'Honors Chemistry 1-2' },
+  '001305-001306': { requires: '001307-001308', name: 'AP World History 1-2' },
+  '001307-001308': { requires: '001305-001306', name: 'Honors World History 1-2' },
+  '001054': { requires: '001064-001065', name: 'AP Statistics 1-2' },
+  '001039': { requires: '001064-001065', name: 'AP Statistics 1-2' },
+  '001064-001065': {
+    requiresOneOf: ['001054', '001039'],
     names: ['College Algebra 1', 'Statistics']
   },
-  'STUDIO_ART_0001': { requires: 'AP_STUDIO', name: 'AP Studio Art 3D: Ceramics' },
-  'AP_STUDIO': { requires: 'STUDIO_ART_0001', name: 'Studio Art 1-2: Ceramics' },
-  'STUDIO_ART_0002': { requires: 'AP_STUDIO_0002', name: 'AP Studio Art: Drawing & Painting' },
-  'AP_STUDIO_0002': { requires: 'STUDIO_ART_0002', name: 'Studio Art 1-2: Drawing & Painting' },
-  'STUDIO_ART': { requires: 'AP_STUDIO_0001', name: 'AP Studio Art 2D: Photography' },
-  'AP_STUDIO_0001': { requires: 'STUDIO_ART', name: 'Studio Art 1-2: Digital Photography' },
-  'MARCHING_PE_0011': { requires: 'DANCE_PROP_0011', name: 'Dance Prop (Tall Flags)' },
-  'DANCE_PROP_0011': { requires: 'MARCHING_PE_0011', name: 'Marching PE Flags/Tall Flags' },
+  '000150': { requires: '000159-000160', name: 'AP Studio Art 3D: Ceramics' },
+  '000159-000160': { requires: '000150', name: 'Studio Art 1-2: Ceramics' },
+  '000150': { requires: '000151-000152', name: 'AP Studio Art: Drawing & Painting' },
+  '000151-000152': { requires: '000150', name: 'Studio Art 1-2: Drawing & Painting' },
+  '000150': { requires: '000157-000158', name: 'AP Studio Art 2D: Photography' },
+  '000157-000158': { requires: '000150', name: 'Studio Art 1-2: Digital Photography' },
+  '001199-001193': { requires: '001193-001194', name: 'Dance Prop (Tall Flags)' },
+  '001193-001194': { requires: '001199-001193', name: 'Marching PE Flags/Tall Flags' },
 };
 
 /**
@@ -61,26 +61,26 @@ const LINKED_REQUIREMENTS = {
  */
 const COURSE_HIERARCHIES = [
   // Math
-  ['INTEGRATED_MATHEMATICS_0010', 'INTEGRATED_MATHEMATICS', 'INTEGRATED_MATHEMATICS_0001',
-   'AP_PRECALCULUS_0010', 'AP_CALCULUS_0010', 'AP_CALCULUS'],
+  ['001012-001013', '001016-001017', '001018-001019',
+   '001085-001086', '001060-001061', '001062-001063'],
   // Physics
-  ['PHYSICS_OF_0012', 'AP_PHYSICS_0012', 'AP_PHYSICS_0001', 'AP_PHYSICS'],
+  ['001248-001249', '001216-001217', '001262-001263', '001264-001265'],
   // Chemistry
-  ['CHEMISTRY_IN_0012', 'HON_CHEMISTRY_0012', 'AP_CHEMISTRY_0012'],
+  ['001246-001247', '001238-001239', '001242-001243'],
   // Biology
-  ['BIOLOGY_OF_0012', 'HON_BIOLOGY_0012', 'AP_BIOLOGY_0012'],
+  ['001236-001237', '001228-001229', '001232-001233'],
   // English
-  ['HIGH_SCHOOL_0003', 'HIGH_SCHOOL'],
+  ['000301-000302', '000310-000311'],
 ];
 
 /**
  * Equivalent courses (either satisfies the prereq)
  */
 const EQUIVALENT_COURSES = {
-  'HIGH_SCHOOL_0003': ['HON_HIGH_0003'],
-  'HIGH_SCHOOL': ['HON_HUMANITIES_0003'],
-  'AMERICAN_LITERATURE_0003': ['HON_AMERICAN_0003'],
-  'BIOLOGY_OF_0012': ['HON_BIOLOGY_0012'],
+  '000301-000302': ['000303-000304'],
+  '000310-000311': ['000313-000314'],
+  '000387-000388': ['000382-000383'],
+  '001236-001237': ['001228-001229'],
 };
 
 /**

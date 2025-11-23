@@ -191,9 +191,9 @@ export const RECOMMENDED_9TH_GRADE = {
  * Courses no longer offered (do not delete from catalog, just prevent selection/suggestion)
  */
 export const DEPRECATED_COURSES = [
-  'MOBILE_APP_0002',      // Mobile App Development 1-2
-  'WRITING_SEMINAR_0003', // Writing Seminar 1-2
-  'SPANISH_910_0004'      // Spanish 9-10
+  '000234-000235',  // Mobile App Development 1-2
+  '000363-000364',  // Writing Seminar 1-2
+  '000482-000483'   // Spanish 9-10
 ];
 
 /**
@@ -204,50 +204,50 @@ export const DEPRECATED_COURSES = [
  */
 export const LINKED_COURSE_RULES = [
   // AVID Program (bidirectional, but English/History CAN be standalone)
-  { type: 'bidirectional', courses: ['HIGH_SCHOOL_0003', 'AVID_12_0015'] }, // English 1-2 ↔ AVID 1-2
-  { type: 'bidirectional', courses: ['HIGH_SCHOOL', 'AVID_34_0015'] },      // English 3-4 ↔ AVID 3-4
-  { type: 'bidirectional', courses: ['UNITED_STATES_0013', 'AVID_56_0015'] }, // US History ↔ AVID 5-6
+  { type: 'bidirectional', courses: ['000301-000302', '001595-001596'] }, // English 1-2 ↔ AVID 1-2
+  { type: 'bidirectional', courses: ['000310-000311', '001597-001598'] }, // English 3-4 ↔ AVID 3-4
+  { type: 'bidirectional', courses: ['001376-001377', '001599-001600'] }, // US History ↔ AVID 5-6
 
   // BIDIRECTIONAL REQUIRED (neither can be alone)
-  { type: 'bidirectional', courses: ['HON_SPANISH_0004', 'AP_SPANISH_0004'] },       // Honors Spanish 7-8 ↔ AP Spanish
-  { type: 'bidirectional', courses: ['AP_PRECALCULUS_0010', 'AP_CALCULUS_0010'] },   // AP Pre-Calc ↔ AP Calc AB
-  { type: 'bidirectional', courses: ['BRITISH_LITERATURE_0003', 'AP_ENGLISH'] },     // Brit Lit ↔ AP English Lit
-  { type: 'bidirectional', courses: ['HON_AMERICAN_0003', 'AP_UNITED'] },           // Hon Am Lit ↔ AP US History
+  { type: 'bidirectional', courses: ['000496-000497', '000484-000485'] }, // Honors Spanish 7-8 ↔ AP Spanish
+  { type: 'bidirectional', courses: ['001085-001086', '001060-001061'] }, // AP Pre-Calc ↔ AP Calc AB
+  { type: 'bidirectional', courses: ['000384-000385', '000370-000371'] }, // Brit Lit ↔ AP English Lit
+  { type: 'bidirectional', courses: ['000382-000383', '001382-001383'] }, // Hon Am Lit ↔ AP US History
 
   // Science pairs - ALWAYS TOGETHER
-  { type: 'bidirectional', courses: ['HON_BIOLOGY_0012', 'AP_BIOLOGY_0012'] },       // Honors Biology ↔ AP Biology 3-4
-  { type: 'bidirectional', courses: ['HON_CHEMISTRY_0012', 'AP_CHEMISTRY_0012'] },   // Honors Chemistry ↔ AP Chemistry 3-4
-  { type: 'bidirectional', courses: ['HON_WORLD_0013', 'AP_WORLD_0013'] },           // Honors World History ↔ AP World History
+  { type: 'bidirectional', courses: ['001228-001229', '001232-001233'] }, // Honors Biology ↔ AP Biology 3-4
+  { type: 'bidirectional', courses: ['001238-001239', '001242-001243'] }, // Honors Chemistry ↔ AP Chemistry 3-4
+  { type: 'bidirectional', courses: ['001305-001306', '001307-001308'] }, // Honors World History ↔ AP World History
 
   // Statistics pair - ALWAYS TOGETHER
-  { type: 'bidirectional', courses: ['COLLEGE_ALGEBRA_0010', 'AP_STATISTICS_0010'] }, // College Algebra ↔ AP Statistics
-  { type: 'bidirectional', courses: ['STATISTICS_0010', 'AP_STATISTICS_0010'] },      // Statistics ↔ AP Statistics
+  { type: 'bidirectional', courses: ['001054', '001064-001065'] },        // College Algebra ↔ AP Statistics
+  { type: 'bidirectional', courses: ['001039', '001064-001065'] },        // Statistics ↔ AP Statistics
 
   // Studio Art pairs - ALWAYS TOGETHER
-  { type: 'bidirectional', courses: ['STUDIO_ART', 'AP_STUDIO_0001'] },              // Studio Art Digital Photography ↔ AP Studio 2D
-  { type: 'bidirectional', courses: ['STUDIO_ART_0002', 'AP_STUDIO_0002'] },         // Studio Art Drawing & Painting ↔ AP Studio Drawing
-  { type: 'bidirectional', courses: ['STUDIO_ART_0001', 'AP_STUDIO'] },              // Studio Art Ceramics ↔ AP Studio 3D
+  { type: 'bidirectional', courses: ['000150', '000157-000158'] },        // Studio Art Digital Photography ↔ AP Studio 2D
+  { type: 'bidirectional', courses: ['000150', '000151-000152'] },        // Studio Art Drawing & Painting ↔ AP Studio Drawing
+  { type: 'bidirectional', courses: ['000150', '000159-000160'] },        // Studio Art Ceramics ↔ AP Studio 3D
 
   // Dance Prop/Marching PE pair - ALWAYS TOGETHER
-  { type: 'bidirectional', courses: ['MARCHING_PE_0011', 'DANCE_PROP_0011'] },       // Marching PE Flags ↔ Dance Prop (Tall Flags)
+  { type: 'bidirectional', courses: ['001199-001193', '001193-001194'] }, // Marching PE Flags ↔ Dance Prop (Tall Flags)
 
   // SEQUENTIAL REQUIRED
-  { type: 'sequential', first: 'AP_PHYSICS_0001', second: 'AP_PHYSICS' },  // AP Physics C: Mechanics → E&M
+  { type: 'sequential', first: '001262-001263', second: '001264-001265' }, // AP Physics C: Mechanics → E&M
 
   // BIDIRECTIONAL (Computer Science courses)
-  { type: 'bidirectional', courses: ['COMPUTER_SCIENCE_0009', 'AP_COMPUTER_0010'] }, // CS ↔ AP CS A
-  { type: 'bidirectional', courses: ['DATA_STRUCTURES_0010', 'AP_COMPUTER_0010'] },  // Data Struct ↔ AP CS A
-  { type: 'bidirectional', courses: ['STUDIO_ART_0003', 'AP_COMPUTER_0010'] },       // Studio Art Graphic Design ↔ AP CS A
+  { type: 'bidirectional', courses: ['000971-000972', '001056-001057'] }, // CS ↔ AP CS A
+  { type: 'bidirectional', courses: ['001072-001073', '001056-001057'] }, // Data Struct ↔ AP CS A
+  { type: 'bidirectional', courses: ['000150', '001056-001057'] },        // Studio Art Graphic Design ↔ AP CS A
 
   // ONE-WAY TRIGGERS (first can be alone, optionally triggers second)
-  { type: 'one_way', trigger: 'AP_UNITED_0013', adds: 'CIVICS__0013' },      // AP US Gov → Civics (Civics can be solo)
-  { type: 'one_way', trigger: 'PHYSICS_OF_0012', adds: 'AP_PHYSICS_0012' },  // Physics → AP Physics 1A-1B
+  { type: 'one_way', trigger: '001395-001396', adds: '001393-001398' },   // AP US Gov → Civics (Civics can be solo)
+  { type: 'one_way', trigger: '001248-001249', adds: '001216-001217' },   // Physics → AP Physics 1A-1B
 ];
 
 /**
  * AVID courses - should never be auto-suggested
  */
-export const AVID_COURSES = ['AVID_12_0015', 'AVID_34_0015', 'AVID_56_0015'];
+export const AVID_COURSES = ['001595-001596', '001597-001598', '001599-001600'];
 
 /**
  * Maximum semester credits

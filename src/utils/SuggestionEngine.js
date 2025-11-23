@@ -492,45 +492,45 @@ export class SuggestionEngine {
 
     // Define course hierarchies where higher courses satisfy lower prereqs
     const mathHierarchy = [
-      'INTEGRATED_MATHEMATICS_0010',  // Math I
-      'INTEGRATED_MATHEMATICS',       // Math II
-      'INTEGRATED_MATHEMATICS_0001',  // Math III
-      'AP_PRECALCULUS_0010',          // Pre-Calc
-      'AP_CALCULUS_0010',             // Calc AB
-      'AP_CALCULUS',                  // Calc BC
+      '001012-001013',  // Math I
+      '001016-001017',       // Math II
+      '001018-001019',  // Math III
+      '001085-001086',          // Pre-Calc
+      '001060-001061',             // Calc AB
+      '001062-001063',                  // Calc BC
     ];
 
     const physicsHierarchy = [
-      'PHYSICS_OF_0012',              // Physics
-      'AP_PHYSICS_0012',              // AP Physics 1
-      'AP_PHYSICS_0001',              // AP Physics C: Mechanics
-      'AP_PHYSICS',                   // AP Physics C: E&M
+      '001248-001249',              // Physics
+      '001216-001217',              // AP Physics 1
+      '001262-001263',              // AP Physics C: Mechanics
+      '001264-001265',                   // AP Physics C: E&M
     ];
 
     const chemistryHierarchy = [
-      'CHEMISTRY_IN_0012',            // Chemistry
-      'HON_CHEMISTRY_0012',           // Honors Chemistry
-      'AP_CHEMISTRY_0012',            // AP Chemistry
+      '001246-001247',            // Chemistry
+      '001238-001239',           // Honors Chemistry
+      '001242-001243',            // AP Chemistry
     ];
 
     const biologyHierarchy = [
-      'BIOLOGY_OF_0012',              // Biology
-      'HON_BIOLOGY_0012',             // Honors Biology
-      'AP_BIOLOGY_0012',              // AP Biology
+      '001236-001237',              // Biology
+      '001228-001229',             // Honors Biology
+      '001232-001233',              // AP Biology
     ];
 
     // English hierarchy (Honors is equivalent to regular at same level)
     const englishHierarchy = [
-      'HIGH_SCHOOL_0003',             // English 1-2
-      'HIGH_SCHOOL',                  // English 3-4
+      '000301-000302',             // English 1-2
+      '000310-000311',                  // English 3-4
     ];
 
     // Equivalent courses (either satisfies the prereq)
     const equivalentCourses = {
-      'HIGH_SCHOOL_0003': ['HON_HIGH_0003'],  // English 1-2 ≈ Honors English 1-2
-      'HIGH_SCHOOL': ['HON_HUMANITIES_0003'], // English 3-4 ≈ Honors Humanities
-      'AMERICAN_LITERATURE_0003': ['HON_AMERICAN_0003'], // Am Lit ≈ Honors Am Lit
-      'BIOLOGY_OF_0012': ['HON_BIOLOGY_0012'], // Biology ≈ Honors Biology
+      '000301-000302': ['000303-000304'],  // English 1-2 ≈ Honors English 1-2
+      '000310-000311': ['000313-000314'], // English 3-4 ≈ Honors Humanities
+      '000387-000388': ['000382-000383'], // Am Lit ≈ Honors Am Lit
+      '001236-001237': ['001228-001229'], // Biology ≈ Honors Biology
     };
 
     // Check if an equivalent course is scheduled

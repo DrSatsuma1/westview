@@ -1,31 +1,6 @@
 import React from 'react';
 import { Award, Link2 } from 'lucide-react';
-
-// Linked course rules - same as in App.jsx
-const LINKED_COURSE_RULES = [
-  { type: 'bidirectional', courses: ['HIGH_SCHOOL_0003', 'AVID_12_0015'] },
-  { type: 'bidirectional', courses: ['HIGH_SCHOOL', 'AVID_34_0015'] },
-  { type: 'bidirectional', courses: ['UNITED_STATES_0013', 'AVID_56_0015'] },
-  { type: 'bidirectional', courses: ['HON_SPANISH_0004', 'AP_SPANISH_0004'] },
-  { type: 'bidirectional', courses: ['AP_PRECALCULUS_0010', 'AP_CALCULUS_0010'] },
-  { type: 'bidirectional', courses: ['BRITISH_LITERATURE_0003', 'AP_ENGLISH'] },
-  { type: 'bidirectional', courses: ['HON_AMERICAN_0003', 'AP_UNITED'] },
-  { type: 'bidirectional', courses: ['HON_BIOLOGY_0012', 'AP_BIOLOGY_0012'] },
-  { type: 'bidirectional', courses: ['HON_CHEMISTRY_0012', 'AP_CHEMISTRY_0012'] },
-  { type: 'bidirectional', courses: ['HON_WORLD_0013', 'AP_WORLD_0013'] },
-  { type: 'bidirectional', courses: ['COLLEGE_ALGEBRA_0010', 'AP_STATISTICS_0010'] },
-  { type: 'bidirectional', courses: ['STATISTICS_0010', 'AP_STATISTICS_0010'] },
-  { type: 'bidirectional', courses: ['STUDIO_ART', 'AP_STUDIO_0001'] },
-  { type: 'bidirectional', courses: ['STUDIO_ART_0002', 'AP_STUDIO_0002'] },
-  { type: 'bidirectional', courses: ['STUDIO_ART_0001', 'AP_STUDIO'] },
-  { type: 'bidirectional', courses: ['MARCHING_PE_0011', 'DANCE_PROP_0011'] },
-  { type: 'sequential', first: 'AP_PHYSICS_0001', second: 'AP_PHYSICS' },
-  { type: 'bidirectional', courses: ['COMPUTER_SCIENCE_0009', 'AP_COMPUTER_0010'] },
-  { type: 'bidirectional', courses: ['DATA_STRUCTURES_0010', 'AP_COMPUTER_0010'] },
-  { type: 'bidirectional', courses: ['STUDIO_ART_0003', 'AP_COMPUTER_0010'] },
-  { type: 'one_way', trigger: 'AP_UNITED_0013', adds: 'CIVICS__0013' },
-  { type: 'one_way', trigger: 'PHYSICS_OF_0012', adds: 'AP_PHYSICS_0012' },
-];
+import { LINKED_COURSE_RULES } from '../config';
 
 // Function to abbreviate course names for display
 function abbreviateCourseName(fullName) {
