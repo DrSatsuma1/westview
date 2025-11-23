@@ -1554,7 +1554,7 @@
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Electives",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
@@ -1598,7 +1598,7 @@
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Electives",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"

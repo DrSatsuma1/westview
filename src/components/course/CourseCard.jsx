@@ -111,8 +111,8 @@ export function CourseCard({
       <div className="flex items-start justify-between gap-2">
         {/* Left side: Course information */}
         <div className="flex-1 min-w-0">
-          {/* Course name - reserve 2 lines (min-height) for alignment */}
-          <div className="font-bold text-base text-gray-900 break-words mb-1 min-h-[2.75rem] line-clamp-2 uppercase">
+          {/* Course name - reserve 3 lines (min-height) for alignment */}
+          <div className="font-bold text-base text-gray-900 break-words mb-1 min-h-[4rem] line-clamp-3 uppercase">
             {displayName}
           </div>
 
