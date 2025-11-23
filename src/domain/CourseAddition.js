@@ -66,6 +66,28 @@ export function getOppositeSemesterQuarter(quarter) {
 }
 
 /**
+ * Calculates semester credits for a given year and semester.
+ *
+ * @param {Array} courses - Array of course entries
+ * @param {number} year - Grade year
+ * @param {string} semester - 'fall' or 'spring'
+ * @param {Object} courseCatalog - Course catalog with credits info
+ * @returns {number} - Total credits in that semester
+ */
+function calculateSemesterCredits(courses, year, semester, courseCatalog) {
+  const semesterQuarters = semester === 'fall' ? ['Q1', 'Q2'] : ['Q3', 'Q4'];
+  const semesterCourses = courses.filter(c =>
+    c.year === year && semesterQuarters.includes(c.quarter)
+  );
+  // Get unique course IDs (yearlong courses appear in multiple quarters)
+  const uniqueCourseIds = [...new Set(semesterCourses.map(c => c.courseId))];
+  return uniqueCourseIds.reduce((sum, id) => {
+    const info = courseCatalog[id];
+    return sum + (info?.credits || 0);
+  }, 0);
+}
+
+/**
  * Calculates all course entries to add, including main course and linked courses.
  *
  * @param {Object} params
@@ -74,17 +96,22 @@ export function getOppositeSemesterQuarter(quarter) {
  * @param {string} params.quarter - Target quarter for main course
  * @param {Array} params.currentCourses - Existing courses in schedule
  * @param {Function} params.getTermRequirements - Function to get term requirements
- * @returns {Array} - Array of course entry objects to add
+ * @param {Object} params.courseCatalog - Course catalog for credit lookup (optional)
+ * @param {number} params.maxCredits - Maximum credits per semester (optional, default 45)
+ * @returns {{ courses: Array, warning: string|null }} - Courses to add and any warning
  */
 export function calculateCourseAdditions({
   courseId,
   year,
   quarter,
   currentCourses,
-  getTermRequirements
+  getTermRequirements,
+  courseCatalog = null,
+  maxCredits = 45
 }) {
   const newCourses = [];
   let nextId = Date.now();
+  let warning = null;
 
   // 1. Add the main course
   const mainResult = createCourseEntries({
@@ -137,6 +164,19 @@ export function calculateCourseAdditions({
         linkedQuarter = getOppositeSemesterQuarter(quarter);
       }
 
+      // Check if adding linked course would exceed semester credits
+      if (courseCatalog && linkedTermReqs.type === 'semester') {
+        const linkedSemester = (linkedQuarter === 'Q1' || linkedQuarter === 'Q2') ? 'fall' : 'spring';
+        const existingCredits = calculateSemesterCredits(currentCourses, year, linkedSemester, courseCatalog);
+        const linkedCourseCredits = courseCatalog[linkedCourseId]?.credits || 0;
+
+        if (existingCredits + linkedCourseCredits > maxCredits) {
+          const linkedCourseName = courseCatalog[linkedCourseId]?.full_name || linkedCourseId;
+          const semesterName = linkedSemester.charAt(0).toUpperCase() + linkedSemester.slice(1);
+          warning = `Adding ${linkedCourseName} to ${semesterName} will exceed ${maxCredits} credits. Consider removing a course.`;
+        }
+      }
+
       const linkedResult = createCourseEntries({
         courseId: linkedCourseId,
         baseId: nextId,
@@ -152,5 +192,5 @@ export function calculateCourseAdditions({
     }
   });
 
-  return newCourses;
+  return { courses: newCourses, warning };
 }

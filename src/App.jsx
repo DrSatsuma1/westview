@@ -320,15 +320,22 @@ function App() {
 
     // Calculate all course entries (main + linked courses) using extracted domain logic
     // Bug fix: linked semester courses now placed in OPPOSITE semester from main course
-    const newCourses = calculateCourseAdditions({
+    const result = calculateCourseAdditions({
       courseId: newCourse.courseId,
       year,
       quarter,
       currentCourses: courses,
-      getTermRequirements: (id) => schedulingEngine.getTermRequirements(id)
+      getTermRequirements: (id) => schedulingEngine.getTermRequirements(id),
+      courseCatalog: COURSE_CATALOG,
+      maxCredits: MAX_SEMESTER_CREDITS
     });
 
-    updateCourses([...courses, ...newCourses]);
+    // Show warning if linked course addition would exceed semester credits
+    if (result.warning) {
+      setWarning(result.warning);
+    }
+
+    updateCourses([...courses, ...result.courses]);
 
     setNewCourse({ courseId: '' });
     setSelectedCategory('');
