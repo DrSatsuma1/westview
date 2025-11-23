@@ -5464,14 +5464,13 @@
       "grades_allowed": [
         12
       ],
-      "credits": 10,
+      "credits": 5,
       "credit_type": "standard",
       "uc_csu_category": null,
       "pathway": "Electives",
-      "term_length": "yearlong",
+      "term_length": "semester",
       "offered_terms": [
-        "fall",
-        "spring"
+        "fall"
       ],
       "prerequisites_required": [
         "AVID 5-6 The AVID Senior Seminar 1-2 follows the weekly structure of all AVID classes, with two days of teacher-led curriculum per week, two days of tutorials, and a day allocated for guest speakers, "
