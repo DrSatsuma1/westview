@@ -14,7 +14,7 @@ export const WESTVIEW_REQUIREMENTS = {
   'Biological Science': { needed: 10, pathways: ['Science - Biological'] },
   'Physical Science': { needed: 10, pathways: ['Science - Physical'] },
   'History/Social Science': { needed: 30, pathways: ['History/Social Science'] },
-  'Fine Arts/Foreign Language/CTE': { needed: 10, pathways: ['Fine Arts', 'Foreign Language', 'CTE'] },
+  'Fine Arts/Foreign Language': { needed: 10, pathways: ['Fine Arts', 'Foreign Language'] },
   'Health Science': { needed: 5, pathways: ['Physical Education'], specialCourses: ['ENS 1-2'] },
   'Physical Education': { needed: 20, pathways: ['Physical Education'] },
   'Electives': { needed: 85, pathways: ['Electives', 'Clubs/Athletics'] }

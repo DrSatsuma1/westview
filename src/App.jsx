@@ -527,6 +527,7 @@ function App() {
   const pathways = useMemo(() => {
     const uniquePathways = [...new Set(Object.values(COURSE_CATALOG).map(c => c.pathway))];
     // Add special categories
+    uniquePathways.push('AP Courses');
     uniquePathways.push('Concurrent Enrollment');
     uniquePathways.push('Off-Roll');
     return uniquePathways.sort();
@@ -535,12 +536,23 @@ function App() {
   // Get courses for selected pathway
   const coursesInPathway = useMemo(() => {
     if (!selectedCategory) return [];
+    // Special handling for AP Courses category - show all AP courses regardless of pathway
+    if (selectedCategory === 'AP Courses') {
+      return Object.entries(COURSE_CATALOG)
+        .filter(([id, course]) =>
+          course.full_name.toUpperCase().startsWith('AP ') &&
+          !DEPRECATED_COURSES.includes(id)
+        )
+        .map(([id, course]) => ({ id, ...course }))
+        .sort((a, b) => a.full_name.localeCompare(b.full_name)); // Alphabetical order
+    }
     return Object.entries(COURSE_CATALOG)
       .filter(([id, course]) =>
         course.pathway === selectedCategory &&
         !DEPRECATED_COURSES.includes(id) // Exclude courses no longer offered
       )
-      .map(([id, course]) => ({ id, ...course }));
+      .map(([id, course]) => ({ id, ...course }))
+      .sort((a, b) => a.full_name.localeCompare(b.full_name)); // Alphabetical order
   }, [selectedCategory]);
 
   // Search results for course search
@@ -555,6 +567,7 @@ function App() {
          id.toLowerCase().includes(query))
       )
       .map(([id, course]) => ({ id, ...course }))
+      .sort((a, b) => a.full_name.localeCompare(b.full_name)) // Alphabetical order
       .slice(0, 30);
   }, [courseSearchQuery]);
 

@@ -160,6 +160,9 @@ export class RequirementCalculator {
 
   /**
    * Calculate total PE credits across all years
+   * IMPORTANT: Must match the sidebar's calculatePECredits() in domain/progress/westview.js
+   * - ENS 1-2 contributes only 5 credits to PE (other 5 go to Health Science)
+   * - Marching PE Flags contributes only 5 credits to PE (other 5 go to Fine Arts)
    * @returns {number} - Total PE credits earned
    */
   calculateTotalPECredits() {
@@ -170,7 +173,14 @@ export class RequirementCalculator {
     for (const courseId of uniqueCourseIds) {
       const courseInfo = this.catalog[courseId];
       if (courseInfo && courseInfo.pathway === 'Physical Education') {
-        totalCredits += courseInfo.credits || 0;
+        // Special cases: some PE courses split credits between PE and another category
+        if (courseInfo.full_name === 'ENS 1-2') {
+          totalCredits += 5; // Only 5 credits to PE (other 5 go to Health Science)
+        } else if (courseInfo.full_name.toUpperCase().includes('MARCHING PE FLAGS')) {
+          totalCredits += 5; // Only 5 credits to PE (other 5 go to Fine Arts)
+        } else {
+          totalCredits += courseInfo.credits || 0;
+        }
       }
     }
     return totalCredits;

@@ -64,10 +64,10 @@ export function normalizePathway(pathway, courseName, ucCsuCategory) {
     return 'Electives';
   }
 
-  // PRIORITY 2: Fix CTE courses (no UC category but should be CTE)
-  const cteKeywords = ['BIOTECH', 'ENGINEERING', 'MEDICAL', 'PLTW', 'ROBOTICS', 'HEALTH SCIENCE', 'BUSINESS', 'MARKETING'];
-  if (cteKeywords.some(keyword => nameUpper.includes(keyword))) {
-    return 'CTE';
+  // PRIORITY 2: Fix vocational/technical courses (no UC category but should be Electives)
+  const vocationalKeywords = ['BIOTECH', 'ENGINEERING', 'MEDICAL', 'PLTW', 'ROBOTICS', 'HEALTH SCIENCE', 'BUSINESS', 'MARKETING'];
+  if (vocationalKeywords.some(keyword => nameUpper.includes(keyword))) {
+    return 'Electives';
   }
 
   // PRIORITY 3: Fix PE courses (no UC category)

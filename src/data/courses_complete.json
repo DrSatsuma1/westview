@@ -5072,7 +5072,7 @@
       "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "G",
-      "pathway": "CTE",
+      "pathway": "Electives",
       "term_length": "semester",
       "offered_terms": [
         "fall",
@@ -5107,7 +5107,7 @@
       "credits": 5,
       "credit_type": "standard",
       "uc_csu_category": "G",
-      "pathway": "CTE",
+      "pathway": "Electives",
       "term_length": "semester",
       "offered_terms": [
         "fall",
@@ -5662,7 +5662,7 @@
       "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "F",
-      "pathway": "History/Social Science",
+      "pathway": "Electives",
       "term_length": "semester",
       "offered_terms": [
         "fall",

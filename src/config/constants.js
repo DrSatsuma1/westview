@@ -21,7 +21,6 @@ export const PATHWAY_COLORS = {
   'Science - Physical': 'border-l-[#D69E2E]',     // Gold/Yellow
   'Foreign Language': 'border-l-[#38A169]',  // Kelly Green
   'Fine Arts': 'border-l-[#38A169]',         // Kelly Green
-  'CTE': 'border-l-[#38A169]',               // Kelly Green
   'Electives': 'border-l-[#D53F8C]',         // Pink/Magenta
   'Off-Roll': 'border-l-[#D53F8C]',          // Pink/Magenta
   'Clubs/Athletics': 'border-l-[#D53F8C]',   // Pink/Magenta (same as Electives)

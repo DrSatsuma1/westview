@@ -118,7 +118,7 @@ export function AddCourseForm({
               }}
               className="text-blue-600 hover:text-blue-800 text-sm mb-2"
             >
-              ← Back to pathways
+              ← BACK
             </button>
           </div>
 
@@ -393,13 +393,19 @@ export function AddCourseForm({
                   hideAPClasses={hideAPClasses}
                   hideSpecialEdClasses={hideSpecialEdClasses}
                 />
-              ) : selectedCategory === 'Electives' || selectedCategory === 'CTE' ? (
-                // Group Electives and CTE by subject
+              ) : selectedCategory === 'Electives' ? (
+                // Group Electives by subject
                 <ElectivesOptions
                   courses={coursesInPathway}
                   year={year}
                   hideAPClasses={hideAPClasses}
                   hideSpecialEdClasses={hideSpecialEdClasses}
+                />
+              ) : selectedCategory === 'AP Courses' ? (
+                // Group AP courses by subject
+                <APCoursesOptions
+                  courses={coursesInPathway}
+                  year={year}
                 />
               ) : (
                 // Regular list for other pathways
@@ -463,7 +469,9 @@ function ForeignLanguageOptions({ courses, year, hideAPClasses }) {
 
   return Object.keys(grouped).sort().map(lang => (
     <optgroup key={lang} label={lang}>
-      {grouped[lang].map(course => (
+      {grouped[lang]
+        .sort((a, b) => a.full_name.localeCompare(b.full_name))
+        .map(course => (
         <option key={course.id} value={course.id}>
           {course.full_name}{year === '9' && isRecommended9thGrade(course.full_name) ? ' ⭐ Recommended' : ''}
         </option>
@@ -503,7 +511,9 @@ function EnglishOptions({ courses, year, hideAPClasses, hideSpecialEdClasses }) 
     .filter(([_, courses]) => courses.length > 0)
     .map(([group, courses]) => (
       <optgroup key={group} label={group}>
-        {courses.map(course => {
+        {courses
+          .sort((a, b) => a.full_name.localeCompare(b.full_name))
+          .map(course => {
           const isAP = course.full_name.toUpperCase().startsWith('AP ');
           const isSpecialEd = course.full_name.startsWith('Special Ed');
           const shouldDisable = (hideAPClasses && isAP) || (hideSpecialEdClasses && isSpecialEd);
@@ -523,7 +533,7 @@ function EnglishOptions({ courses, year, hideAPClasses, hideSpecialEdClasses }) 
 }
 
 /**
- * Electives/CTE grouped options
+ * Electives grouped options
  */
 function ElectivesOptions({ courses, year, hideAPClasses, hideSpecialEdClasses }) {
   const grouped = {
@@ -556,7 +566,9 @@ function ElectivesOptions({ courses, year, hideAPClasses, hideSpecialEdClasses }
     .filter(([_, courses]) => courses.length > 0)
     .map(([group, courses]) => (
       <optgroup key={group} label={group}>
-        {courses.map(course => {
+        {courses
+          .sort((a, b) => a.full_name.localeCompare(b.full_name))
+          .map(course => {
           const isAP = course.full_name.toUpperCase().startsWith('AP ');
           const isSpecialEd = course.full_name.startsWith('Special Ed');
           const shouldDisable = (hideAPClasses && isAP) || (hideSpecialEdClasses && isSpecialEd);
@@ -571,6 +583,60 @@ function ElectivesOptions({ courses, year, hideAPClasses, hideSpecialEdClasses }
             </option>
           );
         })}
+      </optgroup>
+    ));
+}
+
+/**
+ * AP Courses grouped options - groups all AP courses by subject area
+ */
+function APCoursesOptions({ courses, year }) {
+  const grouped = {
+    'English': [],
+    'Math': [],
+    'Science': [],
+    'History/Social Science': [],
+    'Foreign Language': [],
+    'Fine Arts': [],
+    'Computer Science': [],
+    'Other': []
+  };
+
+  courses.forEach(course => {
+    const name = course.full_name.toUpperCase();
+    if (name.includes('ENGLISH') || name.includes('LITERATURE') || name.includes('LANGUAGE AND COMPOSITION')) {
+      grouped['English'].push(course);
+    } else if (name.includes('CALCULUS') || name.includes('STATISTICS') || name.includes('PRECALCULUS')) {
+      grouped['Math'].push(course);
+    } else if (name.includes('BIOLOGY') || name.includes('CHEMISTRY') || name.includes('PHYSICS') ||
+               name.includes('ENVIRONMENTAL') || name.includes('SCIENCE')) {
+      grouped['Science'].push(course);
+    } else if (name.includes('HISTORY') || name.includes('GOVERNMENT') || name.includes('ECONOMICS') ||
+               name.includes('PSYCHOLOGY') || name.includes('GEOGRAPHY') || name.includes('COMPARATIVE')) {
+      grouped['History/Social Science'].push(course);
+    } else if (name.includes('SPANISH') || name.includes('FRENCH') || name.includes('CHINESE') ||
+               name.includes('JAPANESE') || name.includes('GERMAN') || name.includes('LATIN')) {
+      grouped['Foreign Language'].push(course);
+    } else if (name.includes('ART') || name.includes('MUSIC') || name.includes('STUDIO')) {
+      grouped['Fine Arts'].push(course);
+    } else if (name.includes('COMPUTER')) {
+      grouped['Computer Science'].push(course);
+    } else {
+      grouped['Other'].push(course);
+    }
+  });
+
+  return Object.entries(grouped)
+    .filter(([_, groupCourses]) => groupCourses.length > 0)
+    .map(([group, groupCourses]) => (
+      <optgroup key={group} label={group}>
+        {groupCourses
+          .sort((a, b) => a.full_name.localeCompare(b.full_name))
+          .map(course => (
+            <option key={course.id} value={course.id}>
+              {course.full_name}{year === '9' && isRecommended9thGrade(course.full_name) ? ' ⭐ Recommended' : ''}
+            </option>
+          ))}
       </optgroup>
     ));
 }

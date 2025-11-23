@@ -139,8 +139,8 @@ export class CandidateRanker {
         }
       } else if (course.pathway === 'Fine Arts') {
         score = 200; // Medium priority (UC/CSU requirement)
-      } else if (course.pathway === 'CTE') {
-        score = 150; // Career pathway
+      } else if (course.pathway === 'Electives') {
+        score = 100; // General elective
       } else {
         score = 100; // Generic elective
       }

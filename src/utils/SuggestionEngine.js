@@ -299,8 +299,8 @@ export class SuggestionEngine {
     if (course.pathway === 'Fine Arts') {
       return 'Recommended: Visual/Performing Arts for UC/CSU eligibility';
     }
-    if (course.pathway === 'CTE') {
-      return 'Recommended: CTE pathway course';
+    if (course.pathway === 'Electives') {
+      return 'Recommended: Elective course';
     }
 
     return 'Elective: Helps reach target course count';

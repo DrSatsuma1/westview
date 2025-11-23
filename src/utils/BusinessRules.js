@@ -129,28 +129,38 @@ export class BusinessRules {
 
   /**
    * RULE: Maximum 3 PE courses total across all 4 years
+   * Note: PE requirement is 20 credits. Typical path:
+   * - Grade 9: ENS 3-4 (5 cr) + ENS 1-2 (10 cr, 5 to PE) = 10 PE credits
+   * - Grade 12: One more PE course (10 cr) = 20 PE credits total
    * @param {Object} course
    * @returns {boolean}
    */
   checkPETotalLimit(course) {
     if (course.pathway !== 'Physical Education') return true;
 
-    // Count PE courses already in schedule
-    const peCourses = this.courses.filter(c => {
+    // Count UNIQUE PE course IDs already in schedule
+    // (Yearlong courses appear in multiple quarters but count as 1 course)
+    const scheduledPECourseIds = new Set();
+    this.courses.forEach(c => {
       const info = this.catalog[c.courseId];
-      return info && info.pathway === 'Physical Education';
+      if (info && info.pathway === 'Physical Education') {
+        scheduledPECourseIds.add(c.courseId);
+      }
     });
 
-    // Count PE courses already in suggestions
-    const peInSuggestions = this.suggestions.filter(s => {
+    // Count UNIQUE PE course IDs already in suggestions
+    const suggestedPECourseIds = new Set();
+    this.suggestions.forEach(s => {
       const info = this.catalog[s.courseId];
-      return info && info.pathway === 'Physical Education';
+      if (info && info.pathway === 'Physical Education') {
+        suggestedPECourseIds.add(s.courseId);
+      }
     });
 
-    const totalPE = peCourses.length + peInSuggestions.length;
+    const totalUniquePE = scheduledPECourseIds.size + suggestedPECourseIds.size;
 
-    // Maximum 3 PE courses total
-    return totalPE < 3;
+    // Maximum 3 UNIQUE PE courses total
+    return totalUniquePE < 3;
   }
 
   /**
