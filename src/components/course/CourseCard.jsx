@@ -70,7 +70,6 @@ export function CourseCard({
   const info = courseCatalog[course.courseId];
 
   // Calculate display properties
-  const isYearLong = info.term_length === 'yearlong';
   const isDragging = draggedCourse?.course?.id === course.id;
   const isDropTarget = dragOverSlot?.year === year &&
                        dragOverSlot?.quarter === quarter &&
@@ -128,13 +127,6 @@ export function CourseCard({
           <div className="text-sm text-gray-700 font-medium">
             {info.pathway}
           </div>
-
-          {/* Year-long indicator */}
-          {isYearLong && (
-            <div className="text-sm text-gray-600 font-medium mt-0.5">
-              Year-long
-            </div>
-          )}
 
           {/* Grade selection dropdown (only shown in GPA mode for A-G courses) */}
           {gpaMode && info.uc_csu_category && (

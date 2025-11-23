@@ -102,7 +102,6 @@ export function CourseCard({
   onGradeChange,
   onRemove
 }) {
-  const isYearLong = courseInfo.term_length === 'yearlong';
   const courseNumber = courseInfo.course_numbers && courseInfo.course_numbers.length > 0
     ? courseInfo.course_numbers.join(' - ')
     : '';
@@ -144,15 +143,13 @@ export function CourseCard({
           )}
           <div className="text-xs text-gray-400 mt-0.5 flex items-center gap-2">
             {/* Show linked course with link icon if exists */}
-            {linkedCourse ? (
+            {linkedCourse && (
               <div className="flex items-center gap-1">
                 <Link2 className="text-blue-500 flex-shrink-0" size={12} />
                 <span className="text-blue-600">{abbreviateCourseName(linkedCourse.full_name)}</span>
               </div>
-            ) : isYearLong ? (
-              <span>Year-long</span>
-            ) : null}
-            {((linkedCourse || isYearLong) && courseInfo.uc_csu_category) && ' • '}
+            )}
+            {linkedCourse && courseInfo.uc_csu_category && ' • '}
             {courseInfo.uc_csu_category && (
               <span>
                 {agRequirements[courseInfo.uc_csu_category]?.short || courseInfo.uc_csu_category}

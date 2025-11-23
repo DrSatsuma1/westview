@@ -317,35 +317,63 @@ function App() {
       setWarning(validation.warning);
     }
 
-    // Get term requirements for course addition
-    const termReqs = schedulingEngine.getTermRequirements(newCourse.courseId);
-    const isYearlong = termReqs.type === 'yearlong';
-    const isSemester = termReqs.type === 'semester';
+    // Helper to create course entries based on term type
+    const createCourseEntriesForAdd = (courseId, baseId) => {
+      const termReqs = schedulingEngine.getTermRequirements(courseId);
+      const entries = [];
 
-    if (isYearlong) {
-      // Yearlong courses must be added to ALL 4 quarters (Fall AND Spring)
-      const q1Course = { ...newCourse, id: Date.now(), year, quarter: 'Q1' };
-      const q2Course = { ...newCourse, id: Date.now() + 1, year, quarter: 'Q2' };
-      const q3Course = { ...newCourse, id: Date.now() + 2, year, quarter: 'Q3' };
-      const q4Course = { ...newCourse, id: Date.now() + 3, year, quarter: 'Q4' };
-      updateCourses([...courses, q1Course, q2Course, q3Course, q4Course]);
-    } else if (isSemester) {
-      // Semester courses add to both quarters of the current term only
-      let firstQuarter, secondQuarter;
-      if (quarter === 'Q1' || quarter === 'Q2') {
-        firstQuarter = 'Q1';
-        secondQuarter = 'Q2';
+      if (termReqs.type === 'yearlong') {
+        entries.push({ courseId, id: baseId, year, quarter: 'Q1' });
+        entries.push({ courseId, id: baseId + 1, year, quarter: 'Q2' });
+        entries.push({ courseId, id: baseId + 2, year, quarter: 'Q3' });
+        entries.push({ courseId, id: baseId + 3, year, quarter: 'Q4' });
+      } else if (termReqs.type === 'semester') {
+        const [firstQ, secondQ] = (quarter === 'Q1' || quarter === 'Q2')
+          ? ['Q1', 'Q2'] : ['Q3', 'Q4'];
+        entries.push({ courseId, id: baseId, year, quarter: firstQ });
+        entries.push({ courseId, id: baseId + 1, year, quarter: secondQ });
       } else {
-        firstQuarter = 'Q3';
-        secondQuarter = 'Q4';
+        entries.push({ courseId, id: baseId, year, quarter });
       }
-      const q1Course = { ...newCourse, id: Date.now(), year, quarter: firstQuarter };
-      const q2Course = { ...newCourse, id: Date.now() + 1, year, quarter: secondQuarter };
-      updateCourses([...courses, q1Course, q2Course]);
-    } else {
-      // Only quarter-length courses go in a single quarter
-      updateCourses([...courses, { ...newCourse, id: Date.now(), year, quarter }]);
-    }
+      return entries;
+    };
+
+    // Collect all courses to add (main course + any linked courses)
+    const newCourses = [];
+    let nextId = Date.now();
+
+    // Add the main course
+    newCourses.push(...createCourseEntriesForAdd(newCourse.courseId, nextId));
+    nextId += 4; // Reserve IDs for potential yearlong course
+
+    // Check for linked courses and add them too
+    const existingCourseIds = courses.filter(c => c.year === year).map(c => c.courseId);
+    LINKED_COURSE_RULES.forEach(rule => {
+      if (rule.type === 'bidirectional') {
+        const [courseA, courseB] = rule.courses;
+        if (newCourse.courseId === courseA && !existingCourseIds.includes(courseB)) {
+          // Adding courseA triggers courseB
+          newCourses.push(...createCourseEntriesForAdd(courseB, nextId));
+          nextId += 4;
+        } else if (newCourse.courseId === courseB && !existingCourseIds.includes(courseA)) {
+          // Adding courseB triggers courseA
+          newCourses.push(...createCourseEntriesForAdd(courseA, nextId));
+          nextId += 4;
+        }
+      } else if (rule.type === 'one_way') {
+        if (newCourse.courseId === rule.trigger && !existingCourseIds.includes(rule.adds)) {
+          newCourses.push(...createCourseEntriesForAdd(rule.adds, nextId));
+          nextId += 4;
+        }
+      } else if (rule.type === 'sequential') {
+        if (newCourse.courseId === rule.first && !existingCourseIds.includes(rule.second)) {
+          newCourses.push(...createCourseEntriesForAdd(rule.second, nextId));
+          nextId += 4;
+        }
+      }
+    });
+
+    updateCourses([...courses, ...newCourses]);
 
     setNewCourse({ courseId: '' });
     setSelectedCategory('');

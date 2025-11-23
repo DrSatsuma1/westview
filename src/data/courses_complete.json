@@ -482,18 +482,14 @@
       "credits": 10,
       "credit_type": "standard",
       "uc_csu_category": "B",
-      "pathway": "History/Social Science",
+      "pathway": "English",
       "term_length": "semester",
       "offered_terms": [
         "fall",
         "spring"
       ],
-      "prerequisites_required": [
-        "None This course will focus on the foundational disciplines of ethnic studies: African American Studies, Asian American Studies, Chicano Latino Studies, and Native American and Indigenous Studies. Thi"
-      ],
-      "prerequisites_recommended": [
-        "None This course will focus on the foundational disciplines of ethnic studies: African American Studies, Asian American Studies, Chicano Latino Studies, and Native American and Indigenous Studies. Thi"
-      ],
+      "prerequisites_required": [],
+      "prerequisites_recommended": [],
       "is_replacement_course": false,
       "replacement_equivalents": [],
       "is_ap_or_honors_pair": false,
