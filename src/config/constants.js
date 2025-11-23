@@ -231,17 +231,20 @@ export const LINKED_COURSE_RULES = [
   // Dance Prop/Marching PE pair - ALWAYS TOGETHER
   { type: 'bidirectional', courses: ['001199-001193', '001193-001194'] }, // Marching PE Flags ↔ Dance Prop (Tall Flags)
 
-  // SEQUENTIAL REQUIRED
-  { type: 'sequential', first: '001262-001263', second: '001264-001265' }, // AP Physics C: Mechanics → E&M
+  // AP Physics C pair - BIDIRECTIONAL (both linked in catalog)
+  { type: 'bidirectional', courses: ['001262-001263', '001264-001265'] }, // AP Physics C: Mechanics ↔ E&M
+
+  // AP English Language + American Lit - BIDIRECTIONAL
+  { type: 'bidirectional', courses: ['000372-000373', '000387-000388'] }, // AP English Lang ↔ American Lit
 
   // BIDIRECTIONAL (Computer Science courses)
   { type: 'bidirectional', courses: ['000971-000972', '001056-001057'] }, // CS ↔ AP CS A
   { type: 'bidirectional', courses: ['001072-001073', '001056-001057'] }, // Data Struct ↔ AP CS A
   { type: 'bidirectional', courses: ['000150', '001056-001057'] },        // Studio Art Graphic Design ↔ AP CS A
 
-  // ONE-WAY TRIGGERS (first can be alone, optionally triggers second)
-  { type: 'one_way', trigger: '001395-001396', adds: '001393-001398' },   // AP US Gov → Civics (Civics can be solo)
-  { type: 'one_way', trigger: '001248-001249', adds: '001216-001217' },   // Physics → AP Physics 1A-1B
+  // Government/Physics pairs - BIDIRECTIONAL
+  { type: 'bidirectional', courses: ['001395-001396', '001393-001398'] }, // AP US Gov ↔ Civics
+  { type: 'bidirectional', courses: ['001248-001249', '001216-001217'] }, // Physics ↔ AP Physics 1A-1B
 ];
 
 /**
