@@ -76,12 +76,8 @@ export function CourseCard({
                        dragOverSlot?.slot === slotIndex;
   const pathwayColor = pathwayColors[info.pathway] || 'bg-gray-400';
 
-  // Format course number as "xxxxxx-xxxxxx" (join semester 1 and 2 numbers)
-  const courseNumber = info.course_numbers && info.course_numbers.length >= 2
-    ? `${info.course_numbers[0]}-${info.course_numbers[1]}`
-    : info.course_numbers && info.course_numbers.length === 1
-    ? info.course_numbers[0]
-    : '';
+  // Course ID is now in format xxxxxx-xxxxxx (migrated from course_numbers)
+  const courseNumber = course.courseId || '';
 
   // Format display name: abbreviate for space, remove unnecessary text
   const displayName = info.full_name

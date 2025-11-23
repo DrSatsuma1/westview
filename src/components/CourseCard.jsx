@@ -77,9 +77,8 @@ export function CourseCard({
   onGradeChange,
   onRemove
 }) {
-  const courseNumber = courseInfo.course_numbers && courseInfo.course_numbers.length > 0
-    ? courseInfo.course_numbers.join(' - ')
-    : '';
+  // Course ID is now in format xxxxxx-xxxxxx (the real school system ID)
+  const courseNumber = course.courseId || '';
 
   // Find linked course if exists
   const linkedCourse = findLinkedCourse(course.courseId, courseCatalog);
