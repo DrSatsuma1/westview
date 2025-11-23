@@ -37,7 +37,7 @@ export function EarlyGradButton({ earlyGradMode, setEarlyGradMode, earlyGradElig
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`flex items-center gap-2 px-4 py-3 rounded-lg border-2 transition-colors min-w-[140px] justify-center ${getButtonStyles()}`}
+        className={`flex items-center gap-2 px-4 py-3 rounded-lg border-2 transition-colors min-w-[180px] justify-center ${getButtonStyles()}`}
       >
         <span className="text-sm font-bold">{getButtonText()}</span>
         <ChevronDown size={16} />

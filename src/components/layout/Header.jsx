@@ -79,7 +79,7 @@ export function Header({
                     }
                   }, 100);
                 }}
-                className="bg-[#2B6CB0] hover:bg-[#2C5282] text-white border-2 border-[#2B6CB0] rounded-lg px-4 py-3 transition-colors text-sm font-bold whitespace-nowrap min-w-[140px] text-center"
+                className="bg-[#2B6CB0] hover:bg-[#2C5282] text-white border-2 border-[#2B6CB0] rounded-lg px-4 py-3 transition-colors text-sm font-bold whitespace-nowrap min-w-[180px] text-center"
               >
                 Track AP Exams
               </button>
@@ -91,7 +91,7 @@ export function Header({
               <button
                 onClick={onUndo}
                 disabled={courseHistory.length === 0}
-                className={`rounded-lg px-4 py-3 transition-colors text-sm font-bold min-w-[140px] text-center ${
+                className={`rounded-lg px-4 py-3 transition-colors text-sm font-bold min-w-[180px] text-center ${
                   courseHistory.length === 0
                     ? 'bg-gray-300 text-gray-500 cursor-not-allowed border-2 border-gray-300'
                     : 'bg-[#718096] hover:bg-[#4A5568] text-white border-2 border-[#718096]'
@@ -101,7 +101,7 @@ export function Header({
               </button>
               <button
                 onClick={onClearAll}
-                className="bg-[#C53030] hover:bg-[#9B2C2C] text-white border-2 border-[#C53030] rounded-lg px-4 py-3 transition-colors text-sm font-bold min-w-[140px] text-center"
+                className="bg-[#C53030] hover:bg-[#9B2C2C] text-white border-2 border-[#C53030] rounded-lg px-4 py-3 transition-colors text-sm font-bold min-w-[180px] text-center"
               >
                 Clear All
               </button>

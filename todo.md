@@ -8,7 +8,9 @@
 - [ ] Add "debug" as trigger word for systematic-debugging skill
 - [ ] Research: Is there a better option than Playwright for testing?
 - [ ] Add CTE logic to suggestion engine
-- [ ] Audit: Is JSON course catalog data correct? (term_length, etc.)
+- [ ] HARD RULE: Only one school service class per quarter
+  - Library & Info Science TA, Academic Tutor, ASB, Work Experience
+  - Block adding second service class in same quarter
 
 ## Completed (Nov 22, 2025 - Session 8)
 - [x] Fix credit-based auto-fill targeting (40 credits/semester instead of course count)

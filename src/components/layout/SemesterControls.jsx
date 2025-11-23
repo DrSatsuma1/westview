@@ -53,7 +53,7 @@ export function SemesterControls({
         }`}
       >
         <LightBulbIcon />
-        Auto-fill {termLabel}
+        Auto-Fill {termLabel}
       </button>
       <button
         onClick={() => onToggleLock(year, term)}

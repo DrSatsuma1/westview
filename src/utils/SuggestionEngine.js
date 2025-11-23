@@ -67,6 +67,12 @@ export class SuggestionEngine {
       agGaps: reqCalc.getUnmetAG()
     };
 
+    // DEBUG: Log PE status for Year 12
+    if (parseInt(year) === 12) {
+      const peCredits = reqCalc.calculateTotalPECredits();
+      console.log(`[DEBUG] Year 12 - Total PE credits: ${peCredits}, needsPE: ${unmetRequirements.needsPE}`);
+    }
+
     // Step 2: Build candidate pool (all eligible courses)
     const candidates = this.buildCandidatePool(year, courses);
 
