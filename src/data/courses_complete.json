@@ -1,7 +1,7 @@
 {
   "generated_for": "Westview HS Course Catalog 2025-2026",
   "schema_version": "2025-11-17.v1",
-  "total_courses": 189,
+  "total_courses": 199,
   "courses": [
     {
       "course_id": "AP_UNITED_0013",
@@ -33,7 +33,12 @@
       "is_ap_or_honors_pair": true,
       "pair_course_id": null,
       "fall_to_spring_dependency": false,
-      "linked_courses": [],
+      "linked_courses": [
+        "001380",
+        "001381",
+        "091393",
+        "091398"
+      ],
       "category_priority": 1,
       "is_graduation_requirement": false,
       "semester_restrictions": null,
@@ -78,7 +83,10 @@
       "is_ap_or_honors_pair": true,
       "pair_course_id": "HON_AMERICAN_0003",
       "fall_to_spring_dependency": false,
-      "linked_courses": [],
+      "linked_courses": [
+        "000382",
+        "000383"
+      ],
       "category_priority": 1,
       "is_graduation_requirement": false,
       "semester_restrictions": null,
@@ -123,7 +131,10 @@
       "is_ap_or_honors_pair": true,
       "pair_course_id": "HON_WORLD_0013",
       "fall_to_spring_dependency": false,
-      "linked_courses": [],
+      "linked_courses": [
+        "001305",
+        "001306"
+      ],
       "category_priority": 1,
       "is_graduation_requirement": true,
       "semester_restrictions": null,
@@ -207,7 +218,10 @@
       "is_ap_or_honors_pair": true,
       "pair_course_id": "AP_WORLD_0013",
       "fall_to_spring_dependency": false,
-      "linked_courses": [],
+      "linked_courses": [
+        "001307",
+        "001308"
+      ],
       "category_priority": 1,
       "is_graduation_requirement": true,
       "semester_restrictions": null,
@@ -416,7 +430,10 @@
       "is_ap_or_honors_pair": true,
       "pair_course_id": "BRITISH_LITERATURE_0003",
       "fall_to_spring_dependency": false,
-      "linked_courses": [],
+      "linked_courses": [
+        "000384",
+        "000385"
+      ],
       "category_priority": 1,
       "is_graduation_requirement": false,
       "semester_restrictions": null,
@@ -458,7 +475,10 @@
       "is_ap_or_honors_pair": true,
       "pair_course_id": "AP_ENGLISH",
       "fall_to_spring_dependency": false,
-      "linked_courses": [],
+      "linked_courses": [
+        "000370",
+        "000371"
+      ],
       "category_priority": 1,
       "is_graduation_requirement": false,
       "semester_restrictions": null,
@@ -651,7 +671,10 @@
       "is_ap_or_honors_pair": true,
       "pair_course_id": null,
       "fall_to_spring_dependency": false,
-      "linked_courses": [],
+      "linked_courses": [
+        "001382",
+        "001383"
+      ],
       "category_priority": 1,
       "is_graduation_requirement": false,
       "semester_restrictions": null,
@@ -902,7 +925,12 @@
       "is_ap_or_honors_pair": true,
       "pair_course_id": "AP_PRECALCULUS_0010",
       "fall_to_spring_dependency": false,
-      "linked_courses": [],
+      "linked_courses": [
+        "001085",
+        "001086",
+        "091085",
+        "091086"
+      ],
       "category_priority": 1,
       "is_graduation_requirement": false,
       "semester_restrictions": null,
@@ -994,7 +1022,10 @@
       "is_ap_or_honors_pair": true,
       "pair_course_id": "AP_CALCULUS_0010",
       "fall_to_spring_dependency": false,
-      "linked_courses": [],
+      "linked_courses": [
+        "001060",
+        "001061"
+      ],
       "category_priority": 1,
       "is_graduation_requirement": false,
       "semester_restrictions": null,
@@ -1040,7 +1071,12 @@
       "is_ap_or_honors_pair": true,
       "pair_course_id": "STATISTICS_0010",
       "fall_to_spring_dependency": false,
-      "linked_courses": [],
+      "linked_courses": [
+        "001066",
+        "001067",
+        "001039",
+        "001054"
+      ],
       "category_priority": 1,
       "is_graduation_requirement": false,
       "semester_restrictions": null,
@@ -1348,7 +1384,10 @@
       "is_ap_or_honors_pair": true,
       "pair_course_id": "AP_STATISTICS_0010",
       "fall_to_spring_dependency": false,
-      "linked_courses": [],
+      "linked_courses": [
+        "001064",
+        "001065"
+      ],
       "category_priority": 1,
       "is_graduation_requirement": false,
       "semester_restrictions": null,
@@ -1393,7 +1432,10 @@
       "is_ap_or_honors_pair": true,
       "pair_course_id": "HON_BIOLOGY_0012",
       "fall_to_spring_dependency": false,
-      "linked_courses": [],
+      "linked_courses": [
+        "001228",
+        "001229"
+      ],
       "category_priority": 1,
       "is_graduation_requirement": false,
       "semester_restrictions": null,
@@ -1483,7 +1525,10 @@
       "is_ap_or_honors_pair": true,
       "pair_course_id": "AP_BIOLOGY_0012",
       "fall_to_spring_dependency": false,
-      "linked_courses": [],
+      "linked_courses": [
+        "001232",
+        "001233"
+      ],
       "category_priority": 1,
       "is_graduation_requirement": false,
       "semester_restrictions": null,
@@ -1701,7 +1746,10 @@
       "is_ap_or_honors_pair": true,
       "pair_course_id": "HON_CHEMISTRY_0012",
       "fall_to_spring_dependency": false,
-      "linked_courses": [],
+      "linked_courses": [
+        "001238",
+        "001239"
+      ],
       "category_priority": 1,
       "is_graduation_requirement": false,
       "semester_restrictions": null,
@@ -1795,7 +1843,10 @@
       "is_ap_or_honors_pair": true,
       "pair_course_id": "PHYSICS_OF_0012",
       "fall_to_spring_dependency": false,
-      "linked_courses": [],
+      "linked_courses": [
+        "001248",
+        "001249"
+      ],
       "category_priority": 1,
       "is_graduation_requirement": false,
       "semester_restrictions": null,
@@ -1841,7 +1892,10 @@
       "is_ap_or_honors_pair": true,
       "pair_course_id": "AP_PHYSICS_0001",
       "fall_to_spring_dependency": false,
-      "linked_courses": [],
+      "linked_courses": [
+        "001262",
+        "001263"
+      ],
       "category_priority": 1,
       "is_graduation_requirement": false,
       "semester_restrictions": null,
@@ -1887,7 +1941,10 @@
       "is_ap_or_honors_pair": true,
       "pair_course_id": "AP_PHYSICS",
       "fall_to_spring_dependency": false,
-      "linked_courses": [],
+      "linked_courses": [
+        "001264",
+        "001265"
+      ],
       "category_priority": 1,
       "is_graduation_requirement": false,
       "semester_restrictions": null,
@@ -1979,7 +2036,10 @@
       "is_ap_or_honors_pair": true,
       "pair_course_id": "AP_CHEMISTRY_0012",
       "fall_to_spring_dependency": false,
-      "linked_courses": [],
+      "linked_courses": [
+        "001242",
+        "001243"
+      ],
       "category_priority": 1,
       "is_graduation_requirement": false,
       "semester_restrictions": null,
@@ -2070,7 +2130,10 @@
       "is_ap_or_honors_pair": false,
       "pair_course_id": null,
       "fall_to_spring_dependency": false,
-      "linked_courses": [],
+      "linked_courses": [
+        "001216",
+        "001217"
+      ],
       "category_priority": 1,
       "is_graduation_requirement": false,
       "semester_restrictions": null,
@@ -2207,7 +2270,10 @@
       "is_ap_or_honors_pair": true,
       "pair_course_id": "HON_SPANISH_0004",
       "fall_to_spring_dependency": false,
-      "linked_courses": [],
+      "linked_courses": [
+        "000496",
+        "000497"
+      ],
       "category_priority": 1,
       "is_graduation_requirement": false,
       "semester_restrictions": null,
@@ -2833,7 +2899,10 @@
       "is_ap_or_honors_pair": true,
       "pair_course_id": "AP_SPANISH_0004",
       "fall_to_spring_dependency": false,
-      "linked_courses": [],
+      "linked_courses": [
+        "000484",
+        "000485"
+      ],
       "category_priority": 1,
       "is_graduation_requirement": false,
       "semester_restrictions": null,
@@ -3669,7 +3738,12 @@
       "is_ap_or_honors_pair": true,
       "pair_course_id": "AP_STUDIO_0001",
       "fall_to_spring_dependency": false,
-      "linked_courses": [],
+      "linked_courses": [
+        "000813",
+        "000814",
+        "390150",
+        "390151"
+      ],
       "category_priority": 1,
       "is_graduation_requirement": false,
       "semester_restrictions": null,
@@ -3714,7 +3788,12 @@
       "is_ap_or_honors_pair": true,
       "pair_course_id": "AP_STUDIO_0001",
       "fall_to_spring_dependency": false,
-      "linked_courses": [],
+      "linked_courses": [
+        "000808",
+        "000809",
+        "190150",
+        "190151"
+      ],
       "category_priority": 1,
       "is_graduation_requirement": false,
       "semester_restrictions": null,
@@ -3759,7 +3838,12 @@
       "is_ap_or_honors_pair": true,
       "pair_course_id": "AP_STUDIO_0001",
       "fall_to_spring_dependency": false,
-      "linked_courses": [],
+      "linked_courses": [
+        "000811",
+        "000812",
+        "090150",
+        "090151"
+      ],
       "category_priority": 1,
       "is_graduation_requirement": false,
       "semester_restrictions": null,
@@ -5363,7 +5447,10 @@
       "is_ap_or_honors_pair": true,
       "pair_course_id": "HIGH_SCHOOL_0003",
       "fall_to_spring_dependency": false,
-      "linked_courses": [],
+      "linked_courses": [
+        "099301",
+        "099302"
+      ],
       "category_priority": 1,
       "is_graduation_requirement": false,
       "semester_restrictions": null,
@@ -5402,7 +5489,10 @@
       "is_ap_or_honors_pair": true,
       "pair_course_id": "HIGH_SCHOOL_0003",
       "fall_to_spring_dependency": false,
-      "linked_courses": [],
+      "linked_courses": [
+        "090310",
+        "090311"
+      ],
       "category_priority": 1,
       "is_graduation_requirement": false,
       "semester_restrictions": null,
@@ -5443,7 +5533,10 @@
       "is_ap_or_honors_pair": false,
       "pair_course_id": null,
       "fall_to_spring_dependency": false,
-      "linked_courses": [],
+      "linked_courses": [
+        "091376",
+        "091377"
+      ],
       "category_priority": 1,
       "is_graduation_requirement": false,
       "semester_restrictions": null,
@@ -5906,7 +5999,12 @@
       "is_ap_or_honors_pair": true,
       "pair_course_id": null,
       "fall_to_spring_dependency": false,
-      "linked_courses": [],
+      "linked_courses": [
+        "000971",
+        "000972",
+        "001072",
+        "001073"
+      ],
       "category_priority": 1,
       "is_graduation_requirement": false,
       "semester_restrictions": null,
@@ -6039,7 +6137,10 @@
       "is_ap_or_honors_pair": true,
       "pair_course_id": "AP_COMPUTER_0010",
       "fall_to_spring_dependency": false,
-      "linked_courses": [],
+      "linked_courses": [
+        "001056",
+        "001057"
+      ],
       "category_priority": 1,
       "is_graduation_requirement": false,
       "semester_restrictions": null,
@@ -6080,7 +6181,10 @@
       "is_ap_or_honors_pair": true,
       "pair_course_id": "AP_COMPUTER_0010",
       "fall_to_spring_dependency": false,
-      "linked_courses": [],
+      "linked_courses": [
+        "001056",
+        "001057"
+      ],
       "category_priority": 1,
       "is_graduation_requirement": false,
       "semester_restrictions": null,
@@ -8135,6 +8239,325 @@
       "semester_restrictions": null,
       "notes": "Club - Can be taken any number of quarters. 1.25 credits per quarter. Pass/Fail grading.",
       "prerequisites_required_ids": [],
+      "prerequisites_recommended_ids": []
+    },
+    {
+      "course_id": "CIVICS_LINKED_0091",
+      "full_name": "CIVICS / ECONOMICS (Linked w/AP US Gov)",
+      "course_numbers": [
+        "091393",
+        "091398"
+      ],
+      "grades_allowed": [
+        12
+      ],
+      "credits": 10,
+      "uc_csu_category": "A",
+      "pathway": "History/Social Science",
+      "term_length": "semester",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "notes": "Linked section with AP US Government & Politics",
+      "linked_courses": [
+        "001395",
+        "001396"
+      ],
+      "credit_type": "standard",
+      "prerequisites_required": [],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "homework_hours_per_week": null,
+      "uc_honors_weight": null,
+      "prerequisites_recommended_ids": []
+    },
+    {
+      "course_id": "AP_PRECALCULUS_LINKED",
+      "full_name": "AP PRE-CALCULUS 1-2 (Linked w/AP Calc AB)",
+      "course_numbers": [
+        "091085",
+        "091086"
+      ],
+      "grades_allowed": [
+        11,
+        12
+      ],
+      "credits": 10,
+      "uc_csu_category": "C",
+      "pathway": "Math",
+      "term_length": "semester",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "notes": "Linked section with AP Calculus AB",
+      "linked_courses": [
+        "001060",
+        "001061"
+      ],
+      "uc_honors_weight": "A=5, B=4, C=3",
+      "credit_type": "standard",
+      "prerequisites_required": [],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "homework_hours_per_week": null,
+      "prerequisites_recommended_ids": []
+    },
+    {
+      "course_id": "STUDIO_ART_CERAMICS_LINKED",
+      "full_name": "STUDIO ART 1-2: CERAMICS (Linked w/AP Studio Art 3D)",
+      "course_numbers": [
+        "190150",
+        "190151"
+      ],
+      "grades_allowed": [
+        10,
+        11,
+        12
+      ],
+      "credits": 10,
+      "uc_csu_category": "F",
+      "pathway": "Fine Arts",
+      "term_length": "semester",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "notes": "Linked section with AP Studio Art 3D Design",
+      "linked_courses": [
+        "000159",
+        "000160"
+      ],
+      "credit_type": "standard",
+      "prerequisites_required": [],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "homework_hours_per_week": null,
+      "uc_honors_weight": null,
+      "prerequisites_recommended_ids": []
+    },
+    {
+      "course_id": "STUDIO_ART_DRAWING_LINKED",
+      "full_name": "STUDIO ART 1-2: DRAWING & PAINTING (Linked w/AP Studio Art)",
+      "course_numbers": [
+        "090150",
+        "090151"
+      ],
+      "grades_allowed": [
+        10,
+        11,
+        12
+      ],
+      "credits": 10,
+      "uc_csu_category": "F",
+      "pathway": "Fine Arts",
+      "term_length": "semester",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "notes": "Linked section with AP Studio Art Drawing & Painting",
+      "linked_courses": [
+        "000151",
+        "000152"
+      ],
+      "credit_type": "standard",
+      "prerequisites_required": [],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "homework_hours_per_week": null,
+      "uc_honors_weight": null,
+      "prerequisites_recommended_ids": []
+    },
+    {
+      "course_id": "STUDIO_ART_PHOTO_LINKED",
+      "full_name": "STUDIO ART 1-2: DIGITAL PHOTOGRAPHY (Linked w/AP Studio Art 2D)",
+      "course_numbers": [
+        "390150",
+        "390151"
+      ],
+      "grades_allowed": [
+        10,
+        11,
+        12
+      ],
+      "credits": 10,
+      "uc_csu_category": "F",
+      "pathway": "Fine Arts",
+      "term_length": "semester",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "notes": "Linked section with AP Studio Art 2D Design",
+      "linked_courses": [
+        "000157",
+        "000158"
+      ],
+      "credit_type": "standard",
+      "prerequisites_required": [],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "homework_hours_per_week": null,
+      "uc_honors_weight": null,
+      "prerequisites_recommended_ids": []
+    },
+    {
+      "course_id": "HS_ENGLISH_12_LINKED_AVID",
+      "full_name": "HIGH SCHOOL ENGLISH 1-2 (Linked w/AVID 1-2)",
+      "course_numbers": [
+        "099301",
+        "099302"
+      ],
+      "grades_allowed": [
+        9
+      ],
+      "credits": 10,
+      "uc_csu_category": "B",
+      "pathway": "English",
+      "term_length": "semester",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "notes": "Linked section with AVID 1-2",
+      "linked_courses": [
+        "001595",
+        "001596"
+      ],
+      "credit_type": "standard",
+      "prerequisites_required": [],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "homework_hours_per_week": null,
+      "uc_honors_weight": null,
+      "prerequisites_recommended_ids": []
+    },
+    {
+      "course_id": "HS_ENGLISH_34_LINKED_AVID",
+      "full_name": "HIGH SCHOOL ENGLISH 3-4 (Linked w/AVID 3-4)",
+      "course_numbers": [
+        "090310",
+        "090311"
+      ],
+      "grades_allowed": [
+        10
+      ],
+      "credits": 10,
+      "uc_csu_category": "B",
+      "pathway": "English",
+      "term_length": "semester",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "notes": "Linked section with AVID 3-4",
+      "linked_courses": [
+        "001597",
+        "001598"
+      ],
+      "credit_type": "standard",
+      "prerequisites_required": [],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "homework_hours_per_week": null,
+      "uc_honors_weight": null,
+      "prerequisites_recommended_ids": []
+    },
+    {
+      "course_id": "US_HISTORY_LINKED_AVID",
+      "full_name": "U.S. HISTORY 1-2 (Linked w/AVID 5-6)",
+      "course_numbers": [
+        "091376",
+        "091377"
+      ],
+      "grades_allowed": [
+        11
+      ],
+      "credits": 10,
+      "uc_csu_category": "A",
+      "pathway": "History/Social Science",
+      "term_length": "semester",
+      "offered_terms": [
+        "fall",
+        "spring"
+      ],
+      "notes": "Linked section with AVID 5-6",
+      "linked_courses": [
+        "001599",
+        "001600"
+      ],
+      "credit_type": "standard",
+      "prerequisites_required": [],
+      "prerequisites_recommended": [],
+      "is_replacement_course": false,
+      "replacement_equivalents": [],
+      "is_ap_or_honors_pair": false,
+      "pair_course_id": null,
+      "fall_to_spring_dependency": false,
+      "category_priority": 1,
+      "is_graduation_requirement": false,
+      "semester_restrictions": null,
+      "alternate_ids": [],
+      "homework_hours_per_week": null,
+      "uc_honors_weight": null,
       "prerequisites_recommended_ids": []
     }
   ]
