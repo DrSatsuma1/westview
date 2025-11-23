@@ -41,26 +41,26 @@ export class CandidateRanker {
     }
 
     if (this.unmet.needsPE && course.pathway === 'Physical Education') {
-      // Grade 9 PE is REQUIRED - highest priority
-      // ENS 3-4 in Fall, ENS 1-2 in Spring
+      // PE is REQUIRED for Westview graduation (20 credits total)
       const nameUpper = course.full_name.toUpperCase();
 
       if (this.year === 9) {
-        // ENS 3-4 for Fall (Q1/Q2)
+        // Grade 9: ENS 3-4 in Fall, ENS 1-2 in Spring
         if (this.term === 'fall' && nameUpper.includes('ENS 3-4')) {
           return 950; // Highest priority for Grade 9 Fall
         }
-        // ENS 1-2 for Spring (Q3/Q4)
         if (this.term === 'spring' && nameUpper.includes('ENS 1-2')) {
           return 950; // Highest priority for Grade 9 Spring
         }
         // Other PE courses for Grade 9 get lower priority
         score = 800;
       } else if (this.year === 12) {
-        // Grade 12 needs one PE class for the year
-        score = 800;
+        // Grade 12: CRITICAL - must complete 20 PE credits to graduate
+        // This is TOP PRIORITY if they haven't met the requirement
+        score = 900; // Higher than most other courses
       } else {
-        // Grades 10-11 don't need PE, so very low priority
+        // Grades 10-11: Most students take final PE in Year 12
+        // Very low priority - only if needsPE is somehow true
         score = 100;
       }
 

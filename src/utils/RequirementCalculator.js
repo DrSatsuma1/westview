@@ -25,14 +25,54 @@ export class RequirementCalculator {
     const yearCourses = this.courses.filter(c => c.year === year);
     const yearInt = parseInt(year);
 
+    // Per-year checks (suggest 10 credits/year as reasonable pace)
+    const needsEnglishThisYear = !this.hasPathway(yearCourses, 'English');
+    const needsMathThisYear = !this.hasPathway(yearCourses, 'Math');
+    const needsHistoryThisYear = !this.hasPathway(yearCourses, 'History/Social Science');
+
+    // For Year 12, also check cumulative credits to ensure graduation
+    let needsEnglish = needsEnglishThisYear;
+    let needsMath = needsMathThisYear;
+    let needsHistory = needsHistoryThisYear;
+
+    if (yearInt === 12) {
+      // Check cumulative credits - must meet graduation requirements
+      // English: 40 credits, Math: 20 credits, History: 30 credits
+      const englishCredits = this.calculatePathwayCredits('English');
+      const mathCredits = this.calculatePathwayCredits('Math');
+      const historyCredits = this.calculatePathwayCredits('History/Social Science');
+
+      // If behind on cumulative, prioritize even if this year has one
+      if (englishCredits < 40) needsEnglish = true;
+      if (mathCredits < 20) needsMath = true;
+      if (historyCredits < 30) needsHistory = true;
+    }
+
     return {
-      needsEnglish: !this.hasPathway(yearCourses, 'English'),
-      needsMath: !this.hasPathway(yearCourses, 'Math'),
-      needsHistory: !this.hasPathway(yearCourses, 'History/Social Science'),
+      needsEnglish,
+      needsMath,
+      needsHistory,
       // Science is required for grades 9-10 (Biology in Grade 9, Chemistry in Grade 10)
       needsScience: (yearInt === 9 || yearInt === 10) && !this.hasPathway(yearCourses, ['Science - Biological', 'Science - Physical']),
       needsPE: this.checkPERequirement(year, yearCourses)
     };
+  }
+
+  /**
+   * Calculate total credits for a pathway across all years
+   * @param {string} pathway - Pathway name
+   * @returns {number} - Total credits
+   */
+  calculatePathwayCredits(pathway) {
+    const uniqueCourseIds = [...new Set(this.courses.map(c => c.courseId))];
+    let totalCredits = 0;
+    for (const courseId of uniqueCourseIds) {
+      const courseInfo = this.catalog[courseId];
+      if (courseInfo && courseInfo.pathway === pathway) {
+        totalCredits += courseInfo.credits || 0;
+      }
+    }
+    return totalCredits;
   }
 
   /**
@@ -102,17 +142,38 @@ export class RequirementCalculator {
       return !hasPEInFall || !hasPEInSpring;
     }
 
-    // Grade 10-11: No PE required
+    // Grade 10-11: Most students take their final PE in Year 12
+    // Don't suggest PE in years 10-11 unless severely behind
     if (yearInt === 10 || yearInt === 11) {
-      return false;
+      return false; // Let them take PE in Year 12 when most students do
     }
 
-    // Grade 12: Need one PE class for the year
+    // Grade 12: CRITICAL - Must complete 20 PE credits to graduate
+    // If cumulative PE credits < 20, PE is TOP PRIORITY
     if (yearInt === 12) {
-      return !this.hasPathway(yearCourses, 'Physical Education');
+      const totalPECredits = this.calculateTotalPECredits();
+      return totalPECredits < 20;
     }
 
     return false;
+  }
+
+  /**
+   * Calculate total PE credits across all years
+   * @returns {number} - Total PE credits earned
+   */
+  calculateTotalPECredits() {
+    // Get unique course IDs (avoid double-counting yearlong courses that appear in multiple quarters)
+    const uniqueCourseIds = [...new Set(this.courses.map(c => c.courseId))];
+
+    let totalCredits = 0;
+    for (const courseId of uniqueCourseIds) {
+      const courseInfo = this.catalog[courseId];
+      if (courseInfo && courseInfo.pathway === 'Physical Education') {
+        totalCredits += courseInfo.credits || 0;
+      }
+    }
+    return totalCredits;
   }
 
   /**
