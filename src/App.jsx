@@ -85,6 +85,10 @@ function App() {
   const [concurrentCourses, setConcurrentCourses] = useLocalStorage('westview-concurrent-courses', []);
   const [showConcurrentForm, setShowConcurrentForm] = useState(false);
   const [newConcurrentCourse, setNewConcurrentCourse] = useState({ name: '', collegeUnits: 3 });
+  // Off-roll courses (dynamic entries with period + reason)
+  const [offRollCourses, setOffRollCourses] = useLocalStorage('westview-off-roll-courses', []);
+  const [showOffRollForm, setShowOffRollForm] = useState(false);
+  const [newOffRollCourse, setNewOffRollCourse] = useState({ period: '', reason: '', customReason: '' });
   const [hideAPClasses, setHideAPClasses] = useLocalStorage('westview-hide-ap-classes', false);
   const [hideSpecialEdClasses, setHideSpecialEdClasses] = useLocalStorage('westview-hide-special-ed-classes', false);
   const [westviewGradOnly, setWestviewGradOnly] = useLocalStorage('westview-grad-only', false);
@@ -211,7 +215,7 @@ function App() {
     );
   };
 
-  // Helper function to get course info (handles both catalog and concurrent courses)
+  // Helper function to get course info (handles catalog, concurrent, and off-roll courses)
   const getCourseInfo = (courseId) => {
     if (courseId.startsWith('CONCURRENT_')) {
       const concurrentCourse = concurrentCourses.find(c => c.id === courseId);
@@ -225,6 +229,21 @@ function App() {
         term_length: 'semester',
         offered_terms: ['fall', 'spring'],
         uc_csu_category: null
+      };
+    }
+    if (courseId.startsWith('OFF_ROLL_')) {
+      const offRollCourse = offRollCourses.find(c => c.id === courseId);
+      if (!offRollCourse) return null;
+
+      return {
+        course_id: offRollCourse.id,
+        full_name: `Off-Roll ${offRollCourse.period} - ${offRollCourse.reason}`,
+        credits: 0,
+        pathway: 'Off-Roll',
+        term_length: 'semester',
+        offered_terms: ['fall', 'spring'],
+        uc_csu_category: null,
+        grades_allowed: [12]
       };
     }
     return COURSE_CATALOG[courseId] || null;
@@ -507,8 +526,9 @@ function App() {
   // Get unique pathways for course selection
   const pathways = useMemo(() => {
     const uniquePathways = [...new Set(Object.values(COURSE_CATALOG).map(c => c.pathway))];
-    // Add Concurrent Enrollment as a special category
+    // Add special categories
     uniquePathways.push('Concurrent Enrollment');
+    uniquePathways.push('Off-Roll');
     return uniquePathways.sort();
   }, []);
 
@@ -736,6 +756,12 @@ function App() {
                             newConcurrentCourse={newConcurrentCourse}
                             setNewConcurrentCourse={setNewConcurrentCourse}
                             convertCollegeUnitsToHSCredits={convertCollegeUnitsToHSCredits}
+                            offRollCourses={offRollCourses}
+                            setOffRollCourses={setOffRollCourses}
+                            showOffRollForm={showOffRollForm}
+                            setShowOffRollForm={setShowOffRollForm}
+                            newOffRollCourse={newOffRollCourse}
+                            setNewOffRollCourse={setNewOffRollCourse}
                             getCoursesForQuarter={getCoursesForQuarter}
                             setError={setError}
                             setWarning={setWarning}

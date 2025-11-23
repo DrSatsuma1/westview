@@ -90,12 +90,12 @@ export function EarlyGradButton({ earlyGradMode, setEarlyGradMode, earlyGradElig
                 ✓ Eligible: {earlyGradEligibility.creditsThrough11} credits through Grade 11
               </div>
               {!earlyGradEligibility.hasSeniorEnglish && (
-                <div className="text-xs text-orange-600 mt-1">
+                <div className="text-xs text-amber-600 mt-1">
                   ⚠ Need Senior English in Grade 11
                 </div>
               )}
               {!earlyGradEligibility.hasCivicsEcon && (
-                <div className="text-xs text-orange-600 mt-1">
+                <div className="text-xs text-amber-600 mt-1">
                   ⚠ Need Civics/Economics in Grade 11
                 </div>
               )}

@@ -48,9 +48,9 @@ export function ValidationWarnings({ scheduleErrors, englishWarnings, peWarnings
 
       {/* Prerequisite Warnings */}
       {prereqWarnings.length > 0 && (
-        <div className="bg-orange-50 border border-orange-400 rounded-lg px-3 py-2 flex items-center gap-2 min-w-fit max-w-[48%]">
-          <AlertCircle className="text-orange-600 flex-shrink-0" size={16} />
-          <div className="text-sm text-orange-800">
+        <div className="bg-amber-50 border border-amber-400 rounded-lg px-3 py-2 flex items-center gap-2 min-w-fit max-w-[48%]">
+          <AlertCircle className="text-amber-600 flex-shrink-0" size={16} />
+          <div className="text-sm text-amber-800">
             <span className="font-semibold">Prerequisites:</span>{' '}
             {prereqWarnings.map((w, idx) => (
               <span key={idx}>

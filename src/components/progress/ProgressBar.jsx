@@ -16,7 +16,7 @@
  *
  * Visual States:
  *   - Complete (earned >= needed): Green bar and checkmark icon
- *   - In Progress (0 < earned < needed): Orange bar and alert icon
+ *   - In Progress (0 < earned < needed): Amber bar and alert icon
  *   - Not Started (earned === 0): Gray bar and empty circle icon
  *
  * Features:
@@ -67,7 +67,7 @@ export function ProgressBar({
           {isComplete ? (
             <CheckCircle2 className="text-green-600" size={18} />
           ) : isInProgress ? (
-            <AlertCircle className="text-orange-500" size={18} />
+            <AlertCircle className="text-amber-500" size={18} />
           ) : (
             <Circle className="text-gray-300" size={18} />
           )}
@@ -78,7 +78,7 @@ export function ProgressBar({
       <div className="w-full bg-gray-200 rounded-full h-2">
         <div
           className={`h-2 rounded-full transition-all ${
-            isComplete ? 'bg-green-500' : isInProgress ? 'bg-orange-500' : 'bg-gray-300'
+            isComplete ? 'bg-green-500' : isInProgress ? 'bg-amber-500' : 'bg-gray-300'
           }`}
           style={{ width: `${percentage}%` }}
         />

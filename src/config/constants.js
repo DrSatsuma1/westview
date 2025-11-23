@@ -15,7 +15,7 @@ export const GRADE_OPTIONS = ['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-',
 export const PATHWAY_COLORS = {
   'English': 'border-l-[#E53E3E]',           // Classic Red
   'Math': 'border-l-[#3182CE]',              // Strong Blue
-  'Physical Education': 'border-l-[#ED8936]', // Orange
+  'Physical Education': 'border-l-[#D69E2E]', // Gold
   'History/Social Science': 'border-l-[#805AD5]', // Purple
   'Science - Biological': 'border-l-[#D69E2E]',   // Gold/Yellow
   'Science - Physical': 'border-l-[#D69E2E]',     // Gold/Yellow
@@ -35,7 +35,7 @@ export const CTE_PATHWAY_ICONS = {
   'business': { iconName: 'Briefcase', color: 'text-blue-600' },
   'biotech': { iconName: 'Beaker', color: 'text-purple-600' },
   'design': { iconName: 'Palette', color: 'text-pink-600' },
-  'engineering': { iconName: 'Wrench', color: 'text-orange-600' },
+  'engineering': { iconName: 'Wrench', color: 'text-amber-600' },
   'ict': { iconName: 'Laptop', color: 'text-green-600' },
   'performingArts': { iconName: 'Music', color: 'text-red-600' },
   'productionArts': { iconName: 'Video', color: 'text-indigo-600' }

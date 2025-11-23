@@ -47,8 +47,19 @@ export function AddCourseForm({
   setShowConcurrentForm,
   newConcurrentCourse = { name: '', collegeUnits: 3 },
   setNewConcurrentCourse,
-  convertCollegeUnitsToHSCredits
+  convertCollegeUnitsToHSCredits,
+  // Off-roll props (optional)
+  offRollCourses = [],
+  setOffRollCourses,
+  showOffRollForm = false,
+  setShowOffRollForm,
+  newOffRollCourse = { period: '', reason: '', customReason: '' },
+  setNewOffRollCourse
 }) {
+  // Off-roll period options
+  const OFF_ROLL_PERIODS = ['1st', '4th', '5th', '6th'];
+  // Off-roll reason options
+  const OFF_ROLL_REASONS = ['Free Time', 'Athletics', 'Work', 'Internship', 'Other'];
   return (
     <div className="bg-blue-50 rounded-lg p-3 border-2 border-blue-300">
       {error && (
@@ -68,14 +79,17 @@ export function AddCourseForm({
             >
               🔍 Search All Courses
             </button>
-            {pathways.map(pathway => (
+            {pathways
+              .filter(pathway => pathway !== 'Off-Roll' || year === '12') // Off-Roll only in Grade 12
+              .map(pathway => (
               <button
                 key={pathway}
                 onClick={() => {
-                  if (pathway === 'Off-Roll') {
-                    // Auto-add Off-Roll course without showing dropdown
-                    setNewCourse({ courseId: 'OFF_ROLL_PLACEHOLDER' });
-                    setTimeout(() => onAdd(year, quarter), 0);
+                  if (pathway === 'Off-Roll' && setOffRollCourses) {
+                    // Show off-roll form for period/reason selection
+                    setSelectedCategory('Off-Roll');
+                    setShowOffRollForm(true);
+                    setNewOffRollCourse({ period: '', reason: '', customReason: '' });
                   } else {
                     setSelectedCategory(pathway);
                   }
@@ -256,6 +270,105 @@ export function AddCourseForm({
                   </div>
                 </div>
               )}
+            </div>
+          ) : selectedCategory === 'Off-Roll' && setOffRollCourses ? (
+            // Off-Roll special UI with period and reason selection
+            <div className="space-y-3">
+              <p className="text-xs text-[#718096] font-medium">Select off-roll period and reason:</p>
+
+              {/* Period Selection */}
+              <div>
+                <label className="block text-xs text-[#718096] mb-1">Period</label>
+                <div className="grid grid-cols-4 gap-2">
+                  {OFF_ROLL_PERIODS.map(period => (
+                    <button
+                      key={period}
+                      onClick={() => setNewOffRollCourse({ ...newOffRollCourse, period })}
+                      className={`px-3 py-2 text-sm rounded border-2 transition-colors ${
+                        newOffRollCourse.period === period
+                          ? 'bg-amber-100 border-amber-500 text-amber-700'
+                          : 'bg-white border-gray-300 hover:border-amber-400 text-gray-700'
+                      }`}
+                    >
+                      {period}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Reason Selection */}
+              <div>
+                <label className="block text-xs text-[#718096] mb-1">Reason</label>
+                <div className="grid grid-cols-2 gap-2">
+                  {OFF_ROLL_REASONS.map(reason => (
+                    <button
+                      key={reason}
+                      onClick={() => setNewOffRollCourse({ ...newOffRollCourse, reason, customReason: '' })}
+                      className={`px-3 py-2 text-sm rounded border-2 transition-colors ${
+                        newOffRollCourse.reason === reason
+                          ? 'bg-amber-100 border-amber-500 text-amber-700'
+                          : 'bg-white border-gray-300 hover:border-amber-400 text-gray-700'
+                      }`}
+                    >
+                      {reason}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Custom Reason Input (when "Other" is selected) */}
+              {newOffRollCourse.reason === 'Other' && (
+                <div>
+                  <label className="block text-xs text-[#718096] mb-1">Describe your reason</label>
+                  <input
+                    type="text"
+                    placeholder="Enter reason..."
+                    value={newOffRollCourse.customReason}
+                    onChange={(e) => setNewOffRollCourse({ ...newOffRollCourse, customReason: e.target.value })}
+                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+                    autoFocus
+                  />
+                </div>
+              )}
+
+              {/* Add Button */}
+              <div className="flex gap-2">
+                <button
+                  onClick={() => {
+                    const period = newOffRollCourse.period;
+                    const reason = newOffRollCourse.reason === 'Other'
+                      ? newOffRollCourse.customReason
+                      : newOffRollCourse.reason;
+
+                    if (period && reason) {
+                      const courseId = `OFF_ROLL_${Date.now()}`;
+                      // Add to off-roll courses list
+                      setOffRollCourses([...offRollCourses, {
+                        id: courseId,
+                        period,
+                        reason
+                      }]);
+                      setNewCourse({ courseId });
+                      setShowOffRollForm(false);
+                      setTimeout(() => onAdd(year, quarter), 0);
+                    }
+                  }}
+                  disabled={!newOffRollCourse.period || !newOffRollCourse.reason ||
+                    (newOffRollCourse.reason === 'Other' && !newOffRollCourse.customReason)}
+                  className="flex-1 bg-amber-600 text-white px-3 py-2 rounded hover:bg-amber-700 text-sm font-medium disabled:bg-gray-300"
+                >
+                  Add Off-Roll
+                </button>
+                <button
+                  onClick={() => {
+                    setShowOffRollForm(false);
+                    setSelectedCategory('');
+                  }}
+                  className="px-3 py-2 border border-gray-300 rounded hover:bg-gray-50 text-sm font-medium"
+                >
+                  Cancel
+                </button>
+              </div>
             </div>
           ) : (
             // Dropdown mode with grouped options

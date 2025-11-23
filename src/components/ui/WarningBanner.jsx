@@ -7,7 +7,7 @@
  * Used by: App.jsx (validation warnings, course addition errors/warnings, etc.)
  *
  * Props:
- *   - type (string): Severity level - 'error', 'warning', 'info', or 'orange'
+ *   - type (string): Severity level - 'error', 'warning', 'info', or 'orange' (displays as amber)
  *   - message (string|ReactNode): Message content to display
  *   - icon (boolean, optional): Whether to show an alert icon. Defaults to true.
  *   - className (string, optional): Additional CSS classes to append
@@ -17,7 +17,7 @@
  *   - error: Red background (bg-red-50/100) with red border and text
  *   - warning: Yellow background (bg-yellow-50/100) with yellow border and text
  *   - info: Blue background (bg-blue-50/100) with blue border and text
- *   - orange: Orange background (bg-orange-50) with orange border and text
+ *   - orange: Amber background (bg-amber-50) with amber border and text
  *
  * Usage Examples:
  *   // Error message
@@ -64,10 +64,10 @@ export function WarningBanner({
       borderWidth: compact ? 'border' : 'border'
     },
     orange: {
-      bg: 'bg-orange-50',
-      border: 'border-orange-400',
-      text: 'text-orange-800',
-      icon: 'text-orange-600',
+      bg: 'bg-amber-50',
+      border: 'border-amber-400',
+      text: 'text-amber-800',
+      icon: 'text-amber-600',
       borderWidth: 'border'
     }
   };

@@ -44,9 +44,9 @@ export function UCGPADetails({ ucGPA }) {
           <span className="text-xs font-medium text-green-800">Meets 3.4 minimum GPA</span>
         </div>
       ) : ucGPA.totalGrades > 0 ? (
-        <div className="mt-3 bg-orange-50 border border-orange-200 rounded-lg p-2 flex items-center gap-2">
-          <AlertCircle className="text-orange-600" size={16} />
-          <span className="text-xs font-medium text-orange-800">Below 3.4 minimum GPA</span>
+        <div className="mt-3 bg-amber-50 border border-amber-200 rounded-lg p-2 flex items-center gap-2">
+          <AlertCircle className="text-amber-600" size={16} />
+          <span className="text-xs font-medium text-amber-800">Below 3.4 minimum GPA</span>
         </div>
       ) : null}
     </div>

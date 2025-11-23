@@ -22,7 +22,7 @@ export function WestviewRequirements({ requirements, progress }) {
                   {prog.met ? (
                     <CheckCircle2 className="text-green-600" size={18} />
                   ) : prog.earned > 0 ? (
-                    <AlertCircle className="text-orange-500" size={18} />
+                    <AlertCircle className="text-amber-500" size={18} />
                   ) : (
                     <Circle className="text-gray-300" size={18} />
                   )}
@@ -31,7 +31,7 @@ export function WestviewRequirements({ requirements, progress }) {
               <div className="w-full bg-gray-200 rounded-full h-2">
                 <div
                   className={`h-2 rounded-full transition-all ${
-                    prog.met ? 'bg-green-500' : prog.earned > 0 ? 'bg-orange-500' : 'bg-gray-300'
+                    prog.met ? 'bg-green-500' : prog.earned > 0 ? 'bg-amber-500' : 'bg-gray-300'
                   }`}
                   style={{ width: `${pct}%` }}
                 />

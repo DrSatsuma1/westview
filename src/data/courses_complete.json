@@ -7415,41 +7415,6 @@
       "homework_hours_per_week": null
     },
     {
-      "course_id": "OFF_ROLL_PLACEHOLDER",
-      "full_name": "Off-Roll (Not Attending Westview)",
-      "grades_allowed": [
-        9,
-        10,
-        11,
-        12
-      ],
-      "credits": 0,
-      "credit_type": "standard",
-      "uc_csu_category": null,
-      "pathway": "Off-Roll",
-      "term_length": "semester",
-      "offered_terms": [
-        "fall",
-        "spring"
-      ],
-      "prerequisites_required": [],
-      "prerequisites_recommended": [],
-      "is_replacement_course": false,
-      "replacement_equivalents": [],
-      "is_ap_or_honors_pair": false,
-      "pair_course_id": null,
-      "fall_to_spring_dependency": false,
-      "linked_courses": [],
-      "category_priority": 1,
-      "is_graduation_requirement": false,
-      "semester_restrictions": null,
-      "alternate_ids": [],
-      "notes": "Select this option when the student is not taking courses at Westview during this semester (e.g., attending another school, independent study, etc.)",
-      "homework_hours_per_week": null,
-      "prerequisites_required_ids": [],
-      "prerequisites_recommended_ids": []
-    },
-    {
       "course_id": "CLUB_ROBOTICS",
       "full_name": "ROBOTICS",
       "pathway": "Clubs/Athletics",

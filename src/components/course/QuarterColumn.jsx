@@ -61,6 +61,13 @@ export function QuarterColumn({
   newConcurrentCourse,
   setNewConcurrentCourse,
   convertCollegeUnitsToHSCredits,
+  // Off-roll props
+  offRollCourses,
+  setOffRollCourses,
+  showOffRollForm,
+  setShowOffRollForm,
+  newOffRollCourse,
+  setNewOffRollCourse,
   // Semester total calculation
   getCoursesForQuarter,
   setError,
@@ -168,6 +175,12 @@ export function QuarterColumn({
                 newConcurrentCourse={newConcurrentCourse}
                 setNewConcurrentCourse={setNewConcurrentCourse}
                 convertCollegeUnitsToHSCredits={convertCollegeUnitsToHSCredits}
+                offRollCourses={offRollCourses}
+                setOffRollCourses={setOffRollCourses}
+                showOffRollForm={showOffRollForm}
+                setShowOffRollForm={setShowOffRollForm}
+                newOffRollCourse={newOffRollCourse}
+                setNewOffRollCourse={setNewOffRollCourse}
               />
             );
           } else {
