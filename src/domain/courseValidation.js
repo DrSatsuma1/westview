@@ -164,6 +164,15 @@ export function validateCourseAddition({
     }
   }
 
+  // === MATH PREREQUISITE VALIDATION ===
+  // Check if student has the required math prerequisites
+  if (courseInfo.pathway === 'Math') {
+    const mathPrereqWarning = checkMathPrerequisites(courseName, allCourses, courseCatalog, parseInt(year));
+    if (mathPrereqWarning) {
+      warning = mathPrereqWarning;
+    }
+  }
+
   // === ENGLISH SEQUENCE VALIDATION ===
   if (courseInfo.pathway === 'English') {
     const allCourseInfos = allCourses.map(c => courseCatalog[c.courseId]);
@@ -376,6 +385,24 @@ export function validateCourseAddition({
     }
   }
 
+  // === SEMESTER CREDIT WARNING ===
+  // Warn if semester will exceed 40 credits
+  const isFall = quarter === 'Q1' || quarter === 'Q2';
+  const semesterQuarters = isFall ? ['Q1', 'Q2'] : ['Q3', 'Q4'];
+  const semesterCourses = allCourses.filter(c =>
+    c.year === year && semesterQuarters.includes(c.quarter)
+  );
+  const uniqueSemesterCourseIds = [...new Set(semesterCourses.map(c => c.courseId))];
+  const semesterCredits = uniqueSemesterCourseIds.reduce((sum, id) => {
+    const info = courseCatalog[id];
+    return sum + (info?.credits || 0);
+  }, 0);
+  const newCredits = courseInfo.credits || 0;
+  if (semesterCredits + newCredits > 40) {
+    const semesterName = isFall ? 'Fall' : 'Spring';
+    warning = `Adding this course will put you at ${semesterCredits + newCredits} credits in ${semesterName}. Maximum recommended is 40.`;
+  }
+
   // === TERM REQUIREMENTS VALIDATION ===
   if (getTermRequirements && canScheduleInSemester && getCoursesForQuarter) {
     const termReqs = getTermRequirements(courseId);
@@ -413,4 +440,92 @@ export function validateCourseAddition({
   }
 
   return { valid: true, error: null, warning };
+}
+
+/**
+ * Check math prerequisites and return warning if missing
+ * Math sequence: Math I → Math II → Math III → Pre-Calc/Advanced Functions → Calculus
+ *
+ * @param {string} courseName - Uppercase course name
+ * @param {Array} allCourses - All scheduled courses
+ * @param {Object} courseCatalog - Course catalog
+ * @param {number} targetYear - Year being added to
+ * @returns {string|null} - Warning message or null
+ */
+function checkMathPrerequisites(courseName, allCourses, courseCatalog, targetYear) {
+  // Helper to check if student has a math course in schedule (in prior years)
+  const hasMathCourse = (pattern) => {
+    return allCourses.some(c => {
+      if (parseInt(c.year) >= targetYear) return false; // Must be from prior year
+      const info = courseCatalog[c.courseId];
+      if (!info || info.pathway !== 'Math') return false;
+      return info.full_name.toUpperCase().includes(pattern);
+    });
+  };
+
+  // Also check same year but earlier semester (Fall before Spring)
+  const hasMathCourseThisYear = (pattern) => {
+    return allCourses.some(c => {
+      if (parseInt(c.year) !== targetYear) return false;
+      const info = courseCatalog[c.courseId];
+      if (!info || info.pathway !== 'Math') return false;
+      return info.full_name.toUpperCase().includes(pattern);
+    });
+  };
+
+  // Math II requires Math I
+  if (courseName.includes('MATHEMATICS II') || courseName.includes('MATH II')) {
+    if (!hasMathCourse('MATHEMATICS I') && !hasMathCourse('MATH I')) {
+      return 'Math II typically requires Math I. Have you completed Math I?';
+    }
+  }
+
+  // Math III requires Math II
+  if (courseName.includes('MATHEMATICS III') || courseName.includes('MATH III')) {
+    const hasMathII = hasMathCourse('MATHEMATICS II') || hasMathCourse('MATH II');
+    if (!hasMathII) {
+      return 'Math III typically requires Math II. Have you completed Math II?';
+    }
+  }
+
+  // Pre-Calculus / Advanced Functions requires Math III
+  if (courseName.includes('PRE-CALC') || courseName.includes('PRECALC') ||
+      courseName.includes('ADVANCED FUNCTIONS')) {
+    const hasMathIII = hasMathCourse('MATHEMATICS III') || hasMathCourse('MATH III');
+    if (!hasMathIII) {
+      return 'Pre-Calculus requires Math III. Have you completed Math III?';
+    }
+  }
+
+  // AP Calculus AB requires Pre-Calc or Advanced Functions
+  if (courseName.includes('AP CALCULUS AB')) {
+    const hasPreCalc = hasMathCourse('PRE-CALC') || hasMathCourse('PRECALC') ||
+                       hasMathCourse('ADVANCED FUNCTIONS') ||
+                       hasMathCourseThisYear('PRE-CALC') || hasMathCourseThisYear('PRECALC');
+    if (!hasPreCalc) {
+      return 'AP Calculus AB requires Pre-Calculus. Have you completed Pre-Calculus?';
+    }
+  }
+
+  // AP Calculus BC requires Pre-Calc (or Calc AB for some students)
+  if (courseName.includes('AP CALCULUS BC')) {
+    const hasPreCalc = hasMathCourse('PRE-CALC') || hasMathCourse('PRECALC') ||
+                       hasMathCourse('ADVANCED FUNCTIONS') ||
+                       hasMathCourse('CALCULUS AB') ||
+                       hasMathCourseThisYear('PRE-CALC') || hasMathCourseThisYear('PRECALC');
+    if (!hasPreCalc) {
+      return 'AP Calculus BC requires Pre-Calculus or Calculus AB. Have you completed Pre-Calculus?';
+    }
+  }
+
+  // AP Statistics requires Math II (minimum)
+  if (courseName.includes('AP STATISTICS')) {
+    const hasMathII = hasMathCourse('MATHEMATICS II') || hasMathCourse('MATH II') ||
+                      hasMathCourse('MATHEMATICS III') || hasMathCourse('MATH III');
+    if (!hasMathII) {
+      return 'AP Statistics requires at least Math II. Have you completed Math II?';
+    }
+  }
+
+  return null;
 }
