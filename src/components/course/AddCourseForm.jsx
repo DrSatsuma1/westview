@@ -158,7 +158,7 @@ export function AddCourseForm({
                               : 'hover:bg-gray-50'
                           }`}
                         >
-                          <span className="font-medium">{course.full_name}</span>
+                          <span className="font-medium">{course.full_name.toUpperCase()}</span>
                           <span className="text-xs text-gray-500 ml-2">({course.pathway})</span>
                           {shouldDisable && <span className="text-xs ml-1">(Hidden)</span>}
                         </button>
@@ -419,7 +419,7 @@ export function AddCourseForm({
                       disabled={shouldDisable}
                       style={shouldDisable ? { color: '#9ca3af', fontStyle: 'italic' } : {}}
                     >
-                      {course.full_name}{year === '9' && isRecommended9thGrade(course.full_name) ? ' ⭐ Recommended' : ''}{shouldDisable ? ' (Hidden)' : ''}
+                      {course.full_name.toUpperCase()}{year === '9' && isRecommended9thGrade(course.full_name) ? ' ⭐ Recommended' : ''}{shouldDisable ? ' (Hidden)' : ''}
                     </option>
                   );
                 })
@@ -473,7 +473,7 @@ function ForeignLanguageOptions({ courses, year, hideAPClasses }) {
         .sort((a, b) => a.full_name.localeCompare(b.full_name))
         .map(course => (
         <option key={course.id} value={course.id}>
-          {course.full_name}{year === '9' && isRecommended9thGrade(course.full_name) ? ' ⭐ Recommended' : ''}
+          {course.full_name.toUpperCase()}{year === '9' && isRecommended9thGrade(course.full_name) ? ' ⭐ Recommended' : ''}
         </option>
       ))}
     </optgroup>
@@ -524,7 +524,7 @@ function EnglishOptions({ courses, year, hideAPClasses, hideSpecialEdClasses }) 
               disabled={shouldDisable}
               style={shouldDisable ? { color: '#9ca3af', fontStyle: 'italic' } : {}}
             >
-              {course.full_name}{year === '9' && isRecommended9thGrade(course.full_name) ? ' ⭐ Recommended' : ''}{shouldDisable ? ' (Hidden)' : ''}
+              {course.full_name.toUpperCase()}{year === '9' && isRecommended9thGrade(course.full_name) ? ' ⭐ Recommended' : ''}{shouldDisable ? ' (Hidden)' : ''}
             </option>
           );
         })}
@@ -579,7 +579,7 @@ function ElectivesOptions({ courses, year, hideAPClasses, hideSpecialEdClasses }
               disabled={shouldDisable}
               style={shouldDisable ? { color: '#9ca3af', fontStyle: 'italic' } : {}}
             >
-              {course.full_name}{year === '9' && isRecommended9thGrade(course.full_name) ? ' ⭐ Recommended' : ''}{shouldDisable ? ' (Hidden)' : ''}
+              {course.full_name.toUpperCase()}{year === '9' && isRecommended9thGrade(course.full_name) ? ' ⭐ Recommended' : ''}{shouldDisable ? ' (Hidden)' : ''}
             </option>
           );
         })}
@@ -634,7 +634,7 @@ function APCoursesOptions({ courses, year }) {
           .sort((a, b) => a.full_name.localeCompare(b.full_name))
           .map(course => (
             <option key={course.id} value={course.id}>
-              {course.full_name}{year === '9' && isRecommended9thGrade(course.full_name) ? ' ⭐ Recommended' : ''}
+              {course.full_name.toUpperCase()}{year === '9' && isRecommended9thGrade(course.full_name) ? ' ⭐ Recommended' : ''}
             </option>
           ))}
       </optgroup>
