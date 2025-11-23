@@ -150,6 +150,7 @@ export class CandidateRanker {
     score += this.gradeAppropriatenessBonus(course);
     score -= this.penalizeAP(course);
     score -= this.penalizeYearlong(course);
+    score -= this.penalizeLowCreditCourses(course);
     // No honors penalty - honors courses are fine to suggest
 
     return Math.max(0, score); // Never go negative
@@ -270,6 +271,41 @@ export class CandidateRanker {
 
     // Other grades: slight penalty (students can opt in manually)
     return 50;
+  }
+
+  /**
+   * Penalty for special courses that need extra consideration:
+   * - Low-credit courses (AP Human Geography is only 5 credits)
+   * - ASB (only suggest if student already has ASB in schedule)
+   * @param {Object} course
+   * @returns {number} - Penalty points (0-1000)
+   */
+  penalizeLowCreditCourses(course) {
+    const nameUpper = course.full_name.toUpperCase();
+
+    // AP Human Geography: only 5 credits (semester course)
+    // Deprioritize in Years 1-3 so students take full-credit history courses
+    if (nameUpper.includes('HUMAN GEOGRAPHY')) {
+      if (this.year <= 11) {
+        return 200; // Strong penalty in Grades 9-11
+      }
+      // Grade 12: no penalty - it's a good elective option
+      return 0;
+    }
+
+    // ASB: Only suggest if student already has ASB in their schedule
+    // (ASB is a special leadership course, not a general elective)
+    if (nameUpper.includes('ASB')) {
+      const hasASB = this.courses.some(c => {
+        const info = this.catalog[c.courseId];
+        return info && info.full_name.toUpperCase().includes('ASB');
+      });
+      if (!hasASB) {
+        return 1000; // Effectively block suggestion unless they have ASB
+      }
+    }
+
+    return 0;
   }
 
   /**
