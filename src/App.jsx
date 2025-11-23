@@ -23,10 +23,10 @@ import {
   CTE_PATHWAYS,
   RECOMMENDED_9TH_GRADE,
   DEPRECATED_COURSES,
-  LINKED_COURSE_RULES,
   AVID_COURSES,
   MAX_SEMESTER_CREDITS
 } from './config';
+
 // Progress calculations moved to useCourseProgress hook
 import { WESTVIEW_REQUIREMENTS } from './domain/progress/westview.js';
 import { AG_REQUIREMENTS } from './domain/progress/ag.js';
@@ -42,6 +42,7 @@ import {
   buildCoursesFromSuggestions,
   processLinkedCourseRules
 } from './hooks/useSuggestionEngine.js';
+import { calculateCourseAdditions } from './domain/CourseAddition.js';
 import { useCourseProgress } from './hooks/useCourseProgress.js';
 import { useCourseSchedule } from './hooks/useCourseSchedule.js';
 import { useDragAndDrop } from './hooks/useDragAndDrop.js';
@@ -317,60 +318,14 @@ function App() {
       setWarning(validation.warning);
     }
 
-    // Helper to create course entries based on term type
-    const createCourseEntriesForAdd = (courseId, baseId) => {
-      const termReqs = schedulingEngine.getTermRequirements(courseId);
-      const entries = [];
-
-      if (termReqs.type === 'yearlong') {
-        entries.push({ courseId, id: baseId, year, quarter: 'Q1' });
-        entries.push({ courseId, id: baseId + 1, year, quarter: 'Q2' });
-        entries.push({ courseId, id: baseId + 2, year, quarter: 'Q3' });
-        entries.push({ courseId, id: baseId + 3, year, quarter: 'Q4' });
-      } else if (termReqs.type === 'semester') {
-        const [firstQ, secondQ] = (quarter === 'Q1' || quarter === 'Q2')
-          ? ['Q1', 'Q2'] : ['Q3', 'Q4'];
-        entries.push({ courseId, id: baseId, year, quarter: firstQ });
-        entries.push({ courseId, id: baseId + 1, year, quarter: secondQ });
-      } else {
-        entries.push({ courseId, id: baseId, year, quarter });
-      }
-      return entries;
-    };
-
-    // Collect all courses to add (main course + any linked courses)
-    const newCourses = [];
-    let nextId = Date.now();
-
-    // Add the main course
-    newCourses.push(...createCourseEntriesForAdd(newCourse.courseId, nextId));
-    nextId += 4; // Reserve IDs for potential yearlong course
-
-    // Check for linked courses and add them too
-    const existingCourseIds = courses.filter(c => c.year === year).map(c => c.courseId);
-    LINKED_COURSE_RULES.forEach(rule => {
-      if (rule.type === 'bidirectional') {
-        const [courseA, courseB] = rule.courses;
-        if (newCourse.courseId === courseA && !existingCourseIds.includes(courseB)) {
-          // Adding courseA triggers courseB
-          newCourses.push(...createCourseEntriesForAdd(courseB, nextId));
-          nextId += 4;
-        } else if (newCourse.courseId === courseB && !existingCourseIds.includes(courseA)) {
-          // Adding courseB triggers courseA
-          newCourses.push(...createCourseEntriesForAdd(courseA, nextId));
-          nextId += 4;
-        }
-      } else if (rule.type === 'one_way') {
-        if (newCourse.courseId === rule.trigger && !existingCourseIds.includes(rule.adds)) {
-          newCourses.push(...createCourseEntriesForAdd(rule.adds, nextId));
-          nextId += 4;
-        }
-      } else if (rule.type === 'sequential') {
-        if (newCourse.courseId === rule.first && !existingCourseIds.includes(rule.second)) {
-          newCourses.push(...createCourseEntriesForAdd(rule.second, nextId));
-          nextId += 4;
-        }
-      }
+    // Calculate all course entries (main + linked courses) using extracted domain logic
+    // Bug fix: linked semester courses now placed in OPPOSITE semester from main course
+    const newCourses = calculateCourseAdditions({
+      courseId: newCourse.courseId,
+      year,
+      quarter,
+      currentCourses: courses,
+      getTermRequirements: (id) => schedulingEngine.getTermRequirements(id)
     });
 
     updateCourses([...courses, ...newCourses]);
