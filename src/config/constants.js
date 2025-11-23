@@ -253,3 +253,17 @@ export const AVID_COURSES = ['001595-001596', '001597-001598', '001599-001600'];
  * Maximum semester credits
  */
 export const MAX_SEMESTER_CREDITS = 45;
+
+/**
+ * Exclusive course pairs - only ONE can be taken (not both)
+ * These are courses where one is the plain version and the other is AVID-linked.
+ * Student cannot take both "English 1-2" AND "English 1-2 (w/AVID)" - must choose one.
+ */
+export const EXCLUSIVE_COURSE_PAIRS = [
+  // English 1-2 vs English 1-2 (linked w/AVID 1-2)
+  { courseA: '000301-000302', courseB: '099301-099302', description: 'English 1-2' },
+  // English 3-4 vs English 3-4 (linked w/AVID 3-4)
+  { courseA: '000310-000311', courseB: '090310-090311', description: 'English 3-4' },
+  // US History 1-2 vs US History 1-2 (linked w/AVID 5-6)
+  { courseA: '001376-001377', courseB: '091376-091377', description: 'US History' },
+];

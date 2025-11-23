@@ -6,6 +6,7 @@
  */
 
 import { LINKED_REQUIREMENTS } from './courseEligibility.js';
+import { EXCLUSIVE_COURSE_PAIRS } from '../config/index.js';
 
 /**
  * Validate adding a course to a schedule
@@ -73,6 +74,28 @@ export function validateCourseAddition({
       const hasRequiredCourse = yearCourses.some(c => c.courseId === requirement.requires);
       if (!hasRequiredCourse) {
         warning = `${courseInfo.full_name} will be added with ${requirement.name}`;
+      }
+    }
+  }
+
+  // === EXCLUSIVE COURSE PAIR VALIDATION (Plain vs AVID-linked) ===
+  // Cannot take both plain course and AVID-linked version (e.g., English 1-2 AND English 1-2 w/AVID)
+  for (const pair of EXCLUSIVE_COURSE_PAIRS) {
+    if (courseId === pair.courseA) {
+      // Trying to add plain version - check if AVID-linked version exists
+      const hasLinkedVersion = allCourses.some(c => c.courseId === pair.courseB);
+      if (hasLinkedVersion) {
+        const linkedInfo = courseCatalog[pair.courseB];
+        const linkedName = linkedInfo ? linkedInfo.full_name : `${pair.description} (AVID-linked)`;
+        return { valid: false, error: `Cannot take both versions of ${pair.description}. You already have ${linkedName}.`, warning: null };
+      }
+    } else if (courseId === pair.courseB) {
+      // Trying to add AVID-linked version - check if plain version exists
+      const hasPlainVersion = allCourses.some(c => c.courseId === pair.courseA);
+      if (hasPlainVersion) {
+        const plainInfo = courseCatalog[pair.courseA];
+        const plainName = plainInfo ? plainInfo.full_name : pair.description;
+        return { valid: false, error: `Cannot take both versions of ${pair.description}. You already have ${plainName}.`, warning: null };
       }
     }
   }
