@@ -1,6 +1,9 @@
 # Westview Planner - Todo List
 
 ## Active
+- [ ] Add external course entry (courses taken outside Westview)
+  - User enters: credits, category (pathway), course it replaces (optional)
+  - Counts toward graduation requirements
 - [ ] Suggest should also be able to remove courses
 - [ ] Add "debug" as trigger word for systematic-debugging skill
 - [ ] Research: Is there a better option than Playwright for testing?
