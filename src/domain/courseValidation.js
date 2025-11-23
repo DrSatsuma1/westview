@@ -56,6 +56,8 @@ export function validateCourseAddition({
   let warning = null;
 
   // === LINKED COURSE VALIDATION ===
+  // NOTE: Don't block here - LINKED_COURSE_RULES in addCourse() will auto-add the linked course
+  // Just set a warning to inform user that linked course will be added
   if (LINKED_REQUIREMENTS[courseId]) {
     const requirement = LINKED_REQUIREMENTS[courseId];
 
@@ -64,13 +66,13 @@ export function validateCourseAddition({
         yearCourses.some(c => c.courseId === partnerId)
       );
       if (!hasAnyPartner) {
-        const partnerNames = requirement.names.join(', or ');
-        return { valid: false, error: `${courseInfo.full_name} must be taken with one of: ${partnerNames}`, warning: null };
+        const partnerNames = requirement.names.join(' or ');
+        warning = `${courseInfo.full_name} will be added with ${partnerNames}`;
       }
     } else if (requirement.requires) {
       const hasRequiredCourse = yearCourses.some(c => c.courseId === requirement.requires);
       if (!hasRequiredCourse) {
-        return { valid: false, error: `${courseInfo.full_name} must be taken with ${requirement.name}`, warning: null };
+        warning = `${courseInfo.full_name} will be added with ${requirement.name}`;
       }
     }
   }
